@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>为什么 AI 喜欢 CSV？ — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-06-04">2026年6月4日</time>
+            <span class="dotsep"></span>
+            <span>6 分钟阅读</span>
+          </div>
+          <h1 class="article-title">为什么 AI 喜欢 CSV？</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>上次写完《为什么 AI 不喜欢 .xlsx》，有人问我：那 AI 到底喜欢什么格式？</p>
+<p>答案很朴素：CSV。</p>
+<p>Excel 的强大恰恰是 AI 的麻烦——合并单元格、多 sheet、公式与结果的分离、用颜色表达逻辑……这些都让 AI 头疼。而 CSV 呢？没有格式、没有公式、没有合并单元格。它简陋到几乎什么都不是——恰恰因此，它是 AI 最舒服的数据形态。</p>
+<p>贯穿这个系列的矛盾就一句话：<strong>人类的灵活性，往往就是 AI 的噪声。</strong></p>
+<hr>
+<h2 id="CSV的本质一张裸表">CSV 的本质：一张"裸表"</h2>
+<p>CSV 全称 Comma-Separated Values——逗号分隔值。名字就是使用说明。</p>
+<p>它是一个纯文本文件，用逗号（或制表符）把数据切成列，用换行符把数据切成行。第一行通常是列名，后面每行是一条记录。打开记事本就能读，不需要任何软件。</p>
+<p>这个东西诞生于 1960 年代。没有版本号，没有标准委员会，没有 ISO 认证。它简单到不需要说明书——你只要看到它，就知道怎么用它。</p>
+<p>对比一下其他数据格式的野心：JSON 想表达嵌套对象，XML 想表达文档结构，Parquet 想表达列式压缩。CSV 什么都不想表达。它只想表达一件事：一张二维表。</p>
+<p>这恰好是 AI 最需要的。AI 处理数据时，第一步永远是"把它变成一张表"。CSV 直接把答案写在脸上。</p>
+<hr>
+<h2 id="为什么AI喜欢它">为什么 AI 喜欢它？</h2>
+<h3 id="一一行一记录一列一字段">一、一行一记录，一列一字段</h3>
+<p>CSV 的数据模型和数据库表完全同构。第一行是 schema，之后每行是一条记录。你把它扔进 Python 的 <code>pandas.read_csv()</code>，出来就是一个 DataFrame。扔进 SQLite，出来就是一张表。</p>
+<p>AI 处理数据的第一个认知动作永远是"这是什么结构"——哪些是字段、哪些是记录、字段之间是什么关系。Excel 里这个答案藏在排版中：合并单元格、空行分隔、表头套表头。AI 得先"看图猜结构"，猜错了数据就废了。CSV 不需要猜——结构就是文件本身。</p>
+<p>对于 AI，一个不需要"理解格式"的数据源，等于一个不需要翻译的母语者。</p>
+<h3 id="二没有合并单元格">二、没有合并单元格</h3>
+<p>Excel 里最让 AI 崩溃的东西，第一个就是合并单元格。</p>
+<p>合并单元格意味着"这个值和下面三行是一样的，但只有第一行写了"。人类扫一眼能领会，AI 需要先判断哪些单元格被合并了，再执行"向下填充"。这个判断本身出错概率很高——合并边界在哪里、合并区域之间有没有空行、空白格到底是"和上面一样"还是"真的为空"。</p>
+<p>CSV 不认合并单元格。每个格子一个值。缺了就空着，要重复就每行都写一遍。对人类来说多敲了几次键盘，对 AI 来说省去了最复杂的预处理步骤。</p>
+<p>确定性，就是 CSV 给 AI 最大的礼物。</p>
+<h3 id="三没有隐藏信息">三、没有隐藏信息</h3>
+<p>Excel 是个"所见非所得"的工具——你看到的单元格值是公式算出来的，公式本身藏在后台；背景色可能表示"这个数字有问题"但 AI 读不到颜色；隐藏行列里的数据存在但不可见，AI 要么不知道它存在，要么知道了不知道该不该用。</p>
+<p>CSV 是"所见即所得"的极致版本。没有公式层——只有值。没有样式层——没有颜色、粗体、字号、边框。没有隐藏层——不存在"在文件中但不显示"的数据。CSV 里的每一个字符都平等地摊在 AI 面前。</p>
+<p>听起来是功能缺失。但在 AI 的场景里，功能缺失等于信号纯净。AI 不需要在"这是数据"和"这是装饰"之间做区分——CSV 里根本没有装饰。</p>
+<h3 id="四Git友好">四、Git 友好</h3>
+<p>CSV 是纯文本。改了一行，Git diff 就精确显示那一行的变化。</p>
+<p>AI 处理数据经常需要增量更新——昨天的案号清单和今天的有什么不同？AI 生成的质证意见改了哪几条？CSV 的 diff 可以直接回答这些问题，一行对一行，字段对字段。</p>
+<p>而 .xlsx 本质是压缩 XML 的二进制包。Git 眼里它就是一个大文件变了，看不到具体改了什么。无法 diff 意味着 AI 只能从头重读整个文件，没法做增量推理。</p>
+<h3 id="五任何语言任何工具都能读">五、任何语言任何工具都能读</h3>
+<p>没有 CSV 解析库的编程语言是不存在的。Python 的 <code>csv</code> 模块是标准库的一部分。R 的 <code>read.csv()</code> 是第一天就要学的函数。数据库的 IMPORT 命令原生支持 CSV。pandas、Polars、DuckDB——任何数据处理框架的第一个 I/O 接口一定是 CSV。</p>
+<p>更重要的是，CSV 不需要"库"。你可以用 <code>split(',')</code> 解析它，也可以用 Excel 打开它。它是全球兼容性最强的数据格式，没有之一。</p>
+<p>这对 AI 的实际含义是：AI 生成 CSV 之后，你可以用任何工具验证、修改、再用。工作流不会被特定工具锁定。</p>
+<h3 id="六人眼可直接验证">六、人眼可直接验证</h3>
+<p>JSON 嵌套到三层以上，人眼基本无法快速定位数据错误。XML 更不用说。但 CSV 永远可以——打开记事本，数据就在那里，一行行一列列，错了一个数字你可以直接改。</p>
+<p>AI 输出的数据需要人类确认。验证成本越低，AI 被真正用起来的概率越高。一个你不敢信任的输出格式，你不会用第二次。CSV 让"看一眼确认"成为可能——这个优势有多重要，你用过就知道。</p>
+<hr>
+<h2 id="镜像对比ExcelvsCSV">镜像对比：Excel vs CSV</h2>
+<p>| 维度 | .xlsx | .csv |</p>
+<p>|------|-------|------|</p>
+<p>| 数据结构 | 灵活布局，AI 需"看图猜结构" | 一行一记录，天然结构化 |</p>
+<p>| 单元格 | 可合并/隐藏/跨行列 | 一格一值，不合并 |</p>
+<p>| 公式 | 存在但 AI 难以读取 | 只有值，无公式层 |</p>
+<p>| 样式 | 颜色/字体/条件格式——AI 读不了 | 无样式 |</p>
+<p>| 版本控制 | 二进制，diff 无意义 | 纯文本，逐行 diff |</p>
+<p>| 兼容性 | 需要 Excel 或兼容库 | 任何语言/工具零依赖 |</p>
+<p>| 人眼验证 | 需要打开 Excel | 记事本即可 |</p>
+<p>| AI 友好度 | 低——噪声多、结构隐式 | 高——信号纯净、结构显式 |</p>
+<p>Excel 为人类做了太多优化，以至于 AI 需要先"反优化"才能使用。CSV 没有为任何人做优化——但正因为没有，它适用于所有人，包括 AI。</p>
+<hr>
+<h2 id="法律场景里的CSV">法律场景里的 CSV</h2>
+<p>说回本行。律师日常打交道的数据，很多天然适合 CSV。</p>
+<p><strong>案件台账。</strong> 法院立案系统导出的案件清单——案号、当事人、立案日期、承办人、案件状态——本身就是一张表。导出为 Excel 时往往会加上表头合并、空行分页、颜色标注。导成 CSV，直接交给 AI 做分类、统计、排期预警。</p>
+<p><strong>证据清单批量处理。</strong> 几百条微信聊天记录要逐一标注质证意见——序号、证据名称、来源、证明目的、质证意见——五列一张 CSV，AI 可以逐行生成初稿，律师逐行审核。一份 200 条的证据清单，AI + CSV 的工作流可以把质证意见初稿的生成时间从半天降到 15 分钟。</p>
+<p><strong>主体信息一致性校验。</strong> 一个项目几十家关联方，名称、统一社会信用代码、注册地址、法定代表人——从不同来源拿到的表经常不一致。把这些表整理成统一字段的 CSV，交给 AI 做交叉比对，识别名称不一致、代码缺失、地址过期。结构化数据的比对是 AI 的强项，前提是数据本身也是结构化的。</p>
+<p><strong>裁判文书元数据提取。</strong> 几百份判决书，需要从案号中批量提取法院层级、年份、程序类型。CSV 里一列案号，AI 用正则一列生成三列，准确率接近 100%。同样的事在 Excel 里做，你要先确保"案号列没有合并单元格""没有用颜色标记的特殊案件""没有隐藏行里漏掉的文书"。</p>
+<p>这些场景背后是同一个逻辑：<strong>数据越干净，AI 越能干。CSV 天然迫使数据干净。</strong></p>
+<hr>
+<h2 id="CSV的局限">CSV 的局限</h2>
+<p>没有一种格式适用于所有场景。CSV 做不到的事也清清楚楚：</p>
+<p><strong>没有样式。</strong> 需要可视化的数据不适合 CSV——你不能在 CSV 里画图表、标红预警、做条件格式。</p>
+<p><strong>没有公式。</strong> 需要计算逻辑的场景，Excel 仍然是主场——财务报表、预算模型、敏感性分析。</p>
+<p><strong>只有一个表。</strong> CSV 没有"多 sheet"。一个项目涉及十几张关联表，CSV 只能拆成十几个文件，不如一个 .xlsx 方便管理。</p>
+<p><strong>编码坑。</strong> 中文场景的独特痛点——同一个 CSV 在 Windows 上用 GBK 打开乱码，在 Mac 上用 UTF-8 打开正常，加了 BOM 又可能在 Linux 上报错。没有银弹，最好的解法是约定：统一用 UTF-8 无 BOM。</p>
+<p><strong>不适合嵌套结构。</strong> 树形数据、图形数据、多层 JSON——CSV 的平面结构处理不了。该用 JSON 的时候就用 JSON，不要硬塞。</p>
+<p>不过对 AI 数据处理而言，这些局限大多不是问题。AI 本身就不需要样式和公式，它需要的是干净、明确、可解析的数据。CSV 恰好把不需要的部分全减掉了。</p>
+<hr>
+<h2 id="减法的胜利">减法的胜利</h2>
+<p>CSV 的故事不是"一个更好的格式取代了旧的"。它比 Excel 老得多。它的故事是：在 AI 时代，简单重新获得了力量。</p>
+<p>60 年来，我们不断给文件格式加东西——样式、公式、宏、版本历史、实时协作——CSV 站在原地不动。它的核心约定一个字符都没改过。这不是"落后于时代"，这是"不需要跟着时代变"。</p>
+<p>AI 的崛起让这个判断被重新验证了一遍。机器学习模型读数据、大语言模型生成数据、Agent 之间传递数据——每一步都在惩罚过度设计，奖励结构明确。CSV 是后者的极致。</p>
+<p>做减法比做加法更难。加法只需要往上堆东西，减法需要判断什么东西可以不要。CSV 的设计者——如果 1960 年代那几个写 Fortran 程序的人可以被称作"设计者"的话——做出了一个跨越 60 年的判断：一张二维表，不需要任何别的东西。</p>
+<p>在一个越来越依赖数据做决策的世界里，最简单的格式，恰好是最强的格式。</p>
+<hr>
+<blockquote>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+</blockquote>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

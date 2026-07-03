@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>确定性工作用脚本，不确定用大模型——法律人的 AI 工具分工法则 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-06-08">2026年6月8日</time>
+            <span class="dotsep"></span>
+            <span>6 分钟阅读</span>
+          </div>
+          <h1 class="article-title">确定性工作用脚本，不确定用大模型——法律人的 AI 工具分工法则</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>先讲一个你大概率做过的操作。</p>
+<p>你丢给大模型一个视频链接，说“帮我下载这个视频”。它理解你的意图，分析出你需要调用 yt-dlp，检查你电脑上有没有装，然后执行下载。几十秒后，视频到了你的本地文件夹。</p>
+<p>现在问自己一个问题：大模型在这件事里到底做了什么贡献？</p>
+<p>它只做了一件事——<strong>替你敲了那行命令</strong>。真正把视频从服务器拉到本地的是 yt-dlp，一个跟 AI 毫无关系的开源工具。没有大模型，你能不能自己敲那行命令？能。</p>
+<p>那为什么还要让大模型跑这一趟？</p>
+<p>它帮你省了记命令和敲键盘的 5 秒钟。代价呢？一次调用，几千个 Token 没了。你等于雇了一个律师去按计算器。</p>
+<p>这就是法律人用 AI 最该建立的分工意识：<strong>有些工作不该让大模型做。</strong></p>
+<hr>
+<h2 id="三个确定性">三个确定性</h2>
+<p>判断一件事该用脚本还是大模型，不需要技术背景。问自己三个问题就行。</p>
+<p><strong>输入端是不是确定的？</strong> 用户给什么，不需要语义理解就能处理。</p>
+<p><strong>工作流程是不是确定的？</strong> 调什么工具、按什么步骤，中间不需要做判断。</p>
+<p><strong>输出端是不是确定的？</strong> 最后产出什么，格式和内容可以事先约定。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420"&gt;
+  &lt;rect width="600" height="420" fill="#fff" rx="6"/&gt;
+
+  &lt;text x="300" y="32" text-anchor="middle" font-size="17" font-weight="700" fill="#222" font-family="sans-serif"&gt;三个确定性 → 脚本 / 大模型 决策矩阵&lt;/text&gt;
+
+  &lt;!-- Header row --&gt;
+  &lt;rect x="30" y="55" width="170" height="40" fill="#f5f5f5" stroke="#ccc" stroke-width="1" rx="4"/&gt;
+  &lt;text x="115" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#333" font-family="sans-serif"&gt;输入端&lt;/text&gt;
+
+  &lt;rect x="215" y="55" width="170" height="40" fill="#f5f5f5" stroke="#ccc" stroke-width="1" rx="4"/&gt;
+  &lt;text x="300" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#333" font-family="sans-serif"&gt;工作流程&lt;/text&gt;
+
+  &lt;rect x="400" y="55" width="170" height="40" fill="#f5f5f5" stroke="#ccc" stroke-width="1" rx="4"/&gt;
+  &lt;text x="485" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#333" font-family="sans-serif"&gt;输出端&lt;/text&gt;
+
+  &lt;!-- Row 1: All certain → Script --&gt;
+  &lt;rect x="30" y="110" width="170" height="65" fill="#f2faf2" stroke="#4a9" stroke-width="1.5" rx="4"/&gt;
+  &lt;text x="115" y="135" text-anchor="middle" font-size="13" font-weight="600" fill="#2a7" font-family="sans-serif"&gt;确定 ✓&lt;/text&gt;
+  &lt;text x="115" y="157" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif"&gt;PDF 路径 / 视频网址&lt;/text&gt;
+
+  &lt;rect x="215" y="110" width="170" height="65" fill="#f2faf2" stroke="#4a9" stroke-width="1.5" rx="4"/&gt;
+  &lt;text x="300" y="135" text-anchor="middle" font-size="13" font-weight="600" fill="#2a7" font-family="sans-serif"&gt;确定 ✓&lt;/text&gt;
+  &lt;text x="300" y="157" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif"&gt;mineru / yt-dlp&lt;/text&gt;
+
+  &lt;rect x="400" y="110" width="170" height="65" fill="#f2faf2" stroke="#4a9" stroke-width="1.5" rx="4"/&gt;
+  &lt;text x="485" y="135" text-anchor="middle" font-size="13" font-weight="600" fill="#2a7" font-family="sans-serif"&gt;确定 ✓&lt;/text&gt;
+  &lt;text x="485" y="157" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif"&gt;MD 文件 / 本地视频&lt;/text&gt;
+
+  &lt;line x1="300" y1="185" x2="300" y2="205" stroke="#2a7" stroke-width="1.5"/&gt;
+  &lt;polygon points="293,202 300,212 307,202" fill="#2a7"/&gt;
+
+  &lt;rect x="140" y="215" width="320" height="36" fill="#2a7" rx="5"/&gt;
+  &lt;text x="300" y="238" text-anchor="middle" font-size="14" font-weight="700" fill="#fff" font-family="sans-serif"&gt;用脚本 — 零 Token，可复用&lt;/text&gt;
+
+  &lt;!-- Row 2: Any uncertain → LLM --&gt;
+  &lt;rect x="30" y="275" width="170" height="65" fill="#faf5f0" stroke="#e80" stroke-width="1.5" rx="4"/&gt;
+  &lt;text x="115" y="300" text-anchor="middle" font-size="13" font-weight="600" fill="#c50" font-family="sans-serif"&gt;不确定 ✗&lt;/text&gt;
+  &lt;text x="115" y="322" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif"&gt;"这份合同有风险吗"&lt;/text&gt;
+
+  &lt;rect x="215" y="275" width="170" height="65" fill="#fafafa" stroke="#ddd" stroke-width="1" rx="4"/&gt;
+  &lt;text x="300" y="308" text-anchor="middle" font-size="13" fill="#999" font-family="sans-serif"&gt;任意&lt;/text&gt;
+
+  &lt;rect x="400" y="275" width="170" height="65" fill="#fafafa" stroke="#ddd" stroke-width="1" rx="4"/&gt;
+  &lt;text x="485" y="308" text-anchor="middle" font-size="13" fill="#999" font-family="sans-serif"&gt;任意&lt;/text&gt;
+
+  &lt;line x1="300" y1="350" x2="300" y2="370" stroke="#c50" stroke-width="1.5"/&gt;
+  &lt;polygon points="293,367 300,377 307,367" fill="#c50"/&gt;
+
+  &lt;rect x="140" y="380" width="320" height="36" fill="#c50" rx="5"/&gt;
+  &lt;text x="300" y="403" text-anchor="middle" font-size="14" font-weight="700" fill="#fff" font-family="sans-serif"&gt;用大模型 — 需要语义判断&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>规则只有一句话：<strong>三个全确定，用脚本；任意一个不确定，用大模型。</strong></p>
+<p>下面逐个讲。</p>
+<p><strong>输入端确定。</strong> 你给脚本的东西，格式和类型是固定的。一个 PDF 路径、一个视频网址、一个装满裁判文书的文件夹——脚本不需要“理解”PDF 里写了什么，它只需要知道“这是 PDF，调 mineru 转 Markdown”。</p>
+<p>反过来，“帮我看看这份合同有没有风险”——输入也是文件，但你要求的是语义理解，脚本做不了。</p>
+<p><strong>工作流程确定。</strong> 从输入到输出，每一步调什么、按什么顺序，中间不需要做判断。PDF 转 MD 的流程永远是：检测文件类型 → 调 mineru → 输出 MD。没有“先看看内容再决定”这种分支。</p>
+<p>一旦流程里出现了“如果……那么……”，而且这个“如果”依赖对内容的语义判断，那就出了脚本的能力边界。</p>
+<p><strong>输出端确定。</strong> 转出来的 MD 文件、下载到本地的视频、提取出来的案号和日期——这些东西的形态是可以事先约定的。</p>
+<p>而“帮我写一份法律意见书”——输出虽然也是一份文件，内容却取决于你对案情的分析和判断，不是脚本能干的活。</p>
+<hr>
+<h2 id="四个最适合脚本的法律场景">四个最适合脚本的法律场景</h2>
+<h3 id="格式转换">格式转换</h3>
+<p>律师的工作流里塞满了格式转换。客户发来 PDF 合同，要转成可编辑文本；对方律师发来 Excel 证据清单，要转成 JSON 喂给分析工具；扫描件里的文字要提取出来做检索。</p>
+<p>每一次都让大模型跑一遍，纯属浪费。一个脚本就够了：自动检测文件夹里的文件类型，PDF 调 mineru，Excel 调 Python 库，图片调 OCR，转完保留原始文件夹结构。脚本写好了，以后 PDF 转 MD 这件事就不需要再消耗任何 Token。</p>
+<h3 id="批量信息提取">批量信息提取</h3>
+<p>你有一万份裁判文书，想提取案号、法院名称、裁判日期。</p>
+<p>让大模型一份份读？可以。但 Token 账单会很难看，而且每份都要等它一个字一个字输出。脚本几秒钟就能跑完。</p>
+<p>因为“案号”在裁判文书里有固定的格式特征——“（XXXX）X 民 X 字第 XX 号”，法院名称出现在固定位置，裁判日期的表述也是模式化的。这些信息的提取靠的是模式匹配，不是语义理解。</p>
+<p>这和 OCR 之后再让大模型“读懂”判决书的论证逻辑，是两件完全不同的事。</p>
+<h3 id="基础脱敏">基础脱敏</h3>
+<p>身份证号 18 位数字（或 17 位 + X），手机号 11 位且以 1 开头，银行卡号有固定的 BIN 码规则。用正则表达式匹配替换，脚本完全能胜任。</p>
+<p>但人名脱敏就复杂了。人名可能是一个字、两个字、三个字甚至四个字，可能是少数民族姓名音译。脚本只能靠特征判断，而人名恰恰是特征最不明显的那一类——它没办法用规则区分“陈石”是律师还是“陈述”是动词。这时候你需要大模型从上下文关系里判断“这一个字到底是不是人名”。</p>
+<p>脱敏这件事，边界清晰：<strong>格式化的用脚本，语义的用模型。</strong></p>
+<h3 id="批量生成群体性案件文书">批量生成群体性案件文书</h3>
+<p>银行对一百个逾期借款人发律师函，物业公司对两百户欠费业主起诉——文书结构高度统一，变的只是当事人信息、欠款金额、违约时间。模板写好，变量位留好，脚本循环填充，几分钟出几百份。</p>
+<p>以前我团队有个会 Python 的同事，这种活交给他，别人干一天他半小时搞定。现在，你自己就可以是那个人。</p>
+<p>不会写 Python 没关系。往下看。</p>
+<hr>
+<h2 id="你已经在开发软件了只是没意识到">你已经在开发软件了，只是没意识到</h2>
+<p>法律人面对脚本，有一个共同的卡点：我不会编程。</p>
+<p>在大模型出现之前，这个卡点是真实的。学 Python 要时间，调 bug 要耐心，配环境要运气。现在这个障碍基本不存在了。</p>
+<p>你不需要会 Python。你需要的是把自己的需求讲清楚：</p>
+<ol>
+<li>你会给它什么（输入）</li>
+<li>你希望它达到什么效果（输出）</li>
+<li>你电脑上有哪些工具可以用（不知道也没关系，让大模型自己找）</li>
+</ol>
+<p>然后对大模型说：帮我写个脚本，实现这个功能。</p>
+<p>它写出来，你运行，发现哪里不对再让它改。这个过程本质上就是你在用自然语言做软件开发——<strong>你相当于用大模型帮你开发了一个软件</strong>。它没有图形界面，在终端里跑，但它确确实实解决了你的问题。</p>
+<p>软件写好之后，大模型退居二线。以后每次干这件事，直接跑脚本，零 Token。而且跨工作区复用：合同审核碰到 PDF，调它；咨询碰到 PDF，也调它；案件分析碰到 PDF，还是它。</p>
+<p>再进一步，脚本可以嵌入你的 Skill 和 Agent。一个复杂的合同审核 Skill，第一步“格式转换”用脚本完成，大模型只在需要语义判断的环节出场。这就是分工——确定的事脚本做，判断的事模型做。</p>
+<hr>
+<h2 id="几个容易踩的坑">几个容易踩的坑</h2>
+<p><strong>不是所有“重复”都等于“确定”。</strong> 你每周写案件进展报告，这件事重复发生，但每份报告的内容需要你分析进展、评估风险、给出下一步建议——都依赖法律判断，脚本写不了。判断标准是三个确定性，不是“这事儿我干了很多次”。</p>
+<p><strong>脚本不是写一次就一劳永逸。</strong> 工具会更新（mineru 升级了 API），需求会变化（今天只转 PDF，下周还想转 Excel）。脚本也要跟着进化。好消息是，改脚本和写脚本一样简单——对大模型说就行。</p>
+<p><strong>大模型写的代码不一定对。</strong> 它会用不存在的 API 参数，会在边界情况崩溃。你不需要学会 debug，但一定要学会测试：拿小样本先跑一下，结果对了再批量用。这个习惯比你想象的更重要。</p>
+<hr>
+<h2 id="什么时候别用这套方法">什么时候别用这套方法</h2>
+<p>三个确定性是实用框架，不是金科玉律。</p>
+<p>核心环节依赖法律判断的任务——案件分析、策略制定、谈判评估——从头到尾都要专业判断，不适合用脚本替代。</p>
+<p>一次性的操作，手动做比写脚本快——那就手动做。别为了方法论而方法论。</p>
+<p>电脑上缺少工具链——脚本调用的底层工具（mineru、yt-dlp、ffmpeg）需要先装好。部署这事大模型可以帮你做，但你得知道需要部署什么。</p>
+<p>最后说句实在话：这个方法最大的价值，不是把你变成效率狂人，而是让你在每次想“让大模型帮我做”之前，多问自己一句——<strong>没有大模型，这件事是不是也可以自动化？</strong></p>
+<p>答案是肯定的，写个脚本。省下来的 Token，留给真正需要判断力的工作。</p>
+<hr>
+<blockquote>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办“首宗百亿地王”“长春第一高楼”“台州第一高楼”等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+</blockquote>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

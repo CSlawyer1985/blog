@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI+法律 — 陈石 · 法与AI</title>
+  <meta name="description" content="AI+法律 — 73 篇文章">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+    html,body{overflow-x:hidden}
+    body{background:#F3EDE3;background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);background-size:3px 3px;color:#1A1714;font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.7}
+    .nav{position:fixed;top:0;left:0;right:0;z-index:40;height:78px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(20px,5vw,72px);border-bottom:1px solid #C9C0B2;background:rgba(243,237,227,.88);backdrop-filter:blur(8px)}
+    .nav__brand{font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-size:24px;font-weight:600;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{display:flex;align-items:center;gap:14px;font-size:12px;font-weight:600;letter-spacing:.08em}
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+    .article-layout{display:grid;grid-template-columns:240px minmax(0,720px);justify-content:center;gap:56px;padding:110px clamp(20px,5vw,72px) 80px;max-width:1160px;margin:0 auto}
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{display:inline-flex;align-items:center;gap:6px;font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;color:#7d756a;margin-bottom:20px;transition:color .2s}
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #C9C0B2}
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{display:block;padding:7px 0;font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s}
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-title{font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;font-size:clamp(36px,5vw,56px);line-height:1.1;color:#1A1714;letter-spacing:-.01em}
+    .article-meta-top{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;color:#7d756a;margin-bottom:20px}
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+    @media (max-width:860px){.article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}.article-sidebar{display:none}}
+    @media (max-width:600px){.article-layout{padding:80px 20px 48px}}
+    @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页"><span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer</a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a><span class="sep">/</span>
+      <a href="/#about">About</a><span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+  </div>
+</aside>
+
+      <div class="article-main">
+        <header class="article-header">
+          <h1 class="article-title">AI+法律</h1>
+          <p style="font-family:ui-monospace,'SF Mono',monospace;font-size:13px;color:#7d756a;margin-top:12px">共 73 篇文章</p>
+        </header>
+        <div class="category-articles">
+          
+          <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年7月1日</span>
+                <span class="dotsep"></span>
+                <span>10 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">月入百万的AI中转站，钱到底从哪来？</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年7月1日</span>
+                <span class="dotsep"></span>
+                <span>7 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">文科生面对那个黑窗口：门槛比你想象的低得多</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月25日</span>
+                <span class="dotsep"></span>
+                <span>5 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">律师行业的K型分化：AI不是淘汰律师，是分化律师</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月25日</span>
+                <span class="dotsep"></span>
+                <span>6 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">知识库不只是往里加——最难的是退出</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月21日</span>
+                <span class="dotsep"></span>
+                <span>3 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">不是所有数据都该放进同一个知识库——法律数据的四级权限</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月21日</span>
+                <span class="dotsep"></span>
+                <span>3 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">灵光乍现为什么需要一群人——AI应用不是一个人的事</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月21日</span>
+                <span class="dotsep"></span>
+                <span>3 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">法律人数据源的四级金字塔——真正拉开差距的，在第四层</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月21日</span>
+                <span class="dotsep"></span>
+                <span>4 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">法律人，你为什么不敢分享</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月21日</span>
+                <span class="dotsep"></span>
+                <span>3 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">模型审计为什么没有终点——一个课程群里所有人都想问的问题</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月21日</span>
+                <span class="dotsep"></span>
+                <span>3 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月21日</span>
+                <span class="dotsep"></span>
+                <span>3 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">数据清洗的三层分工——机器能做的，别让大模型来</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月21日</span>
+                <span class="dotsep"></span>
+                <span>3 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">开源精神——法律人最缺也最需要的一种工作方式</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月21日</span>
+                <span class="dotsep"></span>
+                <span>3 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">你一边喊着大模型泄密，一边在微信上传客户合同</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月21日</span>
+                <span class="dotsep"></span>
+                <span>3 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月21日</span>
+                <span class="dotsep"></span>
+                <span>3 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">数据多不等于好用——判断值不值得投入的四个标准</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月21日</span>
+                <span class="dotsep"></span>
+                <span>4 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">两个长期资产——AI时代法律人的真正积累</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月21日</span>
+                <span class="dotsep"></span>
+                <span>2 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月21日</span>
+                <span class="dotsep"></span>
+                <span>3 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">给每份法律资料办张身份证——YAML Front Matter入门</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月21日</span>
+                <span class="dotsep"></span>
+                <span>4 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">你的知识库需要一个地图——LLM Wiki 入门</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月21日</span>
+                <span class="dotsep"></span>
+                <span>3 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-21-你的知识库到底是怎么被检索的-Agentic-Search的技术白话/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">你的知识库到底是怎么被检索的——Agentic Search的技术白话</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月21日</span>
+                <span class="dotsep"></span>
+                <span>3 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-20-AI-时代-会输出-才是法律人最后的护城河/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">AI 时代，"会输出"才是法律人最后的护城河</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月20日</span>
+                <span class="dotsep"></span>
+                <span>6 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-19-Dario-Amodei-在指数的曲线上保持理性/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">Dario Amodei：在指数的曲线上保持理性</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月19日</span>
+                <span class="dotsep"></span>
+                <span>8 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-17-Loop-Engineering-还是-Harness-Engineering-被过度包装的-loop-命令/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">Loop Engineering 还是 Harness Engineering？被过度包装的 /loop 命令</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月17日</span>
+                <span class="dotsep"></span>
+                <span>4 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-17-Loop-Engineering-不是-Harness-Engineering-的下一代-是它的一种长运行形态/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">Loop Engineering 不是 Harness Engineering 的下一代，是它的一种长运行形态</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月17日</span>
+                <span class="dotsep"></span>
+                <span>5 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-14-10亿token-114块钱-一个法律人的AI算力真相/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">10亿token，114块钱——一个法律人的AI算力真相</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月14日</span>
+                <span class="dotsep"></span>
+                <span>3 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-14-学会一个Agent-你就学会了所有Agent/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">学会一个Agent，你就学会了所有Agent</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月14日</span>
+                <span class="dotsep"></span>
+                <span>4 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-14-你在AI使用金字塔的第几层/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">你在AI使用金字塔的第几层？</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月14日</span>
+                <span class="dotsep"></span>
+                <span>3 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-08-像带实习生一样养-AI-法律人隐性知识的显性化之路/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">「像带实习生一样养 AI」—— 法律人隐性知识的显性化之路</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月8日</span>
+                <span class="dotsep"></span>
+                <span>8 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-08-确定性工作用脚本-不确定用大模型-法律人的-AI-工具分工法则/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">确定性工作用脚本，不确定用大模型——法律人的 AI 工具分工法则</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月8日</span>
+                <span class="dotsep"></span>
+                <span>6 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-08-规则放错层-比没写规则更糟糕/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">规则放错层，比没写规则更糟糕</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月8日</span>
+                <span class="dotsep"></span>
+                <span>9 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-08-你还在用-终稿3-管版本-给法律人的-Git-与-GitHub-入门/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">你还在用"终稿3"管版本？给法律人的 Git 与 GitHub 入门</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月8日</span>
+                <span class="dotsep"></span>
+                <span>7 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-08-法律人的-AI-控制论-从-Prompt-到-Harness/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">法律人的 AI 控制论：从 Prompt 到 Harness</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月8日</span>
+                <span class="dotsep"></span>
+                <span>10 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-08-你以为你在选工具-其实你在选关系/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">你以为你在选工具，其实你在选关系</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月8日</span>
+                <span class="dotsep"></span>
+                <span>7 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-06-培养继承者/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">培养继承者</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月6日</span>
+                <span class="dotsep"></span>
+                <span>6 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-06-当AI开始写自己的代码-法律人在焦虑什么/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">当AI开始写自己的代码，法律人在焦虑什么</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月6日</span>
+                <span class="dotsep"></span>
+                <span>7 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-04-数字泔水-的司法红线-首例AI种草笔记案的四维判定框架/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">"数字泔水"的司法红线：首例AI种草笔记案的四维判定框架</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月4日</span>
+                <span class="dotsep"></span>
+                <span>5 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-04-为什么-AI-喜欢版本可追溯/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">为什么 AI 喜欢版本可追溯？</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月4日</span>
+                <span class="dotsep"></span>
+                <span>6 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-04-为什么-AI-喜欢分类框架/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">为什么 AI 喜欢分类框架？</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月4日</span>
+                <span class="dotsep"></span>
+                <span>7 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-04-为什么-AI-喜欢-Markdown/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">为什么 AI 喜欢 Markdown？</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月4日</span>
+                <span class="dotsep"></span>
+                <span>7 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-04-为什么-AI-喜欢-HTML-和-JSON/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">为什么 AI 喜欢 HTML 和 JSON？</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月4日</span>
+                <span class="dotsep"></span>
+                <span>6 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-04-为什么-AI-喜欢-CSV/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">为什么 AI 喜欢 CSV？</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月4日</span>
+                <span class="dotsep"></span>
+                <span>6 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-04-为什么-AI-不喜欢-docx/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">为什么 AI 不喜欢 .docx？</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月4日</span>
+                <span class="dotsep"></span>
+                <span>6 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-04-为什么-AI-不喜欢-PPT/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">为什么 AI 不喜欢 PPT？</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月4日</span>
+                <span class="dotsep"></span>
+                <span>7 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-04-为什么-AI-不喜欢-PDF/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">为什么 AI 不喜欢 PDF？</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月4日</span>
+                <span class="dotsep"></span>
+                <span>6 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-04-为什么-AI-不喜欢-Excel/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">为什么 AI 不喜欢 Excel？</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月4日</span>
+                <span class="dotsep"></span>
+                <span>6 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-01-柏拉图的洞穴寓言-在-AI-时代才真正生效/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">柏拉图的洞穴寓言，在 AI 时代才真正生效</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月1日</span>
+                <span class="dotsep"></span>
+                <span>10 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-31-MD还没死-一个法律人对AI数据格式之争的冷眼旁观/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">MD还没死：一个法律人对AI数据格式之争的冷眼旁观</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月31日</span>
+                <span class="dotsep"></span>
+                <span>4 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-31-Harness-Engineering-法律人理解AI控制力的入门指南/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">Harness Engineering：法律人理解AI控制力的入门指南</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月31日</span>
+                <span class="dotsep"></span>
+                <span>11 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-28-AIGC检测是不是一门-骗局生意/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">AIGC检测是不是一门"骗局生意"？</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月28日</span>
+                <span class="dotsep"></span>
+                <span>11 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-27-法律人的-张口就要结论-正在阻碍你用好-AI/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">法律人的"张口就要结论"，正在阻碍你用好 AI</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月27日</span>
+                <span class="dotsep"></span>
+                <span>6 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-27-为什么法律-AI-产品-看起来很好-用起来很糟/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">为什么法律 AI 产品"看起来很好，用起来很糟"？</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月27日</span>
+                <span class="dotsep"></span>
+                <span>5 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-27-为什么传统公司很难完成AI转型/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">为什么传统公司很难完成AI转型？</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月27日</span>
+                <span class="dotsep"></span>
+                <span>9 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-27-业务和技术的双语者-AI-时代法律人的新基本功/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">业务和技术的双语者：AI 时代法律人的新基本功</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月27日</span>
+                <span class="dotsep"></span>
+                <span>6 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-27-你给-AI-的文档里-可能藏着-看不见的指令/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">你给 AI 的文档里，可能藏着"看不见的指令"</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月27日</span>
+                <span class="dotsep"></span>
+                <span>5 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-27-AI-幻觉不是-bug-是-feature-法律人怎么用-组合拳-解决它/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">AI 幻觉不是 bug，是 feature——法律人怎么用"组合拳"解决它？</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月27日</span>
+                <span class="dotsep"></span>
+                <span>5 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-27-AI-不是互联网-Token-经济学为什么会让-免费-AI-不可持续/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">AI 不是互联网——Token 经济学为什么会让"免费 AI"不可持续？</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月27日</span>
+                <span class="dotsep"></span>
+                <span>5 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-26-法律人的AI控制力-四明山法师AI夜校背后的逻辑/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">法律人的AI控制力——四明山法师AI夜校背后的逻辑</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月26日</span>
+                <span class="dotsep"></span>
+                <span>7 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-23-让AI去理解AI-从一段聊天看法律人跨过工程化门槛的真实路径/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">让AI去理解AI：从一段聊天看法律人跨过工程化门槛的真实路径</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月23日</span>
+                <span class="dotsep"></span>
+                <span>10 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-22-AI时代最被低估的能力-叫-好玩/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">AI时代最被低估的能力，叫"好玩"</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月22日</span>
+                <span class="dotsep"></span>
+                <span>7 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-22-AI-应用的真正分水岭-不是提示词/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">AI 应用的真正分水岭，不是提示词</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月22日</span>
+                <span class="dotsep"></span>
+                <span>6 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-21-AI-是伙伴-不是工具/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">AI 是伙伴，不是工具</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月21日</span>
+                <span class="dotsep"></span>
+                <span>5 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-19-一文透视深圳法院AI辅助审判系统/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">一文透视深圳法院AI辅助审判系统</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月19日</span>
+                <span class="dotsep"></span>
+                <span>31 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-19-坦白说-我现在不太想聊AI了/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">坦白说，我现在不太想聊AI了</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月19日</span>
+                <span class="dotsep"></span>
+                <span>3 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-18-领域知识就是护城河-法律人如何把专业判断变成-AI-不可替代的资产/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">领域知识就是护城河——法律人如何把专业判断变成 AI 不可替代的资产</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月18日</span>
+                <span class="dotsep"></span>
+                <span>7 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-18-法律AI的竞争焦点不在Skill-在Harness/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">法律AI的竞争焦点不在Skill，在Harness</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月18日</span>
+                <span class="dotsep"></span>
+                <span>6 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-18-用规则代替软件-一个-Agent-完成从构思到发布的完整写作链路/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">用规则代替软件：一个 Agent 完成从构思到发布的完整写作链路</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月18日</span>
+                <span class="dotsep"></span>
+                <span>11 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-18-从写合同到编排-Agent-律师角色的根本性位移/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">从写合同到编排 Agent：律师角色的根本性位移</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月18日</span>
+                <span class="dotsep"></span>
+                <span>6 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-18-为什么-Anthropic-说-CLAUDE-md-是-最重要的第一个文件-一个律师的验证/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">为什么 Anthropic 说 CLAUDE.md 是"最重要的第一个文件"——一个律师的验证</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月18日</span>
+                <span class="dotsep"></span>
+                <span>8 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-18-不写代码-也能工程化-一个律师的-Agentic-Coding-实践/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">不写代码，也能工程化——一个律师的 Agentic Coding 实践</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月18日</span>
+                <span class="dotsep"></span>
+                <span>6 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-15-规则是怎么长出来的-一个律师的Harness构建实录/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">规则是怎么长出来的：一个律师的Harness构建实录</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月15日</span>
+                <span class="dotsep"></span>
+                <span>5 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-15-AI落地律所-为什么是个伪命题/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">"AI落地律所"为什么是个伪命题</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月15日</span>
+                <span class="dotsep"></span>
+                <span>4 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-15-AI-Native-行业论-律师为什么是AI时代的主角/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">AI Native 行业论：律师为什么是AI时代的主角</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">AI+法律</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月15日</span>
+                <span class="dotsep"></span>
+                <span>5 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

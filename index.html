@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>陈石 · 法与AI</title>
+  <meta name="description" content="陈石 — 建工/房地产律师 × AI+法律先行者。浙江海泰律师事务所副主任、高级合伙人。">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/home.css">
+  <!-- GSAP loaded async — page renders immediately, animations enhance if available -->
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body>
+  <!-- ───── Decorative elements ───── -->
+  <div class="rail" aria-hidden="true"><i></i><i></i><i></i></div>
+  <span class="cross cross--tr" aria-hidden="true"></span>
+  <span class="cross cross--bl" aria-hidden="true"></span>
+  <span class="cross cross--br" aria-hidden="true"></span>
+
+  <!-- ───── Top Nav ───── -->
+  <header class="nav" role="banner">
+    <a href="#hero" class="nav__brand" aria-label="CSLawyer — 回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>
+      CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="主导航">
+      <a href="#about"><span lang="zh">关于</span><span lang="en">ABOUT</span></a>
+      <span class="sep">/</span>
+      <a href="#writing"><span lang="zh">文章</span><span lang="en">WRITING</span></a>
+      <span class="sep">/</span>
+      <a href="#speak"><span lang="zh">演讲</span><span lang="en">SPEAK</span></a>
+      <span class="sep">/</span>
+      <a href="#build"><span lang="zh">创造</span><span lang="en">BUILD</span></a>
+      <span class="sep">/</span>
+      <a href="#contact"><span lang="zh">联系</span><span lang="en">CONTACT</span></a>
+      <span class="nav__stat"><i></i>127</span>
+      <a href="https://github.com/CSlawyer1985" class="nav__github" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.92.58.1.79-.25.79-.56v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.16 1.18.92-.26 1.9-.38 2.88-.39.98 0 1.96.13 2.88.39 2.2-1.49 3.16-1.18 3.16-1.18.62 1.58.23 2.75.11 3.04.74.8 1.18 1.83 1.18 3.08 0 4.42-2.69 5.38-5.25 5.67.42.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+      </a>
+      <span class="nav__lang-group">
+        <button class="nav__lang is-active" data-lang="zh" aria-label="中文">中</button>
+        <button class="nav__lang" data-lang="en" aria-label="English">EN</button>
+      </span>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ═══ HERO ═══ -->
+    <section class="hero" id="hero">
+      <div class="hero__left">
+        <h1 class="hero__wordmark" data-reveal>CS</h1>
+        <div class="hero__lower">
+          <p class="hero__kicker" data-reveal>
+            <span class="dot"></span>
+            <span lang="zh">商事律师 × AI+法律先行者</span>
+            <span lang="en">Commercial Lawyer × AI+Legal Pioneer</span>
+          </p>
+          <p class="hero__slogan" data-reveal>
+            <span lang="zh">深耕投融资、收购与商事争议解决<br>探索AI与法律的深度融合与商业应用</span>
+            <span lang="en">Investment, M&amp;A &amp; commercial disputes<br>Exploring the frontier of AI × legal practice</span>
+          </p>
+          <div class="hero__cta" data-reveal>
+            <a href="#writing" class="btn btn--ghost">
+              <span lang="zh">查看文章</span><span lang="en">Read Articles</span> <span class="arr">→</span>
+            </a>
+            <a href="mailto:worldmodel@agent.qq.com" class="btn btn--link">
+              <span lang="zh">联系我</span><span lang="en">Contact</span> <span class="arr">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="hero__right">
+        <figure class="portrait" data-portrait>
+          <span class="portrait__media">
+            <img src="assets/portrait.png" alt="CSLawyer 头像" class="portrait__img">
+          </span>
+          <span class="portrait__cross portrait__cross--tl"></span>
+          <span class="portrait__cross portrait__cross--br"></span>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ═══ ABOUT ═══ -->
+    <section class="about" id="about">
+      <div class="about__left">
+        <h2 class="about__title" data-reveal>
+          About me
+        </h2>
+        <div class="about__bio" data-reveal>
+          <p lang="zh">陈石，浙江海泰律师事务所副主任、高级合伙人。</p>
+          <p lang="zh">15年深耕投融资、收购与商事争议解决，累计服务项目投资额超千亿。</p>
+          <p lang="zh">著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」。</p>
+          <p lang="en">Chen Shi, Deputy Director &amp; Senior Partner at Zhejiang Haitai Law Firm.</p>
+          <p lang="en">15+ years in investment, M&amp;A, and commercial dispute resolution — over ¥100B served.</p>
+          <p lang="en">Author of "Empowering Lawyers: AI Fundamentals." Founder of "Simingshan AI Night School" (legalAGI.cn).</p>
+        </div>
+
+        <!-- Blueprint profile -->
+        <figure class="blueprint" data-reveal>
+          <span class="bp__target bp__target--tl"></span>
+          <span class="bp__target bp__target--tr"></span>
+          <span class="bp__target bp__target--bl"></span>
+          <span class="bp__target bp__target--br"></span>
+          <span class="bp__plus" style="top:30%;left:25%">+</span>
+          <span class="bp__plus" style="top:70%;left:30%">+</span>
+          <span class="bp__plus" style="top:34%;left:62%">+</span>
+          <span class="bp__plus" style="top:60%;left:58%">+</span>
+          <span class="bp__ring" aria-hidden="true"></span>
+          <img class="bp__img" src="assets/portrait-about.png" alt="陈石头像">
+
+          <div class="bp__anno bp__anno--tl">
+            <p class="bp__lead"><i class="bp__sq"></i>
+              <span lang="zh">建工律师 / AI先行者</span>
+              <span lang="en">CONSTRUCTION LAW / AI PIONEER</span>
+            </p>
+            <span class="bp__hr"></span>
+            <p class="bp__mono"><span lang="zh">写 · 讲 · 创</span><span lang="en">WRITE · SPEAK · BUILD</span></p>
+          </div>
+
+          <div class="bp__anno bp__anno--spec">
+            <p class="bp__mono bp__mono--key">SPEC.001</p>
+            <p class="bp__mono"><span lang="zh">领域&nbsp;&nbsp;: 建工/房地产 &amp; AI</span><span lang="en">FOCUS&nbsp;&nbsp;: CONSTRUCTION &amp; AI</span></p>
+            <p class="bp__mono"><span lang="zh">职位&nbsp;&nbsp;: 副主任、高级合伙人</span><span lang="en">ROLE&nbsp;&nbsp;: DEPUTY DIRECTOR, SR. PARTNER</span></p>
+            <p class="bp__mono"><span lang="zh">年限&nbsp;&nbsp;: 15年+</span><span lang="en">YEARS&nbsp;: 15+</span></p>
+            <p class="bp__mono"><span lang="zh">地点&nbsp;&nbsp;: 浙江宁波</span><span lang="en">LOCATION: NINGBO, ZHEJIANG</span></p>
+            <p class="bp__mono"><span lang="zh">价值&nbsp;&nbsp;: 长期主义</span><span lang="en">VALUE&nbsp;&nbsp;: LONG-TERM</span></p>
+          </div>
+
+          <div class="bp__anno bp__anno--ver">
+            <p class="bp__mono bp__mono--key">VER. 2.0.0</p>
+            <p class="bp__mono"><span lang="zh">日期: 2026</span><span lang="en">DATE. 2026</span></p>
+            <p class="bp__mono bp__mono--mt"><span lang="zh">荣誉: 6 项</span><span lang="en">HONORS: 6</span></p>
+            <p class="bp__mono"><span lang="zh">文章: 127 篇</span><span lang="en">ARTICLES: 127</span></p>
+          </div>
+
+          <div class="bp__anno bp__anno--tr">
+            <p class="bp__mono bp__mono--key">ID // CHEN SHI</p>
+          </div>
+
+          <div class="bp__anno bp__anno--cat">
+            <p class="bp__mono"><span lang="zh">分类</span><span lang="en">CATEGORY</span></p>
+            <p class="bp__mono"><span lang="zh">公开建造中</span><span lang="en">IN PUBLIC</span></p>
+            <span class="bp__hatch" aria-hidden="true"></span>
+          </div>
+
+          <div class="bp__anno bp__anno--focus">
+            <p class="bp__mono bp__mono--key">FOCUS</p>
+            <p class="bp__mono">· <span lang="zh">争议解决</span><span lang="en">DISPUTE RESOLUTION</span></p>
+            <p class="bp__mono">· <span lang="zh">投融资</span><span lang="en">INVESTMENT</span></p>
+            <p class="bp__mono">· <span lang="zh">收购兼并</span><span lang="en">M&amp;A</span></p>
+            <p class="bp__mono">· AI+<span lang="zh">法律</span><span lang="en">LEGAL</span></p>
+          </div>
+
+          <div class="bp__anno bp__anno--est">
+            <p class="bp__mono"><span lang="zh">始于 2011</span><span lang="en">EST. 2011</span></p>
+          </div>
+
+          <figcaption class="bp__coords">N 29° 52′&nbsp;&nbsp;&nbsp;&nbsp;E 121° 33′&nbsp;&nbsp;&nbsp;&nbsp;NINGBO · ZHEJIANG</figcaption>
+        </figure>
+      </div>
+
+      <!-- Right: flow + signal station -->
+      <div class="about__right">
+        <div class="flow" data-reveal>
+          <div class="flow__node">
+            <span class="flow__zh" lang="zh">写</span><span class="flow__zh" lang="en">W</span>
+            <span class="flow__en">WRITE</span>
+          </div>
+          <span class="flow__link"></span>
+          <div class="flow__node">
+            <span class="flow__zh" lang="zh">讲</span><span class="flow__zh" lang="en">S</span>
+            <span class="flow__en">SPEAK</span>
+          </div>
+          <span class="flow__link"></span>
+          <div class="flow__node">
+            <span class="flow__zh" lang="zh">创</span><span class="flow__zh" lang="en">B</span>
+            <span class="flow__en">BUILD</span>
+          </div>
+        </div>
+
+        <div class="signal" data-reveal>
+          <div class="signal__head">
+            <h3 class="signal__title">
+              <span lang="zh">全平台信号台</span><span lang="en">Signal Station</span>
+            </h3>
+            <span class="signal__legend"><b>LIVE</b> / SOON</span>
+          </div>
+
+          <ul class="signal__list">
+            <li class="srow srow--live">
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">
+                <span class="srow__logo srow__logo--github">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.92.58.1.79-.25.79-.56v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.16 1.18.92-.26 1.9-.38 2.88-.39.98 0 1.96.13 2.88.39 2.2-1.49 3.16-1.18 3.16-1.18.62 1.58.23 2.75.11 3.04.74.8 1.18 1.83 1.18 3.08 0 4.42-2.69 5.38-5.25 5.67.42.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+                </span>
+                <span class="srow__handle">CSlawyer1985</span>
+                <span class="srow__count">—</span>
+                <span class="srow__bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                <span class="srow__status"><i class="srow__dot"></i> LIVE</span>
+              </a>
+            </li>
+
+            <li class="srow srow--live">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">
+                <span class="srow__logo srow__logo--web">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="#fff" stroke-width="2"/><path fill="#fff" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                </span>
+                <span class="srow__handle">四明山法师AI夜校</span>
+                <span class="srow__count">—</span>
+                <span class="srow__bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                <span class="srow__status"><i class="srow__dot"></i> LIVE</span>
+              </a>
+            </li>
+
+            <li class="srow srow--live">
+              <a href="https://space.bilibili.com/354063681" target="_blank" rel="noopener">
+                <span class="srow__logo srow__logo--bili">
+                  <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#fff" d="M35.63 9.31h1.71c3.02.11 5.54 1.16 7.55 3.15 2.01 1.99 3.05 4.5 3.12 7.52v14.72c-.07 3.02-1.11 5.54-3.12 7.55-2.01 2.01-4.52 3.05-7.55 3.12H10.67c-3.02-.07-5.54-1.11-7.55-3.12C1.11 40.24.07 37.73 0 34.69V19.97c.07-3.02 1.11-5.53 3.12-7.52 2.01-1.99 4.52-3.04 7.55-3.15h1.55L9.87 7.07a2.47 2.47 0 0 1-.75-1.81c0-.71.25-1.32.75-1.81l.05-.05c.53-.5 1.15-.75 1.84-.75.69 0 1.31.25 1.84.75l5.71 5.49c.14.14.27.28.37.43h8.53c.11-.14.21-.28.32-.43l5.71-5.49c.53-.5 1.15-.75 1.84-.75.69 0 1.32.3 1.86.8.53.5.78 1.1.78 1.81 0 .71-.25 1.31-.75 1.81l-2.35 2.24ZM10.67 14.48c-1.49.04-2.75.55-3.76 1.55-1.01 1-1.54 2.26-1.57 3.79v15.04c.03 1.53.56 2.79 1.57 3.79 1.01 1 2.27 1.51 3.76 1.55h26.67c1.49-.04 2.75-.55 3.76-1.55 1.01-1 1.54-2.26 1.57-3.79V19.81c-.03-1.53-.56-2.79-1.57-3.79-1.01-1-2.27-1.51-3.76-1.55H10.67Zm5.33 7.73c.75 0 1.37.25 1.87.75.5.5.77 1.14.8 1.92v2.35c-.03.78-.3 1.42-.8 1.92-.5.5-1.12.75-1.87.75s-1.37-.25-1.87-.75c-.5-.5-.77-1.14-.8-1.92v-2.35c0-.75.26-1.38.77-1.89.52-.52 1.15-.77 1.89-.77Zm16 0c.75 0 1.37.25 1.87.75.5.5.77 1.14.8 1.92v2.35c-.03.78-.3 1.42-.8 1.92-.5.5-1.12.75-1.87.75s-1.37-.25-1.87-.75c-.5-.5-.77-1.14-.8-1.92v-2.35c.03-.78.3-1.42.8-1.92.5-.5 1.12-.75 1.87-.75Z"/></svg>
+                </span>
+                <span class="srow__handle">CSlawyer</span>
+                <span class="srow__count">—</span>
+                <span class="srow__bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                <span class="srow__status"><i class="srow__dot"></i> LIVE</span>
+              </a>
+            </li>
+
+            <li class="srow srow--live">
+              <a href="https://cslawyer1985.github.io/agent-structure-dashboard/" target="_blank" rel="noopener">
+                <span class="srow__logo srow__logo--web">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="#fff" stroke-width="2"/><path fill="#fff" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+                </span>
+                <span class="srow__handle">法律Agent解构</span>
+                <span class="srow__count">—</span>
+                <span class="srow__bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                <span class="srow__status"><i class="srow__dot"></i> LIVE</span>
+              </a>
+            </li>
+
+            <li class="srow srow--live">
+              <a href="https://github.com/CSlawyer1985/claude-for-legal-ZH" target="_blank" rel="noopener">
+                <span class="srow__logo srow__logo--github">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.92.58.1.79-.25.79-.56v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.16 1.18.92-.26 1.9-.38 2.88-.39.98 0 1.96.13 2.88.39 2.2-1.49 3.16-1.18 3.16-1.18.62 1.58.23 2.75.11 3.04.74.8 1.18 1.83 1.18 3.08 0 4.42-2.69 5.38-5.25 5.67.42.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+                </span>
+                <span class="srow__handle">claude-for-legal-ZH</span>
+                <span class="srow__count">—</span>
+                <span class="srow__bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                <span class="srow__status"><i class="srow__dot"></i> LIVE</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ WRITING ═══ -->
+    <section class="writing" id="writing">
+      <h2 class="writing__title" data-reveal>
+        Writing
+      </h2>
+
+      <div class="writing__grid">
+        <!-- Feature article (loaded from data) -->
+        <a class="feat" href="articles/2026-07-01-国资监管的悖论-红线越硬-经营越软/" data-reveal id="feat-article">
+          <span class="feat__frame">
+            <img class="feat__img" src="articles/2026-07-01-国资监管的悖论-红线越硬-经营越软/cover.png" alt="" loading="lazy" onerror="this.parentElement.style.background='linear-gradient(135deg,#2c3e50,#8b2500)';this.style.display='none';">
+          </span>
+          <div class="feat__body">
+            <h3 class="feat__title" id="feat-title">国资监管的悖论：<br>红线越硬，经营越软</h3>
+            <p class="feat__dek" id="feat-dek">
+              <span lang="zh">国资监管制度越严密，企业经营越保守？探讨国资监管的深层悖论与改革方向</span>
+              <span lang="en">When regulation tightens, does business soften? On the paradox of state-owned asset regulation</span>
+            </p>
+            <div class="feat__meta">
+              <span class="feat__tag" id="feat-tag"><span lang="zh">法律实务</span><span lang="en">Legal Practice</span></span>
+              <span class="dotsep"></span>
+              <span id="feat-date">2026.07.01</span>
+              <span class="feat__views">
+                <svg class="viewico" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.7" d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+                <span id="feat-readtime">5 分钟阅读</span>
+              </span>
+            </div>
+            <span class="feat__read"><span lang="zh">阅读</span><span lang="en">Read</span> <span class="arr">→</span></span>
+          </div>
+        </a>
+
+        <!-- Article list (02, 03, 04) — JS populated -->
+        <div class="writing__list" id="writing-list"></div>
+      </div>
+
+      <a class="writing__all" href="articles/" data-reveal>
+        <span lang="zh">全部文章</span><span lang="en">All Articles</span> <span class="arr">→</span>
+      </a>
+    </section>
+
+    <!-- ═══ SPEAK ═══ -->
+    <section class="speak" id="speak">
+      <div class="speak__stage" data-reveal>
+        <iframe
+          class="speak__video"
+          src="//player.bilibili.com/player.html?bvid=BV1xEjo6LEki&page=1&t=1165&high_quality=1&danmaku=0"
+          allowfullscreen
+          loading="lazy"
+          style="position:absolute;inset:0;width:100%;height:100%;border:none;z-index:2;"
+        ></iframe>
+      </div>
+      <div class="speak__foot">
+        <div class="speak__wordwrap">
+          <span class="section-kicker" data-reveal>
+            <span lang="zh">讲 — SPEAK</span><span lang="en">SPEAK</span>
+          </span>
+          <h2 class="speak__title" data-reveal>
+            Speak
+          </h2>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ BUILD ═══ -->
+    <section class="build" id="build">
+      <div class="build__git" aria-hidden="true">
+        <span class="git__branch">⊖&nbsp;&nbsp; main ——</span>
+        <span class="git__line"></span>
+        <span class="git__row"><i></i><b>a1b2c3d</b><em>feat: legal-agent-harness</em></span>
+        <span class="git__row"><i></i><b>d4e5f6a</b><em>feat: docx-review-pipeline</em></span>
+        <span class="git__row"><i></i><b>f7a8b9c</b><em>feat: knowledge-base-system</em></span>
+        <span class="git__row git__row--head"><i></i><b>HEAD ——</b><em>build: in public</em></span>
+        <span class="git__row git__row--ghost"><i></i></span>
+        <span class="git__row git__row--ghost"><i></i></span>
+      </div>
+
+      <div class="build__left" data-reveal>
+        <span class="build__kicker">
+          <span lang="zh">创 — BUILD</span><span lang="en">BUILD</span>
+        </span>
+        <h2 class="build__title">Build</h2>
+        <p class="build__sub">
+          <span class="dot"></span>
+          <span lang="zh">公开建造中 · AI+法律工具开源</span>
+          <span lang="en">Building in public · AI+Legal open source</span>
+        </p>
+        <a class="build__cta" href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">
+          <span class="build__cta-text" lang="zh">关注我的 GitHub</span>
+          <span class="build__cta-text" lang="en">Follow my GitHub</span>
+          <svg class="github-mark" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.92.58.1.79-.25.79-.56v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.16 1.18.92-.26 1.9-.38 2.88-.39.98 0 1.96.13 2.88.39 2.2-1.49 3.16-1.18 3.16-1.18.62 1.58.23 2.75.11 3.04.74.8 1.18 1.83 1.18 3.08 0 4.42-2.69 5.38-5.25 5.67.42.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+          <span class="arr">→</span>
+        </a>
+      </div>
+
+      <div class="build__terminal" data-build data-reveal>
+        <div class="term__bar"><i></i><i></i><i></i></div>
+        <div class="term__body">
+          <pre class="term__code" data-typed aria-hidden="true">$ claude "审查这份建设工程施工合同"
+[Tool Call] read_file("施工合同.docx")
+[Tool Call] search_knowledge_base("建工合同 效力 风险")
+[Tool Call] search_regulations("建工解释二 第1条")
+[Output] 发现 3 处高风险条款，7 处中风险条款
+[System] 生成法律意见书中...</pre>
+          <div class="term__compile">
+            <span class="term__ver">v2.0.0 · <span data-compile-label>booting...</span></span>
+            <div class="term__bar2"><i data-progress-bar style="width:0%"></i></div>
+            <span class="term__pct" data-progress-num>0%</span>
+          </div>
+        </div>
+      </div>
+
+      <span class="build__plus" aria-hidden="true">+</span>
+
+      <div class="build__queue" aria-hidden="true">
+        <span class="queue__label">queued</span>
+        <span class="queue__brace">{</span>
+        <ul>
+          <li>legal-agent-harness</li>
+          <li>docx-review-skill</li>
+          <li>knowledge-base-mcp</li>
+          <li>legalwiki.cn</li>
+        </ul>
+      </div>
+      <div class="build__ruler" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i>
+        <span>0</span><span>240</span><span>480</span><span>720</span><span>960</span>
+      </div>
+    </section>
+
+    <!-- ═══ CONTACT ═══ -->
+    <section class="contact" id="contact">
+      <div class="contact__center">
+        <div class="contact__kicker-wrap" data-reveal>
+          <span class="ln"></span>
+          <span lang="zh">取得联系</span><span lang="en">GET IN TOUCH</span>
+          <span class="ln"></span>
+        </div>
+        <h2 class="contact__title" data-reveal>
+          <span lang="zh">聊聊</span><span lang="en">Let's talk</span>
+          <svg class="contact__underline" viewBox="0 0 360 18" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M12 13 Q 180 3, 348 11" fill="none" stroke="#C0392B" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </h2>
+        <p class="contact__sub" data-reveal>
+          <span lang="zh">聊聊法律、AI、法律科技，或者一起搞点事情。</span>
+          <span lang="en">Let's talk construction law, AI, legal tech — or build something together.</span>
+        </p>
+        <p class="contact__status" data-reveal>
+          <span class="pulse"></span>
+          <span lang="zh">当前开放合作 · Available</span>
+          <span lang="en">Open for collaboration · Available</span>
+        </p>
+      </div>
+
+      <div class="contact__marquee" aria-hidden="true">
+        <div class="marquee__track">
+          <span class="marquee__set">建设工程 · 房地产 · AI+法律 · 投资并购 · 建设工程 · 房地产 · AI+法律 · 投资并购 · 建设工程 · 房地产 · AI+法律 · 投资并购 · 建设工程 · 房地产 · AI+法律 · 投资并购 · 建设工程 · 房地产 · AI+法律 · 投资并购 · </span>
+          <span class="marquee__set">建设工程 · 房地产 · AI+法律 · 投资并购 · 建设工程 · 房地产 · AI+法律 · 投资并购 · 建设工程 · 房地产 · AI+法律 · 投资并购 · 建设工程 · 房地产 · AI+法律 · 投资并购 · 建设工程 · 房地产 · AI+法律 · 投资并购 · </span>
+        </div>
+      </div>
+
+      <div class="contact__bar">
+        <a class="cbar__item cbar__item--mail" href="https://github.com/CSlawyer1985/claude-for-legal-ZH" target="_blank" rel="noopener">
+          <span class="cbar__lbl">PROJECT</span>
+          <span class="cbar__val cbar__val--mail">claude-for-legal-ZH</span>
+          <span class="cbar__arr">→</span>
+        </a>
+        <a class="cbar__item" href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">
+          <span class="cbar__logo">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#111" d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.92.58.1.79-.25.79-.56v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.16 1.18.92-.26 1.9-.38 2.88-.39.98 0 1.96.13 2.88.39 2.2-1.49 3.16-1.18 3.16-1.18.62 1.58.23 2.75.11 3.04.74.8 1.18 1.83 1.18 3.08 0 4.42-2.69 5.38-5.25 5.67.42.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+          </span>
+          <span class="cbar__val">CSlawyer1985 <em>· GitHub</em></span>
+          <span class="cbar__arr">→</span>
+        </a>
+        <a class="cbar__item" href="https://legalAGI.cn" target="_blank" rel="noopener">
+          <span class="cbar__logo">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+          </span>
+          <span class="cbar__val">legalAGI.cn <em>· <span lang="zh">四明山法师 AI 夜校</span><span lang="en">AI Night School</span></em></span>
+          <span class="cbar__arr">→</span>
+        </a>
+        <div class="cbar__item cbar__item--wechat">
+          <span class="cbar__lbl"><span lang="zh">微信 / WeChat</span><span lang="en">WeChat</span></span>
+          <div class="qr" aria-label="微信二维码">
+            <img src="assets/qr-wechat.png" alt="微信二维码" style="width:100%;height:100%;object-fit:contain;position:absolute;inset:0;">
+          </div>
+          <span class="cbar__soon"><span lang="zh">我的微信</span><span lang="en">My WeChat</span></span>
+        </div>
+      </div>
+
+      <div class="contact__foot">
+        <span>© 2026 陈石</span>
+        <a href="#hero" class="to-top">
+          <span lang="zh">回到顶部</span><span lang="en">Back to top</span> <span class="arr">↑</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>法律实务 — 陈石 · 法与AI</title>
+  <meta name="description" content="法律实务 — 10 篇文章">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+    html,body{overflow-x:hidden}
+    body{background:#F3EDE3;background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);background-size:3px 3px;color:#1A1714;font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.7}
+    .nav{position:fixed;top:0;left:0;right:0;z-index:40;height:78px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(20px,5vw,72px);border-bottom:1px solid #C9C0B2;background:rgba(243,237,227,.88);backdrop-filter:blur(8px)}
+    .nav__brand{font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-size:24px;font-weight:600;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{display:flex;align-items:center;gap:14px;font-size:12px;font-weight:600;letter-spacing:.08em}
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+    .article-layout{display:grid;grid-template-columns:240px minmax(0,720px);justify-content:center;gap:56px;padding:110px clamp(20px,5vw,72px) 80px;max-width:1160px;margin:0 auto}
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{display:inline-flex;align-items:center;gap:6px;font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;color:#7d756a;margin-bottom:20px;transition:color .2s}
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #C9C0B2}
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{display:block;padding:7px 0;font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s}
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-title{font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;font-size:clamp(36px,5vw,56px);line-height:1.1;color:#1A1714;letter-spacing:-.01em}
+    .article-meta-top{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;color:#7d756a;margin-bottom:20px}
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+    @media (max-width:860px){.article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}.article-sidebar{display:none}}
+    @media (max-width:600px){.article-layout{padding:80px 20px 48px}}
+    @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页"><span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer</a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a><span class="sep">/</span>
+      <a href="/#about">About</a><span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+  </div>
+</aside>
+
+      <div class="article-main">
+        <header class="article-header">
+          <h1 class="article-title">法律实务</h1>
+          <p style="font-family:ui-monospace,'SF Mono',monospace;font-size:13px;color:#7d756a;margin-top:12px">共 10 篇文章</p>
+        </header>
+        <div class="category-articles">
+          
+          <a href="/articles/2026-06-30-政府项目审计-财政评审的最长期限限制-建工解释二第13条对-久审不决-的终结/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">政府项目审计/财政评审的最长期限限制——建工解释二第13条对"久审不决"的终结</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">法律实务</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月30日</span>
+                <span class="dotsep"></span>
+                <span>8 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-30-实际施工人概念退出历史舞台-建工解释二最重大变革的规则演进与实务影响/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">实际施工人概念退出历史舞台——建工解释二最重大变革的规则演进与实务影响</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">法律实务</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月30日</span>
+                <span class="dotsep"></span>
+                <span>8 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-21-一家律所最被低估的知识资产-内部裁判文书库/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">一家律所最被低估的知识资产——内部裁判文书库</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">法律实务</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月21日</span>
+                <span class="dotsep"></span>
+                <span>3 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-14-公证到底能做什么-不能做什么-从一次咨询说起/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">公证到底能做什么、不能做什么——从一次咨询说起</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">法律实务</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月14日</span>
+                <span class="dotsep"></span>
+                <span>12 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-06-04-甲方这个位置-正在悄悄吃掉你的真本事/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">甲方这个位置，正在悄悄吃掉你的真本事</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">法律实务</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年6月4日</span>
+                <span class="dotsep"></span>
+                <span>12 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-27-投资茅台-四个字-骗了全国多少人/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">"投资茅台"四个字，骗了全国多少人？</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">法律实务</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月27日</span>
+                <span class="dotsep"></span>
+                <span>6 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-27-吹牛税/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">吹牛税</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">法律实务</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月27日</span>
+                <span class="dotsep"></span>
+                <span>6 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-23-宁波建工纠纷败诉密码-从500份判决看当事人栽在哪儿/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">宁波建工纠纷败诉密码——从500份判决看当事人栽在哪儿</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">法律实务</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月23日</span>
+                <span class="dotsep"></span>
+                <span>12 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-23-宁波建设工程法官的裁判密码/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">宁波建设工程法官的裁判密码</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">法律实务</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月23日</span>
+                <span class="dotsep"></span>
+                <span>16 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+          <a href="/articles/2026-05-22-青年律师不是在-卷-是在-空转/" class="article-row">
+            <div class="article-row__body">
+              <h3 class="article-row__title">青年律师不是在"卷"，是在"空转"</h3>
+              <div class="article-row__meta">
+                <span class="article-row__tag">法律实务</span>
+                <span class="dotsep"></span>
+                <span class="article-row__date">2026年5月22日</span>
+                <span class="dotsep"></span>
+                <span>6 分钟阅读</span>
+              </div>
+            </div>
+            <span class="article-row__arr">&rarr;</span>
+          </a>
+          
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

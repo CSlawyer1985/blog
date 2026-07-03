@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>你还在用"终稿3"管版本？给法律人的 Git 与 GitHub 入门 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-06-08">2026年6月8日</time>
+            <span class="dotsep"></span>
+            <span>7 分钟阅读</span>
+          </div>
+          <h1 class="article-title">你还在用"终稿3"管版本？给法律人的 Git 与 GitHub 入门</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>如果你在一份法律意见书的工作文件夹里见过这样的文件名——</p>
+<blockquote>
+<p>法律意见书_v1.docx</p>
+<p>法律意见书_v2.docx</p>
+<p>法律意见书_终稿.docx</p>
+<p>法律意见书_终稿2.docx</p>
+<p>法律意见书_真·终稿.docx</p>
+<p>法律意见书_最终不改了.docx</p>
+</blockquote>
+<p>那这篇文章就是写给你的。</p>
+<p>这不是调侃。我自己做了十几年律师，太熟悉这套操作了——每次改一轮，另存为一个新文件，后缀越加越长。客户说"再改一版"，整个文件夹又多出三个文件。过两周回来找"上一版改了什么"，对着七八个文件名发呆。</p>
+<p>程序员群体处理这个问题的方式完全不同。他们用一个叫 Git 的工具做版本管理，这套方法已经用了快二十年。本文不是要把你培养成程序员，而是告诉你：这个东西存在，它能干什么，以及怎么用你已经在用的 Claude Code 把它跑起来。</p>
+<p>-</p>
+<h2 id="Git是什么一个时间机器">Git 是什么：一个"时间机器"</h2>
+<p>Git 是一个免费、开源的版本管理工具。安装很简单，去 <a href="https://git-scm.com">git-scm.com</a> 下载安装即可。装完后在终端里敲 <code>git --version</code>，如果能返回版本号，就说明装好了。</p>
+<p>它的核心逻辑是"快照"——每次你觉得当前的文件状态值得保存，就做一次提交（commit），Git 会给此时此刻的所有文件拍一张"照片"并存档。这张照片不是覆盖上一张，而是独立存在的。你可以随时回到历史上的任意一张照片，看完之后再回到最新的那张，中间什么都不丢。</p>
+<p>用过 Mac 的 Time Machine（时间机器）功能的话，差不多就是这个意思。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200"&gt;
+  &lt;rect width="600" height="200" fill="#fff" rx="4"/&gt;
+  &lt;text x="300" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#333"&gt;Git 的"时间机器"模型&lt;/text&gt;
+
+  &lt;!-- Timeline --&gt;
+  &lt;line x1="40" y1="100" x2="560" y2="100" stroke="#333" stroke-width="2"/&gt;
+
+  &lt;!-- Snapshots as dots and labels --&gt;
+  &lt;circle cx="80" cy="100" r="10" fill="#333"/&gt;
+  &lt;text x="80" y="80" text-anchor="middle" font-size="12" fill="#555"&gt;初稿&lt;/text&gt;
+  &lt;text x="80" y="130" text-anchor="middle" font-size="11" fill="#999"&gt;commit 1&lt;/text&gt;
+
+  &lt;circle cx="200" cy="100" r="10" fill="#333"/&gt;
+  &lt;text x="200" y="80" text-anchor="middle" font-size="12" fill="#555"&gt;增加了第三节&lt;/text&gt;
+  &lt;text x="200" y="130" text-anchor="middle" font-size="11" fill="#999"&gt;commit 2&lt;/text&gt;
+
+  &lt;circle cx="320" cy="100" r="10" fill="#333"/&gt;
+  &lt;text x="320" y="80" text-anchor="middle" font-size="12" fill="#555"&gt;根据客户意见修改&lt;/text&gt;
+  &lt;text x="320" y="130" text-anchor="middle" font-size="11" fill="#999"&gt;commit 3&lt;/text&gt;
+
+  &lt;circle cx="440" cy="100" r="12" fill="#fff" stroke="#333" stroke-width="2"/&gt;
+  &lt;text x="440" y="80" text-anchor="middle" font-size="12" fill="#555"&gt;当前版本&lt;/text&gt;
+  &lt;text x="440" y="130" text-anchor="middle" font-size="11" fill="#999"&gt;HEAD&lt;/text&gt;
+
+  &lt;circle cx="560" cy="100" r="6" fill="#999"/&gt;
+  &lt;text x="560" y="80" text-anchor="middle" font-size="11" fill="#999"&gt;未来…&lt;/text&gt;
+
+  &lt;!-- Arrow annotation --&gt;
+  &lt;text x="300" y="170" text-anchor="middle" font-size="12" fill="#888"&gt;可以随时回到任意一个快照，看完再跳回来&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>你现在可能用来做版本管理的东西，是 Claude Code 的"回退"功能——连按两次 ESC，或者在输入框旁边点那个向上的小箭头，就能回到之前的某一轮对话，同时把这轮对话产生的文件改动也还原回去。猛一看这好像也在做版本管理。</p>
+<p>但它有三个致命缺陷：</p>
+<p><strong>第一，不能挑文件回退。</strong> 假设最后一轮对话改了三个文件，你只对其中一个文件的改动不满意。回退功能给你的选择是：要么三个全还原，要么全不还原。没有"只还原这一个文件"的选项。</p>
+<p><strong>第二，不能跨轮次自由跳转。</strong> 你聊了 30 轮，想回退到第 8 轮看看当时的状态。可以。但第 8 轮之后的 22 轮记录全部消失。你没法在第 8 轮看完之后再跳回第 29 轮——那条路已经断了。这跟 Git 的"随时跳、随便回"完全不是一回事。</p>
+<p><strong>第三，只管对话，不管外部工具。</strong> 如果 Claude Code 调用了你电脑上的某个 CLI 工具去修改了文件，这个改动 CloudCode 自己的回退功能是无法还原的。它只能回退大模型直接操作产生的结果。</p>
+<p>这三条合起来，一句话：CloudCode 管的是对话，Git 管的是文件。不是一回事。</p>
+<p>-</p>
+<h2 id="Git怎么用三个动作一个概念">Git 怎么用：三个动作 + 一个概念</h2>
+<p>你不用学 Git 的命令行语法。你现在有 Claude Code，直接用自然语言说就行。</p>
+<p><strong>第一个动作：初始化。</strong> 在 VS Code 里打开你的工作区文件夹，对 Claude Code 说：</p>
+<blockquote>
+<p>对当前工作区做 git 初始化</p>
+</blockquote>
+<p>Claude Code 会在你的文件夹里创建一个隐藏的 <code>.git</code> 文件夹，从此这个文件夹就被 Git 管理起来了。你会立刻看到变化——文件管理器里，还没有被 Git 记录的文件名变成了<strong>绿色</strong>。</p>
+<p>颜色的含义很简单：</p>
+<ul>
+<li><strong>绿色</strong>：新文件，还没被 Git 拍过照</li>
+<li><strong>红色</strong>：被删掉的文件，Git 发现它原来存在但现在没了</li>
+<li><strong>蓝色</strong>：重命名过的文件</li>
+</ul>
+<p>这些颜色本身就是信息——你不需要打开文件就能知道工作区发生了什么变化。我实际用下来，最常用的反而是这个功能：跑完一个案件分析报告后，新生成的文件全是绿色的，一眼就找到了。</p>
+<p><strong>第二个动作：提交（commit）。</strong> 就是对 Claude Code 说：</p>
+<blockquote>
+<p>提交当前工作区的所有改动，提交信息写"第一版法律意见书"</p>
+</blockquote>
+<p>这就等于给当前的文件状态拍了一张快照。以后任何时候你都可以回到这个状态。</p>
+<p><strong>第三个动作：推送（push）。</strong> 把本地的快照传到 GitHub 上：</p>
+<blockquote>
+<p>把当前工作区推送到我的 GitHub，新建一个仓库</p>
+</blockquote>
+<p>这里引入了第二个概念——<strong>分支</strong>。分支就是你在主版本之外复制一份，在上面做实验。改坏了就扔掉这个分支，改好了就合并回主线。多人协作时特别有用：每个人各自开一个分支写自己的部分，最后一起合并。</p>
+<p>对法律人来说，分支的典型场景是：某个诉讼策略的分析稿，你想尝试一种新思路但又怕把已有的分析搞乱。开个分支，在新分支上写，写完了看效果，不好就删掉分支，主版本毫发无伤。</p>
+<p>-</p>
+<h2 id="GitHub不止是代码仓库">GitHub：不止是代码仓库</h2>
+<p>Git 管的是你电脑上的本地版本，GitHub 是一个网站（github.com），管的是云端版本。两者的关系很简单：</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 260"&gt;
+  &lt;rect width="600" height="260" fill="#fff" rx="4"/&gt;
+  &lt;text x="300" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#333"&gt;工作区 → 本地仓库 → GitHub 远端仓库&lt;/text&gt;
+
+  &lt;!-- Working directory --&gt;
+  &lt;rect x="30" y="50" width="140" height="60" rx="3" fill="none" stroke="#333" stroke-width="1.5"/&gt;
+  &lt;text x="100" y="78" text-anchor="middle" font-size="13" fill="#333"&gt;工作区&lt;/text&gt;
+  &lt;text x="100" y="96" text-anchor="middle" font-size="11" fill="#999"&gt;你的文件夹&lt;/text&gt;
+
+  &lt;!-- Arrow: working dir to local repo --&gt;
+  &lt;line x1="170" y1="80" x2="230" y2="80" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/&gt;
+  &lt;text x="200" y="72" text-anchor="middle" font-size="10" fill="#888"&gt;git init&lt;/text&gt;
+  &lt;text x="200" y="140" text-anchor="middle" font-size="10" fill="#888"&gt;git commit&lt;/text&gt;
+
+  &lt;!-- Local repo --&gt;
+  &lt;rect x="235" y="50" width="140" height="60" rx="3" fill="#f5f5f5" stroke="#333" stroke-width="1.5"/&gt;
+  &lt;text x="305" y="78" text-anchor="middle" font-size="13" fill="#333"&gt;本地仓库&lt;/text&gt;
+  &lt;text x="305" y="96" text-anchor="middle" font-size="11" fill="#999"&gt;.git 文件夹&lt;/text&gt;
+
+  &lt;!-- Arrow: local to remote --&gt;
+  &lt;line x1="375" y1="80" x2="435" y2="80" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/&gt;
+  &lt;text x="405" y="72" text-anchor="middle" font-size="10" fill="#888"&gt;git push&lt;/text&gt;
+  &lt;text x="405" y="140" text-anchor="middle" font-size="10" fill="#888"&gt;git pull&lt;/text&gt;
+
+  &lt;!-- Remote repo --&gt;
+  &lt;rect x="440" y="50" width="140" height="60" rx="3" fill="#f9f9f9" stroke="#333" stroke-width="1.5" stroke-dasharray="4,2"/&gt;
+  &lt;text x="510" y="78" text-anchor="middle" font-size="13" fill="#333"&gt;GitHub 远端仓库&lt;/text&gt;
+  &lt;text x="510" y="96" text-anchor="middle" font-size="11" fill="#999"&gt;github.com&lt;/text&gt;
+
+  &lt;!-- Arrow definitions --&gt;
+  &lt;defs&gt;
+    &lt;marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"&gt;
+      &lt;path d="M0,0 L8,4 L0,8 Z" fill="#333"/&gt;
+    &lt;/marker&gt;
+  &lt;/defs&gt;
+
+  &lt;!-- Bottom section: GitHub features --&gt;
+  &lt;line x1="30" y1="180" x2="570" y2="180" stroke="#ddd" stroke-width="1"/&gt;
+
+  &lt;rect x="30" y="195" width="160" height="45" rx="2" fill="#f5f5f5" stroke="#ccc" stroke-width="0.5"/&gt;
+  &lt;text x="110" y="215" text-anchor="middle" font-size="11" fill="#555"&gt;无限量云端存储&lt;/text&gt;
+  &lt;text x="110" y="232" text-anchor="middle" font-size="9" fill="#aaa"&gt;百度网盘不用买了&lt;/text&gt;
+
+  &lt;rect x="210" y="195" width="160" height="45" rx="2" fill="#f5f5f5" stroke="#ccc" stroke-width="0.5"/&gt;
+  &lt;text x="290" y="215" text-anchor="middle" font-size="11" fill="#555"&gt;GitHub Pages&lt;/text&gt;
+  &lt;text x="290" y="232" text-anchor="middle" font-size="9" fill="#aaa"&gt;免费建站·无需备案&lt;/text&gt;
+
+  &lt;rect x="390" y="195" width="160" height="45" rx="2" fill="#f5f5f5" stroke="#ccc" stroke-width="0.5"/&gt;
+  &lt;text x="470" y="215" text-anchor="middle" font-size="11" fill="#555"&gt;团队协同&lt;/text&gt;
+  &lt;text x="470" y="232" text-anchor="middle" font-size="9" fill="#aaa"&gt;添加合作者·多人编辑&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>对中国法律人来说，GitHub 有几个直接可用的点。</p>
+<p><strong>当无限量网盘用。</strong> 国内网盘要么限速要么限容量，GitHub 对单个仓库的大小限制非常宽松——我自己用到现在，从没碰到过容量不足的提示。工作成果、课程笔记、脚本工具，放上去就行了，免费，不限量。</p>
+<p><strong>免费建网站。</strong> 这就是 GitHub Pages。每个仓库都能变成一个可以直接访问的网页——不需要买服务器，不需要域名备案。你有网页文件（HTML），上传到仓库，在设置里点一下 Pages 部署，GitHub 就给你生成一个在线链接，复制给别人就能访问。给客户展示项目介绍、做临时活动页面、放个人作品集，全都可以零成本搞定。</p>
+<p><strong>全球最大的资源库。</strong> GitHub 上不只有代码。有人上传了从小学到大学的整套教材 PDF，有律师事务所公开了合同模板库，有学者维护了法律条文变更的历史记录。有时候找一个冷门资料，百度和知网都搜不到，GitHub 上反而有人整理好了。</p>
+<p>GitHub 的网址结构很简单：<code>github.com/你的用户名/仓库名</code>。每个仓库页面下面显示的那段介绍文字，来自仓库里的 README.md 文件。这个文件就是仓库的门面——你用 Claude Code 说一句"根据这个项目的情况写一个 README"，它就能自动生成。</p>
+<p>-</p>
+<h2 id="实操从本地到云端四句话搞定">实操：从本地到云端，四句话搞定</h2>
+<p>假设你现在有一个工作区文件夹，里面有一些文件。你已经在 VS Code 左下角登录了 GitHub 账号（注册免费，去 github.com 花两分钟就能搞定）。然后你对 Claude Code 依次说下面四句话：</p>
+<p><strong>第一句：</strong></p>
+<blockquote>
+<p>对当前工作区做 git 初始化</p>
+</blockquote>
+<p><strong>第二句：</strong></p>
+<blockquote>
+<p>提交当前所有文件，提交信息写"初始版本"</p>
+</blockquote>
+<p><strong>第三句：</strong></p>
+<blockquote>
+<p>在当前工作区写一个 README.md 文件，简要介绍这个项目的内容和用途</p>
+</blockquote>
+<p><strong>第四句：</strong></p>
+<blockquote>
+<p>把当前工作区推送到我的 GitHub，新建一个仓库</p>
+</blockquote>
+<p>说完这四句话，打开 github.com 刷新一下，新仓库已经在上面了，文件在、README 介绍也在。如果仓库设置里开启了 Pages 部署，网页也能访问了。</p>
+<p>这整个过程，你没有敲过一行 git 命令。Claude Code 在背后帮你执行了 <code>git init</code>、<code>git add</code>、<code>git commit</code>、<code>git push</code>，你只需要用自然语言告诉它要干什么。</p>
+<p>-</p>
+<h2 id="诚实说坑Git管不了Word文档的内容变化">诚实说坑：Git 管不了 Word 文档的内容变化</h2>
+<p>这是一个我必须提前告诉你的局限，否则你用了以后会觉得"这玩意怎么跟说的不一样"。</p>
+<p>Git 对纯文本文件（txt、md、html、json 等）可以做<strong>内容级</strong>的版本管理——改了一个字、删了一行、加了一段，都能精确记录。但对我们法律人最常用的办公三件套（docx、xlsx、pptx），Git 只能做<strong>文件级</strong>管理——它能告诉你"这个文件被修改过了"，但改了哪里、改了什么，它看不到。</p>
+<p>原因很简单：你把一个 Word 文档的后缀从 <code>.docx</code> 改成 <code>.zip</code>，然后解压，你会得到一个文件夹，里面是一堆 XML 文件。Word 文档本质上是压缩包，不是单一文本。你每次修改一个字，压缩包内部可能有多个 XML 文件同步发生变动，Git 没办法穿透压缩包去对比内容。</p>
+<p>这就是为什么在四明山法师 AI 夜校的课程里，我们大量使用 markdown 格式。不仅因为 markdown 对 Git 友好、可以做内容级版本管理，更因为它对 AI 友好——同样的文字内容，markdown 输给大模型的 token 噪音远小于 Word 文档。对人和对机器，markdown 都是更干净的格式。</p>
+<p>如果你需要管理 Word 文档的版本，目前更务实的做法还是保留文件名后缀的习惯，或者把关键内容同步一份 markdown 版本用 Git 管理。两者可以并行，不冲突。</p>
+<p>-</p>
+<h2 id="一个容易被忽略的小操作gitignore">一个容易被忽略的小操作：.gitignore</h2>
+<p>你的工作区里有些文件不应该上传到 GitHub——比如带密码的配置文件、带客户信息的 Excel 表格、带 API key 的脚本。</p>
+<p>对 Claude Code 说一句：</p>
+<blockquote>
+<p>以后工作区里所有包含密码、key、人名的文件都不要被 git 管理，也不要推送到 GitHub</p>
+</blockquote>
+<p>它会在你的工作区根目录创建一个 <code>.gitignore</code> 文件，里面列明了哪些文件类型或文件名要被排除。Git 读到这个文件后，就会自动跳过它们——既不做版本管理，也不会上传到云端。</p>
+<p>这是推送前的最后一道安全检查。如果忘了设，可能把你的敏感文件公开到互联网上。</p>
+<p>-</p>
+<h2 id="法律人需要掌握到什么程度">法律人需要掌握到什么程度</h2>
+<p>你不必成为一个 Git 专家。程序员用了十几年还在查 Stack Overflow——这不是一个能"学完"的工具。</p>
+<p>对法律人来说，知道下面这些就够了：</p>
+<ul>
+<li><code>git init</code>：让一个文件夹开始被版本管理</li>
+<li><code>git commit</code>：给当前状态拍个快照</li>
+<li><code>git push</code>：把本地快照传到 GitHub</li>
+<li>GitHub Pages：免费部署一个可访问的网页</li>
+<li><code>.gitignore</code>：排除不该上传的文件</li>
+<li>办公文档（docx/xlsx/pptx）只能做文件级管理，不能做内容级 diff</li>
+</ul>
+<p>更进一步的分支协同、Pull Request、代码审查流程，如果你不参与团队开发，暂时不需要碰。</p>
+<p>-</p>
+<p>版本管理是一种思维习惯，不只是工具。从前用文件名后缀，因为没有更轻量的办法。现在有了，每次提交就是一句话的事，想回哪就回哪。</p>
+<p>Claude Code 帮你生成和修改文件，Git 追踪每一次变化的痕迹。两个东西配合起来，你的工作成果不再是一堆"终稿3"和"真·终稿"，而是一条能往回走的路径。</p>
+<p>这也是四明山法师 AI 夜校一直在做的事情——不是把法律人培养成程序员。就是让你知道那边有什么，挑趁手的拿过来用。</p>
+<p>-</p>
+<blockquote>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+</blockquote>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

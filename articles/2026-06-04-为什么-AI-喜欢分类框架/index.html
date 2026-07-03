@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>为什么 AI 喜欢分类框架？ — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-06-04">2026年6月4日</time>
+            <span class="dotsep"></span>
+            <span>7 分钟阅读</span>
+          </div>
+          <h1 class="article-title">为什么 AI 喜欢分类框架？</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>!<a href="cover.png">封面</a></p>
+<p>七篇文章一路写来，规律已经不需要猜了。</p>
+<p>“不喜欢系列”翻来覆去讲了一件事：合并单元格不行，空格对齐不行，把几份 PDF 合并成一个文件不行。AI 在这些东西面前表现出来的“笨”，和算力没关系。这些东西有一个共同点——信息是混在一起的，边界是模糊的，分类是依赖人的视觉和经验的。</p>
+<p>到了“喜欢系列”，反过来看：Markdown 行，JSON 行，结构化提示词行。它们也有一个共同点——信息已经分好了类，每一块知道自己是什么，该去哪里。</p>
+<p>喜欢和不喜欢的背后，是同一个东西：信息有没有被整理过。而这个“整理”有一个更抽象的名字——分类框架。</p>
+<p>这不是技术问题，是思维方式问题。</p>
+<h2 id="什么叫分类框架">什么叫分类框架？</h2>
+<p>不用学术定义，用操作定义：分类框架就是把复杂信息整理到 AI 能处理的状态的一种方式。它有三个典型动作。</p>
+<p>第一个动作：按维度拆。主体、行为、时间、金额、依据——各归各道，不混在一起。合同审查的时候，付款条款和交付条款分开看，不是因为它们没有关系，而是因为它们适用不同的判断标准。混在一起看，什么都看不清。</p>
+<p>第二个动作：贴标签。不要写“这个条款需要关注”。“需要关注”不是标签，是废话。写上“高风险——违约责任不对等”或者“中风险——交付标准模糊”，这才是标签。把模糊判断转化为明确分类，是分类框架的核心动作。</p>
+<p>第三个动作：分层级。原始材料是一层，摘要是一层，分析是一层，结论是另一层。每一层有每一层的边界，不跨层混淆。你不能在结论层里塞原始材料，也不能在摘要层里做分析判断。层级乱了，整个框架就塌了。</p>
+<p>这三个动作，法律人不会觉得陌生。</p>
+<p>法律关系分析法，说白了就是一个分类框架。先定性——这是什么法律关系；再找要件——这类关系有哪些构成要素；再逐项匹配——事实能不能对上要件。几百年来法律人一直在做的事，和 AI 需要的事，是同一件事：把世界分好类，再往上套规则。</p>
+<p>区别只在于，以前你可以靠经验模糊过去，现在 AI 不让你模糊。</p>
+<h2 id="为什么AI这么需要分类框架">为什么 AI 这么需要分类框架？</h2>
+<p>有五个理由，层层递进。</p>
+<p><strong>第一，降低歧义。</strong> AI 最怕一句话：“这个要看情况。”不是怕判断，是怕“情况”没定义。分类框架做的事，就是把“情况”定义清楚——什么条件归 A 类，什么信号触发 B 类。不是不让 AI 判断，是把判断的前提摆到桌面上。</p>
+<p>好比你说“这个合同条款有问题”，AI 不知道你想让它做什么。但你说“这个条款属于违约条款，从对等性角度审查，输出高风险/中风险/低风险分类”，它就明确多了。</p>
+<p><strong>第二，明确边界。</strong> 告诉 AI 什么归哪类，比让它自己划分边界准确得多。AI 不擅长在没有坐标系的情况下自己建坐标系。你给它一个空的二维平面，让它画象限，它可能会画，但画出来的大概率不是你要的那个。</p>
+<p>但如果你说：横轴是风险等级，纵轴是发生概率，第一象限是高概率高风险——它就能精准地在坐标系里定位每一个点。</p>
+<p>人定框架，AI 填内容，这是目前最有效的人机分工。</p>
+<p><strong>第三，可验证。</strong> 分没分对，一眼能看出来。AI 把某个条款归到“高风险”，你一看，不对，应该是中风险，改一下分类标准，再跑一遍。迭代成本极低。</p>
+<p>相比之下，让 AI 在一团乱麻里“整体优化”，改了什么你不知道，改没改对你也不敢确定。分类框架让错误显形——不是不出错，是出了错能定位、能修正。</p>
+<p>这是人机协作的核心逻辑：人定分类逻辑，AI 执行分类，人验证结果。人和 AI 各做各擅长的事。</p>
+<p><strong>第四，可组合。</strong> 分类后的信息像乐高。按主体维度切割的信息，可以按时间维度重新组合；按风险等级分类的判断，可以按业务条线重新排列。不同任务需要不同的信息组织方式，分类框架让重组变得可能。</p>
+<p>你在审查一份施工合同时按条款类型分类，做完之后客户说“帮我按风险等级重新排一下”——如果一开始就用了分类框架，这个需求就是一个重新排序的动作。如果没分类，就等于重新审一遍。</p>
+<p><strong>第五，可复用。</strong> 一次分类，多次使用。合同审查的分类框架做完第一个合同，第二个合同直接套。案件分析的分类框架梳理完一个类型的案件，同类型全部通用。证据整理的分类体系建好了，每个新案件的证据材料进来就能自动归位。</p>
+<p>这才是知识管理的底层逻辑——不是存文档，是存结构。文档会过时，结构不会。</p>
+<h2 id="法律工作中的四个分类框架实例">法律工作中的四个分类框架实例</h2>
+<p>上面说的是原理，下面说操作。</p>
+<p><strong>合同审查。</strong> 拿到一份合同，不要从第一条读到最后一页。先按条款类型切：付款条款归一类，交付条款归一类，违约条款归一类，管辖和争议解决归一类，保密和知识产权归一类。每一类有每一类的审查标准——付款看条件和节点，交付看标准和验收，违约看对等性，管辖看便利性。分类之后，同一类型的条款在不同合同之间还可以横向对比：这个合同的违约条款比上次那个严多了。</p>
+<p><strong>案件分析。</strong> 不要笼统地问“这个案子胜算大不大”。把案件按法律要件拆开：主体适格归第一栏，行为定性归第二栏，因果关系归第三栏，损害范围归第四栏。每一栏下面逐项匹配证据。匹配完了，哪一栏缺直接证据，哪一栏只有间接证据，哪一栏证据充分，一目了然。不是“感觉证据不够”，是“第三项要件——因果关系——缺直接证据，目前只有时间线上的间接关联”。</p>
+<p><strong>证据整理。</strong> 传统做法是按时间线排，或者按证据类型排（书证一堆、人证一堆）。更好的做法是按证明目的分类：证明事实发生的一类，证明程序合法的一类，证明损失数额的一类，反驳对方主张的一类。同一证明目的下再按证据强度排序——直接证据在前，间接证据在后。这样排出来的证据目录，直接对应庭审中需要证明的每一个点，法官看得清楚，你自己用得顺手。</p>
+<p><strong>知识管理。</strong> 律所的知识管理最容易做成“文档坟场”——存了一堆，用的时候找不到。换一个思路：按领域建第一层（房地产、建设工程、投融资、劳动人事），每个领域下按案由建第二层（合作开发纠纷、施工合同纠纷、股权转让纠纷），每个案由下按争议类型建第三层（合同效力争议、价款结算争议、违约责任争议）。三层的每个节点里，放同类案件的合同条款、裁判倾向、证据清单。新案件来了，先在分类体系里定位，同一个节点下的所有东西都是相关的。不是搜出来的，是“归位”出来的。</p>
+<p>收束一下：这四个框架不是 AI 教法律人的，是法律工作本身就该这么干。法律关系分析、要件审判、证据目录——这些本来就是方法论。AI 做的事，只是把这个要求变得更显性了。以前你可以把付款条款和违约条款混在一起看，靠经验在脑子里分类，出不了大错。但在 AI 辅助的工作流里，你不分类，AI 就乱。</p>
+<h2 id="分类框架的三个陷阱">分类框架的三个陷阱</h2>
+<p>诚实地说，分类框架不是万能药。用不好，比不用还糟。</p>
+<p>第一个陷阱：过度分类。标准太细，一篇合同拆出五十个类别，看起来挺厉害，实际比不分类还乱。分类的颗粒度不是越细越好——够用就行。审查一个常规采购合同，五六个类别够了，不需要把“不可抗力”和“情势变更”拆成两个独立类别。</p>
+<p>第二个陷阱：标准不统一。今天按条款类型分，明天按风险等级分，后天按主体角色分。或者团队里三个人用三种不同的分类标准。分类一旦标准不统一，就变成了噪音——你以为分好了，实际上每一类的内涵都不一样。标准统一，比标准精细重要得多。</p>
+<p>第三个陷阱：为了分类而分类。忘记分类的目的是理解和行动。分完类不等于做完分析。把合同条款归到五类里，只是把材料摆好了，审查还没开始。分类是手段，不是目的。好的分类框架指向行动——分完类之后，下一步做什么，是一目了然的。</p>
+<p>判断一个分类框架好不好，三条标准：够用，别贪细；统一，别耍聪明；指向行动，别停在分类本身。</p>
+<h2 id="先整理好再交给AI">先整理好，再交给 AI</h2>
+<p>“不喜欢系列”揭示了问题：人用格式，是视觉和习惯驱动的。合并单元格看着整齐，空格对齐看着舒服，几份 PDF 合成一个文件比较方便——都是从人的使用习惯出发的，没考虑信息的结构化程度。</p>
+<p>“喜欢系列”揭示了答案：AI 需要的是结构和确定性。Markdown 有层级，JSON 有键值对，结构化提示词有角色和边界——这些东西的共同点是信息已经被整理过了。</p>
+<p>格式、数据、提示词、知识、分类框架——五个维度，汇成一句话：<strong>先整理好再交给 AI，别让 AI 替你整理。</strong></p>
+<p>有意思的是，这和法律工作的底层逻辑完全一致。法律人的核心能力，从来不是“知道很多法条”，而是“能把复杂事实整理到法律规则可以有效适用的状态”。先理清法律关系，再适用法律规则——几百年来没变过。</p>
+<p>AI 没有改变方法论，只是把方法论的要求变严格了。以前模糊一点也能过，靠经验在脑子里兜底。现在模糊一点，AI 就歪给你看。</p>
+<p>这未必是坏事。它逼着我们把自己每天都在做的事——分类、定性、分层、归位——变得更自觉、更明确、更可传授。</p>
+<p>能把事情想清楚的人，不需要靠模糊来兜底。</p>
+<hr>
+<blockquote>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办“首宗百亿地王”“长春第一高楼”“台州第一高楼”等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+</blockquote>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

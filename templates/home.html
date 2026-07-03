@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ site.name }}</title>
+  <meta name="description" content="{{ site.description }}">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/home.css">
+  <script src="js/main.js" defer></script>
+  <script src="js/home.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">跳到内容</a>
+
+  {% include 'partials/navbar.html' %}
+
+  <main id="main-content">
+
+    <!-- ═══ 英雄区 ═══ -->
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-identity">
+          <h1 class="hero-name">{{ author.name }}</h1>
+          <p class="hero-roles">
+            <span>{{ author.dual_identity.0 }}</span>
+            <span class="hero-roles-multiply" aria-hidden="true">×</span>
+            <span>{{ author.dual_identity.1 }}</span>
+          </p>
+          <p class="hero-title">{{ author.title }} · {{ author.department }}</p>
+          <div class="hero-extras">
+            <span class="hero-book">📘 {{ author.book.title }}</span>
+            <a href="https://legalAGI.cn" class="hero-badge-link" target="_blank" rel="noopener">
+              四明山法师 AI 夜校
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 数据大字报 ═══ -->
+    <section class="stats-strip" aria-label="关键数据">
+      <div class="stats-strip-inner">
+        <div class="stat-item">
+          <span class="stat-number">{{ author.experience_years }}年+</span>
+          <span class="stat-label">执业经验</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ author.total_investment }}</span>
+          <span class="stat-label">服务项目总投资额</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ stats.honor_count }} 项</span>
+          <span class="stat-label">行业荣誉</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" id="article-count">{{ stats.total_articles }}</span>
+          <span class="stat-label">原创文章</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 荣誉奖章 ═══ -->
+    <section class="honors-section" aria-label="行业荣誉" id="honors">
+      <div class="honors-inner">
+        <h2 class="section-heading">行业荣誉</h2>
+        <div class="honors-grid">
+          {% for honor in honors %}
+          <article class="honor-card">
+            <span class="honor-year">{{ honor.year }}</span>
+            <span class="honor-org">{{ honor.org }}</span>
+            <span class="honor-title">{{ honor.title }}</span>
+          </article>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 最新文章 ═══ -->
+    <section class="articles-section" id="articles">
+      <div class="articles-inner">
+        <h2 class="section-heading">最新文章</h2>
+        <div class="articles-grid" id="featured-grid">
+          {% for article in latest_articles %}
+          <article class="article-card">
+            <a href="articles/{{ article.slug }}/" class="article-card-link">
+              {% if article.has_cover %}
+              <div class="article-card-cover">
+                <img src="articles/{{ article.slug }}/cover.png" alt="" loading="lazy" width="400" height="225">
+              </div>
+              {% endif %}
+              <div class="article-card-body">
+              <div class="article-card-meta">
+                <span class="article-card-date">{{ article.date_str }}</span>
+                <span class="article-card-category">{{ article.category_label }}</span>
+              </div>
+              <h3 class="article-card-title">{{ article.title }}</h3>
+              <p class="article-card-excerpt">{{ article.excerpt }}...</p>
+              <div class="article-card-footer">
+                <span class="article-card-readtime">{{ article.read_time }} 分钟阅读</span>
+              </div>
+              </div>
+            </a>
+          </article>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 分类筛选 + 完整文章列表 ═══ -->
+    <section class="articles-section" id="categories">
+      <div class="articles-inner">
+        <h2 class="section-heading">全部文章</h2>
+
+        <!-- 分类筛选器 -->
+        <div class="category-filter" role="tablist" aria-label="文章分类筛选">
+          <button class="category-pill active" role="tab" aria-selected="true" data-category="all">
+            全部（{{ stats.total_articles }}）
+          </button>
+          {% for cat in stats.categories %}
+          <button class="category-pill" role="tab" aria-selected="false" data-category="{{ cat.id }}">
+            {{ cat.label }}（{{ cat.count }}）
+          </button>
+          {% endfor %}
+        </div>
+
+        <!-- 文章列表容器（JS 动态渲染） -->
+        <div class="articles-grid" id="all-articles-grid">
+          <!-- JS 填充 -->
+        </div>
+
+        <!-- 空状态 -->
+        <div class="empty-state" id="empty-state" hidden>
+          <p>该分类下暂无文章</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 个人简介 ═══ -->
+    <section class="bio-section" aria-label="关于作者">
+      <div class="bio-inner">
+        <div class="bio-text">
+          {{ author.bio_short }}
+        </div>
+        <a href="https://github.com/CSlawyer1985" class="bio-link" target="_blank" rel="noopener">
+          GitHub &rarr;
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  {% include 'partials/footer.html' %}
+
+</body>
+</html>

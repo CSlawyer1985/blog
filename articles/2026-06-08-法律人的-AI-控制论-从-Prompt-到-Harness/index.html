@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>法律人的 AI 控制论：从 Prompt 到 Harness — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-06-08">2026年6月8日</time>
+            <span class="dotsep"></span>
+            <span>10 分钟阅读</span>
+          </div>
+          <h1 class="article-title">法律人的 AI 控制论：从 Prompt 到 Harness</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>你有没有想过一个问题——Git、脚本、工作区规则，这三节课讲的东西之间到底有什么关系？</p>
+<p>表面上看，三个独立模块：一个管版本，一个管自动化，一个管行为约束。但放在一起看，有一条隐藏的主线把它们串了起来——<strong>控制</strong>。</p>
+<p>Git 是对文件状态的精确控制。脚本是对执行过程的精确控制。工作区规则是对 AI 行为输出的精确控制。</p>
+<p>三件事指向同一个结论：<strong>Harness——控制系统——才是 Agent 的核心。模型只是引擎。</strong></p>
+<p>这篇文章是前面几篇的总纲。它试图回答一个问题：当我们讨论怎么用好 AI 的时候，我们到底在讨论什么？</p>
+<hr>
+<h2 id="Harness是什么">Harness 是什么</h2>
+<p>先拆一个词。</p>
+<p>Agent 由两部分构成：<strong>模型</strong>和<strong>控制系统</strong>（Harness）。模型负责推理、生成、理解语义；Harness 负责约束模型的行为边界、定义工作流程、决定模型在什么场景下该做什么。</p>
+<p>一个不太精确但好懂的类比：</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300"&gt;
+  &lt;rect width="600" height="300" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#333"&gt;模型 = 引擎，Harness = 方向盘 + 刹车 + 导航&lt;/text&gt;
+
+  &lt;!-- Left: Engine --&gt;
+  &lt;rect x="30" y="65" width="240" height="90" rx="4" fill="#f5f5f5" stroke="#999" stroke-width="1.5"/&gt;
+  &lt;text x="150" y="95" text-anchor="middle" font-size="15" font-weight="700" fill="#555"&gt;模型（引擎）&lt;/text&gt;
+  &lt;text x="150" y="118" text-anchor="middle" font-size="13" fill="#777"&gt;决定"能跑多快"&lt;/text&gt;
+  &lt;text x="150" y="138" text-anchor="middle" font-size="13" fill="#777"&gt;推理能力 / 知识广度 / 生成质量&lt;/text&gt;
+
+  &lt;!-- Arrow between --&gt;
+  &lt;text x="310" y="120" text-anchor="middle" font-size="28" fill="#bbb"&gt;+&lt;/text&gt;
+
+  &lt;!-- Right: Harness --&gt;
+  &lt;rect x="330" y="65" width="240" height="90" rx="4" fill="#f5f5f5" stroke="#333" stroke-width="2"/&gt;
+  &lt;text x="450" y="95" text-anchor="middle" font-size="15" font-weight="700" fill="#333"&gt;Harness（控制系统）&lt;/text&gt;
+  &lt;text x="450" y="118" text-anchor="middle" font-size="13" fill="#333"&gt;决定"往哪开、在哪停、走什么路线"&lt;/text&gt;
+  &lt;text x="450" y="138" text-anchor="middle" font-size="13" fill="#333"&gt;规则 / 脚本 / 版本管理 / 工作流&lt;/text&gt;
+
+  &lt;!-- Bottom line --&gt;
+  &lt;line x1="30" y1="185" x2="570" y2="185" stroke="#ddd" stroke-width="1"/&gt;
+
+  &lt;!-- Bottom insight --&gt;
+  &lt;text x="300" y="215" text-anchor="middle" font-size="14" font-weight="700" fill="#333"&gt;Harness 不让你跑得更快，它让你跑对方向。&lt;/text&gt;
+  &lt;text x="300" y="240" text-anchor="middle" font-size="13" fill="#666"&gt;引擎决定性能上限，控制系统决定产出质量的下限。&lt;/text&gt;
+  &lt;text x="300" y="265" text-anchor="middle" font-size="12" fill="#999"&gt;模型会换代，但你的方向盘不会过期。&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>要点很简单：引擎决定车能跑多快，方向盘、刹车、导航决定车往哪开、在哪停、走什么路线。法拉利的引擎装在一辆没有方向盘的车上，除了直线撞墙没别的结局。</p>
+<p>AI 圈有一个现象我观察了很久：所有人的注意力都钉在模型上。GPT-5 什么时候出？Claude 和 Gemini 谁更强？国产模型追上了没有？但很少有人问一个前置问题——<strong>你控制模型的能力，有没有同步增长？</strong></p>
+<p>这个问题的答案，取决于你把 AI 当成什么。</p>
+<p>如果你把 AI 当工具，你不会问它。工具嘛，等供应商出一个好用的，直接用就行了。但如果你把 AI 当伙伴——一个能规划、能调用工具、能跑长程任务、甚至能在对话中越来越懂你的伙伴——控制就不再是加分项。它是必需品。你得教它、约束它、对齐它。</p>
+<p>这就是 Harness 的意义所在。</p>
+<hr>
+<h2 id="第一层控制Git对文件状态的控制">第一层控制：Git 对文件状态的控制</h2>
+<p>你平时怎么管理文件版本？</p>
+<p>大概率是这样：在文件夹里建若干个文件，名字后面加日期或编号——<code>法律意见书_v1.docx</code>、<code>法律意见书_v2.docx</code>、<code>法律意见书_最终版.docx</code>、<code>法律意见书_最终最终版.docx</code>。</p>
+<p>这个方法能跑，但有一个结构性缺陷：<strong>它只能记录终点，不记录路径。</strong></p>
+<p>你不知道 v2 比 v1 具体改了什么。你不知道"最终版"和"最终最终版"之间差了几行字。文件多了以后，你甚至分不清哪个是哪个。</p>
+<p>Git 解决的就是这个问题——它是程序员群体的标准版本管理工具。工作方式不是"保存多个副本"，而是每次改动形成一个快照。你可以随时跳到历史上的任意一个快照，看一眼当时文件的样子，再跳回来。这更像 Mac 电脑里的时间机器，而不是文件夹里那串 v1、v2、v3。</p>
+<p>CloudCode 本身也有回退功能——按两次 ESC，回到之前的某一轮对话。乍一看好像也能做版本管理，但它有三个关键局限：</p>
+<ul>
+<li><strong>不能挑单文件回退。</strong> 如果这一轮对话改了三个文件，你对其中某一个不满意，你只能选"三个都回退"或"三个都不回退"。</li>
+<li><strong>不能跨轮次跳转。</strong> 你回到第 8 轮，第 9 到第 30 轮的全部记录就消失了。你做不到"跳到第 8 轮看一眼，再跳回第 29 轮"。</li>
+<li><strong>它不是文件级管理。</strong> CloudCode 的回退基于对话历史，不是基于文件状态。如果你用外部 CLI 工具做了改动，CloudCode 甚至没有办法把它回退回去。</li>
+</ul>
+<p>Git 完全不同。每一次 commit，是对当时工作区全部文件状态的一次完整快照。你可以随时：</p>
+<ul>
+<li>翻出任意一个历史版本中任意一个文件的完整内容</li>
+<li>对比任意两个版本之间的差异，精确到行</li>
+<li>从主线分出一条分支，尝试一个激进的新方向——失败了丢弃，成功了合并回去</li>
+</ul>
+<p>对于法律人，Git 的学习成本不需要很高。用我在课上的话说："你不需要像一个程序员掌握得那么深，但你要知道存在这个功能。"当你写脚本、搭工作区规则、起草重要文件的时候，Git 给你的是一个随时可以反悔的安全网。你不需要在动手之前把所有可能性想清楚——你知道搞砸了可以退回去。</p>
+<p>这是第一层控制：对文件状态的精确控制。</p>
+<hr>
+<h2 id="第二层控制脚本对执行过程的控制">第二层控制：脚本对执行过程的控制</h2>
+<p>Git 管的是"文件变成了什么样"。脚本管的，是"事情该怎么做"。</p>
+<p>大模型有一个极容易被滥用的场景：让它做确定性任务。</p>
+<p>什么叫确定性任务？三个条件：<strong>确定输入、确定流程、确定输出。</strong></p>
+<p>"把这个 PDF 转成 Markdown"——输入是一个 PDF 文件，流程是调用 MinerU 做转换，输出是一个 Markdown 文件。每一步都是确定的，不需要语义理解，不需要判断。</p>
+<p>但如果你丢一个 PDF 给大模型，说"帮我把它转成 Markdown"，会发生什么？大模型要先理解你的意图，然后分析用什么工具，然后调用工具，然后把结果给你。在这个过程中，大模型真正创造价值的部分——语义理解和决策——几乎为零。它只是当了一个语音助手，帮你启动了一个你本可以直接启动的工具。</p>
+<p><strong>确定性的任务，不应该消耗大模型的 token。</strong></p>
+<p>不只是因为 token 要钱。更是因为大模型在确定性任务中的"理解"环节本身就是冗余——你的意图不需要被理解，它从一开始就是明确的。</p>
+<p>脚本解决的就是这件事。</p>
+<p>写一个脚本，等于把一条自动化流水线固化下来：输入什么、调什么工具、输出什么。写好了以后，每次运行不需要大模型参与。零 token 消耗，零理解成本，零等待时间。三个好处：</p>
+<ol>
+<li><strong>零 token 消耗。</strong> 脚本是一个纯程序，运行它只费电。</li>
+<li><strong>可跨工作区复用。</strong> 你在合同审核工作区写的 PDF 转 Markdown 脚本，在案件分析工作区、咨询工作区同样可以用。</li>
+<li><strong>可嵌入 skill 和 agent。</strong> 复杂 skill 走到某一步，自动调对应脚本——确定性环节交给确定性工具，不确定性环节留给大模型。</li>
+</ol>
+<p>你可能会问：我不会写代码，脚本从哪来？</p>
+<p>用大模型写。你不需要会 Python，你只需要能把需求讲清楚："我要一个脚本，用户拖入一个文件夹，里面有多层子文件夹和多种格式的文件——PDF 转 Markdown，Excel 转 JSON，图片提取文字——转换后的输出保留原始文件夹结构。"它会帮你写出来，你测试发现 bug 它帮你修。你等于用大模型开发了一个只属于你自己的小软件。开发过程中消耗了 token，开发完之后，零成本运行。</p>
+<p>适合脚本的场景：格式转换、视频下载、批量信息提取、基础脱敏。比如从一万份裁判文书中提取案号、法院名称和裁判日期——这些结构化信息不依赖语义理解，纯脚本就能搞定。</p>
+<p>不适合脚本的场景：需要上下文判断的任务。比如人名脱敏——两个字的可能是人名，也可能不是；一个字的就更难了。这时候你需要大模型的语义理解。</p>
+<p>这里有一个认知跃迁值得点出来：<strong>用脚本做确定性任务，不只是在省 token。你是在把 token 省下来，用在真正需要判断的地方。</strong></p>
+<p>这是第二层控制：对执行过程的精确控制。你不再依赖模型去"理解"你的意图——脚本本身就是意图的固化。</p>
+<hr>
+<h2 id="第三层控制工作区规则对行为输出的控制">第三层控制：工作区规则对行为输出的控制</h2>
+<p>Git 控制了文件状态，脚本控制了执行流程。还剩一个问题没解决——你如何告诉 AI，在什么场景下该做什么、按什么顺序做、用什么标准判断？</p>
+<p>这就是工作区规则干的事。</p>
+<p>CLAUDE.md 加上 rules/ 目录，构成了一套指令系统。它们不是平铺的，是分层的：</p>
+<ul>
+<li><strong>用户级规则</strong>（<code>~/.claude/CLAUDE.md</code> 和 <code>~/.claude/rules/</code>）：对所有工作区适用的通用规则。比如"引用法条必须标注出处和时效性""法律研究先检索知识库再考虑外部来源"。这些是共性的，不该在每个项目里重复写。</li>
+<li><strong>项目级规则</strong>（项目目录下的 <code>.claude/CLAUDE.md</code> 和 <code>.claude/rules/</code>）：针对特定工作类型的规则。比如"合同审核工作区：收到合同后先识别主体、再逐条审查、最后输出批注版合同和法律意见书"。</li>
+</ul>
+<p>为什么要分层？你试想一下把所有规则塞进一个工作区——它会像一个集成了洗衣、炒菜、音响功能的家电，每一样都做不好。小孩作业辅导的规则和法律咨询的规则放在同一个 CLAUDE.md 里，它们会互相打架。</p>
+<p>一个典型的法律工作区规则，定义的是一条四段式流水线：</p>
+<blockquote>
+<p>输入（接收问题或文件）→ 处理（按规则检索知识库、调 MCP 验证法条、做法律分析）→ 输出（生成结构化解答，附法条原文和来源标注）→ 归档（按问题建独立文件夹，保存输入、研究过程和最终输出）</p>
+</blockquote>
+<p>规则不是一次性设计出来的。它是一轮一轮养出来的。</p>
+<p>你用工作区处理了一个法律问题，发现输出没有附法条原文——你跟它说"以后每次都要附上引用的法条原文"。它改了规则文件。下一次处理问题时，输出就带了法条原文。你又发现字数限制太死，复杂问题展不开——再改。它又进化了一次。</p>
+<p>这个过程，就是在把你的隐性判断标准变成 AI 的显性行为边界。每改一次规则，等于重新校准一次 AI 的方向盘。</p>
+<p>还有一个容易忽略的事实：<strong>规则资产是可迁移的。</strong></p>
+<p>"今天 Claude Code 能用，移植到 Codex 也能用，移植到 Cursor 也能用。"所有 Agent 框架的大逻辑都一样——读上下文、遵循指令、调用工具、输出结果。CLAUDE.md 和 rules/ 的内容是纯文本 Markdown，不依赖任何特定平台。你今天在 Claude Code 里养的这套规则，哪天换了一个 Agent，把规则文件复制过去，它照样能跑。</p>
+<p>这是第三层控制：对行为输出的精确控制。你不再需要每次从头告诉 AI 怎么做——规则已经写好了，它自己会读。</p>
+<hr>
+<h2 id="三层控制谱系">三层控制谱系</h2>
+<p>把这三层放在一起看：</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340"&gt;
+  &lt;rect width="600" height="340" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#333"&gt;三层控制谱系&lt;/text&gt;
+
+  &lt;!-- Top layer: Rules --&gt;
+  &lt;rect x="60" y="60" width="480" height="60" rx="4" fill="#f0f0f0" stroke="#333" stroke-width="2"/&gt;
+  &lt;text x="300" y="83" text-anchor="middle" font-size="16" font-weight="700" fill="#333"&gt;工作区规则&lt;/text&gt;
+  &lt;text x="300" y="105" text-anchor="middle" font-size="12" fill="#555"&gt;对"行为输出"的控制 — 告诉 Agent 在什么场景下做什么、按什么顺序、用什么标准&lt;/text&gt;
+
+  &lt;!-- Arrow down --&gt;
+  &lt;line x1="300" y1="122" x2="300" y2="145" stroke="#999" stroke-width="1.5"/&gt;
+  &lt;polygon points="295,142 300,152 305,142" fill="#999"/&gt;
+
+  &lt;!-- Middle layer: Scripts --&gt;
+  &lt;rect x="60" y="152" width="480" height="60" rx="4" fill="#f5f5f5" stroke="#666" stroke-width="1.5"/&gt;
+  &lt;text x="300" y="175" text-anchor="middle" font-size="16" font-weight="700" fill="#555"&gt;脚本&lt;/text&gt;
+  &lt;text x="300" y="197" text-anchor="middle" font-size="12" fill="#777"&gt;对"执行过程"的控制 — 固化确定性任务为自动化流水线，零 token 消耗&lt;/text&gt;
+
+  &lt;!-- Arrow down --&gt;
+  &lt;line x1="300" y1="214" x2="300" y2="237" stroke="#999" stroke-width="1.5"/&gt;
+  &lt;polygon points="295,234 300,244 305,234" fill="#999"/&gt;
+
+  &lt;!-- Bottom layer: Git --&gt;
+  &lt;rect x="60" y="244" width="480" height="60" rx="4" fill="#fafafa" stroke="#999" stroke-width="1"/&gt;
+  &lt;text x="300" y="267" text-anchor="middle" font-size="16" font-weight="700" fill="#888"&gt;Git&lt;/text&gt;
+  &lt;text x="300" y="289" text-anchor="middle" font-size="12" fill="#999"&gt;对"文件状态"的控制 — 时间机器级的版本管理，随时跳到任意历史快照&lt;/text&gt;
+
+  &lt;!-- Right annotation --&gt;
+  &lt;text x="555" y="95" text-anchor="start" font-size="11" fill="#999"&gt;不确定&lt;/text&gt;
+  &lt;text x="555" y="187" text-anchor="start" font-size="11" fill="#999"&gt;半确定&lt;/text&gt;
+  &lt;text x="555" y="279" text-anchor="start" font-size="11" fill="#999"&gt;确定&lt;/text&gt;
+
+  &lt;!-- Bottom note --&gt;
+  &lt;text x="300" y="325" text-anchor="middle" font-size="12" fill="#aaa"&gt;从底层到顶层：控制精度递增，任务不确定性递增，AI 参与度递增&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p><strong>底层是 Git——对文件状态的控制。</strong> 它解决的是"我刚才改了什么东西"和"我能不能退回去"。这一层处理的确定性最高：文件的状态就是文件的状态，没有歧义。</p>
+<p><strong>中层是脚本——对执行过程的控制。</strong> 它解决的是"这件事能不能不用大模型就做完"。这一层处理半确定性的任务：流程是确定的，但你可能需要大模型帮你写脚本——写完以后，脚本就是独立工具，零 token 消耗。</p>
+<p><strong>顶层是工作区规则——对行为输出的控制。</strong> 它解决的是"AI 的行为可预测吗，可调校吗"。这一层处理不确定性最高的需求：每个法律问题的分析路径有差异，但你仍然可以通过规则约束分析的方法、顺序和标准，让输出保持在可接受的偏差范围内。</p>
+<p>三层不是互相隔离的。脚本可以被规则调用——你在工作区规则里写"如果用户提供 PDF 文件，先调 PDF 转 Markdown 脚本做格式转换"。Git 可以管理规则文件的版本——你改了一次规则发现效果不好，一个 git revert 就回到上一个版本。它们互相嵌入，共同构成你的 Harness。</p>
+<hr>
+<h2 id="为什么控制比引擎更重要">为什么控制比引擎更重要</h2>
+<p>课上有句话容易被人忽略："规则资产可以套不同的 Agent 壳——今天 Claude Code 能用，移植到 Codex 也能用。"</p>
+<p>这句话背后的事实是：<strong>模型会迭代、会替换，但你的 Harness 不会过期。</strong></p>
+<p>2023 年大家用 GPT-4，2024 年换 Claude Opus，2025 年可能又换了国产模型。每一次模型切换，你都忙着重新测试、重新适应。但如果你手里有一套成熟的 Harness——规则、脚本、工作流——换一个模型，你的工作方式不需要推倒重来。规则文件还是那些规则文件，脚本还是那些脚本，Git 仓库还是那些 Git 仓库。可能微调一些参数，但骨架不动。</p>
+<p>这就引出了一个更根本的判断：<strong>真正产生差异化价值的，不是"用哪个模型"，而是"你如何控制模型"。</strong></p>
+<p>模型是供应商给你的，Harness 是你自己建的。模型的差距会缩小，甚至有一天所有主流模型在常规任务上的表现趋同。到那时候，拉开差距的就是每个人对 AI 的控制能力——你有没有一套成熟的规则体系？有没有积累可复用的脚本工具链？有没有用 Git 管理好你的每一次迭代？</p>
+<p>这才是你的护城河。</p>
+<hr>
+<h2 id="从今天开始积累你的Harness">从今天开始积累你的 Harness</h2>
+<p>方法论讲到这容易变成空谈，所以最后说四点具体的。</p>
+<p><strong>把注意力从"选哪个模型"转移到"怎么控制模型"。</strong> 少看点模型评测，多写点规则。</p>
+<p><strong>从写一条规则开始。</strong> 不用一上来就建完整的工作区体系。你今天用 AI 处理一个问题，发现某个环节总需要你手动纠正——把那个纠正写进规则里，让 AI 下次自己读。就这一条。积累 30 条，AI 的行为方式就完全不同了。</p>
+<p><strong>把脚本当资产来管理。</strong> 大模型帮你写了一个好用的脚本，不要用完就扔。给它写一个 README，放在固定的文件夹里，用 Git 管理版本。下次遇到同类问题，直接复用。</p>
+<p><strong>分层思考。</strong> 一件事丢给 AI 之前先判断：这里面有没有不需要 AI 的环节（脚本能解决）？AI 的判断标准需不需要被规范化（规则能解决）？把这些确定性环节抽离出来以后，剩下的那部分，才是真正需要大模型去理解和推理的。把 token 花在刀刃上。</p>
+<p>这套方法论就是我理解的"法律人的 AI 控制论"。它不是抽象理论——你可以从今晚开始就动手构建。</p>
+<p>模型会过时，但你的 Harness 不会。</p>
+<hr>
+<blockquote>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+</blockquote>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

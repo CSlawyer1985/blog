@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>7月1日起，超龄用工规则全变了——五部门新规逐条解读 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">方法论/思维</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-05-26-7月1日起-超龄用工规则全变了-五部门新规逐条解读/" class="sidebar-link">7月1日起，超龄用工规则全变了——五部门新规逐条解读</a>
+      
+      <a href="/articles/2026-05-21-间接控制链-为什么-难搞-的人总能赢-但赢了之后呢/" class="sidebar-link">间接控制链：为什么"难搞"的人总能赢，但赢了之后呢？</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">方法论/思维</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-05-26">2026年5月26日</time>
+            <span class="dotsep"></span>
+            <span>6 分钟阅读</span>
+          </div>
+          <h1 class="article-title">7月1日起，超龄用工规则全变了——五部门新规逐条解读</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>你公司有没有招退休人员？如果有，7月1日起再用超龄员工的规则全变了。</p>
+<p>以前很多企业的直觉是：超龄员工便宜，不用交社保，省事。但2026年5月10日，人社部会同国家卫健委、应急管理部、税务总局、国家医保局联合发布了《超龄劳动者基本权益保障暂行规定》（人社部令第56号，以下简称《暂行规定》），7月1日起正式施行。</p>
+<p>这是我国第一部专门保护超龄劳动者的部门规章。超龄用工从灰色地带被拉进了规则框架里。规则变了，风险点变了，用工逻辑也得跟着变。</p>
+<p><strong>结论先给</strong>：7月1日以后，企业用超龄员工，该花的钱必须花（工伤保险、最低工资、加班费），能省的也确实能省（经济补偿金、双倍工资赔偿金）。下面逐条拆。</p>
+<hr>
+<h2 id="一哪些人算超龄劳动者">一、哪些人算"超龄劳动者"？</h2>
+<p>第2条划了适用范围，三个条件同时满足：</p>
+<ol>
+<li>中华人民共和国境内的用人单位招用</li>
+<li>劳动者超过法定退休年龄</li>
+<li>受用人单位劳动管理、从事用人单位安排的有报酬的劳动</li>
+</ol>
+<p>另外两个扩展和一个排除：</p>
+<ul>
+<li><strong>已提前退休后被招用的</strong> → 同样适用本规定</li>
+<li><strong>弹性延迟退休的劳动者</strong> → 不适用本规定，在弹性延迟退休期间走《劳动合同法》《事业单位人事管理条例》等（第23条）。延迟退休期间你签的是劳动合同，不是用工协议——这是关键区别</li>
+</ul>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320"&gt;
+  &lt;rect width="600" height="320" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#222"&gt;《暂行规定》适用范围&lt;/text&gt;
+
+  &lt;!-- 外圈 --&gt;
+  &lt;ellipse cx="300" cy="200" rx="260" ry="110" fill="#f5f5f5" stroke="#999" stroke-width="1.5"/&gt;
+  &lt;text x="300" y="120" text-anchor="middle" font-size="13" fill="#666"&gt;境内用人单位招用&lt;/text&gt;
+
+  &lt;!-- 中圈 --&gt;
+  &lt;ellipse cx="300" cy="200" rx="180" ry="75" fill="#e8e8e8" stroke="#999" stroke-width="1.5"/&gt;
+  &lt;text x="300" y="160" text-anchor="middle" font-size="13" fill="#666"&gt;超过法定退休年龄&lt;/text&gt;
+
+  &lt;!-- 内圈 = 核心适用范围 --&gt;
+  &lt;ellipse cx="300" cy="200" rx="100" ry="40" fill="#333" stroke="#222" stroke-width="2"/&gt;
+  &lt;text x="300" y="193" text-anchor="middle" font-size="13" font-weight="700" fill="#fff"&gt;受管理 + 有报酬劳动&lt;/text&gt;
+  &lt;text x="300" y="212" text-anchor="middle" font-size="11" fill="#ccc"&gt;→ 适用《暂行规定》&lt;/text&gt;
+
+  &lt;!-- 左侧排除标注 --&gt;
+  &lt;text x="55" y="245" text-anchor="middle" font-size="12" fill="#c41e3a"&gt;✕&lt;/text&gt;
+  &lt;text x="100" y="260" text-anchor="start" font-size="12" fill="#c41e3a"&gt;弹性延迟退休者&lt;/text&gt;
+  &lt;text x="100" y="278" text-anchor="start" font-size="11" fill="#888"&gt;适用劳动合同法&lt;/text&gt;
+
+  &lt;!-- 右侧补充 --&gt;
+  &lt;text x="480" y="260" text-anchor="start" font-size="12" fill="#2a7d4f"&gt;✓ 已提前退休后被招用&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<hr>
+<h2 id="二五大核心变化">二、五大核心变化</h2>
+<h3 id="变化①必须签书面用工协议第6-8条">变化① 必须签书面用工协议（第6-8条）</h3>
+<p>以前很多企业招超龄员工，口头说一声就上岗，字都不签。</p>
+<p>第6条：<strong>用人单位必须与超龄劳动者订立书面用工协议</strong>。协议内容须覆盖期限、工作内容、工作地点、工作时间、休息休假、劳动报酬、社会保险、劳动保护、劳动条件、职业危害防护——十一项，缺一不可。</p>
+<p>但这份协议的定性，决定了超龄用工的底层逻辑：<strong>签的是"用工协议"，不是"劳动合同"</strong>。</p>
+<p>企业不需要承担《劳动合同法》的全套义务。协议变更协商一致即可（第7条），协议到期或工作内容完成即终止（第8条），解除时不需要支付经济补偿金。</p>
+<p><strong>反过来</strong>，如果企业连书面协议都不签，等于自弃保护——口头用工在争议时没有任何书面依据。签协议是底线，不是可选项。</p>
+<hr>
+<h3 id="变化②必须缴工伤保险第15条">变化② 必须缴工伤保险（第15条）</h3>
+<p>这是企业最该重视的变化，没有之一。</p>
+<p>第15条第一款：<strong>用人单位应当为超龄劳动者参加工伤保险并缴纳工伤保险费，个人不缴纳。</strong></p>
+<p>以前超龄员工发生工伤，能不能走工伤保险是个模糊地带——有些地方不给超龄人员参保，出了事企业要么自己扛，要么走人身损害赔偿。现在一刀切了：必须参保，参保后就按正常工伤保险通道走——工伤认定、劳动能力鉴定、待遇享受。</p>
+<p><strong>三点注意</strong>：</p>
+<p>第一，第15条第三款写了"超龄劳动者工伤保障办法另行制定"——细则还没出来，各地落地节奏可能不同。</p>
+<p>第二，不参保的后果很直接：发生工伤企业自己全额兜，不走基金。这不是理论上的风险——超龄劳动者身体机能下降，工伤概率客观上高于年轻人。</p>
+<p>第三，浙江已经跑了几年了。2018年《浙江省工伤保险条例》第39条就将超龄从业人员纳入了参保范围，操作上已经成熟。这次是全国统一规范，浙江企业反而不需要做太大调整。</p>
+<hr>
+<h3 id="变化③工资不低于最低工资按月支付第10-12条">变化③ 工资不低于最低工资 + 按月支付（第10-12条）</h3>
+<p>第11条：<strong>超龄劳动者提供了正常劳动的，用人单位支付的劳动报酬不得低于当地最低工资标准。</strong></p>
+<p>第12条接着要求：货币支付，至少每月一次，不许用实物或有价证券替代，不许克扣或无故拖欠。</p>
+<p>这部分和普通劳动者的标准一致，没有争议空间。2026年宁波最低月工资：2490元（鄞州/海曙/江北/镇海/北仑），其他区县2260元。如果现在有超龄员工工资低于这个线，7月1日前调上来。</p>
+<hr>
+<h3 id="变化④一般不安排加班第9条">变化④ 一般不安排加班（第9条）</h3>
+<p>第9条第一款：<strong>用人单位应当合理安排超龄劳动者的工作时间和休息休假，一般不安排超龄劳动者加班。</strong></p>
+<p>"一般"两个字不是"绝对"。确实需要安排加班的，第二款要求遵守《劳动法》第41条（每日不超3小时、每月不超36小时）和第44条（加班工资标准）。</p>
+<p>加班费标准和普通员工一样：</p>
+<ul>
+<li>延长工作时间 → 150%</li>
+<li>休息日工作又不能补休 → 200%</li>
+<li>法定节假日 → 300%</li>
+</ul>
+<p>第20条还给了超龄劳动者一个行政投诉通道：违反加班规定、最低工资、工资支付的，向人社部门投诉。人社部门依照《劳动合同法》第85条第（一）至（三）项实施监察——可以责令限期支付，逾期不付的加付50%-100%赔偿金。这条规定是有牙齿的。</p>
+<hr>
+<h3 id="变化⑤不签劳动合同无经济补偿金企业的结构性利好">变化⑤ 不签劳动合同，无经济补偿金——企业的结构性利好</h3>
+<p>前面四个变化都在增加企业义务，这个变化是减负——而且不是临时性优惠，是制度层面的。</p>
+<p>因为定性为"用工协议"而非"劳动合同"，超龄用工关系不是"劳动关系"，《劳动合同法》里对企业负担最重的三项义务全部不适用：</p>
+<ul>
+<li>不签劳动合同 → 双倍工资（《劳动合同法》第82条）→ <strong>不适用</strong></li>
+<li>违法解除 → 赔偿金（二倍经济补偿，第87条）→ <strong>不适用</strong></li>
+<li>协议到期终止 → 经济补偿金（第46条）→ <strong>不适用</strong></li>
+</ul>
+<p>超龄员工享受的是"基本权益保护"——劳动报酬、休息休假、劳动安全卫生、工伤保障，而不是劳动法全套保护。企业在用工灵活性上，反比用普通员工有空间。前提是你得签书面协议——没有协议，这层定性保护就没有书面载体，一扯皮就麻烦。</p>
+<hr>
+<h2 id="三两个容易被忽略的条款养老和医保">三、两个容易被忽略的条款：养老和医保</h2>
+<p>第16条和第17条回答了一个超龄劳动者最关心的问题：到了退休年龄但缴费年限不够的，还能不能继续交？</p>
+<p>能，而且有两条路：</p>
+<ul>
+<li><strong>个人续缴</strong>：未享受基本养老保险待遇的，以个人身份继续缴职工基本养老保险</li>
+<li><strong>单位协商缴</strong>：经与用人单位协商一致，单位也可以为其缴纳，个人部分由单位代扣代缴</li>
+</ul>
+<p>基本医疗保险同理（第17条）。注意用词——"经与用人单位协商一致"，不是"应当"，不是"必须"，比工伤保险灵活得多。但反过来说，愿意给超龄员工续缴养老保险的企业，在用工市场上会更吸引人——超龄劳动者最在意的就是养老和医保别断。</p>
+<p>第18条还要求社保经办机构优化流程、完善适老化设施。这是对服务端的要求，各地落实程度会有差异。</p>
+<hr>
+<h2 id="四出了争议怎么解决">四、出了争议怎么解决？</h2>
+<p>第19条做了分流：</p>
+<p>| 争议类型 | 处理路径 |</p>
+<p>|---------|---------|</p>
+<p>| 劳动报酬、休息休假、劳动安全卫生、工伤保障 | 劳动仲裁 → 法院（仲裁前置） |</p>
+<p>| 其他事项 | 直接向法院起诉 |</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300"&gt;
+  &lt;rect width="600" height="300" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#222"&gt;超龄用工争议解决路径&lt;/text&gt;
+
+  &lt;!-- 分歧点 --&gt;
+  &lt;rect x="215" y="65" width="170" height="40" rx="6" fill="#333"/&gt;
+  &lt;text x="300" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#fff"&gt;发生争议&lt;/text&gt;
+
+  &lt;!-- 两条分支 --&gt;
+  &lt;line x1="300" y1="105" x2="300" y2="125" stroke="#666" stroke-width="1.5"/&gt;
+
+  &lt;!-- 左分支：四项基本权益 --&gt;
+  &lt;text x="130" y="145" text-anchor="middle" font-size="12" fill="#888"&gt;四项基本权益&lt;/text&gt;
+  &lt;rect x="30" y="155" width="200" height="40" rx="4" fill="#f0f0f0" stroke="#999" stroke-width="1"/&gt;
+  &lt;text x="130" y="172" text-anchor="middle" font-size="13" font-weight="600" fill="#222"&gt;劳动报酬/休息休假&lt;/text&gt;
+  &lt;text x="130" y="188" text-anchor="middle" font-size="11" fill="#666"&gt;劳动安全卫生/工伤保障&lt;/text&gt;
+
+  &lt;text x="130" y="215" text-anchor="middle" font-size="13" fill="#333"&gt;↓ 仲裁前置&lt;/text&gt;
+  &lt;rect x="30" y="225" width="200" height="32" rx="4" fill="#333"/&gt;
+  &lt;text x="130" y="246" text-anchor="middle" font-size="13" font-weight="600" fill="#fff"&gt;劳动争议调解仲裁法&lt;/text&gt;
+
+  &lt;text x="130" y="275" text-anchor="middle" font-size="11" fill="#888"&gt;不服仲裁裁决 → 向法院起诉&lt;/text&gt;
+
+  &lt;!-- 右分支：其他事项 --&gt;
+  &lt;text x="470" y="145" text-anchor="middle" font-size="12" fill="#888"&gt;其他事项&lt;/text&gt;
+  &lt;rect x="370" y="155" width="200" height="40" rx="4" fill="#f0f0f0" stroke="#999" stroke-width="1"/&gt;
+  &lt;text x="470" y="178" text-anchor="middle" font-size="13" font-weight="600" fill="#222"&gt;用工协议其他争议&lt;/text&gt;
+
+  &lt;text x="470" y="230" text-anchor="middle" font-size="13" fill="#333"&gt;↓ 直接诉讼&lt;/text&gt;
+  &lt;rect x="370" y="242" width="200" height="32" rx="4" fill="#fff" stroke="#333" stroke-width="1.5"/&gt;
+  &lt;text x="470" y="263" text-anchor="middle" font-size="13" font-weight="600" fill="#222"&gt;向人民法院起诉&lt;/text&gt;
+
+  &lt;!-- 分隔虚线 --&gt;
+  &lt;line x1="300" y1="130" x2="300" y2="285" stroke="#ddd" stroke-width="1" stroke-dasharray="4,4"/&gt;
+&lt;/svg&gt;</code></pre>
+<p>另外第20条给了超龄劳动者一个额外的通道：加班、最低工资、工资支付这三类问题，可以直接向人社部门投诉，走行政监察。这条路径往往比仲裁快，比诉讼便宜。</p>
+<hr>
+<h2 id="五一句话总结企业行动清单">五、一句话总结 + 企业行动清单</h2>
+<p><strong>一句话</strong>：7月1日以后，超龄用工的合规成本上去了（工伤+最低工资+加班），但用工灵活性也上去了（无经济补偿/双倍工资/赔偿金）。总体上是从灰色地带捡便宜，变成了有规则可循的规范性用工。</p>
+<p><strong>企业现在该做的六件事</strong>：</p>
+<ol>
+<li><strong>盘点</strong>：公司现有多少超龄员工？年龄、岗位、工资、参保状态各是什么？</li>
+<li><strong>签协议</strong>：7月1日前与所有超龄员工补签书面用工协议，覆盖第6条要求的十一项内容</li>
+<li><strong>缴工伤保险</strong>：为所有超龄员工办理工伤保险参保（浙江企业现有操作基本已经覆盖，其他省份关注当地落地细则）</li>
+<li><strong>核工资</strong>：确认超龄员工工资≥当地最低工资标准</li>
+<li><strong>控加班</strong>：原则上不安排超龄员工加班，确实需要的控制时长并付足加班费</li>
+<li><strong>盯细则</strong>：第15条的"工伤保障办法"将另行制定，盯着人社部后续配套文件</li>
+</ol>
+<p>你们公司有超龄员工吗？工伤保险交了吗？评论区聊聊。</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

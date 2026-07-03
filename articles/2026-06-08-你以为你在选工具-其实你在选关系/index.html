@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>你以为你在选工具，其实你在选关系 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-06-08">2026年6月8日</time>
+            <span class="dotsep"></span>
+            <span>7 分钟阅读</span>
+          </div>
+          <h1 class="article-title">你以为你在选工具，其实你在选关系</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>!<a href="cover.png">封面</a></p>
+<p>前阵子 Anthropic 发了一篇文章，讲 Claude 模型演进的五个阶段。前四个阶段——对话、推理、编程辅助、长程任务规划——都还好理解。第五个阶段他们用的词是"递归自我改进"：AI 开始分析自己、修改自己，进入了一个可以自我改造的阶段。</p>
+<p>这不是未来学。是他们已经实现的事。</p>
+<p>我把这篇文章转给几个律师朋友看。多数人的反应是"好的，等出了好产品告诉我"。这个反应本身没有问题。但它暴露了一个底层假设——而这个假设，决定了你未来三年能从 AI 那里拿到什么。</p>
+<hr>
+<h2 id="你把它当什么决定了你愿意花多少力气">你把它当什么，决定了你愿意花多少力气</h2>
+<p>大多数法律人对 AI 的心态，我称之为"工具心态"。</p>
+<p>逻辑很简单：AI 是一个更好用的 Westlaw，更好用的 Office。我不用关心它怎么工作，不用关心它有哪些扩展能力，不用关心 git 是什么、脚本怎么写、工作区规则怎么设计。我的任务是把法律问题丢进去，等它给我一个答案。至于它为什么答得好、为什么答得差、能不能答得更好——那是供应商的事。</p>
+<p>这个逻辑放在传统的软件产品上完全成立。你不会为了用好 Word 去学 C++。你不会为了用好 Alpha 法律检索去研究搜索引擎的索引算法。你用螺丝刀的时候不需要理解冶金学。</p>
+<p>但 AI 不是螺丝刀。</p>
+<p>最近半年我在课堂上反复讲一个观点：现在的 AI 大模型，它跟互联网时代的软件产品有一个本质区别：它涌现出了自主性。它可以做规划，可以调用工具，有了行动的能力。而且随着你跟它交流越来越多，它会越来越了解你的偏好、你的判断习惯、你对"好"的定义。</p>
+<p>换句话说：它不是一个你"使用"的东西。它是一个你可以"教"的东西。</p>
+<p>这就是第二种心态——我称之为"伙伴心态"。</p>
+<p>伙伴心态下，你的底层逻辑变了。你不会等着供应商给你出一个完美的法律 AI 产品，因为你知道：真正适配你的那个版本，只有你自己养得出来。你不会困惑"我一个律师为什么要学 git"——因为你发现 git 就是你跟 AI 协作的版本历史，就像你跟实习律师说"这个版本改了三处，你看看"。你不会觉得写工作区规则是额外负担，因为你意识到：写规则本质上是在把你的判断标准翻译成 AI 能理解的语言。</p>
+<p>同一件事，在两种心态下完全不同。</p>
+<p>工具心态：学 git 是浪费时间，我一个律师为什么要学程序员的工具。</p>
+<p>伙伴心态：你在教一个实习生理解你的工作方式。你说"以后每次收到合同，先查客户清单确认我方身份，再按审查清单逐条过，最后输出三份文件"。这就是工作区规则。实习生需要这个，AI 也需要。</p>
+<p>工具心态：写脚本是多此一举，AI 直接干不就行了。</p>
+<p>伙伴心态：有些事是确定性的。PDF 转 Markdown、视频下载、批量提取案号——你教会它一次，它就永远会了，而且不消耗 token。这跟实习生一样：格式转换这种事，教一遍就够了，不用每次都解释。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340"&gt;
+  &lt;rect width="600" height="340" fill="#fff" rx="4"/&gt;
+  &lt;!-- Left column: 工具心态 --&gt;
+  &lt;rect x="30" y="50" width="255" height="260" fill="#f5f5f5" rx="4"/&gt;
+  &lt;text x="157" y="80" text-anchor="middle" font-size="16" font-weight="700" fill="#555"&gt;工具心态&lt;/text&gt;
+  &lt;line x1="60" y1="95" x2="255" y2="95" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="50" y="125" font-size="14" fill="#333"&gt;AI = 更好的 Westlaw&lt;/text&gt;
+  &lt;text x="50" y="155" font-size="14" fill="#333"&gt;等着供应商出好产品&lt;/text&gt;
+  &lt;text x="50" y="185" font-size="14" fill="#333"&gt;"我是律师，不学程序员工具"&lt;/text&gt;
+  &lt;text x="50" y="215" font-size="14" fill="#333"&gt;学 git/写规则 = 额外负担&lt;/text&gt;
+  &lt;text x="50" y="245" font-size="14" fill="#333"&gt;用就行了，不用理解&lt;/text&gt;
+  &lt;text x="157" y="285" text-anchor="middle" font-size="13" fill="#999"&gt;→ 天花板 = 供应商的版本号&lt;/text&gt;
+
+  &lt;!-- Right column: 伙伴心态 --&gt;
+  &lt;rect x="315" y="50" width="255" height="260" fill="#f0f0f0" rx="4"/&gt;
+  &lt;text x="442" y="80" text-anchor="middle" font-size="16" font-weight="700" fill="#222"&gt;伙伴心态&lt;/text&gt;
+  &lt;line x1="345" y1="95" x2="540" y2="95" stroke="#ccc" stroke-width="1"/&gt;
+  &lt;text x="335" y="125" font-size="14" fill="#111"&gt;AI = 可以教的实习生&lt;/text&gt;
+  &lt;text x="335" y="155" font-size="14" fill="#111"&gt;自己养出适配你的版本&lt;/text&gt;
+  &lt;text x="335" y="185" font-size="14" fill="#111"&gt;"我在教它理解我的判断标准"&lt;/text&gt;
+  &lt;text x="335" y="215" font-size="14" fill="#111"&gt;git/规则/脚本 = 对齐工具&lt;/text&gt;
+  &lt;text x="335" y="245" font-size="14" fill="#111"&gt;每次交互都在进化&lt;/text&gt;
+  &lt;text x="442" y="285" text-anchor="middle" font-size="13" fill="#222"&gt;→ 天花板 = 你的迭代速度&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<hr>
+<h2 id="控制系统的意义">控制系统的意义</h2>
+<p>在 Claude Code 的架构里，AI 被分成两部分：模型（model）和控制系统（harness）。模型负责理解和生成，控制系统负责管它——什么时候调什么工具、遵循什么规则、输出什么格式、存档到哪里。</p>
+<p>我刚接触这个概念的时候，觉得 harness 就是一些技术配置。用得多了才意识到，harness 是你跟 AI 之间的<strong>对齐层</strong>。你通过它来告诉 AI：我是谁、我在做什么、我认为什么是好的、我习惯怎么做事。</p>
+<p>拆开来看，harness 主要由这些东西构成：</p>
+<p><strong>Git</strong>。程序员用 git 管代码版本，法律人用文件名管文档版本（"法律意见书 v3 终稿 真的终稿 最终版.docx"）。git 让你随时回到历史上任何一个版本、开分支尝试不同方向、合并最好的结果。它不是"程序员的工具"，它是对"变更"这件事的管理方式。</p>
+<p><strong>脚本</strong>。确定性的工作——格式转换、视频下载、批量信息提取——不需要 AI 每次都"理解"一遍。写一个脚本，固定输入、固定流程、固定输出，零 token 消耗，永远可复用。脚本是你在告诉 AI："这种事以后不用问我，直接做。"</p>
+<p><strong>规则</strong>。这是 harness 里最核心的东西。规则是你把判断标准写下来：收到法律咨询先建文件夹、先查知识库再查商用数据库、输出必须附法条原文、碰到 PDF 先调转换脚本。规则越细，AI 越像你。</p>
+<p><strong>工作区</strong>。把上面这些东西按照一个特定工作场景组织起来，就是一个工作区。法律咨询是一个工作区，合同审核是另一个，案件分析是第三个。它们各有各的规则、各有各的知识库引用路径、各有各的输出模板。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 260"&gt;
+  &lt;rect width="600" height="260" fill="#fff" rx="4"/&gt;
+  &lt;text x="300" y="32" text-anchor="middle" font-size="16" font-weight="700" fill="#333"&gt;Harness = 你与 AI 的对齐层&lt;/text&gt;
+  
+  &lt;!-- Center: Harness box --&gt;
+  &lt;rect x="180" y="55" width="240" height="40" fill="#333" rx="4"/&gt;
+  &lt;text x="300" y="80" text-anchor="middle" font-size="15" font-weight="700" fill="#fff"&gt;Harness（控制系统）&lt;/text&gt;
+  
+  &lt;!-- Four components --&gt;
+  &lt;rect x="30" y="125" width="110" height="50" fill="#f5f5f5" rx="3" stroke="#ccc" stroke-width="1"/&gt;
+  &lt;text x="85" y="148" text-anchor="middle" font-size="13" font-weight="600" fill="#333"&gt;Git&lt;/text&gt;
+  &lt;text x="85" y="165" text-anchor="middle" font-size="11" fill="#888"&gt;版本管理&lt;/text&gt;
+  
+  &lt;rect x="155" y="125" width="110" height="50" fill="#f5f5f5" rx="3" stroke="#ccc" stroke-width="1"/&gt;
+  &lt;text x="210" y="148" text-anchor="middle" font-size="13" font-weight="600" fill="#333"&gt;脚本&lt;/text&gt;
+  &lt;text x="210" y="165" text-anchor="middle" font-size="11" fill="#888"&gt;确定性自动化&lt;/text&gt;
+  
+  &lt;rect x="280" y="125" width="110" height="50" fill="#f5f5f5" rx="3" stroke="#ccc" stroke-width="1"/&gt;
+  &lt;text x="335" y="148" text-anchor="middle" font-size="13" font-weight="600" fill="#333"&gt;规则&lt;/text&gt;
+  &lt;text x="335" y="165" text-anchor="middle" font-size="11" fill="#888"&gt;判断标准&lt;/text&gt;
+  
+  &lt;rect x="405" y="125" width="110" height="50" fill="#f5f5f5" rx="3" stroke="#ccc" stroke-width="1"/&gt;
+  &lt;text x="460" y="148" text-anchor="middle" font-size="13" font-weight="600" fill="#333"&gt;工作区&lt;/text&gt;
+  &lt;text x="460" y="165" text-anchor="middle" font-size="11" fill="#888"&gt;场景化组织&lt;/text&gt;
+  
+  &lt;!-- Arrows from components to bottom --&gt;
+  &lt;line x1="85" y1="175" x2="85" y2="195" stroke="#999" stroke-width="1"/&gt;
+  &lt;line x1="210" y1="175" x2="210" y2="195" stroke="#999" stroke-width="1"/&gt;
+  &lt;line x1="335" y1="175" x2="335" y2="195" stroke="#999" stroke-width="1"/&gt;
+  &lt;line x1="460" y1="175" x2="460" y2="195" stroke="#999" stroke-width="1"/&gt;
+  &lt;line x1="85" y1="195" x2="460" y2="195" stroke="#999" stroke-width="1"/&gt;
+  &lt;line x1="270" y1="195" x2="270" y2="220" stroke="#999" stroke-width="1"/&gt;
+  
+  &lt;!-- Result --&gt;
+  &lt;rect x="170" y="220" width="260" height="28" fill="#eee" rx="3"/&gt;
+  &lt;text x="300" y="239" text-anchor="middle" font-size="13" fill="#333"&gt;让 AI 越来越像你，而非越来越像所有人&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>工具心态下，你会问："为什么 Cloud Code 不能直接给我一个做好的工作区？"</p>
+<p>伙伴心态下，你会发现这个问题本身就问错了。不是"为什么没有现成的"，而是"现成的怎么可能适配你"。你的知识库跟别人不一样，你的客户习惯跟别人不一样，你对"好"的判断标准跟别人不一样。你不把标准写进规则里，AI 就只会给你一个平均水平的答案。</p>
+<hr>
+<h2 id="我是律师不是程序员">"我是律师，不是程序员"</h2>
+<p>这是最常见的反对意见，也是最有道理的一个。</p>
+<p>如果你把 AI 当工具，那要求律师学 git、写脚本、搭工作区确实荒谬。就像要求司机学会修发动机才能开车。</p>
+<p>但如果你把 AI 当伙伴，这个类比就换了。</p>
+<p>你不是在学修发动机。你是在学怎么跟一个能力很强但什么都不了解的实习生共事。你要告诉它你的工作习惯、你的判断标准、你希望它怎么跟你配合。这些东西的"语言"恰好涉及 git、脚本、规则——但它们是手段，不是目的。</p>
+<p>我带过实习律师，也带过 AI。这两件事的底层逻辑惊人地相似。</p>
+<p>实习律师来了，你不可能直接说"给我写一份法律意见书"。你要先告诉他文件夹怎么建、模板在哪里、碰到什么类型的法律问题去翻哪个数据库、翻完数据库不够再查什么、客户的特殊偏好是什么（"这个客户不喜欢长段落，结论要放在最前面"）。这些交代完了，他交上来的东西才勉强能用。然后你看一遍，告诉他哪里不对、为什么不对、下次怎么改。改了几轮，他开始能独立出活儿了。</p>
+<p>AI 完全一样。</p>
+<p>区别只有一个：实习律师你交代一次，他记住了（或者没记住，你要再交代一次）。AI 你交代一次，写进规则里，它就永远不会忘。</p>
+<p>我给你一个具体的例子。</p>
+<p>我的法律咨询工作区里有一条规则：收到任何法律问题，必须先在本地知识库里搜——不是先去网上搜，不是直接用模型预训练数据生成。本地知识库的检索顺序也有规定：先翻最高法的理解与适用，再查法条原文和标准资源，还不够才去扩展检索公众号存档。每一条引用的法条，必须通过商用数据库验证。输出必须带附录，把相关法条原文列出来。</p>
+<p>这套规则不是一次写成的。第一次我只写了"查知识库"三个字，跑出来的结果不够好。我发现它检索的时候所有来源混在一起搜，噪音很大。于是我加了检索顺序。后来又发现引用的法条偶尔有误，于是加了验证步骤。再后来觉得输出太薄，于是加了附录要求。</p>
+<p>每次迭代都花不了几分钟。但一年下来，这个工作区已经变成了一套高度适配我的法律研究系统。它知道我的知识库里有什么、知道先翻什么后翻什么、知道引用的法条必须验证、知道输出必须带原文附录。换一个人用这个工作区，效果会差一截——因为这套规则是为我的工作方式写的。</p>
+<p>这就是"养"一个 AI，而不是"用"一个 AI。</p>
+<hr>
+<h2 id="你选的关系决定你能走多远">你选的关系，决定你能走多远</h2>
+<p>回到开头那个问题：为什么大多数法律人把 AI 当工具？</p>
+<p>不是因为工具心态是错的。而是因为工具心态符合我们过去二十年对软件的认知。软件就是产品，产品就是拿来用的，好产品应该开箱即用。</p>
+<p>但 AI 不是软件产品。它更接近一个能力框架。你能从这个框架里拿到什么，取决于你往里面放了什么。你放了你的知识库，它就懂你的领域。你放了你的判断标准，它就按你的标准做事。你放了你的客户习惯，它就按客户的偏好输出。</p>
+<p>什么都不放，它就给一个互联网平均水平——不差，但也不可能是你的。</p>
+<p>Anthropic 那篇文章让我触动最大的不是"AI 能自我改造了"这个技术事实，而是它背后隐含的推论：AI 的进化速度取决于使用它的人怎么跟它互动。那些把它当伙伴、花时间教它、用 harness 跟它对 align 的人，他们的 AI 会以更快的速度变得更好。而那些把它当工具、等供应商更新的人，他们手里的 AI 永远停在上一站。</p>
+<p>这不是"谁先用上 GPT-5"的差距。这是"谁能持续迭代自己的系统"的差距。</p>
+<p>前者是一次性的。后者是复利的。</p>
+<p>今天我在四明山法师 AI 夜校教律师们 git、脚本、工作区规则，有人觉得这些太技术了，跟法律工作没关系。我理解这个反应。但我想说的是：你看到的是一堆技术工具，我看到的是一套对 alignment 的语言——你在用它告诉 AI：这是我，这是我做事的方式，这样才算做得好。</p>
+<p>你以为你在选工具，其实你在选关系。</p>
+<hr>
+<blockquote>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+</blockquote>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

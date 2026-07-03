@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>宁波建工纠纷败诉密码——从500份判决看当事人栽在哪儿 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">法律实务</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-06-30-政府项目审计-财政评审的最长期限限制-建工解释二第13条对-久审不决-的终结/" class="sidebar-link">政府项目审计/财政评审的最长期限限制——建工解释二第13条对"久审不决"的终结</a>
+      
+      <a href="/articles/2026-06-30-实际施工人概念退出历史舞台-建工解释二最重大变革的规则演进与实务影响/" class="sidebar-link">实际施工人概念退出历史舞台——建工解释二最重大变革的规则演进与实务影响</a>
+      
+      <a href="/articles/2026-06-21-一家律所最被低估的知识资产-内部裁判文书库/" class="sidebar-link">一家律所最被低估的知识资产——内部裁判文书库</a>
+      
+      <a href="/articles/2026-06-14-公证到底能做什么-不能做什么-从一次咨询说起/" class="sidebar-link">公证到底能做什么、不能做什么——从一次咨询说起</a>
+      
+      <a href="/articles/2026-06-04-甲方这个位置-正在悄悄吃掉你的真本事/" class="sidebar-link">甲方这个位置，正在悄悄吃掉你的真本事</a>
+      
+      <a href="/articles/2026-05-27-投资茅台-四个字-骗了全国多少人/" class="sidebar-link">"投资茅台"四个字，骗了全国多少人？</a>
+      
+      <a href="/articles/2026-05-27-吹牛税/" class="sidebar-link">吹牛税</a>
+      
+      <a href="/articles/2026-05-23-宁波建工纠纷败诉密码-从500份判决看当事人栽在哪儿/" class="sidebar-link">宁波建工纠纷败诉密码——从500份判决看当事人栽在哪儿</a>
+      
+      <a href="/articles/2026-05-23-宁波建设工程法官的裁判密码/" class="sidebar-link">宁波建设工程法官的裁判密码</a>
+      
+      <a href="/articles/2026-05-22-青年律师不是在-卷-是在-空转/" class="sidebar-link">青年律师不是在"卷"，是在"空转"</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">法律实务</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-05-23">2026年5月23日</time>
+            <span class="dotsep"></span>
+            <span>12 分钟阅读</span>
+          </div>
+          <h1 class="article-title">宁波建工纠纷败诉密码——从500份判决看当事人栽在哪儿</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<blockquote>
+<p>法律实务型 × 裁判数据分析型 | 约 6500 字</p>
+</blockquote>
+<hr>
+<p><strong>先说一个数字：58 件上诉，0 件实体改判。</strong></p>
+<p>不是"改判率低"，是零。58 件上诉中，40 件当事人自己撤回了，18 件宁波中院实质性审完，全部维持原判。诉讼费、律师费、时间成本——全白花了。</p>
+<p>上一篇我写了宁波建设工程法官的裁判密码，从"本院认为"里读法官的论证习惯。这篇换个方向：同样的 500 份文书，但从败诉方的视角看——那些不被法院支持的主张，到底死在哪一步。</p>
+<p>答案比想象中简单：不是法律太难，是基本动作没做对。</p>
+<hr>
+<h2 id="一数据背景">一、数据背景</h2>
+<p>北大法宝 2025 年 10 月到 2026 年 4 月，宁波辖区建设工程合同纠纷，500 份公开文书。252 份判决书，239 份裁定书，9 份其他。406 条有"本院认为"内容，其中 161 条至少包含一种否定性表述——"不予支持""不予采纳""不予采信""不能成立""缺乏依据"——占比 39.7%。</p>
+<p><strong>上网率缺陷声明</strong>：裁判文书上网率不是 100%，这 500 份不代表宁波地区全部建工案件。但本文分析的是"失败模式"——当事人因为什么输掉官司——这种模式不受上网率影响。没上网的案子里，当事人踩的坑大概率也是同一批。</p>
+<hr>
+<h2 id="二最常见的死法证据没了">二、最常见的死法：证据没了</h2>
+<p>406 条"本院认为"里，"不予支持"出现了 103 次。</p>
+<p>这不是一个修辞。是法官在告诉你：你的主张，过不了。</p>
+<p>而在所有被驳回的主张背后，有一个更底层的失败模式——证据缺失。我把法官的措辞按严重程度排了个序：</p>
+<p>| 法官写的 | 真实含义 | 件数 |</p>
+<p>|---------|---------|------|</p>
+<p>| "未提供证据证明" | 什么都没交 | 33 |</p>
+<p>| "不足以证明/认定" | 交了，但不够 | 15 |</p>
+<p>| "无充分证据" | 差一点 | 14 |</p>
+<p>| "举证不能" | 举证责任在你，你搞砸了 | 8 |</p>
+<p>四种表述，加起来覆盖了 70 件案件。这不是边缘现象——是建工诉讼中最主流的败诉方式。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320"&gt;
+  &lt;rect width="600" height="320" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#333"&gt;证据失败的四级梯度&lt;/text&gt;
+  &lt;text x="300" y="58" text-anchor="middle" font-size="13" fill="#999"&gt;法官措辞从轻到重，对应证据从有到无&lt;/text&gt;
+
+  &lt;!-- 四级梯形块 --&gt;
+  &lt;rect x="30" y="82" width="540" height="42" rx="4" fill="#f0f0f0" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="50" y="108" font-size="15" font-weight="700" fill="#555"&gt;"未提供证据证明"&lt;/text&gt;
+  &lt;text x="240" y="108" font-size="13" fill="#888"&gt;什么都没交&lt;/text&gt;
+  &lt;text x="510" y="108" font-size="15" font-weight="700" fill="#c41e3a" text-anchor="end"&gt;33 件&lt;/text&gt;
+
+  &lt;rect x="60" y="130" width="480" height="42" rx="4" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="80" y="156" font-size="15" font-weight="700" fill="#555"&gt;"不足以证明/认定"&lt;/text&gt;
+  &lt;text x="260" y="156" font-size="13" fill="#888"&gt;交了，但不够&lt;/text&gt;
+  &lt;text x="510" y="156" font-size="15" font-weight="700" fill="#d4740e" text-anchor="end"&gt;15 件&lt;/text&gt;
+
+  &lt;rect x="90" y="178" width="420" height="42" rx="4" fill="#f8f8f8" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="110" y="204" font-size="15" font-weight="700" fill="#555"&gt;"无充分证据"&lt;/text&gt;
+  &lt;text x="245" y="204" font-size="13" fill="#888"&gt;差一点&lt;/text&gt;
+  &lt;text x="510" y="204" font-size="15" font-weight="700" fill="#d4a00e" text-anchor="end"&gt;14 件&lt;/text&gt;
+
+  &lt;rect x="120" y="226" width="360" height="42" rx="4" fill="#fafafa" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="140" y="252" font-size="15" font-weight="700" fill="#555"&gt;"举证不能"&lt;/text&gt;
+  &lt;text x="225" y="252" font-size="13" fill="#888"&gt;举证责任在你，搞砸了&lt;/text&gt;
+  &lt;text x="510" y="252" font-size="15" font-weight="700" fill="#888" text-anchor="end"&gt;8 件&lt;/text&gt;
+
+  &lt;!-- 左侧标注 --&gt;
+  &lt;text x="18" y="108" font-size="12" fill="#aaa" text-anchor="end"&gt;最轻&lt;/text&gt;
+  &lt;text x="18" y="252" font-size="12" fill="#aaa" text-anchor="end"&gt;最重&lt;/text&gt;
+  &lt;line x1="22" y1="98" x2="22" y2="260" stroke="#ddd" stroke-width="1"/&gt;
+&lt;/svg&gt;</code></pre>
+<h3 id="未提供证据什么都没交">"未提供证据"：什么都没交</h3>
+<p>最典型的场景：被告提出抗辩——"工程质量有问题""工期延误了""已经付过了"——但一份证据都不交。</p>
+<p>(2025)浙0206民初14980号，被告辩称装修存在质量问题。法官的回应只有一句话："某公司辩称案涉装修存在质量问题，但未提供证据予以证明，其辩言本院不予采信。"一句话，抗辩全部作废。</p>
+<p>(2026)浙0212民初5246号，同样的剧本："被告辩称案涉工程存在延期等问题，但未提供证据予以证明，故本院不予采纳。"</p>
+<p>这里有一个律师必须意识到的事情：法官不跟你讨论"举证责任分配"。他不会说"根据民诉法第 67 条，谁主张谁举证"。他直接看结果——你有没有交证据。没交，就不支持。整个 500 份文书中，"举证责任"这个词只明确出现了 3 次。但实质上，70 件案件因为举证失败输掉了。这一点很难被发现，但很重要。</p>
+<p>举证责任不是法官说出来的，是你没交证据"触发"的。</p>
+<h3 id="不足以证明交了但差一口气">"不足以证明"：交了但差一口气</h3>
+<p>比"没交"高一级——你交了证据，但法官觉得不够。</p>
+<p>(2025)浙0212民初35641号，原告想要证明被告某建设公司是合同相对方，交了一堆材料，法官的结论是"原告向本院提供的证据不足以证明被告某建设公司系合同相对方"。方向对了，力度不够。</p>
+<p>(2025)浙0226民初2742号，更典型——隐蔽工程，现场已经覆盖了，无法确认是否施工，甲公司"无法提供有关签证单应承担举证不能的后果"。不是不想举证，是客观上举不了。但法官不管这个——举证责任在你，举不了就是你输。</p>
+<h3 id="建工案件不可省的五类证据">建工案件不可省的五类证据</h3>
+<p>从这些案件中反向归纳，以下五类证据缺了任何一类，都可能在某些类型的争议中直接败诉：</p>
+<ol>
+<li><strong>书面合同及全部补充协议</strong>——没有这个，连合同相对方都证明不了</li>
+<li><strong>付款凭证</strong>（银行流水、收据、对账单）——现金交易在法庭上等于没交易</li>
+<li><strong>竣工验收资料</strong>——质量争议中，没有验收记录就没有抗辩基础</li>
+<li><strong>往来函件和微信记录</strong>——催告、确认、变更、沟通，全在这里</li>
+<li><strong>结算文件</strong>（送审资料、审核意见、双方签章）——金额争议中，这是唯一的锚</li>
+</ol>
+<hr>
+<h2 id="三上诉为什么失败">三、上诉为什么失败</h2>
+<p>58 件上诉案件，数据很残酷：</p>
+<ul>
+<li>40 件撤诉（69%）</li>
+<li>18 件实质性审理，全部维持原判</li>
+<li>实体改判：0 件</li>
+</ul>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 280"&gt;
+  &lt;rect width="600" height="280" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#333"&gt;58 件上诉的命运分流&lt;/text&gt;
+
+  &lt;!-- 总池子 --&gt;
+  &lt;rect x="215" y="52" width="170" height="44" rx="6" fill="#333"/&gt;
+  &lt;text x="300" y="80" text-anchor="middle" font-size="16" font-weight="700" fill="#fff"&gt;58 件上诉&lt;/text&gt;
+
+  &lt;!-- 分流线 --&gt;
+  &lt;line x1="250" y1="96" x2="140" y2="138" stroke="#666" stroke-width="1.5"/&gt;
+  &lt;line x1="350" y1="96" x2="460" y2="138" stroke="#666" stroke-width="1.5"/&gt;
+  &lt;polygon points="136,134 140,124 144,134" fill="#666"/&gt;
+
+  &lt;!-- 左分支：撤回 --&gt;
+  &lt;rect x="50" y="142" width="180" height="48" rx="6" fill="#f5f5f5" stroke="#ccc" stroke-width="1"/&gt;
+  &lt;text x="140" y="162" text-anchor="middle" font-size="14" fill="#888"&gt;撤回上诉&lt;/text&gt;
+  &lt;text x="140" y="182" text-anchor="middle" font-size="22" font-weight="700" fill="#c41e3a"&gt;40 件&lt;/text&gt;
+
+  &lt;!-- 右分支：维持 --&gt;
+  &lt;rect x="370" y="142" width="180" height="48" rx="6" fill="#f5f5f5" stroke="#ccc" stroke-width="1"/&gt;
+  &lt;text x="460" y="162" text-anchor="middle" font-size="14" fill="#888"&gt;实质性审理&lt;/text&gt;
+  &lt;text x="460" y="182" text-anchor="middle" font-size="22" font-weight="700" fill="#333"&gt;18 件&lt;/text&gt;
+
+  &lt;!-- 维持的后续 --&gt;
+  &lt;line x1="460" y1="190" x2="460" y2="220" stroke="#666" stroke-width="1.5"/&gt;
+  &lt;rect x="370" y="222" width="180" height="36" rx="6" fill="#333"/&gt;
+  &lt;text x="460" y="245" text-anchor="middle" font-size="13" font-weight="700" fill="#fff"&gt;全部维持原判&lt;/text&gt;
+
+  &lt;!-- 下方标注 --&gt;
+  &lt;text x="140" y="210" text-anchor="middle" font-size="12" fill="#aaa"&gt;69%&lt;/text&gt;
+  &lt;text x="460" y="275" text-anchor="middle" font-size="13" fill="#c41e3a" font-weight="700"&gt;实体改判：0 件&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>69% 的撤回率意味着什么？意味着超过三分之二的上诉人，在交了上诉费、请了律师、启动了二审程序之后，自己放弃了。撤回的原因没有写在裁定书里，但观察那 18 件被驳回的判决书，答案浮在水面上。</p>
+<h3 id="二审法官不重新认定事实">二审法官不重新认定事实</h3>
+<p>18 件维持判决的"本院认为"几乎全部使用同一模板：</p>
+<blockquote>
+<p>"一审认定X并无不当 → 上诉人主张Y但未提供充分证据 → 上诉请求不能成立 → 依照《中华人民共和国民事诉讼法》第177条第1款第1项，驳回上诉，维持原判。"</p>
+</blockquote>
+<p>四个固定动作，一个都不会少。二审法官不重新认定事实——事实认定权在一审。没有新证据，没有程序错误，上诉就是在赌二审法官比一审法官更同情你。这个赌注，从 0% 的改判率来看，不成立。</p>
+<h3 id="哪些上诉理由注定被驳回">哪些上诉理由注定被驳回</h3>
+<p>从 18 件维持判决中提取上诉事由：</p>
+<p>(2026)浙02民终549号，上诉人主张应先扣除 26% 的税费管理费，"现有证据不能证明双方就此进行过沟通"，驳回。</p>
+<p>(2025)浙02民终5437号，发包人以"先开票后付款"为由上诉，二审认为"仅以合同约定'先开票、后付款'为由主张不承担逾期付款利息，本院不予支持"——这个主张在一审就已经败了，上诉是再来一遍。</p>
+<p>(2025)浙02民终5356号，上诉人对鉴定结论中的 70000 元费用有异议，"但未提供有效证据予以证明，本院不予支持"——二审不重新审查鉴定结论，除非你能证明鉴定程序违法。</p>
+<p>(2026)浙02民终45号，上诉人主张谢某共同承担还款责任，理由是谢某与郑某是恋爱关系且谢某的微信由郑某使用——法官的回应："难以依此认定胡某与谢某之间存在合同关系，故胡某之上述主张依据不足，应不予支持。"</p>
+<p>以下三种上诉理由，几乎注定失败：</p>
+<ul>
+<li>"一审判得不对"——没有新证据，二审不重新认定事实</li>
+<li>"鉴定结论不合理"——除非程序违法，二审不推翻鉴定</li>
+<li>"对方应该承担更多责任"——除非你能证明一审事实认定有明显错误</li>
+</ul>
+<h3 id="上诉前三个问题">上诉前三个问题</h3>
+<ol>
+<li>一审程序有没有错误？</li>
+<li>有没有一审没交过的新证据？</li>
+<li>一审认定的事实有没有明显违背在案证据的地方？</li>
+</ol>
+<p>三个答案都是"没有"的话，上诉大概率就是陪跑——69% 的撤回者最后也意识到了这一点，只是他们已经花了一轮钱。</p>
+<hr>
+<h2 id="四合同写漏了什么">四、合同写漏了什么</h2>
+<p>从败诉判决反向追溯，很多案件的真正败因在签合同那一刻就埋下了。当事人可能觉得自己签的合同"还可以"，但到了法庭上，模糊地带全成了对方的优势。</p>
+<h3 id="付款条款发票能不能对抗付款">付款条款：发票能不能对抗付款？</h3>
+<p>这是宁波建工纠纷中最高频的争议之一。但法院的立场出奇统一——绝大多数情况下，发票抗辩不成立。</p>
+<p>(2025)浙0226民初2565号："未开票不能作为工程付款的阻却事由。"</p>
+<p>(2025)浙0205民初2601号："某乙公司再以某甲公司先行开票的非主要义务对抗其自身付款的主要义务，不能成立，亦有违诚实信用原则。"</p>
+<p>(2025)浙0212民初9640号："不能以原告未履行开具发票的从义务对抗其自身支付工程款的主要义务。"</p>
+<p>但有一个例外值得注意：(2026)浙0206民初213号，合同明确约定了"先开票后付款"，法院虽然支持了工程款本金，但<strong>不支持逾期付款利息</strong>——没开发票，付款条件没成就，利息不能从应付日起算。</p>
+<p>对合同起草来说，这意味着：写清楚"先票后款"，至少能帮付款方挡掉逾期利息。不写，连这个都挡不住。</p>
+<h3 id="主体条款你和谁签的合同">主体条款：你和谁签的合同？</h3>
+<p>合同相对方争议在 18 件案件中出现，多数以主张方失败告终。失败的共同原因：无法证明"那个人"代表"那家公司"。</p>
+<p>(2025)浙0205民初2550号，原告主张与某分公司存在合同关系，法官的结论是"应承担举证不能的不利后果"——分公司不等于总公司，没有总公司的盖章或授权，合同关系不成立。</p>
+<p>(2026)浙02民终337号则走了另一个方向——上诉人对协议书上的公章有异议，主张"蔡工"无相应权限，但"均无充分的反证推翻该公司加盖的公章，故对其异议，本院不予采信"。公章在谁手里，谁就掌握了合同相对方认定的主动权。</p>
+<p>实务中越来越重要的一条：微信聊天记录。(2026)浙02民终45号虽然因证据不足驳回，但法官明确审查了微信记录。能证明谁在沟通、谁在确认、谁在付款，微信记录就是合同相对方认定的活证据。</p>
+<h3 id="变更条款口头变更等于没有变更">变更条款：口头变更等于没有变更</h3>
+<p>(2025)浙0226民初4062号，口头约定，无法证明，法院不支持。</p>
+<p>这不是特例。施工过程中的增量、变更、洽商，如果没有书面确认，到了法庭上就是空气。更好的做法不是在事后补签——而是在合同中预先约定变更流程：谁有权签变更单、变更单什么格式、多长时间内确认。</p>
+<h3 id="结算条款付款时间的默认规则不一定对你有利">结算条款：付款时间的默认规则不一定对你有利</h3>
+<p>44 件案件的争议根源可以追溯到"双方未完成结算"。而付款时间约定不明时，法院有默认规则——"建设工程已实际交付的，交付之日为应付款时间"。这是建工解释一第 27 条的规定。</p>
+<p>(2025)浙0281民初5917号、(2025)浙0226民初4437号、(2025)浙0281民初12617号——一批案件反复适用同一条规则。法院的默认规则是中立、可预测的，但它不一定符合你的商业预期。如果你的合同里没有写清楚"结算完成后多少天内付款"，那付款时间就不是你说了算。</p>
+<hr>
+<h2 id="五权利主张为什么被驳回">五、权利主张为什么被驳回</h2>
+<p>有些当事人不是没证据，也不是合同写得差——他们有权利，但主张的方式错了。结果是权利在手，判决输了。</p>
+<h3 id="优先受偿权三个最常见的失误">优先受偿权：三个最常见的失误</h3>
+<p>优先受偿权是建设工程承包人的法定优先权，但 500 份文书中只有 16 件涉及，主张率仅 8%。更关键的是，这 16 件中有相当一部分被驳回。</p>
+<p><strong>失误一：对利息和违约金也主张优先受偿。</strong></p>
+<p>(2025)浙0206民初13330号："承包人就逾期支付建设工程价款的利息、违约金、损害赔偿金等主张优先受偿的，人民法院不予支持。"这是建工解释一第 35 条的明确规定——优先受偿权的范围是工程款本金，不包括利息、违约金和损害赔偿金。</p>
+<p>(2025)浙0205民初7045号：法院支持了工程款的优先受偿权，但"对逾期付款利息的优先受偿权请求，因不符合法律规定，本院不予支持"。同一个案件，工程款本金优先受偿成立，利息不成立——区别就在这里。</p>
+<p><strong>失误二：工程已交付后才主张。</strong></p>
+<p>(2025)浙0205民初2601号："因涉案小区已完成交付，故一体折价或拍卖均无可能"，对优先受偿权请求不予支持。房子已经交给业主了，法院不可能把整栋楼拍卖——优先受偿权的行使对象已经不存在了。</p>
+<p><strong>失误三：优先受偿权的行使期限。</strong></p>
+<p>虽然本文数据中未直接出现大量超期案例，但建工解释一第 41 条规定自发包人应当给付工程款之日起 18 个月内行使，逾期消灭。实务中，许多承包人对这个期限没有警觉，等到发包人彻底不付款才想起主张，已经过期。</p>
+<p>这三条失误有一条共同线索：当事人在主张权利的时候，只看了"有没有这个权利"，没看"这个权利的边界在哪"。</p>
+<h3 id="合同无效抗辩想逃但逃不掉">合同无效抗辩：想逃但逃不掉</h3>
+<p>28 件案件认定合同无效，原因集中在无资质、转包、违法分包——违反强制性规定。但在"法院认为"中可以看到一条几乎统一的逻辑：</p>
+<blockquote>
+<p>"违反强制性规定 → 合同无效 → 但工程验收合格 → 参照合同折价补偿"</p>
+</blockquote>
+<p>(2026)浙02民终549号，二审维持了这一逻辑。合同无效不等于不付钱——这个认知差距可能是建工纠纷中最常见的法律误解。有些当事人以为主张合同无效可以逃掉付款义务，但民法典第 793 条写得很清楚：验收合格了，参照合同折价补偿。该付的钱一分不会少。</p>
+<p>真正值得争的不是"合同有没有效"，而是"参照合同的什么内容折价"——管理费能不能扣、税费谁来承担、违约金条款是否参照。这些才是合同无效后的真正战场。</p>
+<h3 id="质量异议说了不算得证明">质量异议：说了不算，得证明</h3>
+<p>32 件案件中出现质量异议或反诉，但大多数被驳回。典型表述是"辩称存在质量问题，但未提供证据予以证明"——回到第二章的老问题。</p>
+<p>质量异议中一个特别值得注意的点：工程已经交付并实际使用了，再提质量问题，法院基本不认。实际使用等于认可工程质量——在宁波法院的裁判逻辑中，这是一条隐性规则。</p>
+<hr>
+<h2 id="六那些不该发生的失误">六、那些不该发生的失误</h2>
+<p>除了证据、上诉、合同和权利主张四大类失败，还有一批案件失败在更基础的动作上。</p>
+<h3 id="缺席判决">缺席判决</h3>
+<p>102 件案件因一方未出庭导致缺席判决或按撤诉处理。这意味着每 5 件案件中就有 1 件的当事人根本没出现在法庭上。缺席的多数是被告（发包方或业主），法院直接采信原告主张——不管你实际上有没有道理，人不在，就没有道理。</p>
+<h3 id="法院释明后不申请鉴定">法院释明后不申请鉴定</h3>
+<p>数量少但后果严重。3 件案件中，法官明确释明可以申请鉴定，当事人没在规定期限内申请，法院直接作出了对未申请方不利的认定。</p>
+<p>(2025)浙0206民初3706号："本院已就某公司2是否需要提起公章真伪鉴定进行了释明，但某公司2未在规定期限内提起公章真伪司法鉴定的申请……本院对某公司2的辩称不予采纳。"</p>
+<p>法官的释明是一个明确的信号——"你现在的证据不够，给你一个机会补"。这个机会不抓住，案子就结束了。</p>
+<hr>
+<h2 id="七结语">七、结语</h2>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300"&gt;
+  &lt;rect width="600" height="300" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#333"&gt;败诉原因集中度示意&lt;/text&gt;
+  &lt;text x="300" y="56" text-anchor="middle" font-size="13" fill="#999"&gt;绝大多数失败集中在四个区域&lt;/text&gt;
+
+  &lt;!-- 证据失败 — 最大块 --&gt;
+  &lt;rect x="36" y="80" width="250" height="130" rx="6" fill="#333"/&gt;
+  &lt;text x="161" y="115" text-anchor="middle" font-size="17" font-weight="700" fill="#fff"&gt;证据失败&lt;/text&gt;
+  &lt;text x="161" y="140" text-anchor="middle" font-size="13" fill="#ccc"&gt;70 件（未提供 / 不足以 / 无充分）&lt;/text&gt;
+  &lt;text x="161" y="162" text-anchor="middle" font-size="12" fill="#999"&gt;最主流的败诉方式&lt;/text&gt;
+  &lt;text x="161" y="195" text-anchor="middle" font-size="11" fill="#888"&gt;→ 第二章&lt;/text&gt;
+
+  &lt;!-- 上诉失败 --&gt;
+  &lt;rect x="302" y="80" width="262" height="60" rx="6" fill="#555"/&gt;
+  &lt;text x="433" y="105" text-anchor="middle" font-size="16" font-weight="700" fill="#fff"&gt;上诉失败&lt;/text&gt;
+  &lt;text x="433" y="125" text-anchor="middle" font-size="12" fill="#ccc"&gt;58 件上诉，69% 撤回，0 件实体改判&lt;/text&gt;
+  &lt;text x="433" y="137" text-anchor="middle" font-size="11" fill="#999"&gt;→ 第三章&lt;/text&gt;
+
+  &lt;!-- 合同失败 --&gt;
+  &lt;rect x="302" y="150" width="124" height="60" rx="6" fill="#777"/&gt;
+  &lt;text x="364" y="175" text-anchor="middle" font-size="15" font-weight="700" fill="#fff"&gt;合同失败&lt;/text&gt;
+  &lt;text x="364" y="195" text-anchor="middle" font-size="11" fill="#ddd"&gt;→ 第四章&lt;/text&gt;
+
+  &lt;!-- 权利失败 --&gt;
+  &lt;rect x="440" y="150" width="124" height="60" rx="6" fill="#999"/&gt;
+  &lt;text x="502" y="175" text-anchor="middle" font-size="15" font-weight="700" fill="#fff"&gt;权利失败&lt;/text&gt;
+  &lt;text x="502" y="195" text-anchor="middle" font-size="11" fill="#eee"&gt;→ 第五章&lt;/text&gt;
+
+  &lt;!-- 底部注释 --&gt;
+  &lt;text x="300" y="248" text-anchor="middle" font-size="13" fill="#888"&gt;四个维度几乎覆盖了所有失败模式&lt;/text&gt;
+  &lt;text x="300" y="272" text-anchor="middle" font-size="12" fill="#aaa"&gt;每个维度之下，败诉原因高度集中、高度可预测&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>从 500 份文书里找败诉规律，结论比想象中集中：</p>
+<p><strong>最主流的失败模式不是法律理解错误，是证据缺失。</strong> 48 件案件什么都没交，15 件交了但不够——这些不是因为法律太难，是因为当事人在起诉或应诉的时候没有认真对待"举证"这个动作。</p>
+<p><strong>上诉的 ROI 需要认真算。</strong> 69% 的撤回率，0% 的实体改判率，大量上诉在一审判决后没有新证据、没有程序错误、没有事实认定明显偏差的情况下提起。二审不是重审——如果没带着新东西上去，大概率是要带着老结果下来。</p>
+<p><strong>合同写得模糊，法院替你填。</strong> 付款时间、发票义务、变更流程、结算方式——每一个模糊地带都有一个默认规则在等着。默认规则不偏袒任何一方，但它也不迁就你的商业预期。</p>
+<p>收束到一句话：在建工纠纷中，输官司不是因为运气差，也不是因为法律复杂。绝大多数时候，是因为某些基本动作——保留证据、写好合同、选对时机——没有在正确的时间做对。</p>
+<p>读判决不如读败诉。胜诉理由千差万别，败诉原因高度集中。知道别人怎么输的，比知道别人怎么赢的更值钱。</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享，四明山法师AI夜校公益培训项目发起人。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>业务和技术的双语者：AI 时代法律人的新基本功 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-05-27">2026年5月27日</time>
+            <span class="dotsep"></span>
+            <span>6 分钟阅读</span>
+          </div>
+          <h1 class="article-title">业务和技术的双语者：AI 时代法律人的新基本功</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>业务和技术的"双语者"，是既能在自己的专业领域里精准识别场景和痛点，又能理解 AI 的技术逻辑——知道模型怎么工作、agent 怎么编排、规则怎么嵌入——然后把两者对接起来的人。</p>
+<p>不是"懂代码的律师"，也不是"懂法律的程序员"。这两个描述都不对。前者低估了技术认知的深度，后者高估了写代码的必要性。双语者真正的能力是把业务需求翻译成技术约束条件，再把技术能力翻译成业务解决方案。</p>
+<hr>
+<h2 id="为什么现在需要这个能力">为什么现在需要这个能力</h2>
+<p>去年一年我讲了 32 场 AI 课，有一个很深的体感：AI 这件事，你听再多没有用，必须下场。</p>
+<p>但一旦下场，马上会碰到一个问题——你是律师，没有技术背景，不会写代码，英文可能还不太好。打开终端看到黑底白字的命令行，第一反应是抗拒。这很正常。</p>
+<p>好在我们赶上了这个时期。AI 让每个人身边都有了一个无所不能的老师。以前你要找一个专业的人聊，任何一个专业的人都没办法跟你口袋里那个 AI 比知识量。碰到的所有困难，都可以通过与 AI 交流逐步解决。</p>
+<p>第一个障碍——恐惧感——可以通过 AI 本身来解决。</p>
+<p>第二个障碍更隐蔽，也更根本。</p>
+<p>当你克服了恐惧，开始用 AI 做实际工作，你会撞上一堵墙：明明跟 AI 说得很清楚了，它给你的东西就是不对。法条是编的，数据算错了，格式乱七八糟。反复改 prompt，反复调参数，问题依然在。</p>
+<p>大多数人这时候会得出一个结论：AI 还不够好，等它再发展发展。</p>
+<p>真正的问题不是 AI 不够好。是你缺少一种能力——你不知道 AI 在什么时候应该被信任，什么时候不应该；你不知道同样一个任务，用大模型直接做和用脚本做，结果天差地别；你不知道模型、数据、编排这三样东西是怎么互相制约的。</p>
+<p>你能说业务语言，但听不懂技术语言。就像一个只会说中文的人和一个只会说英文的人试图合作——两边都说了很多，信息没有真正传递过去。</p>
+<hr>
+<h2 id="双语者的三层能力">双语者的三层能力</h2>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360"&gt;
+  &lt;defs&gt;
+    &lt;marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"&gt;
+      &lt;path d="M0,0 L8,3 L0,6 Z" fill="#333"/&gt;
+    &lt;/marker&gt;
+  &lt;/defs&gt;
+  &lt;rect width="600" height="360" fill="#fff" rx="6"/&gt;
+
+  &lt;!-- Layer 3 (top) --&gt;
+  &lt;rect x="80" y="30" width="440" height="70" rx="4" fill="#1a1a1a"/&gt;
+  &lt;text x="300" y="58" text-anchor="middle" font-size="15" font-weight="700" fill="#fff"&gt;第三层：连接能力&lt;/text&gt;
+  &lt;text x="300" y="80" text-anchor="middle" font-size="12" fill="#ccc"&gt;把场景拆成步骤 → 为每一步选择正确的工具 → 编排成可复用的工作流&lt;/text&gt;
+
+  &lt;!-- Arrow down --&gt;
+  &lt;line x1="300" y1="100" x2="300" y2="125" stroke="#999" stroke-width="1" marker-end="url(#arrow)"/&gt;
+
+  &lt;!-- Layer 2 (middle) - two columns --&gt;
+  &lt;rect x="80" y="130" width="210" height="80" rx="4" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="185" y="158" text-anchor="middle" font-size="14" font-weight="700" fill="#333"&gt;技术认知&lt;/text&gt;
+  &lt;text x="185" y="178" text-anchor="middle" font-size="11" fill="#666"&gt;模型/数据/算力三要素&lt;/text&gt;
+  &lt;text x="185" y="196" text-anchor="middle" font-size="11" fill="#666"&gt;Agent/Skill/MCP 分别是什么&lt;/text&gt;
+
+  &lt;rect x="310" y="130" width="210" height="80" rx="4" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="415" y="158" text-anchor="middle" font-size="14" font-weight="700" fill="#333"&gt;场景知识&lt;/text&gt;
+  &lt;text x="415" y="178" text-anchor="middle" font-size="11" fill="#666"&gt;痛点在哪里、客户要什么&lt;/text&gt;
+  &lt;text x="415" y="196" text-anchor="middle" font-size="11" fill="#666"&gt;工作流的隐性规则是什么&lt;/text&gt;
+
+  &lt;!-- Arrow down --&gt;
+  &lt;line x1="300" y1="210" x2="300" y2="235" stroke="#999" stroke-width="1" marker-end="url(#arrow)"/&gt;
+
+  &lt;!-- Layer 1 (bottom) --&gt;
+  &lt;rect x="80" y="240" width="440" height="90" rx="4" fill="#fafafa" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="300" y="268" text-anchor="middle" font-size="14" font-weight="700" fill="#333"&gt;第一层：基础素养&lt;/text&gt;
+  &lt;text x="300" y="290" text-anchor="middle" font-size="11" fill="#666"&gt;不怕命令行 · 能用 AI 解决报错 · 知道怎么向 AI 描述问题&lt;/text&gt;
+  &lt;text x="300" y="310" text-anchor="middle" font-size="11" fill="#666"&gt;动手习惯 &gt; 理论知识&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<h3 id="第一层动手能力">第一层：动手能力</h3>
+<p>听起来很基础，但这一层拦住的人最多。</p>
+<p>我开了一期 AI 培训课，做了一个刻意设计：课前布置环境部署和软件安装，但明确说课上不讲怎么装软件，也不会辅导。碰到问题自己去问 AI。</p>
+<p>这个设计的目的不是为难人，是测试。如果你完全没有基础，一定会在这个过程中产生心理抗拒——看不懂，无从下手，看到黑色的代码行不知道怎么办。但如果最终借助 AI 的解答，不断试错，慢慢跑通了，你会有很开心的正向反馈。</p>
+<p>人不能光靠远期的饼来维持动力。"AI 是未来""学好了能提升竞争力"——这些话都对，但太远了。人需要短期的一次一次正反馈来激励自己往前走。AI 学 AI 这件事，天然就具备这种特性：碰到一个报错，截图丢给 AI，它告诉你怎么改，你改了，跑通了。这个过程本身就是奖励。</p>
+<p>这一层的关键不在于"学会了多少知识"，而在于打破了心理障碍——不再觉得自己"不是这块料"。</p>
+<h3 id="第二层双轨知识">第二层：双轨知识</h3>
+<p>这一层是双语者的核心。</p>
+<p>技术认知，不是要你学会写代码。是理解几个关键概念以及它们的关系：</p>
+<ul>
+<li>模型是大脑——负责理解、推理、生成，但基于概率，会猜错。</li>
+<li>数据是燃料——有没有正确的数据、数据质量好不好、数据怎么被 AI 读到，直接决定输出质量。</li>
+<li>编排是神经系统——怎么把任务拆成步骤、每一步用什么工具、规则怎么嵌入、怎么审计结果。</li>
+</ul>
+<p>这三样东西互相制约。最好的模型配上垃圾数据，产出是垃圾。最好的数据配上一个不会编排的人，效率一定很低。而这三样又共同受制于一个你不大会想到的因素——成本。模型越强，token 越贵。用最贵的模型做最基础的事，等于用跑车送外卖。</p>
+<p>场景知识，律师本身就有。但问题是，大多数律师的场景知识是"隐性知识"——你知道怎么审合同，但很难把审合同的每一步拆开说清楚。脑子里有一个模糊的"这个条款有问题"的判断，但它是由什么触发的、基于什么规则、参考了什么先例，你没有显性化过。</p>
+<p>双语者要做的，就是把自己的隐性知识显性化——把"我怎么干这件事"拆成"机器可以执行的步骤"。</p>
+<h3 id="第三层连接能力">第三层：连接能力</h3>
+<p>这是最难的。</p>
+<p>有一个律师朋友跟我说了他的场景：国企客户做大宗贸易，每周要查几十个交易对手方的工商和涉诉信息，出简易尽调报告。他试过用 AI 产品来做，结果比自己手动复制粘贴还慢。</p>
+<p>问题出在哪？不是 AI 能力不够，是"连接"不对。</p>
+<p>他用的产品是封装好的 agent，部署在云端，没有系统级权限。每次都得先去企查查下载 PDF 报告，再手动上传给 agent，然后 agent 按内置逻辑去读。10 次有七八次格式不对。</p>
+<p>换成双语者的思路，解法完全不同：</p>
+<ol>
+<li>企查查已经推出了 MCP 工具（机器可读的 API 接口），可以直接调数据，不需要人工下载 PDF。</li>
+<li>给 AI 一个公司名单，它自动调用 MCP 拉数据。</li>
+<li>口头告诉它风险判断规则——"注册资本低于 1000 万的标注关注""近三年有被执行记录的标注高风险"——它把规则写成判断逻辑。</li>
+<li>给它一个报告模板，按模板生成最终文件。</li>
+<li>你审核。</li>
+</ol>
+<p>整个过程，你做了什么？定义了场景（背调报告）、提供了规则（风险判断标准）、设计了模板（输出格式）。AI 做了什么？调数据、跑规则、填模板。</p>
+<p>这就是连接——知道每一步应该用什么能力来解决。确定性计算用脚本，不确定性判断用大模型，数据获取用 MCP，流程编排用 agent。</p>
+<hr>
+<h2 id="常见误区">常见误区</h2>
+<p><strong>以为学几个工具就等于成了双语者。</strong> 市面上有一些两三天教 Claude Code 的班，演示几个案例看起来很厉害，听完收获满满，回去一用啥也不会。工具是载体，不是目的。双语者的核心不是会用 Claude Code，而是理解了背后的逻辑之后，换了别的工具也能上手——底层原理是一样的。</p>
+<p><strong>以为技术认知等于会写代码。</strong> 我认识一些程序员，写代码很熟练，但在 AI 应用上并不比一个深入实践的律师更有优势。因为 AI 落地需要场景知识——痛点在哪、客户要什么、工作流的隐性规则是什么。程序员想象不出律师在工作过程中到底需要什么。反过来，律师也想象不出技术上能做到什么。双语者的价值在于填补这个鸿沟，不是在某一端做到极致。</p>
+<p><strong>以为模型能力决定一切。</strong> 模型只是三要素之一。选最强的模型，不等于产出最好。数据质量、编排方式、规则精细度，往往比模型本身对最终效果的影响更大。GPT-5.5 加混乱的工作流，不如 Claude Haiku 加精准的编排。</p>
+<hr>
+<h2 id="适用边界">适用边界</h2>
+<p>这套方法论不是万能的。</p>
+<p>它适用于有明确工作流、可拆解、可复现的专业服务场景——合同审查、尽职调查、法律检索、文书起草、合规审查。这些场景的共同特征：输入相对结构化、规则可以显性化、输出有可验证的标准。</p>
+<p>它不适用于高度依赖临场判断和人际互动的场景——谈判、庭审、客户信任建立。这些场景中，AI 可以是准备工具，但不能替代人的判断和在场感。</p>
+<p>另外，刚开始接触 AI，不要急着跳到第三层。先把第一层走通——用 AI 解决至少 10 个你真实碰到的技术问题，建立信心和体感。然后自然会走到第二层。</p>
+<hr>
+<p>"业务和技术双语者"这个概念，是我在四明山法师 AI 夜校中提出的。它是一个目标，不是一个已经完成的画像。我自己也还在路上——仍然有大量不懂的东西，仍然每天都在跟 AI 一起摸索。但有一点是确定的：在 AI 快速渗透专业服务业的时期，最先掌握这种双语能力的人，会拥有一个很大时间窗口的竞争优势。</p>
+<p>不是因为他们更聪明，而是因为他们站在业务和技术交界处那个别人看不到的位置上。</p>
+<hr>
+<blockquote>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+</blockquote>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

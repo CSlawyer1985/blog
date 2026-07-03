@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>规则是怎么长出来的：一个律师的Harness构建实录 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-05-15">2026年5月15日</time>
+            <span class="dotsep"></span>
+            <span>5 分钟阅读</span>
+          </div>
+          <h1 class="article-title">规则是怎么长出来的：一个律师的Harness构建实录</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>Harness。这个词的本意是马具——套在马身上的缰绳和鞍具。马有力量，缰绳让它朝你指的方向走。</p>
+<p>在AI领域，harness就是你的控制框架。它把律师的经验、判断标准和风险偏好变成AI可执行的规则，让AI按你的方式工作，而不是按AI的默认方式。</p>
+<p>很多人以为harness是一套最佳实践文档——坐下来好好想、系统设计、一次性写出来。这是对harness最大的误解。</p>
+<p>Harness不是设计出来的，是长出来的。在几十次、上百次真实的协作中，靠每一次出错、每一次补救，一点一点地从你身上流到规则文件里。</p>
+<p>下面我用三个真实的场景，还原这个过程。</p>
+<h2 id="场景一案件分析记忆是怎么一层一层加上去的">场景一：案件分析——记忆是怎么一层一层加上去的</h2>
+<p>一个案件从收案到结案，可能要经历几个月、十几轮分析。每次重新打开案卷，你都要从头回忆：上次分析到哪了？哪些事实已确认？哪些还在争议？</p>
+<p>AI可以记住这些东西，但不是天生的。你得设计一套记忆系统。</p>
+<p>我最初只写了一条规则："每次开始分析前，先读取历史日志。"就一句话。AI开始能记住上次聊到哪儿了，不用我每次重新交代案情。</p>
+<p>用了两轮，问题来了：我往案卷文件夹里放了新文件——对方刚提交的证据——AI没注意到。它还在读旧日志，不知道有新东西。于是我加了第二条规则："自动检测input目录是否有新增文件，如有，在分析开始时报告增量。"</p>
+<p>又过了几轮，发现日志里缺一个重要维度：各方当事人的态度变化。AI记录了事实认定和法律适用的进展，但没记录"对方从完全否认变成了部分承认"这种动态。我加了第三条规则：日志中必须跟踪各方态度变化。</p>
+<p>现在的会话日志格式是第六次迭代。第六次。不是第一次设计好的。</p>
+<p>这个过程的本质是什么？不是"我聪明，提前想到了所有可能性"。是我用了一次，发现少了一块，补上。又用一次，又少一块，再补。规则，是一次一次交互里长出来的。</p>
+<h2 id="场景二合同审核每条规则背后都是一个真实的风险事件">场景二：合同审核——每条规则背后都是一个真实的风险事件</h2>
+<p>合同审核工作区现在有五套规则、二十多个标准条款、客户专属规则。但我想讲的不是"我有多少规则"，是这些规则最初怎么进来的。</p>
+<p>举个具体例子。审查门禁里有一条："仲裁机构名称必须和国务院法制办公布的正式名录逐字比对。"这条规则怎么来的？</p>
+<p>因为有一次，AI审合同，合同里写的仲裁机构是"中国国际贸易仲裁委员会"。AI说没问题，这个机构存在。</p>
+<p>但那个机构的正式名称是"中国国际经济贸易仲裁委员会"。差了"经济"两个字。照合同里那个不准确的名称签了，仲裁条款可能直接被认定无效。</p>
+<p>这个错误，三年级以上的诉讼律师不会犯。但AI犯了。因为AI不知道"仲裁机构名称必须绝对准确"——这不是通用知识，是法律行业的隐性专业标准。</p>
+<p>那天之后我加了这条规则。后来又加了一条：不止仲裁机构，所有争议解决条款里的机构名称、地址、管辖依据，都必须做同类核查。一条规则，触发了一类规则。</p>
+<p>条款库也是这个逻辑。"施工安全事故分级违约金"条款——是审一份建设工程合同时，发现合同里没有这个条款，风险敞口很大，就写了一个标准版加进去。之后所有类似的施工合同，AI都会自动调这个条款出来对比。</p>
+<p>二十多个条款，没有一个是"我觉得应该有"然后凭空写的。每一个都是在审某一份具体合同时，发现"这里缺一个条款，需要标准模板"，然后写了加进去的。</p>
+<p>隐性知识显性化，不是一次访谈、一次冷启动能完成的。它只能在真实的业务场景里，一次一次磨出来。</p>
+<h2 id="场景三咨询分析禁止直接回答这条最反直觉的规则">场景三：咨询分析——"禁止直接回答"这条最反直觉的规则</h2>
+<p>咨询分析工作区里有一条核心规则："收到咨询问题后，禁止直接解答。必须先完成意图分析→知识库研究→综合解答。"</p>
+<p>看起来很反直觉。AI本来就会回答问题，为什么要禁止它直接回答？</p>
+<p>因为一次翻车。</p>
+<p>有一次，客户问了一个公司法问题。AI直接给了答案——引用法条、分析风险、给出建议。上下文合理，逻辑通顺，措辞专业。如果我不验证，就直接发出去了。</p>
+<p>但我去查了。它引用的法条是旧的。三个月前已修订。分析结论的方向对，但因为法条变了，一个关键的法律节点变了，结论是错的。</p>
+<p>AI没有编造法条。它只是不知道那个法条改了。但"不知道"在法律行业，就是错。</p>
+<p>听起来很合理，和真正是对的，在法律行业里，不是一回事。</p>
+<p>从那以后我加了这条最硬的规则：不管问题多简单，AI不能直接答。必须先做知识库检索，研究完了再给结论。研究分三层——优先源、扩展源、警示源。每个来源过效力审计。每个结论标注"有依据"还是"待核实"。宁可不回答，不许编答案。</p>
+<p>上个月又发现AI在研究记录里没区分优先源和扩展源的检索结果——两种不同效力层级的内容混在一起。又加了一条规则：不同层级的结果必须分节记录，不得合并。</p>
+<p>这个过程一直在继续。每一次出错，加一条。每一次发现流程不够，补一段。每一次发现AI记不住，多写一层记忆。</p>
+<h2 id="三条核心原则">三条核心原则</h2>
+<p>回头看这三个场景，有三条原则贯穿始终。</p>
+<p><strong>只加你真正踩过坑的规则。</strong> 不要因为"听说AI容易在某个地方出错"就加规则。每条规则都有维护成本——它让AI的行为更受约束，也可能降低灵活度。加一条规则，一定是因为你亲身遇到一个问题、想清楚了原因、确认了这条规则能堵住缺口。"过度规约"——规则一大堆，大部分没用，还互相打架——比规约不足更麻烦。</p>
+<p><strong>规则永远在生长，别追求"建成"。</strong> 我的四个工作区没一个"建成"了。它们只是在稳定运行。每次出错还会发生，每次出错之后还会加规则。区别是：出错频率在下降，后果在减轻。规则体系不是建成那刻就完美的——它一直在长。</p>
+<p><strong>规则不能消灭错误，只能降低概率。</strong> 有规则之后，AI仍然偶尔会犯规则没覆盖到的错误。规则的作用不是让AI永不犯错——做不到。规则的作用是把已知的错误类别消灭掉，让新错误必须是新类型。每次发现一个新类型的错误，说明你的规则体系又找到了一个边界——这就是进步。</p>
+<h2 id="不适合什么场景">不适合什么场景</h2>
+<p>最后说清楚边界。这套方法适合：有明确的专业标准、愿意在每次出错后复盘更新、把AI当长期合作伙伴而非一次性工具。</p>
+<p>不适合：期望开箱即用、不想花时间迭代规则、把AI当一个更快的搜索引擎。</p>
+<p>如果是后者，封装好的法律AI产品可能更适合你——有现成的规则，不用你维护。但要接受：那是别人的规则，按别人的标准运转。你永远是用户。</p>
+<p>如果你选自建，我的建议是从最常出错的一个环节开始。不要想"我要建一个完整的合同审核AI系统"。想你审合同的时候最容易被哪个问题坑到。先写一条规则。用一周。看它挡住了什么、漏了什么。改。再写第二条。</p>
+<p>这条路慢。但慢的东西，往往是能最快长出真正壁垒的东西。</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

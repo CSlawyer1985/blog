@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ site.name }}</title>
+  <meta name="description" content="{{ site.description }}">
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  {% if page_css %}
+  <link rel="stylesheet" href="/css/{{ page_css }}.css">
+  {% endif %}
+  <script src="/js/main.js" defer></script>
+  {% if page_js %}
+  <script src="/js/{{ page_js }}.js" defer></script>
+  {% endif %}
+</head>
+<body>
+  <a href="#main-content" class="skip-link">跳到内容</a>
+
+  {% include 'partials/navbar.html' %}
+
+  <main id="main-content">
+    {{ content }}
+  </main>
+
+  {% include 'partials/footer.html' %}
+</body>
+</html>

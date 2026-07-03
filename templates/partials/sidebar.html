@@ -1,0 +1,23 @@
+<!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（{{ stats.total_articles }}）</a>
+      {% for cat in all_categories %}
+      <a href="/categories/{{ cat.id }}/" class="sidebar-link">{{ cat.label }}（{{ cat.count }}）</a>
+      {% endfor %}
+    </nav>
+
+    {% if sidebar_articles %}
+    <h4 class="sidebar-title" style="margin-top:24px">{{ sidebar_articles_title }}</h4>
+    <nav class="sidebar-nav">
+      {% for sa in sidebar_articles %}
+      <a href="/articles/{{ sa.slug }}/" class="sidebar-link">{{ sa.title }}</a>
+      {% endfor %}
+    </nav>
+    {% endif %}
+  </div>
+</aside>

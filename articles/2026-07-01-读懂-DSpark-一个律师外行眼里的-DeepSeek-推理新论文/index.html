@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-07-01">2026年7月1日</time>
+            <span class="dotsep"></span>
+            <span>10 分钟阅读</span>
+          </div>
+          <h1 class="article-title">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<blockquote>
+<p>我不是 AI 工程师。这篇是我作为律师，硬着头皮读 DSpark 论文后的理解。技术细节如有不准，欢迎懂行的朋友指正。</p>
+</blockquote>
+<h2 id="一引子律师的体感与一个外行的诚实">一、引子：律师的体感，与一个外行的诚实</h2>
+<p>我做律师这些年，过去一年明显感觉到一件事：用 DeepSeek、Claude 这些 AI，越来越快了。</p>
+<p>不是"快了一点"，是那种从"等一杯咖啡"到"喝一口水"的快。同样问一个法律问题，半年前要盯着进度条转半天，现在似乎刚把问题敲完，答案就开始往外蹦。</p>
+<p>我得先承认一件事：<strong>我是律师，不是 AI 工程师</strong>。所以当我打开 DeepSeek 最近发的那篇 DSpark 论文 <code>[论文原文]</code>，看到满屏的概率分布、置信度校准、贪心调度算法——我跟大多数同行一样，第一反应是关掉。</p>
+<p>但后来我想明白了：律师读这种论文，不需要懂每一个公式。我们需要判断的是——这种"快"是怎么来的，它是不是真的，以及它跟我们以后怎么用 AI 有什么关系。</p>
+<p>DSpark 已经部署在 DeepSeek-V4 系统上，承接真实用户流量，按论文数据，把单用户体感速度最高提了 85%。这篇论文让我作为外行看到了一件事：<strong>"AI 推理"不是什么黑盒魔法，它是一个可以被工程化拆解、被一点点优化的系统</strong>。</p>
+<p>下面是我作为外行律师的解读。技术细节上，我只能保证我读到的部分尽量准确，不能保证没有理解偏差。</p>
+<h2 id="二根本矛盾大模型为什么慢">二、根本矛盾：大模型为什么"慢"</h2>
+<p>要理解 DSpark 在干什么，得先理解大模型为什么慢。</p>
+<p>我的理解是这样的。大模型生成文本的方式叫<strong>自回归</strong>（autoregressive）：一个 token（token，最小语义单元，可以粗略理解成"词"）一个 token 地蹦出来。每生成一个 token，它都要把前文整个再算一遍——一次完整的"前向传播"（forward pass）。</p>
+<p>打个律师能立刻明白的比方：你正在写一份 100 页的法律意见书，但每写下一个字，都得把已经写下的部分从头到尾再读一遍，才能落笔写下一个字。字数越多，每写一个字就越慢。</p>
+<p>我理解，大模型现在的状态大概就是这样。GPU 利用率低，用户等待感强。在单轮问答里，这个"慢"还能忍；一旦切换到 <strong>Agent 工作流</strong>——律师审合同、做案例检索、起草文书，本质上都是一连串的多步调用——每一步的延迟都会被放大叠加，"慢"就变成了"卡"。</p>
+<p>律师用 AI 的典型场景，恰恰是 Agent 化场景。所以这个"慢"，跟律师的关系，可能比跟一般用户更直接。</p>
+<h2 id="三投机解码小模型起草大模型一次复核">三、投机解码：小模型起草，大模型一次复核</h2>
+<p>业界解这个矛盾的主流思路，叫<strong>投机解码</strong>（speculative decoding）。我的理解，它的核心是把"起草"和"验证"两件事拆开：</p>
+<ul>
+<li>先让一个轻量的<strong>草稿模型</strong>（draft model，可以理解成"小模型"）一次性猜出后面好几个 token</li>
+<li>再让原本那个<strong>目标模型</strong>（target model，也就是"大模型"）一次性验证这一整批</li>
+<li>猜对的最长前缀，直接采纳；猜错的位置往后，全部丢弃</li>
+</ul>
+<p>法律人能秒懂的类比：律师助理先草拟一段，合伙人一次复核。助理猜得越准，合伙人需要改的越少，整体越快。</p>
+<p>这套机制有一个反常识的关键性质——<strong>无损</strong>（lossless）。我理解的意思是，最终输出的文字分布，跟大模型自己一个字一个字写，完全一致。也就是说，投机解码不会让 AI "变笨"，只是让它"变快"。这一点是数学上严格成立的，不是我个人的乐观判断。</p>
+<p>论文里有个简洁的提速公式：每个 token 的平均延迟 = (起草耗时 + 验证耗时) ÷ 每轮被采纳的 token 数。从这个公式能看出三个提速杠杆：<strong>起草更快、起草更准、验证更聪明</strong>。</p>
+<p>按论文梳理，DSpark 之前的所有努力，都集中在前两个杠杆上。DSpark 看起来想做的，是把三个杠杆一起拧。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif"&gt;
+  &lt;rect width="600" height="320" fill="#ffffff" rx="4"/&gt;
+  &lt;text x="100" y="32" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a"&gt;标准自回归&lt;/text&gt;
+  &lt;text x="300" y="32" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a"&gt;投机解码&lt;/text&gt;
+  &lt;text x="500" y="32" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a"&gt;DSpark&lt;/text&gt;
+  &lt;line x1="200" y1="45" x2="200" y2="260" stroke="#e5e5e5" stroke-width="1"/&gt;
+  &lt;line x1="400" y1="45" x2="400" y2="260" stroke="#e5e5e5" stroke-width="1"/&gt;
+  &lt;text x="100" y="70" text-anchor="middle" font-size="11" fill="#666"&gt;每个 token 都让大模型算&lt;/text&gt;
+  &lt;rect x="40" y="90" width="22" height="22" fill="#2b2b2b" rx="2"/&gt;
+  &lt;rect x="66" y="90" width="22" height="22" fill="#2b2b2b" rx="2"/&gt;
+  &lt;rect x="92" y="90" width="22" height="22" fill="#2b2b2b" rx="2"/&gt;
+  &lt;rect x="118" y="90" width="22" height="22" fill="#2b2b2b" rx="2"/&gt;
+  &lt;rect x="144" y="90" width="22" height="22" fill="#2b2b2b" rx="2"/&gt;
+  &lt;text x="100" y="138" text-anchor="middle" font-size="18" fill="#bbb"&gt;↓&lt;/text&gt;
+  &lt;text x="100" y="162" text-anchor="middle" font-size="11" fill="#444"&gt;5 次大模型前向&lt;/text&gt;
+  &lt;text x="100" y="195" text-anchor="middle" font-size="11" font-weight="700" fill="#c41e3a"&gt;慢&lt;/text&gt;
+  &lt;text x="100" y="215" text-anchor="middle" font-size="10" fill="#888"&gt;每字重算前文&lt;/text&gt;
+  &lt;text x="300" y="70" text-anchor="middle" font-size="11" fill="#666"&gt;小模型起草 + 大模型复核&lt;/text&gt;
+  &lt;rect x="240" y="90" width="20" height="20" fill="#ffffff" stroke="#999" stroke-width="1" rx="2"/&gt;
+  &lt;rect x="262" y="90" width="20" height="20" fill="#ffffff" stroke="#999" stroke-width="1" rx="2"/&gt;
+  &lt;rect x="284" y="90" width="20" height="20" fill="#ffffff" stroke="#999" stroke-width="1" rx="2"/&gt;
+  &lt;rect x="306" y="90" width="20" height="20" fill="#ffffff" stroke="#999" stroke-width="1" rx="2"/&gt;
+  &lt;rect x="328" y="90" width="20" height="20" fill="#ffffff" stroke="#999" stroke-width="1" rx="2"/&gt;
+  &lt;text x="300" y="138" text-anchor="middle" font-size="18" fill="#bbb"&gt;↓&lt;/text&gt;
+  &lt;rect x="288" y="151" width="24" height="24" fill="#2b2b2b" rx="2"/&gt;
+  &lt;text x="300" y="195" text-anchor="middle" font-size="11" font-weight="700" fill="#2e7d32"&gt;快&lt;/text&gt;
+  &lt;text x="300" y="215" text-anchor="middle" font-size="10" fill="#888"&gt;但后半段易塌&lt;/text&gt;
+  &lt;text x="500" y="70" text-anchor="middle" font-size="11" fill="#666"&gt;半自回归 + 按需验证&lt;/text&gt;
+  &lt;rect x="440" y="90" width="20" height="20" fill="#ffffff" stroke="#999" stroke-width="1" rx="2"/&gt;
+  &lt;rect x="462" y="90" width="20" height="20" fill="#ffffff" stroke="#999" stroke-width="1" rx="2"/&gt;
+  &lt;rect x="484" y="90" width="20" height="20" fill="#ffffff" stroke="#999" stroke-width="1" rx="2"/&gt;
+  &lt;rect x="506" y="90" width="20" height="20" fill="#ffffff" stroke="#999" stroke-width="1" rx="2"/&gt;
+  &lt;rect x="528" y="90" width="20" height="20" fill="#ffffff" stroke="#999" stroke-width="1" rx="2"/&gt;
+  &lt;line x1="450" y1="113" x2="538" y2="113" stroke="#c41e3a" stroke-width="1" stroke-dasharray="3,2"/&gt;
+  &lt;text x="500" y="128" text-anchor="middle" font-size="9" fill="#c41e3a"&gt;串行修细节&lt;/text&gt;
+  &lt;text x="500" y="148" text-anchor="middle" font-size="18" fill="#bbb"&gt;↓&lt;/text&gt;
+  &lt;rect x="476" y="161" width="20" height="20" fill="#2b2b2b" rx="2"/&gt;
+  &lt;rect x="500" y="161" width="20" height="20" fill="#2b2b2b" rx="2"/&gt;
+  &lt;text x="500" y="195" text-anchor="middle" font-size="11" font-weight="700" fill="#2e7d32"&gt;更快·不崩&lt;/text&gt;
+  &lt;text x="500" y="215" text-anchor="middle" font-size="10" fill="#888"&gt;两瓶颈都解&lt;/text&gt;
+  &lt;line x1="40" y1="260" x2="560" y2="260" stroke="#eee" stroke-width="1"/&gt;
+  &lt;text x="300" y="285" text-anchor="middle" font-size="10" fill="#999"&gt;图 1 ｜ 黑块 = 大模型计算，白块 = 小模型起草&lt;/text&gt;
+  &lt;text x="300" y="302" text-anchor="middle" font-size="10" fill="#999"&gt;三种范式最终输出文本完全一致（无损）&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<h2 id="四DSpark之前两道解不开的结">四、DSpark 之前：两道解不开的结</h2>
+<p>投机解码听起来很美，但业内做了两年，撞上了两道结。DSpark 论文的真正价值，从我的角度看，是同时解开了这两道。</p>
+<p><strong>第一道结：猜得快，但后半段塌陷。</strong></p>
+<p>草稿模型里有一派叫"并行草稿模型"（parallel drafter，代表是 DFlash）——按论文的说法，它一次前向传播就能猜出好几个 token，速度极快。问题在于，它每个位置都是<strong>独立预测</strong>的，后面位置不知道前面实际选了什么。</p>
+<p>论文里有个我觉得很清楚的例子：假设上下文接下来既可以接 "of course"，也可以接 "no problem"，两种都合理。并行模型在猜的时候，每个位置都是从所有可能里各自挑最优——位置 1 挑了 "of"，位置 2 挑了 "problem"（因为它独立看的话 "problem" 也高频），结果凑出来一个 "of problem"，谁都不会要。</p>
+<p>法律类比：让 7 个律师助理同时各猜一段合同的下一段，谁都不看别人写的，凑在一起必然前后断裂、条款打架。</p>
+<p>论文管这个叫<strong>采纳率衰减</strong>（acceptance decay）——草稿前面几个 token 还行，越往后越废，验证也算白做。</p>
+<p><strong>第二道结：猜得多，反而拖慢系统。</strong></p>
+<p>这道结更反直觉。既然并行起草那么快，那草稿越长越好？论文给出的答案是：错。</p>
+<p>原因在于<strong>并发</strong>。我理解是这样的：大模型在生产环境里不是只服务你一个人，它同时要处理几十上百个请求。每个请求让大模型验证一批草稿 token，那些<strong>最终被拒的 token</strong>，仍然占用了大模型宝贵的"批次容量"（batch capacity）——这个容量本可以用来服务别的用户。</p>
+<p>而且越是开放式的对话（律师咨询、自由问答），草稿被拒的概率就越高。于是出现一个怪圈：草稿盲目求多，反而把整体吞吐量拉下来。</p>
+<p>这两道结合在一起，恰好卡住了投机解码的命门：草稿要准（不然后半段塌），验证要克制（不然系统崩）。从论文看，DSpark 想干的事，是用两板斧分别拆掉这两道结。</p>
+<h2 id="五DSpark的两板斧">五、DSpark 的两板斧</h2>
+<h3 id="第一板斧半自回归生成并行起骨架串行修细节">第一板斧：半自回归生成——"并行起骨架，串行修细节"</h3>
+<p>针对"后半段塌陷"，论文给出的解法叫<strong>半自回归</strong>（semi-autoregressive）生成。</p>
+<p>我理解的结构是"重 + 轻"两层：</p>
+<ul>
+<li><strong>并行主干</strong>（parallel backbone）：一次算完所有位置的"基础预测"，速度跟并行草稿模型一样快</li>
+<li><strong>轻量序列头</strong>（sequential head，默认用 Markov head）：基于已经采样的 token，给每个位置再加一个"修正偏置"</li>
+</ul>
+<p>我试着用律师能懂的话翻译一下：先让并行主干快速起出整段的"骨架"，再让一个轻量模块串行扫一遍，根据"前面实际选了什么"给每个位置做微调。这样既保住了并行的速度，又恢复了 token 之间的依赖关系。</p>
+<p>律师类比：合伙人先让 7 个助理并行草拟各段（快），再让一位资深助理从头到尾串行通读一遍，专门修段落之间的衔接（准）。资深助理不重写内容，只调过渡——我理解，这就是序列头扮演的角色。</p>
+<p>论文里跑出来的一个结果让我印象深刻：<strong>两层架构的 DSpark，比五层架构的 DFlash 表现还好</strong>。也就是说，局部串行的"性价比"看起来远超纯粹堆深并行模型。这个反直觉的结论，如果站得住，意味着——结构对了，可能比单纯堆算力更管用。</p>
+<p>所以 DSpark 不是放弃并行，而是给并行装上一条"自检的尾巴"。这条尾巴很轻，但从数据看，它解掉了后半段塌陷。</p>
+<h3 id="第二板斧置信度调度验证没把握的不送给大模型">第二板斧：置信度调度验证——"没把握的，不送给大模型"</h3>
+<p>针对"验证浪费算力"，DSpark 给出的解法叫<strong>置信度调度验证</strong>（confidence-scheduled verification）。</p>
+<p>这套机制由两个零件配合。</p>
+<p><strong>零件一：置信度头</strong>（confidence head）。按论文的说法，它给每个草稿位置打一个 0 到 1 之间的分数 c，建模"这个位置被大模型采纳的概率"。说得直白点：草稿自己先给自己评个分，"这段我有 80% 把握"、"这段只有 20% 把握"。</p>
+<p>但论文指出了一个坑：神经网络天然"过度自信"（overconfident），它说 80% 把握的，实际可能只有 60%。DSpark 引入了一种叫 <strong>STS</strong>（Sequential Temperature Scaling，序列温度缩放）的校准方法，从左到右逐位置校准，让置信度分数真正匹配经验采纳率。这一步看着是技术细节，但我理解它其实是把整个调度机制的根基校准了——助理自评准了，后面的复核分流才有意义。</p>
+<p><strong>零件二：硬件感知前缀调度器</strong>（hardware-aware prefix scheduler）。按论文，它干的事是：根据系统当前负载，动态决定每个请求到底验证几个 token。</p>
+<ul>
+<li>系统闲的时候：多验证几个无所谓，反正算力闲置</li>
+<li>系统忙的时候：只验证高置信度的，把算力省下来服务更多请求</li>
+</ul>
+<p>律师类比：合伙人复核助理草稿时，让助理自己先标"这段没把握"。合伙人忙的时候，直接跳过低把握的段落，专注看高把握的有没有错；闲的时候，多看几段也无妨。<strong>会"放弃"的复核，看起来比"全力"的复核更高效</strong>——前提是助理自评要准，所以才需要前面那套 STS 校准。</p>
+<p>我理解，这套机制的关键在于：它是<strong>全局优化</strong>。不是给单个请求找最优，而是给整个系统找最优——把大模型的算力，路由到"最有可能被采纳"的 token 上。论文里把这个表述成一个吞吐量最大化问题，用贪心算法求解。为了让结果仍然"无损"，论文还专门加了个 early-stopping 机制（附录 A 有严谨证明，我作为外行就不展开了）。</p>
+<p>两板斧合起来，对应论文标题的两半：<strong>半自回归生成（让草稿更准）+ 置信度调度验证（让验证更聪明）</strong>。从论文看，前人大多只攻其一，DSpark 这次把两件事一起做了。</p>
+<h2 id="六实际效果不是PPT是真实流量">六、实际效果：不是 PPT，是真实流量</h2>
+<p>技术论文最怕"PPT 数据"——离线 benchmark 漂亮，上线一跑就拉垮。从 DSpark 给出的数据看，它不是。</p>
+<p><strong>离线 benchmark</strong> <code>[论文原文]</code>：在 Qwen3-4B / 8B / 14B 三个目标模型上，DSpark 相比自回归基线 Eagle3，平均采纳 token 长度提升 30.9%、26.7%、30.0%；相比并行基线 DFlash，提升 16.3%、18.4%、18.3%。跨模型家族（Gemma4-12B）一致。</p>
+<p><strong>线上真实流量</strong>：DSpark 已部署在 DeepSeek-V4-Flash 和 V4-Pro 上，承接真实用户请求。相比此前的生产基线 MTP-1：</p>
+<ul>
+<li>V4-Flash：单用户体感速度提升 <strong>60%-85%</strong></li>
+<li>V4-Pro：单用户体感速度提升 <strong>57%-78%</strong></li>
+</ul>
+<p>更关键的指标在严苛 SLA（Service Level Agreement，服务等级承诺，可以简单理解成"系统必须保证的最低响应速度"）下。论文说，在 120 tok/s/user（每秒每用户 120 个 token）这种严苛档位，旧基线 MTP-1 的吞吐量会断崖式下降，几乎无法服务；DSpark 仍然稳定。</p>
+<p>论文用了一个我觉得挺到位的表述：DSpark "把整个服务系统的帕累托前沿向外推"——说白了，<strong>它解锁了以前根本达不到的性能档位</strong>。这不是"好一点"，更像是"从做不到变成做得到"。</p>
+<p>同时，DSpark checkpoints 和 DeepSpec 训练仓库都已经开源。我的理解是，国内大厂最前沿的推理优化能力，正在向社区外溢。</p>
+<h2 id="七对律师用AI的三层实际影响">七、对律师用 AI 的三层实际影响</h2>
+<p>数据归数据，对律师到底意味着什么？我试着把它拆成三层。</p>
+<p><strong>第一层：体感层——Agent 工作流是最大受益方。</strong></p>
+<p>律师审合同、做案例检索、起草文书，本质上都是多步调用——每一步的延迟会叠加放大。DSpark 这种"严格 SLA 下也稳"的能力，恰恰是 Agent 场景最需要的。论文里明确点名了它的受益场景是"real-time conversational assistants and multi-turn agentic workflows"——实时对话助手和多轮 Agent 工作流。这正是律师用 AI 的主战场。</p>
+<p><strong>第二层：经济层——推理成本下降，AI 服务会更便宜。</strong></p>
+<p>我理解，算力效率提升，等于同样一台服务器能服务更多用户。在价格端，这迟早会传导成 AI 服务的单价下行。这对中小律所和独立律师是实打实的利好——能用上更强的模型，花的钱却更少。</p>
+<p><strong>第三层：能力层——Agent 从"演示"走向"生产"的临界点。</strong></p>
+<p>很多律师同行对 Agent 的体感是"看着很美，用起来卡顿"。卡顿的核心原因之一就是延迟——多步调用，每步慢一点，整个流程就废了。DSpark 这种"不崩"的能力，按论文说法，是 Agent 真正走向生产可用的重要一环。它未必是终点，但可能是基础设施级别的一步。</p>
+<h2 id="八未来影响三件事我个人在关注">八、未来影响：三件事我个人在关注</h2>
+<p>把视线再放远一点，DSpark 背后藏着三个我作为律师比较关注的方向。</p>
+<p><strong>一是推理优化正从"算法题"变成"系统工程题"。</strong> DSpark 最让我意外的地方——如果我没理解错——不是某个算法创新，而是它把算法和硬件调度深度耦合。未来法律 AI 应用的护城河，可能越来越不在于"用了哪个模型"，而在于工程整合能力。谁能把模型、调度、硬件、业务场景捏得最紧，谁就占优。这对律师的启示是：选 AI 工具时，不要只看背后是哪个模型，还要看厂商的工程能力。</p>
+<p><strong>二是开源生态加速。</strong> DeepSpec 训练仓库的开源，让国内大厂最前沿的推理优化能力开始外溢。垂直法律 AI 厂商可以基于这套开源底座做行业优化，不必从零造轮子。这对法律科技行业是好事——底层能力在拉平，竞争会越来越聚焦在场景理解上，而这恰恰是律师的强项。</p>
+<p><strong>三是"快"重新定义"能用"。</strong> 很多以前做不到的法律 AI 场景——庭审实时辅助、客户咨询即时响应、长文档秒级审阅——可能都会被"快"这件事重新打开。速度本身，正在成为新场景的入口。</p>
+<h2 id="九结尾律师不需要懂公式但要懂三件事">九、结尾：律师不需要懂公式，但要懂三件事</h2>
+<p>回到开头那个问题：我们做律师的，不需要懂 DSpark 的每一个数学公式。但我觉得有几件事值得懂。</p>
+<p><strong>第一，AI 推理是一个工程系统，不是黑盒魔法。</strong> 它可以被拆解、可以被优化、可以被替换。律师理解这一点，比记住任何一个具体模型更重要。</p>
+<p><strong>第二，该关注的三个信号是：响应速度变化、价格变化、Agent 可用性变化。</strong> 这三个信号背后，都是底层推理框架在动。每一次类似 DSpark 这样的进展，都会在这三个维度上同时推动。</p>
+<p><strong>第三，律师真正要学的，不是怎么调参数，是怎么在 AI 演进里找到自己的位置。</strong> AI 在变快、变便宜、变能干，但法律判断、客户沟通、商业权衡——这些仍然在律师手里。会借力的律师，会跑赢不会借力的律师。</p>
+<p>DSpark 这篇论文的具体技术，过几年可能就被更新的方法取代。但它指向的趋势——AI 推理从"贵且慢"走向"便宜快且稳"——是我们这个十年必须搭上的车。</p>
+<p>作为律师，我读这篇论文最大的收获，不是搞懂了什么算法，而是更清楚了一点：<strong>我们正活在一个 AI 基础设施飞速演进的时代，律师能做的，是保持好奇、保持谦卑，然后想清楚——怎么用它，让它真正帮到自己的客户和案件</strong>。</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

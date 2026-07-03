@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>为什么 AI 不喜欢 PDF？ — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-06-04">2026年6月4日</time>
+            <span class="dotsep"></span>
+            <span>6 分钟阅读</span>
+          </div>
+          <h1 class="article-title">为什么 AI 不喜欢 PDF？</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>上一篇文章里，我把 .docx 比作"装修好的办公室"——人走进去很舒服，AI 却想要建筑图纸。</p>
+<p>如果 .docx 是办公室，那 PDF 是什么？</p>
+<p>一张高清照片，拍下了这间办公室。</p>
+<p>人看照片能感知布局、氛围、大概有什么家具。但 AI 要从照片里推断：门在哪、桌上写了什么、文件柜里有什么——它面对的不是文档，而是文档的影像。</p>
+<p>.docx 的问题是"结构太复杂"。PDF 的问题是"它本来就不是为了表达结构，而是为了固定版面"。</p>
+<h2 id="一PDF的本质电子纸不是文档">一、PDF 的本质：电子纸，不是文档</h2>
+<p>PDF 的设计目标只有一个：不管在什么电脑、什么系统、有没有原字体，打开后看起来都一样。</p>
+<p>为此它付出了代价——版式固定、分页固定、字体固定、位置固定、打印稳定、不可轻易篡改。</p>
+<p>判决书、合同扫描件、招股说明书、审计报告、评估报告、会议材料、盖章签字文件——这些材料最怕一件事：乱版、变形、被修改。PDF 恰好解决了这个问题。</p>
+<p>所以 PDF 是交付格式、归档格式、展示格式。唯独不是编辑格式，也不是语义格式。</p>
+<p>PDF 最大的美德——"无论在哪打开，看起来都一样"——恰好是 AI 的噩梦。AI 不关心看起来什么样，它只想知道：这句话是什么，这段和那段什么关系，这个数字属于哪个字段。</p>
+<h2 id="二AI为什么头疼六个原因">二、AI 为什么头疼？六个原因</h2>
+<h3 id="1记录的是坐标不是语义">1. 记录的是坐标，不是语义</h3>
+<p>Word 和 Markdown 里的文字知道自己是什么——标题、正文、列表、引用。</p>
+<p>PDF 不知道。</p>
+<p>很多 PDF 内部更接近这样：</p>
+<blockquote>
+<p>在 x=120, y=730 的位置画一个字：合</p>
+<p>在 x=132, y=730 的位置画一个字：同</p>
+<p>在 x=144, y=730 的位置画一个字：编</p>
+<p>在 x=156, y=730 的位置画一个字：号</p>
+</blockquote>
+<p>它关心坐标、字体、字号、旋转角度、颜色。不关心"这是第一条""这是正文段落""这是表格第一列"。</p>
+<p>AI 要从 PDF 里读内容，得反推：这些散落在页面上的字，到底怎么组成一句话、一个段落、一个标题、一个表格？比直接读 Markdown 费劲得多。</p>
+<h3 id="2阅读顺序经常错乱">2. 阅读顺序经常错乱</h3>
+<p>人看 PDF 是二维视觉——眼睛扫过去，自然知道先读左栏再读右栏，跳过页眉页码。</p>
+<p>AI 得把二维页面还原成一维文本流。顺序一对不上，语义就崩。</p>
+<p>双栏排版是最直观的例子。人类先读左栏全部、再读右栏全部。但解析器可能读成：左栏第一行、右栏第一行、左栏第二行、右栏第二行——两篇独立的内容被缝成了弗兰肯斯坦。</p>
+<p>法律文件里双栏虽少，同类问题一点不少：页眉页脚混进正文、页码混进正文、目录和正文搅在一起、脚注插进正文中间、批注印章签名干扰识别、附件编号和正文编号错位。</p>
+<h3 id="3表格是重灾区">3. 表格是重灾区</h3>
+<p>PDF 里的表格，很多时候不是表格。是一堆线条，加上按坐标摆放的文字。</p>
+<p>人眼看到：</p>
+<p>| 付款节点 | 比例 | 条件 |</p>
+<p>|---------|------|------|</p>
+<p>| 第一期 | 30% | 合同签订后 |</p>
+<p>| 第二期 | 50% | 主体验收后 |</p>
+<p>PDF 内部可能只是：</p>
+<blockquote>
+<p>付款节点（x=100, y=500）</p>
+<p>比例（x=250, y=500）</p>
+<p>条件（x=350, y=500）</p>
+<p>第一期（x=100, y=520）</p>
+<p>30%（x=250, y=520）</p>
+<p>……</p>
+<p>若干条横线和竖线</p>
+</blockquote>
+<p>AI 得自己猜：哪些字属于同一行、同一列、有没有合并单元格、表头对哪些内容、跨页表格接不接得上、表格脚注归谁。</p>
+<p>猜错了，法律含义就错了。"违约金比例 0.05%/日，适用期间：逾期付款期间"——列对应一错，比例和条件就串了位。</p>
+<h3 id="4扫描PDF里面可能根本没有文字">4. 扫描 PDF：里面可能根本没有文字</h3>
+<p>PDF 分两种。文本型 PDF 可以选中文字、复制粘贴；扫描型 PDF 本质是一张张图片。</p>
+<p>扫描合同、扫描判决书、盖章件、拍照件——这些文件内部可能没有文字，只有 page1.png、page2.png、page3.png。</p>
+<p>AI 得先 OCR。而 OCR 是错误放大器：错别字、标点错、数字错、条款编号错、表格错位、印章遮挡、手写签名认不出、页边阴影干扰、斜拍模糊低分辨率漏字。</p>
+<p>法律场景里这尤其要命。"15 日"变成"I5 日"，"1,000,000 元"变成"100,000 元"——少一个零，后果完全不同。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340"&gt;
+  
+  &lt;!-- 上层：视觉层 --&gt;
+  &lt;rect x="40" y="20" width="520" height="130" rx="6" fill="#fafafa" stroke="#333" stroke-width="1.5"/&gt;
+  &lt;text x="300" y="48" text-anchor="middle" font-size="14" font-weight="700" fill="#333"&gt;视觉层（人眼看到的）&lt;/text&gt;
+  &lt;text x="300" y="70" text-anchor="middle" font-size="12" fill="#555"&gt;扫描图片：文字清晰、排版正确&lt;/text&gt;
+  
+  &lt;!-- 模拟扫描文本 --&gt;
+  &lt;rect x="80" y="85" width="440" height="50" rx="3" fill="#fff" stroke="#ccc" stroke-width="1"/&gt;
+  &lt;text x="300" y="105" text-anchor="middle" font-size="15" fill="#111" font-weight="600"&gt;甲方应于 15 日内支付 1,000,000 元&lt;/text&gt;
+  &lt;text x="300" y="125" text-anchor="middle" font-size="11" fill="#999"&gt;人眼看到：15日 · 1,000,000元 ✓&lt;/text&gt;
+
+  &lt;!-- 箭头 --&gt;
+  &lt;text x="300" y="165" text-anchor="middle" font-size="20" fill="#c41e3a"&gt;↓&lt;/text&gt;
+  &lt;text x="300" y="180" text-anchor="middle" font-size="11" fill="#c41e3a"&gt;OCR 识别&lt;/text&gt;
+
+  &lt;!-- 下层：OCR隐藏文本层 --&gt;
+  &lt;rect x="40" y="195" width="520" height="130" rx="6" fill="#fff5f5" stroke="#c41e3a" stroke-width="1.5"/&gt;
+  &lt;text x="300" y="223" text-anchor="middle" font-size="14" font-weight="700" fill="#c41e3a"&gt;隐藏文本层（AI 读到的）&lt;/text&gt;
+  &lt;text x="300" y="245" text-anchor="middle" font-size="12" fill="#555"&gt;OCR 结果：隐藏在扫描图下面，人不看，AI 读&lt;/text&gt;
+
+  &lt;rect x="80" y="260" width="440" height="50" rx="3" fill="#fff" stroke="#c41e3a" stroke-width="1" stroke-dasharray="4,2"/&gt;
+  &lt;text x="300" y="278" text-anchor="middle" font-size="15" fill="#c41e3a" font-weight="600"&gt;甲方应于 I5 日内支付 100,000 元&lt;/text&gt;
+  &lt;text x="300" y="298" text-anchor="middle" font-size="11" fill="#c41e3a"&gt;AI 读到：I5日 · 100,000元 ✗&lt;/text&gt;
+
+&lt;/svg&gt;</code></pre>
+<h3 id="5可见内容可复制内容">5. 可见内容 ≠ 可复制内容</h3>
+<p>这是 PDF 特有的诡异问题。</p>
+<p>你看到页面上有一段文字，选中复制出来是乱码、缺字、顺序颠倒。原因很多：字体子集嵌入、编码映射异常、自定义字体、文本被转曲、文本层和图像层不一致。</p>
+<p>更隐蔽的情况：很多扫描 PDF 有两层——视觉层是扫描图片，隐藏文本层是 OCR 结果。如果 OCR 层错了，你人在图片上看到的是对的，AI 读到的却是错的。</p>
+<p>这就是 PDF 最坑的地方：人眼看到的，不一定是机器读到的。</p>
+<h3 id="6版本比较几乎不可能">6. 版本比较几乎不可能</h3>
+<p>哪怕只改一个字，PDF 内部的对象、字体、压缩流、页面坐标都可能整体变化。Git 永远只给你一句 <code>Binary files differ</code>，不会告诉你"甲方应于 30 日内付款"变成了"甲方应于 15 日内付款"。</p>
+<p>PDF 软件可以做视觉比对——叠在一起标出哪里变了——但那标记的是版面差异，不是语义差异。对 AI 来说，PDF 不适合做知识库的原生格式。</p>
+<h2 id="三PDFvsdocx一张表">三、PDF vs docx：一张表</h2>
+<p>| 维度 | docx | PDF |</p>
+<p>|------|------|-----|</p>
+<p>| 本质 | ZIP + XML 文档工程包 | 固定版面的电子纸 |</p>
+<p>| 核心目标 | 可编辑、可协作、可排版 | 固定展示、打印、归档 |</p>
+<p>| 人类优势 | 修改、批注、修订方便 | 打开一致、不乱版、可签章 |</p>
+<p>| AI 难点 | 结构复杂、样式分散、修订混杂 | 缺少语义结构、顺序不稳定、表格难还原 |</p>
+<p>| 文本状态 | 通常有正文 XML | 可能是文本，也可能只是图片 |</p>
+<p>| 表格 | 有一定结构，但复杂 | 很多只是线条和坐标 |</p>
+<p>| 版本管理 | 不利于 Git diff | 更不利于 Git diff |</p>
+<p>| 适合用途 | 编辑稿、协作稿 | 终稿、归档稿、盖章稿 |</p>
+<p>| AI 友好度 | 一般 | 更差，尤其扫描 PDF |</p>
+<p>所以：</p>
+<ul>
+<li>.docx 是"复杂的文档工程包"</li>
+<li>PDF 是"固定版面的电子纸"</li>
+</ul>
+<p>AI 更讨厌 PDF 的原因很简单：它经常连正文在哪里都不知道，得从版面和图像中反推。</p>
+<h2 id="四法律场景下问题被放大">四、法律场景下，问题被放大</h2>
+<p>法律人可能是全行业接触 PDF 最多的群体之一。但 PDF 在法律场景里的坑，很多人还没意识到。</p>
+<p><strong>判决书 PDF。</strong> 页眉页码混入正文、案号位置异常导致识别失败、法院名称被当成正文、裁判日期与落款混淆、审判人员名单混入说理、脚注引用条文错位。AI 拿这些被污染的文本做案例分析，可能把格式内容当成裁判理由。</p>
+<p><strong>合同扫描件。</strong> 合同审查最怕的情况：条款编号 OCR 错、金额数字错、小数点漏掉、表格付款节点错位、盖章遮住关键文字、手写修改无法识别、附件页顺序颠倒、骑缝章页码页眉混进正文。有一次，对方发来盖章版 PDF 合同，OCR 把违约金比例从"0.05%/日"识别成了"0.5%/日"——差十倍。不人工复核直接用 AI 审，结论就反了。</p>
+<p><strong>招投标文件、审计报告、评估报告。</strong> 表格多、目录多、附件多、跨页多、横向页面多。AI 很容易"看起来读了很多，实际上结构没读准"。跨页表格、横向表格、合并单元格——解析三座大山。</p>
+<h2 id="五AI的格式偏好">五、AI 的格式偏好</h2>
+<p>从 AI 处理友好度来看：</p>
+<p><strong>最友好</strong>：Markdown / TXT / JSON / XML / HTML</p>
+<p><strong>较友好</strong>：规范 docx、规范 HTML、结构化导出的 Excel / CSV</p>
+<p><strong>一般</strong>：普通 docx、普通 PDF 文本版</p>
+<p><strong>较差</strong>：复杂排版 PDF、扫描 PDF、图片型 PDF、加密 PDF、低清晰度拍照 PDF</p>
+<p><strong>最差</strong>：扫描件 + 手写 + 盖章遮挡 + 表格 + 多栏排版</p>
+<p>AI 喜欢的格式，共同点是文本连续、结构明确、语义稳定。不喜欢的，共同点是视觉优先、版式优先、扫描图像、隐藏结构。</p>
+<h2 id="六PDF在AI工作流里的正确位置">六、PDF 在 AI 工作流里的正确位置</h2>
+<p>PDF 不是不能用。是要放在对的位置。</p>
+<p>合理的工作流：</p>
+<blockquote>
+<p>PDF → 解析/OCR/版面还原 → Markdown/HTML/JSON → AI 分析处理 → 生成结果 → 必要时导出 PDF 固化</p>
+</blockquote>
+<p>一句话：PDF 适合做证据原件、归档件、最终交付件，不适合做 AI 处理的中间格式。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340"&gt;
+  
+  &lt;!-- 四层堆叠 --&gt;
+  &lt;!-- 第1层 --&gt;
+  &lt;rect x="40" y="15" width="520" height="58" rx="4" fill="#f5f5f5" stroke="#ccc" stroke-width="1"/&gt;
+  &lt;text x="60" y="38" font-size="14" font-weight="700" fill="#333"&gt;证据固定层&lt;/text&gt;
+  &lt;text x="160" y="38" font-size="12" fill="#888"&gt;—&lt;/text&gt;
+  &lt;text x="175" y="38" font-size="13" fill="#555"&gt;PDF / 扫描件&lt;/text&gt;
+  &lt;text x="320" y="38" font-size="11" fill="#999"&gt;原件留存、不可篡改、可签章归档&lt;/text&gt;
+  &lt;text x="60" y="58" font-size="11" fill="#aaa"&gt;角色：证据原件 · 归档件 · 最终交付件&lt;/text&gt;
+
+  &lt;!-- 箭头 1→2 --&gt;
+  &lt;text x="300" y="88" text-anchor="middle" font-size="14" fill="#999"&gt;↓ 解析 / OCR / 版面还原 ↓&lt;/text&gt;
+
+  &lt;!-- 第2层 --&gt;
+  &lt;rect x="40" y="98" width="520" height="58" rx="4" fill="#fffef5" stroke="#e0dcc0" stroke-width="1"/&gt;
+  &lt;text x="60" y="121" font-size="14" font-weight="700" fill="#333"&gt;机器理解层&lt;/text&gt;
+  &lt;text x="160" y="121" font-size="12" fill="#888"&gt;—&lt;/text&gt;
+  &lt;text x="175" y="121" font-size="13" fill="#555"&gt;Markdown / HTML / JSON&lt;/text&gt;
+  &lt;text x="360" y="121" font-size="11" fill="#999"&gt;连续文本、清晰层级、可版本对比&lt;/text&gt;
+  &lt;text x="60" y="141" font-size="11" fill="#aaa"&gt;角色：AI 工作底稿 · 语义分析 · 结构化检索&lt;/text&gt;
+
+  &lt;!-- 箭头 2→3 --&gt;
+  &lt;text x="300" y="171" text-anchor="middle" font-size="14" fill="#999"&gt;↓ AI 分析、摘要、审查、问答 ↓&lt;/text&gt;
+
+  &lt;!-- 第3层 --&gt;
+  &lt;rect x="40" y="181" width="520" height="58" rx="4" fill="#f5f5f5" stroke="#ccc" stroke-width="1"/&gt;
+  &lt;text x="60" y="204" font-size="14" font-weight="700" fill="#333"&gt;人工交付层&lt;/text&gt;
+  &lt;text x="160" y="204" font-size="12" fill="#888"&gt;—&lt;/text&gt;
+  &lt;text x="175" y="204" font-size="13" fill="#555"&gt;Word / PDF&lt;/text&gt;
+  &lt;text x="280" y="204" font-size="11" fill="#999"&gt;可编辑、可批注、可签字、可打印&lt;/text&gt;
+  &lt;text x="60" y="224" font-size="11" fill="#aaa"&gt;角色：协作编辑 · 正式交付 · 签章固化&lt;/text&gt;
+
+  &lt;!-- 箭头 3→4 --&gt;
+  &lt;text x="300" y="254" text-anchor="middle" font-size="14" fill="#999"&gt;↓ 结构化导出 ↓&lt;/text&gt;
+
+  &lt;!-- 第4层 --&gt;
+  &lt;rect x="40" y="264" width="520" height="58" rx="4" fill="#f0f4ff" stroke="#b0c4de" stroke-width="1"/&gt;
+  &lt;text x="60" y="287" font-size="14" font-weight="700" fill="#333"&gt;数据分析层&lt;/text&gt;
+  &lt;text x="160" y="287" font-size="12" fill="#888"&gt;—&lt;/text&gt;
+  &lt;text x="175" y="287" font-size="13" fill="#555"&gt;CSV / Excel / JSON&lt;/text&gt;
+  &lt;text x="310" y="287" font-size="11" fill="#999"&gt;可计算、可统计、可可视化&lt;/text&gt;
+  &lt;text x="60" y="307" font-size="11" fill="#aaa"&gt;角色：批量分析 · 趋势统计 · 数据透视&lt;/text&gt;
+
+&lt;/svg&gt;</code></pre>
+<p>真正给 AI 干活的，应当是从 PDF 中提取并人工校正后的结构化文本。PDF 是证据固定件和最终成品件，不是 AI 的工作底稿。</p>
+<h2 id="七回到那个比喻">七、回到那个比喻</h2>
+<p>.docx 像一个装修复杂的办公室。人进去办公很舒服，AI 整理起来费劲。</p>
+<p>PDF 像一张高清照片，拍下了这间办公室。人看照片能感知大概，AI 要从照片里推断一切。</p>
+<p>扫描 PDF 更进一步——它不是文字，它是文字的影像。</p>
+<p>不怪 PDF，也不怪 AI。它们为两个不同的读者服务：人要的是"看起来一样"，AI 要的是"读起来清楚"。</p>
+<hr>
+<blockquote>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+</blockquote>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

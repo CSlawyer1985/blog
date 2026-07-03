@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>"投资茅台"四个字，骗了全国多少人？ — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">法律实务</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-06-30-政府项目审计-财政评审的最长期限限制-建工解释二第13条对-久审不决-的终结/" class="sidebar-link">政府项目审计/财政评审的最长期限限制——建工解释二第13条对"久审不决"的终结</a>
+      
+      <a href="/articles/2026-06-30-实际施工人概念退出历史舞台-建工解释二最重大变革的规则演进与实务影响/" class="sidebar-link">实际施工人概念退出历史舞台——建工解释二最重大变革的规则演进与实务影响</a>
+      
+      <a href="/articles/2026-06-21-一家律所最被低估的知识资产-内部裁判文书库/" class="sidebar-link">一家律所最被低估的知识资产——内部裁判文书库</a>
+      
+      <a href="/articles/2026-06-14-公证到底能做什么-不能做什么-从一次咨询说起/" class="sidebar-link">公证到底能做什么、不能做什么——从一次咨询说起</a>
+      
+      <a href="/articles/2026-06-04-甲方这个位置-正在悄悄吃掉你的真本事/" class="sidebar-link">甲方这个位置，正在悄悄吃掉你的真本事</a>
+      
+      <a href="/articles/2026-05-27-投资茅台-四个字-骗了全国多少人/" class="sidebar-link">"投资茅台"四个字，骗了全国多少人？</a>
+      
+      <a href="/articles/2026-05-27-吹牛税/" class="sidebar-link">吹牛税</a>
+      
+      <a href="/articles/2026-05-23-宁波建工纠纷败诉密码-从500份判决看当事人栽在哪儿/" class="sidebar-link">宁波建工纠纷败诉密码——从500份判决看当事人栽在哪儿</a>
+      
+      <a href="/articles/2026-05-23-宁波建设工程法官的裁判密码/" class="sidebar-link">宁波建设工程法官的裁判密码</a>
+      
+      <a href="/articles/2026-05-22-青年律师不是在-卷-是在-空转/" class="sidebar-link">青年律师不是在"卷"，是在"空转"</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">法律实务</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-05-27">2026年5月27日</time>
+            <span class="dotsep"></span>
+            <span>6 分钟阅读</span>
+          </div>
+          <h1 class="article-title">"投资茅台"四个字，骗了全国多少人？</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>以"投资茅台"为名的刑事案件，过去十年在全国 14 个省份至少产出了 27 件有罪判决，覆盖传销、诈骗、集资诈骗、合同诈骗、非法吸存五种罪名。这不是孤例，是一套被反复使用、迭代、变种的犯罪模板。</p>
+<hr>
+<h2 id="一先看数据">一、先看数据</h2>
+<p>2026 年 4 月，内蒙古阿荣旗法院判了一个案子——卢某某以"投资茅台"为名发展下线，组织、领导传销活动罪，有期徒刑八个月。</p>
+<p>不是第一件，也不会是最后一件。</p>
+<p>我在北大法宝刑事案例库用"投资茅台"全文检索，筛出 27 件有效判决，时间从 2014 年跨到 2026 年。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340"&gt;
+  &lt;rect width="600" height="340" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="32" text-anchor="middle" font-size="17" font-weight="700" fill="#222"&gt;"投资茅台"刑事案件 · 罪名分布&lt;/text&gt;
+
+  &lt;text x="80" y="75" font-size="13" fill="#555"&gt;组织、领导传销活动罪&lt;/text&gt;
+  &lt;rect x="300" y="60" width="240" height="22" fill="#c41e3a" rx="3"/&gt;
+  &lt;text x="548" y="76" font-size="13" fill="#c41e3a" font-weight="700"&gt;9件&lt;/text&gt;
+
+  &lt;text x="80" y="115" font-size="13" fill="#555"&gt;诈骗罪&lt;/text&gt;
+  &lt;rect x="300" y="100" width="213" height="22" fill="#e05030" rx="3"/&gt;
+  &lt;text x="521" y="116" font-size="13" fill="#e05030" font-weight="700"&gt;8件&lt;/text&gt;
+
+  &lt;text x="80" y="155" font-size="13" fill="#555"&gt;合同诈骗罪&lt;/text&gt;
+  &lt;rect x="300" y="140" width="107" height="22" fill="#d08040" rx="3"/&gt;
+  &lt;text x="415" y="156" font-size="13" fill="#d08040" font-weight="700"&gt;4件&lt;/text&gt;
+
+  &lt;text x="80" y="195" font-size="13" fill="#555"&gt;集资诈骗罪&lt;/text&gt;
+  &lt;rect x="300" y="180" width="107" height="22" fill="#d08040" rx="3"/&gt;
+  &lt;text x="415" y="196" font-size="13" fill="#d08040" font-weight="700"&gt;4件&lt;/text&gt;
+
+  &lt;text x="80" y="235" font-size="13" fill="#555"&gt;非法吸收公众存款罪&lt;/text&gt;
+  &lt;rect x="300" y="220" width="53" height="22" fill="#b09060" rx="3"/&gt;
+  &lt;text x="361" y="236" font-size="13" fill="#b09060" font-weight="700"&gt;2件&lt;/text&gt;
+
+  &lt;text x="300" y="280" text-anchor="middle" font-size="12" fill="#999"&gt;27件有效判决 | 14个省份 | 2014-2026&lt;/text&gt;
+  &lt;text x="300" y="300" text-anchor="middle" font-size="12" fill="#999"&gt;数据来源：北大法宝司法案例库 | 检索日期：2026-05-27&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>地域上，黑龙江 4 件、浙江 4 件、广东 3 件、北京 3 件、吉林 3 件、安徽 2 件，其余内蒙古、湖南、山东、福建、重庆、贵州、河北、辽宁各 1 件。从东北到西南，从一线到县城，没有死角。</p>
+<p>时间上，2014 年 1 件，2015 年 1 件，2018 年跳到 4 件，2019 年达到 9 件的峰值，此后回落但没消失，2024-2026 年每年都还有新案子。</p>
+<p>这 27 件只是走到刑事判决的部分。没报案的、报了没立的、立了没判的——水面之下大得多。</p>
+<hr>
+<h2 id="二四类手法">二、四类手法</h2>
+<p>27 件判决里的操作手法，可以归成四种。诱饵都是"茅台"的品牌溢价，收割方式不同。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420"&gt;
+  &lt;rect width="600" height="420" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="30" text-anchor="middle" font-size="17" font-weight="700" fill="#222"&gt;"投资茅台"四类犯罪手法&lt;/text&gt;
+
+  &lt;rect x="20" y="50" width="270" height="160" rx="6" fill="#fafafa" stroke="#c41e3a" stroke-width="1.5"/&gt;
+  &lt;text x="155" y="78" text-anchor="middle" font-size="14" font-weight="700" fill="#c41e3a"&gt;类型一：传销拉人头&lt;/text&gt;
+  &lt;text x="155" y="102" text-anchor="middle" font-size="12" fill="#555"&gt;披着"茅台茶""茅台不老酒"外衣&lt;/text&gt;
+  &lt;text x="155" y="122" text-anchor="middle" font-size="12" fill="#555"&gt;3000-6000元入会 → 静态返利+动态奖励&lt;/text&gt;
+  &lt;text x="155" y="142" text-anchor="middle" font-size="12" fill="#555"&gt;以发展下线数量为计酬依据&lt;/text&gt;
+  &lt;text x="155" y="162" text-anchor="middle" font-size="12" fill="#555"&gt;层级最多达22层、548人&lt;/text&gt;
+  &lt;text x="155" y="190" text-anchor="middle" font-size="11" fill="#999"&gt;9件 | 典型案号：(2019)黑1004刑初5号&lt;/text&gt;
+
+  &lt;rect x="310" y="50" width="270" height="160" rx="6" fill="#fafafa" stroke="#e05030" stroke-width="1.5"/&gt;
+  &lt;text x="445" y="78" text-anchor="middle" font-size="14" font-weight="700" fill="#e05030"&gt;类型二：虚构投资诈骗&lt;/text&gt;
+  &lt;text x="445" y="102" text-anchor="middle" font-size="12" fill="#555"&gt;编造"投资茅台酒赚钱"等事由&lt;/text&gt;
+  &lt;text x="445" y="122" text-anchor="middle" font-size="12" fill="#555"&gt;利用男女朋友、熟人关系骗取信任&lt;/text&gt;
+  &lt;text x="445" y="142" text-anchor="middle" font-size="12" fill="#555"&gt;资金用于个人消费/挥霍/归还债务&lt;/text&gt;
+  &lt;text x="445" y="162" text-anchor="middle" font-size="12" fill="#555"&gt;单案最高骗得520余万元&lt;/text&gt;
+  &lt;text x="445" y="190" text-anchor="middle" font-size="11" fill="#999"&gt;8件 | 典型案号：(2024)鲁0113刑初42号&lt;/text&gt;
+
+  &lt;rect x="20" y="230" width="270" height="160" rx="6" fill="#fafafa" stroke="#d08040" stroke-width="1.5"/&gt;
+  &lt;text x="155" y="258" text-anchor="middle" font-size="14" font-weight="700" fill="#d08040"&gt;类型三：集资诈骗&lt;/text&gt;
+  &lt;text x="155" y="282" text-anchor="middle" font-size="12" fill="#555"&gt;虚构"茅台爱国酒上市"等概念&lt;/text&gt;
+  &lt;text x="155" y="302" text-anchor="middle" font-size="12" fill="#555"&gt;承诺年化50%-100%利息&lt;/text&gt;
+  &lt;text x="155" y="322" text-anchor="middle" font-size="12" fill="#555"&gt;发传单/开推介会/口口相传&lt;/text&gt;
+  &lt;text x="155" y="342" text-anchor="middle" font-size="12" fill="#555"&gt;1600余人受害·4000余万元涉案&lt;/text&gt;
+  &lt;text x="155" y="370" text-anchor="middle" font-size="11" fill="#999"&gt;4件 | 典型案号：(2020)京01刑初67号&lt;/text&gt;
+
+  &lt;rect x="310" y="230" width="270" height="160" rx="6" fill="#fafafa" stroke="#b09060" stroke-width="1.5"/&gt;
+  &lt;text x="445" y="258" text-anchor="middle" font-size="14" font-weight="700" fill="#b09060"&gt;类型四：合同诈骗&lt;/text&gt;
+  &lt;text x="445" y="282" text-anchor="middle" font-size="12" fill="#555"&gt;签订合伙/投资/期货协议&lt;/text&gt;
+  &lt;text x="445" y="302" text-anchor="middle" font-size="12" fill="#555"&gt;收款后未实际用于约定经营&lt;/text&gt;
+  &lt;text x="445" y="322" text-anchor="middle" font-size="12" fill="#555"&gt;用虚假物流单/欠条拖延&lt;/text&gt;
+  &lt;text x="445" y="342" text-anchor="middle" font-size="12" fill="#555"&gt;单案最高骗得520余万元&lt;/text&gt;
+  &lt;text x="445" y="370" text-anchor="middle" font-size="11" fill="#999"&gt;4件 | 典型案号：(2020)闽0427刑初198号&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<h3 id="类型一传销拉人头茅台茶骗局">类型一：传销拉人头——"茅台茶"骗局</h3>
+<p>9 件，数量最多，集团化、跨省扩散。</p>
+<p>2015 年 5 月，龙仕华拿到贵州茅台牌茶业有限公司"黔茶人家"锌硒茶的全国独家经销授权，搞了一套"茅台茶投资返利活动"规则：交 3000 元普通会员，6000 元 VIP，享受"静态奖励"（投资额 1.5 倍返还）和"动态奖励"（直推奖、碰对奖、隔代奖、见点奖）。各地设立报单中心，聘专人来管会员信息系统和资金。</p>
+<p>扩散速度惊人。从黑龙江牡丹江到吉林延边，从辽宁葫芦岛到河北廊坊——报单中心遍地开花。杨秀兰在吉林市一家报单中心，直接间接发展下线 208 人。龙仕华自己发展的下线 22 层、548 人。</p>
+<p>2016 年下半年资金链断裂，返利停了。各地法院开始判决。龙仕华、龙仕菊、王玉英、杨秀兰、常桂华、崔永红、刘俊英——清一色的组织、领导传销活动罪。</p>
+<p>核心就一句话：<strong>"茅台"是牌子，"茶"是道具，"投资返利"才是收割机。那个茶不值 3000 块——它只是让"交钱入会"看起来像"买东西"。</strong></p>
+<h3 id="类型二虚构投资诈骗杀熟">类型二：虚构投资诈骗——杀熟</h3>
+<p>8 件诈骗罪判决里有一个让人不舒服的共性：受害人和被告人认识。</p>
+<p>2023 年，济南。姜某伟跟王某霞谈恋爱期间，编造"可以投资茅台酒赚钱"，骗了 86,381 元。接着通过王某霞认识她的领导刘某苹，冒充多重虚假身份继续骗。</p>
+<p>2025 年，湖南桂阳。黄丽嫦、匡桂平以投资茅台酒为名骗了多人共 135.9 万元，返利只给了 12.3 万——<strong>投 100 块拿回 9 块</strong>。受害人有同村的、有亲戚。周某和胡某夫妻最惨，实际损失 59.3 万。</p>
+<p>北京朝阳的赵婷婷更直接——"合伙做酒类生意"，两年骗了代某 61.6 万、赖某 71.1 万。没有返利，没有经营，纯骗。</p>
+<p><strong>"茅台"在这类案子里只是故事素材。</strong> 用来说明"这笔投资为什么靠谱"，钱到手就跟茅台没有任何关系。</p>
+<h3 id="类型三集资诈骗茅台爱国酒上市">类型三：集资诈骗——"茅台爱国酒上市"</h3>
+<p>金额最高、受害人最多的一类。</p>
+<p>2016 年 7 月到 10 月，四个月。孟坚、叶龙兵、吴军成等人以"中国北京云通国际贸易股份有限公司"名义，虚构"茅台爱国酒集资上市"项目，承诺还本付息，利息 50% 到 100%。发传单、开推介会、口口相传，在北京海淀、昌平、朝阳公开宣传。</p>
+<p>结果：<strong>1600 多人、4000 多万</strong>。大部分钱用来还本付息维持庞氏结构，剩下的个人分了。</p>
+<p>北京一中院认定"数额特别巨大且给人民利益造成特别重大损失"。</p>
+<p><strong>"茅台+爱国+上市"——三个词组合在一起，50%-100% 的年化回报就有人信了。这个数字本身就是警报。</strong></p>
+<h3 id="类型四合同诈骗茅台酒期货">类型四：合同诈骗——"茅台酒期货"</h3>
+<p>发生在茅台酒的产地——贵州仁怀。最讽刺的一件。</p>
+<p>2017 年，王海在仁怀成立酒业公司，经营飞天茅台、茅台王子酒、贵州大曲等系列酒期货。2018 年 3 月起，赌球、买彩票导致资金链断裂，交付给客户的酒远低于约定数量。被催货后，用"货物紧缺、虚假物流单、虚假退款记录、打欠条"拖延。累计骗了 19 个客户。</p>
+<p>在茅台镇用茅台酒期货骗人——这个案子说的是：<strong>不是因为"跟茅台沾边"就靠谱，恰恰相反，越是跟茅台沾边，越要看清楚。</strong></p>
+<hr>
+<h2 id="三不是投资失败是刑事犯罪">三、不是"投资失败"，是刑事犯罪</h2>
+<p>很多受害人报案时说"我的投资被骗了"。法律对这类行为的定性不是投资纠纷——是刑事犯罪。</p>
+<p>| 罪名 | 最高刑罚 | 入罪门槛 |</p>
+<p>|------|---------|---------|</p>
+<p>| 诈骗罪 | 无期徒刑 | 3000元以上 |</p>
+<p>| 合同诈骗罪 | 无期徒刑 | 2万元以上 |</p>
+<p>| 集资诈骗罪 | 无期徒刑 | 10万元以上 |</p>
+<p>| 组织、领导传销活动罪 | 15年 | 3级以上+30人以上 |</p>
+<p>| 非法吸收公众存款罪 | 10年以上 | 个人20万元以上 |</p>
+<p>实际量刑：传销类普遍 8 个月到 5 年 6 个月，部分缓刑；诈骗类金额"特别巨大"（50 万以上）的，10 年以上；集资诈骗类主犯 10 年以上乃至无期。</p>
+<p>多数判决中被告人都有"认罪认罚""坦白""退赔"等从轻情节——实际判罚已经打了折。没有这些情节，更重。</p>
+<hr>
+<h2 id="四甄别方法四个问题">四、甄别方法：四个问题</h2>
+<p>不需要法律背景，四个问题就够了。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 480"&gt;
+  &lt;rect width="600" height="480" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="32" text-anchor="middle" font-size="17" font-weight="700" fill="#222"&gt;投资茅台类骗局·四步甄别法&lt;/text&gt;
+
+  &lt;rect x="30" y="55" width="540" height="85" rx="6" fill="#fafafa" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="50" y="82" font-size="14" font-weight="700" fill="#c41e3a"&gt;问题一&lt;/text&gt;
+  &lt;text x="140" y="82" font-size="14" font-weight="700" fill="#222"&gt;有没有真实的底层资产？&lt;/text&gt;
+  &lt;text x="50" y="105" font-size="12" fill="#666"&gt;茅台酒供需关系是真实的，但"茅台茶""茅台不老酒""茅台爱国酒上市"跟茅台酒的供需逻辑没有关系。&lt;/text&gt;
+  &lt;text x="50" y="125" font-size="12" fill="#999"&gt;让对方用三句话说清楚：钱投到哪里、怎么赚钱、赚谁的钱&lt;/text&gt;
+
+  &lt;rect x="30" y="155" width="540" height="85" rx="6" fill="#fafafa" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="50" y="182" font-size="14" font-weight="700" fill="#e05030"&gt;问题二&lt;/text&gt;
+  &lt;text x="140" y="182" font-size="14" font-weight="700" fill="#222"&gt;收益是不是主要来自"拉人头"？&lt;/text&gt;
+  &lt;text x="50" y="205" font-size="12" fill="#666"&gt;如果赚钱的主要方式是发展下线而不是卖出商品——不管叫什么名字，就是传销。&lt;/text&gt;
+  &lt;text x="50" y="225" font-size="12" fill="#999"&gt;静态返利（1.5倍返还）+ 动态奖励（直推奖/碰对奖/见点奖）= 传销标准配置&lt;/text&gt;
+
+  &lt;rect x="30" y="255" width="540" height="85" rx="6" fill="#fafafa" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="50" y="282" font-size="14" font-weight="700" fill="#d08040"&gt;问题三&lt;/text&gt;
+  &lt;text x="140" y="282" font-size="14" font-weight="700" fill="#222"&gt;回报率是不是好得不真实？&lt;/text&gt;
+  &lt;text x="50" y="305" font-size="12" fill="#666"&gt;年化50%-100%"还本付息"——这不是投资，是庞氏骗局的标准话术。茅台2024年净利润率约50%，但那是上市公司自己赚的，不是你投钱就能分到的。&lt;/text&gt;
+  &lt;text x="50" y="325" font-size="12" fill="#999"&gt;年化超过15%就要解释风险来源，超过30%基本不必再听&lt;/text&gt;
+
+  &lt;rect x="30" y="355" width="540" height="85" rx="6" fill="#fafafa" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="50" y="382" font-size="14" font-weight="700" fill="#333"&gt;问题四&lt;/text&gt;
+  &lt;text x="140" y="382" font-size="14" font-weight="700" fill="#222"&gt;对方是不是只在"熟人圈"里募资？&lt;/text&gt;
+  &lt;text x="50" y="405" font-size="12" fill="#666"&gt;27件案件中，大量受害人通过亲戚、朋友、同事、邻居介绍入局。熟人推荐不等于安全——在非法集资和传销案件中，熟人推荐恰恰是主要扩散渠道。&lt;/text&gt;
+  &lt;text x="50" y="425" font-size="12" fill="#999"&gt;如果对方说"这个项目只带熟人"，警惕——正规投资不需要"只带熟人"&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>这四个问题每一条都来自判决书中反复出现的模式。任何一个触发了你的警觉，停下来。</p>
+<hr>
+<h2 id="五">五、</h2>
+<p>写这篇文章的时候我一直在想一个问题：为什么是"茅台"？</p>
+<p>27 件案子，从传销到诈骗到非法吸存，手法千差万别，诱饵高度统一。</p>
+<p>因为"茅台"是一个不需要解释的信用符号。在中国，"投资茅台能赚钱"这件事不需要论证——普通人默认它是真的。犯罪分子不用证明这门生意为什么靠谱，说出"茅台"两个字，信任自动产生。</p>
+<p>所以"茅台茶""茅台不老酒""茅台爱国酒"——这些跟茅台酒八竿子打不着的概念，能一茬一茬地收割。</p>
+<p>人们不是在投资一个具体项目，是在投资"茅台"两个字在心里激起的那个模糊但确定的印象：<strong>这玩意儿肯定赚钱。</strong></p>
+<p>27 件判决说的是一件事：任何用"品牌信用"替代"投资判断"的行为，都该让你停下来。不是停下来想"这次是不是真的"——而是想：<strong>如果去掉"茅台"两个字，我还投吗？</strong></p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

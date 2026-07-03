@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIGC检测是不是一门"骗局生意"？ — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-05-28">2026年5月28日</time>
+            <span class="dotsep"></span>
+            <span>11 分钟阅读</span>
+          </div>
+          <h1 class="article-title">AIGC检测是不是一门"骗局生意"？</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>!<a href="cover.png">封面</a></p>
+<p>同一篇本科毕业论文，在知网检测的AIGC率是3%，在维普是67%。</p>
+<p>这不是我编的。财新昨天报道的，江西赣州某高校毕业生李向南的真实遭遇。他的学院做过投票统计，超过一半同学遇到了知网和维普AI率差出好几倍的情况。评论区迅速聚集了大量有相似经历的毕业生，有人补充说，即使是同一平台的不同版本，结果也能差出一大截。</p>
+<p>如果你的血糖仪和医院的检测结果差出20倍，你不会说"这是检测误差"。你会说"这机器坏了"。</p>
+<p>但如果这个机器被用来决定学生能否毕业，而且学生还得为每次检测付费——这件事的性质就变了。</p>
+<p>我想认真论证一个判断：<strong>目前市面上所有AIGC检测产品，在高校论文场景下，没有一个满足作为高利害判断工具的最低技术标准。</strong> 这不是"技术还不够成熟，以后会好的"。这是一个结构性的不可能。在此基础上建立起来的商业模式，值得用最严厉的标准来审视。</p>
+<hr>
+<h2 id="四条技术路线没有一条能同时做到三件事">四条技术路线，没有一条能同时做到三件事</h2>
+<p>跨模型覆盖、结果可验证、能抗对抗攻击。这三条是一个检测工具用于高利害决策的底线。查重全做到了。它告诉你"这段和知网收录的某篇论文第X页第Y段重复了"，任何人都可以去核对。</p>
+<p>AIGC检测呢？我一条一条拆开看。</p>
+<h3 id="统计指纹你追求的是好论文它判定的标准是写得不工整">统计指纹：你追求的是好论文，它判定的标准是"写得不工整"</h3>
+<p>知网、维普的主力技术。原理不复杂：AI生成的文本困惑度（perplexity）低，模型总选最可能的词，文本读起来太"平滑"了。突发性（burstiness）也低，句式结构太均匀，缺乏人类写作那种忽快忽慢的节奏感。</p>
+<p>放在学术论文这个场景里，逻辑直接崩了。</p>
+<p>学术写作恰好是刻意追求低困惑度、低突发性的文体。学科规范术语、固定的学术句式、严谨的逻辑递进——这些是好论文的特征，也是统计检测器判为"AI生成"的核心特征。你写的论文越规范，越容易被判为AI。你写得越乱，越像"人写的"。</p>
+<p>检测器的优化方向和学术写作的质量方向互相矛盾。不是准确率高低的问题。</p>
+<p>2024年ICLR，Weichert和Dimobi直接测了这个事。在真实人类撰写的学术论文上，基于统计特征的检测器误判率20.96%。五个学生里就有一个被冤枉。</p>
+<p>对抗成本更离谱。你在prompt里加一句"句式别太工整，加点节奏变化"，全部统计指纹就失灵了。2024年ACL的论文验证了这一点：对抗性改写之后，检测器的真阳性率从接近100%暴跌到个位数。</p>
+<h3 id="水印嵌入唯一有科学合理性的方案它死在一个悖论上">水印嵌入：唯一有科学合理性的方案。它死在一个悖论上。</h3>
+<p>这四条路线里，水印是最值得认真对待的。你之前提到的Google方案就是这条路线。</p>
+<p>原理是这样的：2023年Kirchenbauer等人在ICLR提出了"红绿名单"方案。LLM生成每个词的时候，用一个秘密的哈希函数把所有候选词分成"绿色名单"和"红色名单"，然后暗中偏向选绿名单里的词。</p>
+<p>打个比方。一台打字机，有些键被悄悄涂了荧光墨水。单看一个字看不出来，但如果整篇文章里涂了荧光墨水的字明显偏多，远超随机概率，你就可以判断：这台打字机不是普通的打字机。</p>
+<p>2024年，Google DeepMind把这个方案改进为SynthID-Text，发表在《Nature》上。在Gemini模型上实测了约2000万条回复。水印不影响文本质量——用户评分甚至还略高了0.1%。在足够长的文本上，检测率接近100%。</p>
+<p><strong>科学上，这条路是通的。</strong></p>
+<p>但在高校论文这个场景里，它面前有五堵墙。</p>
+<p><strong>第一堵墙：词汇表不能公开。</strong> 检测水印需要知道"哪些词在绿名单里"。如果Google公开了这个映射关系，任何人都可以做一件事：找一段人类正常写的文本，查查哪些词在绿名单里，然后把红名单里的词换成绿名单里的同义词。结果是什么？一段完全由人类撰写的文本，被改写成水印阳性。如果有人刻意伪造一段煽动暴力或种族歧视的内容，把它做成"Google Gemini水印阳性"然后公之于众，Google怎么自证清白？水印检测结果就是阳性，它拿什么证明"这其实不是我们生成的"？</p>
+<p>所以词汇表必须保密。但一旦保密，检测结果就不可验证、不可复现——和现在知网维普的黑箱检测没有任何区别。你只能"相信"平台。</p>
+<p>这就是水印方案的根本悖论：公开则系统被攻破，不公开则不可验证。一个不可验证的检测工具，不能用于高利害决策。</p>
+<p><strong>第二堵墙：跨模型不可能。</strong> 水印绑在特定模型的分词器和词汇表上。Google只能检测Gemini生成的文本，检测不了GPT-4、Claude、文心一言、豆包、Kimi。学生可以用全球几十种模型中的任意一种生成论文，或者用多种模型各写一段再拼起来。检测覆盖率趋近于零。</p>
+<p><strong>第三堵墙：改写攻击。</strong> 学生用任何一个没嵌入水印的模型（比如开源Llama）对AI初稿做一次改写，水印信号就大幅衰减。2024年Wu和Chandrasekaran提出的SCTS攻击可以用极少的编辑量彻底洗掉水印。至于那个"中→英→日→法→回中文"的多轮翻译降重法，翻译一次水印就死了，根本用不着四轮。</p>
+<p><strong>第四堵墙：开源模型永不接入。</strong> Llama、Mistral、通义千问开源版、各类国产开源模型，全球几百个开源模型不受任何水印约束。你不可能说服所有开源社区嵌入你的水印。</p>
+<p><strong>第五堵墙：对抗性伪造。</strong> 即便奇迹发生，所有模型都嵌了水印且词汇表公开（注意，这两个条件本身互相矛盾），攻击者也可以刻意在人类撰写的文本中插入足够多的绿名单词，把正常文章做成水印阳性。这意味着真实的揭黑报道、举报材料、维权文书，被"检测系统"标记为AI生成从而被否定真实性。这比漏检了几篇AI论文严重一万倍。</p>
+<p>水印方案像一个设计精巧的锁。它只能在Google自家的院子里用。一旦要拿到街上来，要么钥匙公开（锁被废掉），要么钥匙不公开（没人能验证这把锁是不是真的在工作）。</p>
+<h3 id="深度学习分类器训练完成的那一刻就已经过时了">深度学习分类器：训练完成的那一刻就已经过时了</h3>
+<p>用BERT、RoBERTa等模型在人/AI标注数据上训练一个二分类器，让它"学会"分辨人和AI的写作风格。</p>
+<p>跨模型泛化不存在。在GPT-3.5文本上训练的分类器，面对GPT-4时准确率从89.7%掉到62.3%。模型每迭代一代，分类器就要重新训练，标注数据永远滞后于最新模型。</p>
+<p>域外泛化也不存在。在英文新闻上训练的模型，用于中文学术论文时效果接近随机。2024年Tufts等人的研究显示，跨域测试的真阳性率可以低至0%。</p>
+<p>还有一个更隐蔽的问题：系统性歧视非母语写作者。斯坦福2023年的研究发现，非英语母语者的写作被误判为AI生成的概率高达70%。在中国高校场景里，这意味着英语非母语的学生用英文写论文时，将面临灾难性的误判率。</p>
+<h3 id="检索比对逻辑上最接近查重但语料库不存在">检索比对：逻辑上最接近查重，但语料库不存在</h3>
+<p>查重为什么成立？因为它做的事情在逻辑上是闭合的：把你的论文和已发表论文库做相似度比对，告诉你和哪篇文章第几页第几段重复了。你可以自己去验证。</p>
+<p>AI每次生成的内容是唯一的。两个人用完全一样的prompt让GPT-4生成论文，得到的是两篇不同的文本。不存在也不可能存在一个"所有AI生成过的文本"的语料库。检索比对的逻辑基础不成立。</p>
+<hr>
+<p>四条路线审查完毕：</p>
+<p>| 路线 | 有科学基础？ | 能跨模型覆盖？ | 结果可验证？ | 能抗对抗攻击？ | 学术论文能用？ |</p>
+<p>|------|------------|-------------|-----------|-------------|-------------|</p>
+<p>| 统计指纹 | 弱 | 能 | 不能 | 不能 | 结构性冲突 |</p>
+<p>| 水印嵌入 | 强 | 不能 | 不能 | 不能 | 覆盖率≈0 |</p>
+<p>| 深度学习 | 中 | 不能 | 不能 | 不能 | 泛化失败 |</p>
+<p>| 检索比对 | 强（逻辑上） | 不能 | 能 | 能 | 语料不存在 |</p>
+<p>最要命的是"结果可验证"这一列。全灭。查重之所以成立，恰恰因为它在这一点上是完美的：它总能告诉你重复了谁的哪篇文章，你可以随时去核对。AIGC检测永远做不到这一点。不是不想做。是做不了。</p>
+<hr>
+<h2 id="理论上已经判了死刑">理论上已经判了死刑</h2>
+<p>前面是工程层面的分析。如果你觉得"这些都是工程问题，以后会被解决的"，我们把问题推到数学层面。</p>
+<p>马里兰大学Sadasivan等人2025年发表了一篇论文。他们证明了，对于任何AIGC检测器D，其检测性能的理论上界是：</p>
+<p><strong>AUROC(D) ≤ 1/2 + TV(M,H) − TV(M,H)²/2</strong></p>
+<p>TV(M,H)是机器文本分布和人类文本分布之间的"总变分距离"。你可以把它理解为两个分布有多不一样。</p>
+<p>关键来了：<strong>LLM的训练目标就是最小化和人类文本之间的差距。</strong> 模型越好，TV(M,H)越小，这个上界越逼近1/2。1/2就是随机猜。抛硬币。</p>
+<p>这不是一个可以被"更好的算法"突破的边界。它要突破的是整个LLM产业的发展方向，因为每一个做模型的人都在拼命让AI写得更像人。你越成功，检测越不可能。</p>
+<p>2025年，Ganie把这个结论推到更极致。他提出了一个"作者归属不确定性原理"，类比量子力学中的海森堡测不准关系：降低检测不确定性的任何尝试，必然以破坏文本的连贯性和质量为代价。两者之间有一个不可约的下界。</p>
+<p>当GPT-4生成的学术文本已经稳定绕过了所有主流检测器，当"学生自己写的"和"学生用AI写然后自己改了一下"在概率分布上没有任何统计学上可辨识的差异——检测这件事不是暂时做不到。它永远不可能可靠。</p>
+<hr>
+<h2 id="停下来认真对待一个反对意见">停下来，认真对待一个反对意见</h2>
+<p>"你说的是'完美检测不可能'，但'有一定参考价值，总比没有强'吧？"</p>
+<p>这个反对意见值得认真回应。因为它是大多数高校行政人员在签名批准AIGC检测规定时，脑子里真正的想法。</p>
+<p>如果AIGC检测只是一个老师私下看看的参考工具，没问题。但这不是它被使用的方式。它被用来决定学生能不能毕业。它为每个学生设定了量化的"AI率上限"：四川大学要求文科20%以下，理工科15%。检测不过，论文不通过。</p>
+<p>一个不可验证、不可复现、错误率不透明、同一篇论文不同平台差20倍、数学上有不可逾越上限的工具，被用于这种高利害决策。这不是"有比没有强"。这是在制造系统性不公。</p>
+<p>美国法庭对科学证据的可采性有一个著名的Daubert标准，五条：</p>
+<ul>
+<li>理论或技术可以被检验吗？</li>
+<li>经过了同行评议和发表吗？</li>
+<li>已知或潜在的错误率是多少？</li>
+<li>有操作标准和控制吗？</li>
+<li>被相关科学界广泛接受吗？</li>
+</ul>
+<p>AIGC检测在这五条上全部不满足。不可检验：平台算法是商业秘密。没有公开的同行评议：各平台的准确率数据是自己说的。错误率不透明：从来不告诉你整体误判率和误判分布。没有统一的行业标准：知网、维普、格子达各有一套。没有被科学界广泛接受：学术界的共识恰恰相反，检测正在走向不可能。</p>
+<p>在法庭上，这种证据不可采信。但它可以决定一个学生能否毕业。</p>
+<hr>
+<h2 id="裁判兼药贩">裁判兼药贩</h2>
+<p>把技术问题先放下。看一眼这个商业模式的结构。</p>
+<p>一个毕业生上传论文，平台自动勾选了"降AIGC率服务"。平台先告诉你"你的论文有67%是AI写的"——你无法验证这个数字对不对——然后马上给你一个解决方案：交钱，我们帮你降。</p>
+<p>同一个主体既当裁判，又卖解药。</p>
+<p>财新的报道里写到，小红书上"AI降重"已经是一个繁荣的产业。4万字、AI率约60%的论文，报价200到300元。承诺"基本一次可以改下来，包AI率通过"。还有先付一半、通过后付尾款的担保交易模式。</p>
+<p>这个产业链是怎么长出来的？</p>
+<p>高校行政命令强制AIGC检测，创造刚需。平台收取检测费，第一笔收入。检测结果不可验证、可能虚高，制造焦虑。平台自动勾选降重服务，赚第二笔。学生不放心，同时在多个平台反复检测，持续付费。最后学生陷入"AI写→AI降→再测→再改"的循环，系统性地鼓励劣化写作。</p>
+<p>这条链上的每一步，都在为一个商业模式服务。而这个商业模式的核心前提——AIGC检测能可靠地区分人写的和AI写的——在技术上不成立。</p>
+<p>让我把话说得再直白一点：<strong>先吓唬你说你有病，然后立刻卖你药，而且还告诉你这个病只有我这台机器能测，测试原理是商业秘密。</strong> 当这台机器对同一个样本的两次测量结果可以差20倍的时候，我们需要的不是更精准的仪器。是换一个思路。</p>
+<hr>
+<h2 id="高校的决策者不是坏人但他们被检测这个词骗了">高校的决策者不是坏人，但他们被"检测"这个词骗了</h2>
+<p>我不认为问题是"高校领导收了平台的钱"。更多的情况是几个认知陷阱。</p>
+<p>第一个陷阱：<strong>"查重这么好用，AIGC检测应该也差不多吧？"</strong> 查重能成立，是因为它比对的是真实存在、可验证的文本库，告诉你和谁的哪篇文章重复了。AIGC检测不是。它比对的是一个概率分布，而这个概率分布在趋近人类。前者的基础是信息检索，后者的基础是统计推断。两个完全不同的东西，不能因为都叫"检测"就被等价。</p>
+<p>第二个陷阱：<strong>"总得做点什么吧？"</strong> AI代写确实是问题。但用一个无效的工具去管，不是解决问题，是制造新问题。学生不是不写了，而是陷入用AI写、用AI降、再测、再改的无限循环。在这个循环里，唯一确定受益的是检测平台。</p>
+<p>第三个陷阱，也是最隐蔽的：<strong>"这个技术总归会越来越好的"。</strong> 这篇文章花了大量篇幅论证了相反的趋势。随着LLM进步，检测只会越来越不可能。这是一个随着时间流逝越来越坏的赌注。</p>
+<hr>
+<h2 id="如果我们真的在乎学术诚信">如果我们真的在乎学术诚信</h2>
+<p>AI被用来写论文，是问题。但应对方法不是在终点设一个不可靠的卡口，让学生为无效的检测反复付费，让"把文章改得不像AI写的"成为一个合法产业。</p>
+<p>把答辩和口试的权重拉高。一个能写出漂亮的论文但当面对三个追问就答不上来的学生，比任何AIGC检测结果都更能说明问题。</p>
+<p>恢复部分闭卷考试和限时写作。北京交通大学王靖雨副教授已经在这么做，她把部分半开卷课程改回了全闭卷。"背诵、闭卷考试，这些看似原始的教育方法，是帮助学生在脑中建构认知框架的关键步骤。"</p>
+<p>设计AI参与但不替代的作业。让AI成为合法的辅助工具：查文献、润色表达、检查逻辑。但核心观点和论证结构必须是自己的。问题不是"用不用AI"，而是AI替代了思考还是辅助了思考。</p>
+<p><strong>让学生正大光明地用AI，同时让学术判断回归人能判断的事情上。</strong></p>
+<p>一个能写出论文但当面讲不清楚的人，比任何检测结果都诚实。</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

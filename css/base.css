@@ -1,0 +1,157 @@
+/* ───── Reset ───── */
+*{margin:0;padding:0;box-sizing:border-box;}
+img{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+html,body{overflow-x:hidden;}
+main{position:relative;z-index:2;}
+
+/* ───── Paper bg + grain ───── */
+html,body{background:var(--paper);}
+body{
+  position:relative;
+  color:var(--ink);
+  font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+  background-size:3px 3px;
+}
+body::before{
+  content:"";
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  opacity:.045;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ───── Top Nav ───── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:40;
+  height:var(--nav-h);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 var(--pad-x);
+  border-bottom:1px solid var(--line);
+  background:rgba(244,239,230,.82);
+  backdrop-filter:blur(8px);
+}
+.nav__brand{
+  font-family:var(--serif);
+  font-size:24px;font-weight:600;letter-spacing:-.02em;
+  display:flex;align-items:center;gap:8px;
+}
+.nav__brand-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;}
+.nav__links{
+  display:flex;align-items:center;gap:14px;
+  font-size:12px;font-weight:600;letter-spacing:.08em;
+}
+.nav__links a{color:var(--ink);transition:color .25s;}
+.nav__links a:hover{color:var(--accent);}
+.nav__links .sep{color:var(--line);font-weight:300;}
+.nav__stat{
+  display:inline-flex;align-items:center;gap:7px;
+  margin-left:16px;color:var(--ink);letter-spacing:.02em;
+  font-size:11px;
+}
+.nav__stat i{width:5px;height:5px;border-radius:50%;background:var(--accent);}
+.nav__github{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;margin-left:4px;
+  color:var(--ink);transition:color .25s var(--ease),transform .25s var(--ease);
+}
+.nav__github svg{width:15px;height:15px;display:block;}
+.nav__github:hover{color:var(--accent);transform:translateY(-1px);}
+.nav__links a.is-active{color:var(--ink);}
+.nav__links a.is-active::after{
+  content:"";display:block;height:1px;background:var(--accent);
+  margin-top:3px;
+}
+
+/* Language toggle */
+.nav__lang-group{display:inline-flex;align-items:center;gap:0;margin-left:12px;}
+.nav__lang{
+  font-size:10px;font-weight:600;letter-spacing:.08em;color:var(--muted);
+  cursor:pointer;background:none;border:1px solid var(--line);
+  padding:4px 8px;transition:all .2s;
+  font-family:var(--mono);
+}
+.nav__lang:first-child{border-radius:2px 0 0 2px;border-right:none;}
+.nav__lang:last-child{border-radius:0 2px 2px 0;}
+.nav__lang:hover{color:var(--accent);}
+.nav__lang.is-active{color:var(--paper);background:var(--accent);border-color:var(--accent);}
+
+/* Mobile nav */
+.nav__toggle{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:8px;}
+.nav__toggle span{width:20px;height:2px;background:var(--ink);display:block;transition:all .25s;}
+
+/* ───── Left rail + Corner crosses ───── */
+.rail{position:fixed;top:0;bottom:0;left:var(--rail-x);z-index:3;pointer-events:none;}
+.rail i{position:absolute;top:calc(var(--nav-h) + 40px);bottom:48px;width:1px;background:var(--line);opacity:.7;}
+.rail i:nth-child(1){left:0;}
+.rail i:nth-child(2){left:7px;}
+.rail i:nth-child(3){left:14px;}
+
+.cross{position:fixed;z-index:3;width:18px;height:18px;pointer-events:none;opacity:.5;}
+.cross::before,.cross::after{content:"";position:absolute;background:var(--line);}
+.cross::before{left:8px;top:0;width:1px;height:18px;}
+.cross::after{top:8px;left:0;height:1px;width:18px;}
+.cross--tr{top:calc(var(--nav-h) + 22px);right:38px;}
+.cross--bl{bottom:34px;left:34px;}
+.cross--br{bottom:34px;right:38px;}
+
+/* ───── CTA Buttons ───── */
+.btn{
+  display:inline-flex;align-items:center;gap:12px;
+  font-family:var(--sans-cjk);font-size:16px;font-weight:400;
+  transition:all .3s var(--ease);cursor:pointer;
+}
+.btn .arr{transition:transform .3s var(--ease);}
+.btn:hover .arr{transform:translateX(5px);}
+.btn--ghost{
+  padding:18px 42px;border:1px solid var(--ink);
+  background:transparent;color:var(--ink);
+}
+.btn--ghost:hover,
+.btn--ghost:active{background:var(--accent);border-color:var(--accent);color:var(--paper);}
+.btn--ghost:hover .arr,
+.btn--ghost:active .arr{color:var(--paper);}
+.btn--link{
+  padding:18px 42px;border:1px solid var(--ink);
+  background:transparent;color:var(--ink);
+}
+.btn--link:hover,
+.btn--link:active{color:var(--accent);border-color:var(--accent);}
+
+/* ───── i18n: JS-driven visibility (default: show zh, hide en) ───── */
+html[data-lang="zh"] [lang="en"] { display: none; }
+html[data-lang="en"] [lang="zh"] { display: none; }
+/* elements without lang attr are always visible */
+/* ensure buttons styled as inline-flex stay that way when hidden/shown */
+html[data-lang="en"] [lang="en"].btn { display: inline-flex; }
+html[data-lang="zh"] [lang="zh"].btn { display: inline-flex; }
+
+/* ───── Reduced motion ───── */
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important;}
+}
+
+/* ───── Responsive baseline ───── */
+@media (max-width:860px){
+  .nav__links{gap:10px;font-size:9.5px;letter-spacing:.04em;}
+  .nav__links .sep,.nav__stat{display:none;}
+  .nav__links a:nth-of-type(3),
+  .nav__links a:nth-of-type(4){display:none;}
+  .rail,.cross{display:none;}
+}
+
+@media (max-width:600px){
+  :root{
+    --pad-x:20px;
+    --rail-x:0px;
+  }
+  .nav{padding:0 var(--pad-x);height:64px;}
+  .nav__links{gap:8px;font-size:9px;}
+  .nav__brand{font-size:18px;}
+  .nav__lang-group{margin-left:4px;}
+  .nav__lang{padding:3px 6px;font-size:9px;}
+  .btn{white-space:nowrap;}
+  .btn .arr{flex:none;}
+  .rail,.cross{display:none;}
+}

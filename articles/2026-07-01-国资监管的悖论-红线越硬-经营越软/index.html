@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>国资监管的悖论：红线越硬，经营越软 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">未分类</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-国资监管的悖论-红线越硬-经营越软/" class="sidebar-link">国资监管的悖论：红线越硬，经营越软</a>
+      
+      <a href="/articles/2026-06-24-我用-1760-条微信消息给自己-算了一命-发现算命可以不玄/" class="sidebar-link">我用 1760 条微信消息给自己"算了一命"，发现算命可以不玄</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">未分类</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-07-01">2026年7月1日</time>
+            <span class="dotsep"></span>
+            <span>5 分钟阅读</span>
+          </div>
+          <h1 class="article-title">国资监管的悖论：红线越硬，经营越软</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 440" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif"&gt;
+  &lt;rect width="600" height="440" fill="#ffffff"/&gt;
+  &lt;text x="300" y="32" text-anchor="middle" font-size="16" font-weight="700" fill="#1a1a1a"&gt;制度刚性的副作用链&lt;/text&gt;
+  &lt;text x="300" y="52" text-anchor="middle" font-size="11" fill="#888"&gt;当"保护制度"异化为"避责制度"&lt;/text&gt;
+  &lt;rect x="200" y="72" width="200" height="46" rx="3" fill="#1a1a1a"/&gt;
+  &lt;text x="300" y="93" text-anchor="middle" font-size="13" font-weight="600" fill="#ffffff"&gt;刚性红线 + 方法真空&lt;/text&gt;
+  &lt;text x="300" y="109" text-anchor="middle" font-size="10" fill="#bbb"&gt;只有责任威慑，没有路径供给&lt;/text&gt;
+  &lt;line x1="300" y1="118" x2="300" y2="142" stroke="#333" stroke-width="1.2"/&gt;
+  &lt;polygon points="295,138 305,138 300,146" fill="#333"/&gt;
+  &lt;rect x="140" y="148" width="320" height="50" rx="3" fill="#f7f7f7" stroke="#bbb" stroke-width="0.8"/&gt;
+  &lt;text x="300" y="168" text-anchor="middle" font-size="12" font-weight="600" fill="#333"&gt;① 表面合规 · 不做事&lt;/text&gt;
+  &lt;text x="300" y="186" text-anchor="middle" font-size="10.5" fill="#666"&gt;"不做事比做事更安全"&lt;/text&gt;
+  &lt;line x1="300" y1="198" x2="300" y2="222" stroke="#333" stroke-width="1.2"/&gt;
+  &lt;polygon points="295,218 305,218 300,226" fill="#333"/&gt;
+  &lt;rect x="140" y="228" width="320" height="50" rx="3" fill="#f0f0f0" stroke="#999" stroke-width="0.8"/&gt;
+  &lt;text x="300" y="248" text-anchor="middle" font-size="12" font-weight="600" fill="#333"&gt;② 踢皮球 · 风险转嫁&lt;/text&gt;
+  &lt;text x="300" y="266" text-anchor="middle" font-size="10.5" fill="#666"&gt;"决策链条变长，负责的人变少"&lt;/text&gt;
+  &lt;line x1="300" y1="278" x2="300" y2="302" stroke="#333" stroke-width="1.2"/&gt;
+  &lt;polygon points="295,298 305,298 300,306" fill="#333"/&gt;
+  &lt;rect x="100" y="308" width="400" height="56" rx="3" fill="#1a1a1a"/&gt;
+  &lt;text x="300" y="330" text-anchor="middle" font-size="12.5" font-weight="600" fill="#ffffff"&gt;③ 可解释空间 → 腐败&lt;/text&gt;
+  &lt;text x="300" y="350" text-anchor="middle" font-size="10.5" fill="#ccc"&gt;"谁掌握解释权，谁就掌握寻租权"&lt;/text&gt;
+  &lt;line x1="200" y1="384" x2="400" y2="384" stroke="#ddd" stroke-width="0.5"/&gt;
+  &lt;text x="300" y="404" text-anchor="middle" font-size="11" fill="#888"&gt;红线画得越红，灰色地带反而越宽&lt;/text&gt;
+  &lt;text x="300" y="422" text-anchor="middle" font-size="10" fill="#aaa"&gt;威慑过度改变的不是腐败总量，而是腐败形态&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>我经办过一个涉及国资的交易。</p>
+<p>一笔从商业逻辑上明显该拍板的方案，层层签字、层层规避，硬是被推来推去小半年没人敢落笔。最后的结局通常只有两种：要么没人拍板，项目慢慢黄了，谁也不担责；要么有人扛着"贯彻上级指示"的旗号强行推进，留下一笔说不清道不明的糊涂账，等下一轮巡视再翻出来。</p>
+<p>这不是哪个人懒、哪个人坏的问题。这是制度刚性催生的反向效果。</p>
+<p>国有资产保值增值这条红线，本意是让国企健康发展。但我看到的实际情况是，红线画得越硬，敢做事的人越少，会"绕"的人越多。</p>
+<h2 id="一问题不在严在严加上方法真空">一、问题不在"严"，在"严"加上"方法真空"</h2>
+<p>国有资产保值增值，是所有国企的刚性红线。法律、国资委文件、审计巡视、司法追责，反复强调这一点。</p>
+<p>这没错。</p>
+<p>但一条"对的"红线，如果只有责任威慑，没有方法供给、程序容错和收益评价，就会从"保护制度"异化为"避责制度"。</p>
+<p>当国资监管被简单理解成"任何账面损失都不能发生、任何价格折让都可能被追责、任何决策失误都可能被定性为流失"，它制造出来的不是健康发展，而是三种反效果：不作为、形式合规、责任转嫁。</p>
+<p>这三者不是线性地"打折扣"，它们会拐弯——把显性流失拐成隐性腐败。</p>
+<h2 id="二副作用是怎么一步步长出来的">二、副作用是怎么一步步长出来的</h2>
+<p><strong>第一段是表面合规，不做事。</strong></p>
+<p>国企里很多方案的第一目标，既不是商业最优，也不是国资整体利益最大化，而是：如何在文件上看起来没有触碰国资流失。</p>
+<p>于是大量精力被投进"形式主义技术"：评估报告要有、集体决策要有、律师意见要有、审计意见要有、上级批复要有，会议纪要要能扛得住三年后的倒查。</p>
+<p>这些东西当然有必要。但它们很容易从"决策支持工具"变成"责任防火墙"。最后大家关心的，不是"这个方案对国企到底好不好"，而是"将来审计、巡视、纪检来的时候，我能不能解释过去"。</p>
+<p>当不做事比做事更安全，"不做事"就成了最理性的选择。</p>
+<p><strong>第二段是踢皮球，风险转嫁。</strong></p>
+<p>涉及个人责任的决策，相互推诿，不在己方手里做决定。</p>
+<p>能请示就不判断，能会签就不单签，能上报就不上会，能让外部机构背书就不内部决策。</p>
+<p>决策链条越来越长，真正负责的人越来越少。每个环节都在合规，整体效率却越来越低；每个人都在审慎，组织却慢慢丧失了经营能力。</p>
+<p>踢皮球不是人品问题，是制度逼出来的生存智慧。</p>
+<p><strong>第三段最反讽，是可解释的腐败。</strong></p>
+<p>越是刚性、越是高压、越是不确定的制度环境，越容易制造一种"解释权腐败"。</p>
+<p>因为很多事项本身不是绝对违法或绝对合法，而是处在灰色地带：这个价格公允吗？这个让利合理吗？这个投资失败是正常商业风险还是失职？这个债务重组是变相减免还是及时止损？</p>
+<p>当规则不能给出稳定预期时，真正有价值的就不是规则本身，而是：谁来解释规则、谁能拿到批复、谁能控制责任定性。</p>
+<p>本来制度是为了防腐败，结果因为规则过硬、解释过软，反而把权力集中到了"能解释、能批复、能免责"的几个节点上。</p>
+<p>严管画的是禁区，画出来的却是寻租空间。</p>
+<h2 id="三这个悖论刑法里早就说过">三、这个悖论，刑法里早就说过</h2>
+<p>老百姓喊"杀"的逻辑很简单：重刑震慑犯罪，以儆效尤。</p>
+<p>但法律人都知道一个常识：刑罚不是越重越好。</p>
+<p>如果轻罪和重罪的后果差异不大，或者小错也面临极端惩罚，行为人就会失去"止损激励"。一个犯了小错的人，既然必然面临极刑，反而可能进一步扩大犯罪的深度和覆盖面：灭口、对抗、铤而走险。</p>
+<p>这就是为什么刑法要讲罪责刑相适应。不是出于仁慈，是出于理性。要让不同程度的违法行为之间保留清晰的惩罚梯度，行为人才有"踩刹车"的理由。</p>
+<p>国资监管是一模一样的逻辑。如果经营失误、商业亏损、程序瑕疵、利益输送、恶意侵吞，都被塞进"国有资产流失"这一个筐里，决策者就没有动力做正常的经营判断。一旦踩进风险区，相关人员的理性选择不是主动报告、及时止损，而是继续遮掩、补手续、找关系，把一个普通经营失误推向真正的腐败和渎职。</p>
+<p>威慑过度改变的不是腐败的总量，而是腐败的形态。</p>
+<h2 id="四那是要放松监管吗">四、那是要放松监管吗？</h2>
+<p>说到这里，一定有人会反驳：你这是在为放松国资监管找借口？放松不就是让国有资产随便流失？</p>
+<p>不是。</p>
+<p>我不是说红线不要画，更不是要给腐败开口子。我想说的是，问题不在"严"本身，在"严"再加上"方法真空"。</p>
+<p>"防止国有资产流失"这种定性，是容易的：谁都会喊。但要在方法上构建清楚：什么情况下的亏损属于正常商业风险、什么程序走完可以形成责任隔离、什么证据能证明勤勉尽责，这才是真功夫。</p>
+<p>只画禁区、不给路径，红线画得再红，也只是让"绕红灯的智慧"更发达。</p>
+<p>定性容易，方法难。只设红线、不给方法，本身就是一种制度偷懒。</p>
+<h2 id="五真正的治理是让决策者敢于决策">五、真正的治理，是让决策者"敢于决策"</h2>
+<p>我做律师这些年，经手过不少涉及国资的交易，越来越确信一件事：真正的治理不是堆红线，是构建一套让决策者"敢于决策"的方法体系。</p>
+<p>至少需要三样东西。</p>
+<p>一是清晰的方法论。什么情况下的决策是安全的、什么是不安全的，要有标准、有先例、有边界，而不是事后倒推。事后倒推的逻辑，等于让每个人都活在随时可能被追溯的不确定里，而不确定，正是腐败最好的培养皿。</p>
+<p>二是可追溯的决策路径。决策不是某个人的瞬间判断，是流程的产物。流程清楚，个人责任才能讲清楚；流程不清楚，最后就只能靠"解释"，而解释权，恰恰是腐败的温床。</p>
+<p>三是容错空间。没有容错，就没有人敢在复杂场景里做正确但冒险的事。一个不敢做事的体系，损失往往比一个偶有腐败的体系更大——后者至少还在动。</p>
+<p>律师在这件事上的角色，不是"教你怎么不被追责"，而是"帮你把决策路径设计清楚"。合规不是终点，是让商业能在复杂监管下跑起来的基础设施。</p>
+<h2 id="六红线不能替代道路">六、红线不能替代道路</h2>
+<p>回到开头那个推来推去的交易。</p>
+<p>它最后多半走向两种结局：要么项目黄了，大家相安无事；要么有人扛着旗号拍了，留下一笔糊涂账。两条路都不是好路。</p>
+<p>我想说的其实就一句话：真正的治理，不是把红线画得更红，而是把红线背后的方法画清楚。</p>
+<p>只告诉人不能掉下悬崖，却不给桥、不修路、不设护栏，那不是安全，那是停滞。</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

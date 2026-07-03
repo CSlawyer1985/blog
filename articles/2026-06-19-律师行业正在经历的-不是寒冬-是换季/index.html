@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>律师行业正在经历的，不是寒冬，是换季 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">行业观察</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-06-19-律师行业正在经历的-不是寒冬-是换季/" class="sidebar-link">律师行业正在经历的，不是寒冬，是换季</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">行业观察</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-06-19">2026年6月19日</time>
+            <span class="dotsep"></span>
+            <span>11 分钟阅读</span>
+          </div>
+          <h1 class="article-title">律师行业正在经历的，不是寒冬，是换季</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>一个一线城市的年轻提成律师，月创收八千到一万，律所抽走三成到四成作为管理费，剩下的钱里还要自己全额缴纳社保——因为没有单位替她分担那部分。再扣掉工位费，实际落到手里的，往往不如同城一个应届公务员。与此同时，全国执业律师人数已超过八十三万，楼下法律咨询公司的报价是她的一半。</p>
+<p>这不是个例。过去两年，行业里弥漫着一种此前少见的焦虑。原因不复杂：经济环境让客户预算普遍收缩、律师人数五年涨了十几万、法律咨询公司无序扩张、社保成本持续上升。几件事叠在一起，很多律师第一次摸到了"结构性压力"这个词的真实重量。</p>
+<p>但我想试着换一个角度来谈这件事。</p>
+<p>最近读到一篇关于中国六百年商帮史的文章。文章里有一个判断框架，我觉得很适合用来看律师行业。它问的不是"这个行业还能不能赚钱"，而是一个更底层的提问：<strong>这门生意赚到的钱，最后是在减轻谁的压力，还是把压力推给了谁。</strong></p>
+<p>带着这个问题重新看律师行业，很多散点突然连起来了。</p>
+<h2 id="律师行业的开中制">律师行业的"开中制"</h2>
+<p>明朝有一个制度叫开中制。北方边境要养兵，政府自己运粮成本太高，就开了一个口子：商人把军需运到边境，政府给盐引。盐是国家专卖，盐引就是利润。站在商人角度，这是发财机会；站在政府角度，这是把边防压力分出去。</p>
+<p>今天的逻辑没有本质区别。商人看到的是生意，政府看到的是问题有没有人接。谁接住了问题，谁就可能拿到口子。</p>
+<p>中国律师制度遵循的也是这个逻辑。社会有大量纠纷需要化解，如果所有矛盾都涌向政府，治理成本高到不可承受。国家建立律师制度，就是把"化解纠纷"这件事从政府手里分出来，交给一个受监管的专业群体。律师资格证就是这套体系里的"盐引"——国家用准入门槛换专业服务的供给，律师获得执业权利和收入，社会矛盾被导入法律轨道而不是堵在政府门口。</p>
+<p>据司法部数据，目前全国律师每年办理各类法律事务超过四千万件，覆盖诉讼、非诉、法律顾问、公益法律服务等多个领域。公共法律服务体系在过去五年累计提供法律咨询一亿七千多万次。律师群体已经是国家治理基础设施中不可替代的一环。</p>
+<p>这个结构运行了几十年，三方都受益。但它有一个隐含前提：律师的供给不能大幅偏离社会对法律服务的真实需求。</p>
+<p>二〇二二年底，全国律师约六十五万。到二〇二五年九月，这个数字是八十三万。不到三年净增约十八万，年均增长约六万。而法考报名人数在二〇二四年达到九十六万的历史峰值，尽管通过率已从二〇二一年的约百分之二十三降至二〇二三年的约百分之十七，每年仍有十余万人进入法律职业资格储备池。</p>
+<p>供给侧的增速超过了需求侧的增速。结构压力的根源就在这里。</p>
+<h2 id="门槛是怎么长出收费层的">门槛是怎么长出收费层的</h2>
+<p>门槛这件事，中国商业史里有精确的案例。</p>
+<p>清朝广州十三行，洋人来中国做贸易，不能随便进港，必须有人担保。十三行商人替朝廷管贸易，也从这个位置上收钱。据中国第一历史档案馆藏《乾隆年间广州十三行贸易征收税钞清单》，乾隆元年海关正税为四万三千五百六十四两白银，而同年各项"规礼"——即各级官吏收取的苛捐杂税——却高达十万余两，名目超过百项。正税上缴户部，规礼大部分落入各级地方官吏的私人口袋。门槛一开始是为了控制风险，后来变成了中间人收租，最后成本被转嫁出去。</p>
+<p>今天律师行业面对的法律咨询公司问题，在结构上和这个故事很像。</p>
+<p>二〇〇四年取消前置行政审批后，法律咨询公司设立仅需商事登记，无需专业资质。仅广州一地，注册的法律服务类咨询公司就以万计。它们掌握流量和获客渠道，以低于律师的报价获取客户，再将案件转委托给律师。律师成了实际干活、却只能拿小头费用的执行层。</p>
+<p>这不是正常的市场竞争。正常的市场竞争是同等规则下的效率比拼。这是监管真空下的规则套利——一个没有专业准入门槛的群体，在和一个有严格准入门槛的群体竞争，前者可以承诺结果、可以低报价抢客，后者受执业规范和道德的约束。成本和规则完全不对称。</p>
+<p>国家已经在着手解决。二〇二五年九月，司法部联合公安部、市场监管总局启动了全国性专项整治，广东率先清理了一批违规机构。但整治解决的是监管真空，解决不了供需失衡。只要律师供给持续过剩，一个中间层被清理，新的形式还会出现。</p>
+<h2 id="从国家视角看律师行业的长期定位">从国家视角看律师行业的长期定位</h2>
+<p>如果只停在"行业很卷、挣钱变难"这个层面，就会漏掉更重要的东西。律师行业未来的走向，很大程度上取决于一个根本性的问题：在国家的长期规划中，律师到底应该扮演什么角色。</p>
+<p>这个问题的线索，藏在几个已经确定的政策方向里。</p>
+<p>全面依法治国不是一句口号。从行政执法规范化到营商环境法治化，从基层治理到涉外法律斗争，每一个环节都需要大量法律专业力量的参与。政府在主动把越来越多的治理事务导入法律轨道——这意味着对律师的需求不是在收缩，而是在转型。过去需求集中在诉讼和一般法律顾问，未来会更多地向合规、风控、公共法律服务、涉外法律事务等领域扩散。</p>
+<p>公共法律服务体系建设是另一条明确的主线。司法部提出要建设覆盖城乡的公共法律服务体系，目前全国六十多万个村和社区配备了法律顾问，但服务质量参差不齐，大量基层法律需求仍未得到有效满足。这个领域的购买力有限，但政策驱动力很强——律师在基层治理中的角色，会越来越像社会矛盾的减压阀。</p>
+<p>涉外法治的缺口同样明显。中国企业在全球的贸易、投资和合规需求正在膨胀，而能够处理跨境并购、国际仲裁、制裁合规的律师严重不足。国家对涉外律师的明确规划是到二〇二五年培养两万名以上，实际供给远远跟不上。这是在可预见的未来里，供需关系最有利于律师的方向之一。</p>
+<p>再加上营商环境优化——世界银行等国际评估体系将合同执行和法律权利保护作为核心指标。一个高效运转的法律服务体系，直接关系到一个经济体的竞争力。律师不是经济的润滑剂，是营商环境基础设施的一部分。</p>
+<p>这四条线指向同一个结论：国家需要的不是更少的律师，而是更多"能解决具体问题"的律师。问题不在于八十三万这个数字本身，而在于这八十三万人的能力结构、业务分布和地域分布，是否匹配国家治理和经济发展的真实需求。</p>
+<p>如果大部分律师集中在少数一线城市的传统诉讼和房地产业务上，自然僧多粥少。但如果律师的能力和分布能够匹配合规、基层治理、涉外、新兴产业等新需求，这个行业还有相当可观的增长空间。</p>
+<p>这不是一个过剩的问题，而是一个错配的问题。</p>
+<h2 id="四类律师四种可能的出路">四类律师，四种可能的出路</h2>
+<p>说"律师行业"这个词的时候，我们其实在说处境截然不同的几群人。以下分析只是个人观察，供读者参考——没有人能准确预测五年后的事，梳理一些思考框架也许比给确定答案更有用。</p>
+<p><strong>对于入行不久的新人</strong>，最直接的挑战是生存。社保自负、底薪缺失、初级工作在加速被AI替代，这三重压力确实不小。但硬币的另一面是，这一代新人对技术工具的熟悉程度远超前辈。如果用好AI——不是把它当成替代者，而是杠杆——一个会用AI做法律检索、文书起草和案件管理的年轻律师，产出效率可以接近一个低年级律师加一个实习生的总和。这意味着新人有机会比前辈更快建立效率优势。另一个可能的方向是，与其在大城市挤进传统赛道，不如关注政策驱动的增量领域：基层法律顾问、行政执法合规、数据合规。这些领域目前的收入不算高，但竞争压力相对小，政策确定性较强。</p>
+<p><strong>对于执业五到十五年的律师</strong>，可能是压力最集中的阶段。收入不算低但生活和执业成本更高，最依赖存量客户，上升通道在收窄，下面有更年轻、更便宜、更会用AI的后来者。这个阶段的破局方向，可能只有一个：在某个细分领域建立同行认可的专业壁垒。不是"什么都能做一点"，而是"某个问题上整个圈子都知道应该找你"。这需要时间，需要主动放弃一些业务，但它是在供需失衡的市场里最有效的护城河。</p>
+<p><strong>对于高级合伙人</strong>，挑战不是生存，是转型。过去以牌照、地段和客户关系为核心的竞争力模型正在松动——客户预算在收缩，团队成本在上升，AI工具在降低初级工作的价值。一个可能的思路是，从管理律师的人转向设计法律服务产品的人：把团队的知识和经验系统化、产品化，用标准化流程降低交付成本，用专业深度维持定价权。另一个方向是，主动对接企业和政府的增量法律需求——合规体系搭建、涉外风控、ESG——而不是在存量市场里和其他律师打价格战。</p>
+<p><strong>对于企业法务和正在考虑职业转型的律师</strong>，变量同样不少。企业法务部在膨胀，法律科技公司在崛起，会计师事务所在重返法律市场。它们不抢出庭的生意，但大量非诉和咨询业务在分流。对律师而言，靠信息差赚钱的窗口在关闭。信息差被互联网和AI抹平之后，剩下的是判断力差——你能不能看到别人看不到的东西。这个能力在律所之外同样有价值。</p>
+<h2 id="从牌照红利到能力红利">从牌照红利到能力红利</h2>
+<p>过去三十年，中国律师行业吃的主要是牌照红利——律师证本身就是稀缺资源。这个红利正在消退。不是因为律师证不值钱了，而是持证的人太多了，市场需求的增长斜率已经放缓。</p>
+<p>接下来这个行业会进入能力红利时代。不是我有一张证所以你应该请我，而是我有一个别人解决不了的问题我能解决。</p>
+<p>这个判断不悲观。恰恰相反——牌照红利对行业真正的伤害，是让很多从业者误以为拿到证就完成了竞争，而忽视了持续积累。潮水退去，留下来的不是最会搞关系的人，不是最早入场的人，而是那些一直在认真积累的人。</p>
+<p>这个转变的阵痛是真实的。一个年轻人花数年时间过法考、实习、拿执业证，却发现这条路不像前辈说的那样确定。但换一个角度看——当这个行业的准入门槛从"能不能考过法考"变成"能不能解决别人解决不了的问题"，对于真正有专业能力的人而言，竞争反而变得更公平了。</p>
+<p>中国律师行业正在经历的，不是一次普通的周期调整。这是一个行业从牌照红利转向能力红利的关口。关口的这一侧人很多，另一侧人还少。过去靠门槛赚钱的年代在慢慢结束，未来靠分担压力的能力活下来的年代刚刚开始。</p>
+<p>六百年的商帮史告诉我们一件事：真正能走远的，最后都得回到几个最朴素的问题——你的生意在让谁更轻松，你有没有在最顺的时候还管住自己的手，你有没有把一时的红利当成永久的产权。</p>
+<p>律师行业的故事，也在这个逻辑里。</p>
+<h2 id="关于未来的一些不成熟思考">关于未来的一些不成熟思考</h2>
+<p>没有人能准确预测一个行业的未来。但如果要说有什么值得注意的信号，我个人会关注以下几个：</p>
+<p>律师行业的"基础设施化"。随着公共法律服务体系的完善和法治政府建设的推进，律师服务的公共属性可能会增强——更多律师会参与到法律援助、基层调解、行政复议等公共服务领域。这部分业务利润率不高，但稳定性和政策确定性很强。</p>
+<p>法律服务市场的进一步分层。高端商事、跨境并购、复杂争议解决等领域的律师依然稀缺，而标准化、可复制的法律服务（如合同模板、简单诉讼代理）的利润率会继续走低。这不是好或坏，只是一个成熟市场必然会发生的分化。</p>
+<p>AI不会替代律师，但会重塑分工。初级法律研究和文书起草的自动化已经在发生，但释放出来的人力和时间，可以被投入到更需要判断力、创造力和人际沟通的工作中。律师的核心价值——在信息不完备的情况下做出专业判断，在冲突中平衡各方利益，在不确定性中提供确定性——这些东西，AI目前还难以替代。</p>
+<p>中国法律服务出海的长期机遇。中国企业全球化的进程还在早期，涉外法律人才缺口巨大。对于愿意在这个方向上投入时间和语言能力的律师而言，这是一个可以持续数十年的增量市场。</p>
+<p>以上只是个人在观察行业时的一些初步思考，远非结论。每个律师的处境、资源和目标都不同，没有放之四海而皆准的正确路径。但如果非要提炼一条共同原则的话，也许可以回到开头那个问题：<strong>不管你是刚入行的新人还是管理百人团队的高级合伙人，都值得问自己一句——我正在做的事情，五年后还在帮谁减轻压力？</strong></p>
+<p>如果答案是清晰的，方向大概就是对的。</p>
+<hr>
+<p><em>本文数据来源：司法部2025年9月国新办新闻发布会公开数据、司法部法律职业资格授予公示数据、中国第一历史档案馆藏《乾隆年间广州十三行贸易征收税钞清单》（转引自《南方日报》2002年1月7日报道）。</em></p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harness Engineering：法律人理解AI控制力的入门指南 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-05-31">2026年5月31日</time>
+            <span class="dotsep"></span>
+            <span>11 分钟阅读</span>
+          </div>
+          <h1 class="article-title">Harness Engineering：法律人理解AI控制力的入门指南</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>Harness Engineering 是2026年AI圈冒出来的一个新词。它回答了一个我们每天都在撞上的问题：<strong>怎么让AI稳定地干活，而不是偶尔惊喜、偶尔惊吓。</strong></p>
+<hr>
+<h2 id="一从两个前任说起">一、从两个"前任"说起</h2>
+<p>你第一次用AI写法律文书时，大概率经历过这种事：让它检索一条法条，它信誓旦旦地给出了条文编号和内容。你拿去一查，根本不存在。</p>
+<p>不是模型"笨"。是你没给它装缰绳。</p>
+<p>在讲缰绳之前，先看AI圈已经走完的两步路。</p>
+<p><strong>第一步：Prompt Engineering，把话说清楚。</strong></p>
+<p>Prompt 就是你发给大模型的那句话。Prompt Engineering 研究怎么把这句话说得更准。你问"帮我写一份合同"，AI给你一份不知所云的东西。你换成"帮我起草一份商铺租赁合同，出租方为个人、承租方为餐饮企业，租期5年，需包含营业额提成租金条款"，结果就靠谱了。</p>
+<p>说白了就是学会给AI下指令。跟你带实习律师一样：指令模糊，他只能猜。指令清晰，他才干得明白。</p>
+<p>现在很少有人单独提 Prompt Engineering 了。门槛太低，模型本身也变强了，很多时候不用精心调 prompt 也能拿到不错的回答。</p>
+<p><strong>第二步：Context Engineering，把材料给到位。</strong></p>
+<p>你跟AI聊了好几轮，从合同条款聊到违约责任，从违约责任聊到诉讼策略。当你问"这个案子胜诉概率多大"时，AI需要知道"这个案子"指什么。你不能只发这一句话，得把前面的对话历史一起发过去。</p>
+<p>发给AI的所有信息——你的指令、对话历史、可用工具列表、系统规则，统称为 <strong>Context</strong>（上下文）。Context 有容量上限，不能无止境地往里塞。Context Engineering 研究的就是：在有限空间里，放什么、不放什么、什么时候放、以什么形式放。</p>
+<p>举个例子：你跟AI聊了50轮合同谈判，对话历史已经很长了。Context Engineering 的处理方式是，在接近上限时自动把前40轮压缩成一段摘要，腾出空间给最新最关键的信息。这跟律师写代理词一样，你不能把整个案卷塞进去，你得挑选、浓缩、组织。</p>
+<p>到这里，Prompt Engineering 解决了"怎么问"，Context Engineering 解决了"怎么给信息"。按说该够了吧？</p>
+<p>不够。<strong>Prompt 给对了，Context 给够了，AI还是可能在关键时刻跑偏。</strong></p>
+<p>因为AI像一个极度聪明但没有任何纪律的助手。你给了清晰的指令和充足的材料，它却可能在执行中注意力漂移、偷工减料、编造事实。你需要的不只是"说清楚"和"给到位"。你需要一整套<strong>控制系统</strong>。</p>
+<p>这套系统，叫 Harness。</p>
+<hr>
+<h2 id="二马具的隐喻">二、马具的隐喻</h2>
+<p>Harness 这个词，本意是<strong>马具</strong>。缰绳、头套、鞍具的总称。</p>
+<p>一匹马非常强壮。没有马具，你骑不上去，更控制不了方向。马具的作用就一个：<strong>让马的强大力量，稳定地、持续地为人所用。</strong></p>
+<p>平移到大模型：</p>
+<ul>
+<li><strong>马 = 大模型</strong>（GPT、Claude Opus，能力极强，但天然发散、会产生幻觉）</li>
+<li><strong>马具 = Harness</strong>（围绕模型搭建的整个控制系统：规则、工具、流程、权限、质量检查）</li>
+</ul>
+<p>脱了马具的马，就是没有任何约束的大模型。它会像脱缰的野马一样发散，产生严重幻觉，最终根本没法稳定交付结果。</p>
+<p>AI圈最近形成了一个基本共识，用公式表达：</p>
+<blockquote>
+<p><strong>Harness = Agent - Model</strong></p>
+</blockquote>
+<p>一个完整的 AI Agent（能自主完成任务的AI系统），减去里面的大模型，剩下的全是 Harness。</p>
+<p>举个你每天都在用的例子：<strong>Claude Code</strong>。Claude 模型本身只是其中一个组件。除此之外的所有东西——CLAUDE.md 里写的规则、可以调用的 MCP 工具、文件读写权限、定时调度机制、Skill 系统——统统属于 Harness。</p>
+<pre class="code-block"><code>┌─────────────────────────────────────────┐
+│               Agent (AI 智能体)           │
+│  ┌─────────────────────────────────────┐│
+│  │           Harness（马具层）           ││
+│  │  ┌──────┐ ┌──────┐ ┌────────────┐  ││
+│  │  │ 规则  │ │ 工具 │ │ 质量检查   │  ││
+│  │  └──────┘ └──────┘ └────────────┘  ││
+│  │  ┌──────┐ ┌──────┐ ┌────────────┐  ││
+│  │  │ 权限  │ │ 流程 │ │  记忆系统  │  ││
+│  │  └──────┘ └──────┘ └────────────┘  ││
+│  │         ┌───────────┐               ││
+│  │         │ 大模型(马) │               ││
+│  │         └───────────┘               ││
+│  └─────────────────────────────────────┘│
+└─────────────────────────────────────────┘</code></pre>
+<p>法律人对这个逻辑天然理解。法律是社会行为的 Harness，再强大的商业力量，没有规则约束就会走向无序。诉讼程序是纠纷解决的 Harness，再激烈的对抗，没有程序规则就变成丛林法则。</p>
+<p>你不需要成为程序员才能理解这件事。你只需要理解一句话：<strong>让一个强大的东西稳定输出，关键不在它本身有多强，而在你给它套上了什么样的缰绳。</strong></p>
+<hr>
+<h2 id="三三个同心圆从问问题到搭系统">三、三个同心圆：从问问题到搭系统</h2>
+<p>把这三个概念放在一起，关系就清楚了：</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 380"&gt;
+  &lt;defs&gt;
+    &lt;marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"&gt;
+      &lt;path d="M0,0 L8,3 L0,6 Z" fill="#555"/&gt;
+    &lt;/marker&gt;
+  &lt;/defs&gt;
+  &lt;rect width="600" height="380" fill="#fff" rx="6"/&gt;
+  &lt;circle cx="300" cy="190" r="160" fill="#f0f4ff" stroke="#3b6cb4" stroke-width="2"/&gt;
+  &lt;circle cx="300" cy="190" r="105" fill="#e8f0fe" stroke="#5b8fd4" stroke-width="1.5"/&gt;
+  &lt;circle cx="300" cy="190" r="55" fill="#dce8fa" stroke="#7aa8e0" stroke-width="1.5"/&gt;
+  &lt;text x="300" y="70" text-anchor="middle" font-size="14" font-weight="700" fill="#3b6cb4"&gt;Harness Engineering&lt;/text&gt;
+  &lt;text x="300" y="88" text-anchor="middle" font-size="11" fill="#556"&gt;研究怎么搭建系统&lt;/text&gt;
+  &lt;text x="300" y="140" text-anchor="middle" font-size="13" font-weight="700" fill="#5b8fd4"&gt;Context Engineering&lt;/text&gt;
+  &lt;text x="300" y="157" text-anchor="middle" font-size="10.5" fill="#667"&gt;研究怎么给信息&lt;/text&gt;
+  &lt;text x="300" y="182" text-anchor="middle" font-size="12" font-weight="700" fill="#7aa8e0"&gt;Prompt&lt;/text&gt;
+  &lt;text x="300" y="197" text-anchor="middle" font-size="12" font-weight="700" fill="#7aa8e0"&gt;Engineering&lt;/text&gt;
+  &lt;text x="300" y="212" text-anchor="middle" font-size="10" fill="#778"&gt;研究怎么问问题&lt;/text&gt;
+  &lt;text x="470" y="250" font-size="10" fill="#999"&gt;研究范围&lt;/text&gt;
+  &lt;line x1="470" y1="255" x2="470" y2="310" stroke="#999" stroke-width="1" marker-end="url(#arrow)"/&gt;
+  &lt;text x="470" y="325" font-size="10" fill="#999"&gt;不断扩大&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<ul>
+<li><strong>Prompt Engineering</strong> 研究"怎么把问题说清楚"。最内圈，对象是你发出去的那段话。</li>
+<li><strong>Context Engineering</strong> 研究"怎么把信息组织好"。中圈，对象包括对话历史、工具列表、系统指令等所有发给模型的信息。</li>
+<li><strong>Harness Engineering</strong> 研究"怎么把系统搭稳"。最外圈，覆盖除模型本身之外的一切：规则体系、工具链、质量检查、权限管控、流程编排。</li>
+</ul>
+<p>这是一个研究范围不断向外扩展的过程。一开始大家盯着几句提示词调来调去。后来发现光调提示词不够，得管理整个上下文。再后来发现光管理上下文也不够，得从头设计一套让AI稳定运行的完整系统。</p>
+<p>Harness Engineering 不是又一个 buzzword。它是这个演进逻辑走到今天的必然产物。</p>
+<hr>
+<h2 id="四大厂是怎么做的">四、大厂是怎么做的</h2>
+<p>Harness Engineering 太新了，业界还没有公认的体系。不如直接看两个顶级AI公司实际做了什么。</p>
+<h3 id="41OpenAI给AI搭一个靠谱的工地">4.1 OpenAI：给 AI 搭一个靠谱的工地</h3>
+<p>2025年8月，OpenAI 启动了一个实验：用 AI 从零开始写一个真实的、有用户在生产环境中使用的软件产品。所有组成部分——业务逻辑、测试、CI配置、文档、内部工具——全部由 AI 生成。</p>
+<p>结果：<strong>5个月，近100万行代码，团队从3人扩到7人。</strong> 开发效率大约是纯人工的10倍。</p>
+<p>开头并不顺利。Agent 经常走错方向，甚至重复犯同一个错误。OpenAI 发现问题不在模型不够聪明，而在 Harness 没搭好。</p>
+<p>他们把优化归为三类。</p>
+<p><strong>第一类：信息充足，别让AI"不知道"。</strong></p>
+<p>最初 OpenAI 把所有项目规范塞进一个超大文件，随用户问题一起发给模型。结果适得其反。信息太多，模型反而抓不住重点，就像第一天入职的实习生被砸了一本500页员工手册，完全不知道从哪看起。而且文件没人维护，时间一长成了过时信息的垃圾堆。</p>
+<p>后来他们改了：把核心指引压缩到100行左右，只做目录。具体文档按模块分开放，用到哪块再加载哪块。跟律所的知识管理一个道理，你不会把全部案卷材料扔给一个新人，你会按专题、按项目、按阶段分门别类整理好，需要什么取什么。</p>
+<p>他们还强制要求：<strong>所有重要决策和约定必须搬进代码仓库</strong>，让仓库成为唯一的事实来源。散落在微信聊天记录里、飞书文档里的信息，对 AI 来说等于不存在。这个教训法律人应该特别有共鸣。</p>
+<p><strong>第二类：验证反馈，让AI能"自己检查"。</strong></p>
+<p>AI 写完了代码，怎么验证对不对？OpenAI 给 AI 配上了足够完善的工具：接入 Chrome DevTools，AI 可以自己截图、查看页面结构、模拟用户操作，验证 UI 是否符合要求；接入日志和指标系统，AI 可以自己读日志、排查问题、做性能调优。</p>
+<p>他们还用 Linter（代码规范检查工具）建立了自动闭环：AI 生成代码 → Linter 检测是否合规 → 不合规则报错 → 报错信息发回 AI → AI 修改 → 再检测 → 循环直到通过。</p>
+<p>这个流程的精妙之处：<strong>完全不需要人插手。</strong> 人只定规则，AI 在规则约束下自己跑、自己查、自己改。</p>
+<p><strong>第三类：技术债清理，不让垃圾积累。</strong></p>
+<p>大规模生成代码，必然引入重复代码、偏离规范的写法、不一致的命名。就像律所里，每个律师都按自己习惯起草文件，时间长了文档库一定一团乱。</p>
+<p>OpenAI 设置后台 AI 任务，定期扫描整个代码库，自动找出偏离规范的地方并修复。文档也做同样的事，定期扫描，发现过时文档自动更新。</p>
+<p>OpenAI 干的事情，本质上不是写代码，而是<strong>给 AI 构建一个能稳定干活的环境</strong>。他们自己总结了一句话，我认为是整篇文章的灵魂：</p>
+<blockquote>
+<p><strong>Humans steer. Agents execute.</strong></p>
+<p><strong>人掌舵，AI 干活。</strong></p>
+</blockquote>
+<hr>
+<h3 id="42Anthropic用三个AI互相监督">4.2 Anthropic：用三个 AI 互相监督</h3>
+<p>Anthropic（Claude 的创造者）的核心思路比 OpenAI 更进一步：<strong>不让一个 AI 包揽所有事情，把不同角色拆给不同的 AI，让它们互相监督。</strong></p>
+<p>他们发现，只靠一个 Agent 独立完成所有工作（Solo 方案），效果很差。AI 急于求成，做到一半上下文满了就抛下烂摊子，下一个接手的 AI 完全不知道前面发生了什么，只能靠猜。</p>
+<p>于是他们搞了一个三 Agent 架构（Full Harness 方案）：</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400"&gt;
+  &lt;defs&gt;
+    &lt;marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"&gt;
+      &lt;path d="M0,0 L8,3 L0,6 Z" fill="#555"/&gt;
+    &lt;/marker&gt;
+  &lt;/defs&gt;
+  &lt;rect width="600" height="400" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#333"&gt;Anthropic Full Harness 三 Agent 架构&lt;/text&gt;
+  &lt;rect x="60" y="65" width="130" height="55" rx="6" fill="#e8f0fe" stroke="#3b6cb4" stroke-width="1.5"/&gt;
+  &lt;text x="125" y="87" text-anchor="middle" font-size="13" font-weight="700" fill="#3b6cb4"&gt;📋 Planner&lt;/text&gt;
+  &lt;text x="125" y="106" text-anchor="middle" font-size="10" fill="#556"&gt;拆解需求→功能清单&lt;/text&gt;
+  &lt;rect x="235" y="65" width="130" height="55" rx="6" fill="#fef3e2" stroke="#e8962e" stroke-width="1.5"/&gt;
+  &lt;text x="300" y="87" text-anchor="middle" font-size="13" font-weight="700" fill="#c77d1a"&gt;⚙️ Generator&lt;/text&gt;
+  &lt;text x="300" y="106" text-anchor="middle" font-size="10" fill="#556"&gt;逐项实现功能&lt;/text&gt;
+  &lt;rect x="410" y="65" width="130" height="55" rx="6" fill="#e6f5ee" stroke="#2e8b57" stroke-width="1.5"/&gt;
+  &lt;text x="475" y="87" text-anchor="middle" font-size="13" font-weight="700" fill="#2e8b57"&gt;✅ Evaluator&lt;/text&gt;
+  &lt;text x="475" y="106" text-anchor="middle" font-size="10" fill="#556"&gt;独立质量评估&lt;/text&gt;
+  &lt;line x1="190" y1="92" x2="233" y2="92" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/&gt;
+  &lt;text x="211" y="84" text-anchor="middle" font-size="9" fill="#777"&gt;功能清单&lt;/text&gt;
+  &lt;line x1="365" y1="80" x2="408" y2="80" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/&gt;
+  &lt;text x="387" y="72" text-anchor="middle" font-size="9" fill="#777"&gt;交付标准协商&lt;/text&gt;
+  &lt;line x1="408" y1="105" x2="365" y2="105" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/&gt;
+  &lt;text x="387" y="118" text-anchor="middle" font-size="9" fill="#777"&gt;评估反馈/修改&lt;/text&gt;
+  &lt;line x1="30" y1="150" x2="570" y2="150" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="300" y="180" text-anchor="middle" font-size="13" font-weight="700" fill="#555"&gt;—— 法律人看一眼就懂 ——&lt;/text&gt;
+  &lt;rect x="40" y="200" width="155" height="140" rx="4" fill="#fafafa" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="117" y="222" text-anchor="middle" font-size="12" font-weight="700" fill="#3b6cb4"&gt;Planner = 主办律师&lt;/text&gt;
+  &lt;text x="117" y="245" text-anchor="middle" font-size="10" fill="#666"&gt;接到客户需求后&lt;/text&gt;
+  &lt;text x="117" y="262" text-anchor="middle" font-size="10" fill="#666"&gt;拆解为具体任务清单：&lt;/text&gt;
+  &lt;text x="117" y="282" text-anchor="middle" font-size="10" fill="#666"&gt;① 检索类案&lt;/text&gt;
+  &lt;text x="117" y="299" text-anchor="middle" font-size="10" fill="#666"&gt;② 梳理证据&lt;/text&gt;
+  &lt;text x="117" y="316" text-anchor="middle" font-size="10" fill="#666"&gt;③ 起草诉状&lt;/text&gt;
+  &lt;rect x="220" y="200" width="155" height="140" rx="4" fill="#fafafa" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="297" y="222" text-anchor="middle" font-size="12" font-weight="700" fill="#c77d1a"&gt;Generator = 承办律师&lt;/text&gt;
+  &lt;text x="297" y="245" text-anchor="middle" font-size="10" fill="#666"&gt;拿着任务清单&lt;/text&gt;
+  &lt;text x="297" y="262" text-anchor="middle" font-size="10" fill="#666"&gt;逐项推进执行&lt;/text&gt;
+  &lt;text x="297" y="285" text-anchor="middle" font-size="10" fill="#666"&gt;做完一项标记一项&lt;/text&gt;
+  &lt;text x="297" y="305" text-anchor="middle" font-size="10" fill="#666"&gt;稳扎稳打不跳步&lt;/text&gt;
+  &lt;rect x="400" y="200" width="155" height="140" rx="4" fill="#fafafa" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="477" y="222" text-anchor="middle" font-size="12" font-weight="700" fill="#2e8b57"&gt;Evaluator = 合伙人复核&lt;/text&gt;
+  &lt;text x="477" y="245" text-anchor="middle" font-size="10" fill="#666"&gt;独立第三方视角&lt;/text&gt;
+  &lt;text x="477" y="262" text-anchor="middle" font-size="10" fill="#666"&gt;不参与具体执行&lt;/text&gt;
+  &lt;text x="477" y="285" text-anchor="middle" font-size="10" fill="#666"&gt;只负责挑毛病：&lt;/text&gt;
+  &lt;text x="477" y="305" text-anchor="middle" font-size="10" fill="#666"&gt;"这个论证不充分"&lt;/text&gt;
+  &lt;text x="477" y="322" text-anchor="middle" font-size="10" fill="#666"&gt;"那条法条引用过时了"&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>三个角色：</p>
+<ol>
+<li><strong>Planner（规划者）</strong>：拿到模糊需求后拆解为详细功能清单。比如"做一个游戏制作工具"拆成界面布局、素材管理、交互逻辑、导出功能等十几个功能点。</li>
+<li><strong>Generator（生成者）</strong>：逐项实现。做完一个标记一个，再拿下一个。稳扎稳打，不跳步。</li>
+<li><strong>Evaluator（评估者）</strong>：独立第三方，不参与生成，只负责评估 Generator 的产出。发现问题发回修改，直到通过。</li>
+</ol>
+<p>Anthropic 发现了一个关键事实：<strong>让 AI 自己评估自己的产出，行不通。</strong> 这就是"王婆卖瓜，自卖自夸"。AI 对自己做的东西有天然滤镜，即使有明显 bug 也能视而不见，给自己打个高分就收工了。</p>
+<p>这个发现有一个绝佳的法律类比。为什么律师行业要有合伙人复核？为什么法院设二审？为什么重大交易需要独立法律意见？<strong>因为自我审查的可靠性有天然上限。</strong> 质量保障的核心不是"更认真"，是"换一双眼睛"。</p>
+<p>Anthropic 用一个具体任务做了验证：做一个游戏制作工具。Solo 方案做出来的布局混乱、逻辑难懂、bug 到处都是，基本没法用。Full Harness 方案布局合理、逻辑清晰，达到可用水准。</p>
+<p>代价呢？Solo：20分钟，9美元。Full Harness：6小时，200美元。精雕细琢有精雕细琢的代价。考60分可能复习3天，考90分得复习一个月。这个道理，法律人也懂。</p>
+<hr>
+<h2 id="五是噱头吗">五、是噱头吗？</h2>
+<p>Harness Engineering 火起来之后，争议跟着来了。批评者的论点很直接：</p>
+<p><strong>"所有技术都是旧的。Linter 早就有，任务拆解早就有，质量评估早就有。新瓶装旧酒，造个概念炒作。"</strong></p>
+<p>前半句，说得对。</p>
+<p>Harness Engineering 确实没发明任何新技术。OpenAI 的 Linter 自动检查、Anthropic 的 Planner-Generator-Evaluator 拆分，这些技术元素在传统软件工程中早就存在。Anthropic 自己在文章里也承认，模型从 Sonnet 4.5 升级到 Opus 4.6 后，很多原来必须靠 Harness 约束的事情，模型自己就能搞定。</p>
+<p>但"新瓶装旧酒"这个批评，值得认真琢磨一下。</p>
+<p>法律人应该比任何人都更理解这件事。<strong>请求权基础分析方法</strong>发明了任何一条新法条吗？没有。它做的就是把分散的法律规范、裁判规则和论证路径，组织成一套可以系统适用、反复操作的分析框架。但正是这套框架，让法律分析从依赖个人经验的手艺活，变成了可以传授、可以检验、可以优化的方法论。</p>
+<p>工程领域的真正进步，往往不是发明新技术。是找到一种方式，把零散的能力组织成可以系统设计、持续优化的整体方案。</p>
+<p>Harness Engineering 的价值就在这里。在它出现之前，大家也在做规则配置、工具管理、质量检查，但都是零散的、凭经验的、不可复制的。Harness Engineering 提供了一个统一视角：把除模型之外的所有东西，都视为一个需要系统设计的整体。这个视角本身就是进步。</p>
+<p>但我也得说：<strong>Harness Engineering 大概率不是终局。</strong></p>
+<p>模型能力在持续增强。今天这些用来约束模型、纠正模型、给模型兜底的系统设计，很多可能会被模型自身逐步吸收。到那时候，Harness 可能退化成单纯的底层接口，你只需要给它配最基础的工具（读写文件、联网搜索），剩下的99%它自己搞定。</p>
+<p>所以更诚实的定位是：<strong>Harness Engineering 是一个过渡期的关键技术。不是未来的终极答案，是当下最现实的答案。</strong></p>
+<p>今天，模型依然会犯错、依然有幻觉、依然在复杂任务中偏离轨道。谁把 Harness 搭得更稳，谁就能更早把 AI 的能力变成真正的生产力。</p>
+<hr>
+<h2 id="六法律人为什么要关心这件事">六、法律人为什么要关心这件事？</h2>
+<p>你可能会想：这是软件工程师的事，跟律师有什么关系？</p>
+<p>三个理由。</p>
+<p><strong>第一，你已经在做这件事了，只是没意识到。</strong></p>
+<p>你用 Claude Code 写文章时，CLAUDE.md 里的规则、配置的 MCP 工具、建的 Skill 系统，这些都是 Harness。你决定"合同审核必须走七步流程"、设置"法律研究必须先检索法条再输出结论"，这些决策不是 Prompt Engineering，是 Harness Engineering。你已经在干了，了解这个概念能让你干得更自觉、更系统。</p>
+<p><strong>第二，法律AI的核心壁垒不在模型，在 Harness。</strong></p>
+<p>大家用的模型是同一批：GPT、Claude、Gemini。模型层面的能力差异会越来越小。但怎么给模型配置规则体系、怎么设计质量检查流程、怎么让多个AI互相监督，这些 Harness 层面的差异会越来越大，而且直接决定输出质量的差距。</p>
+<p>用法律行业的话说：<strong>同样的法条（模型），不同的程序（Harness），产出完全不同的结果。</strong></p>
+<p><strong>第三，法律人对 Harness 有天然的理解优势。</strong></p>
+<p>法律人的整个职业生涯都在跟控制系统打交道。法律是社会的 Harness，约束强者、保护弱者、让复杂博弈在可预期框架内进行。诉讼程序是纠纷解决的 Harness，对抗可以激烈，但必须在规则内。合同是交易的 Harness，商业条款再复杂，也要落到权利义务的框架里。</p>
+<p>约束强大力量、建立制衡机制、设计可预期流程，这是法律人的看家本领。把这些能力迁移到 AI 系统设计上，法律人有独特的优势。</p>
+<hr>
+<h2 id="七三个行动建议">七、三个行动建议</h2>
+<p>如果你现在就想开始搭建自己的 Harness，可以从这三件事做起：</p>
+<p><strong>1. 把"说清楚"升级为"写下来"。</strong></p>
+<p>调 prompt 是一次性的，写规则是可复用的。把你反复用到的指令模板、审查checklist、质量标准，写成结构化的规则文件。一次写完，每次AI干活时自动加载。</p>
+<p><strong>2. 建立"双人复核"机制。</strong></p>
+<p>不要让一个AI既负责产出又负责评估。关键任务上，用一个AI生成初稿，用另一个独立的AI（同一个模型但独立会话也行）来做质量检查。换一双眼睛，比你想象的重要得多。</p>
+<p><strong>3. 定期做"垃圾回收"。</strong></p>
+<p>你的AI工具配置、Skill库、规则文件会慢慢腐化。有些规则过时了，有些工具不再需要了，有些配置互相冲突了。定期花半小时扫描和清理，跟维护你的法律知识库一样。</p>
+<hr>
+<h2 id="八结语">八、结语</h2>
+<p>用法律人最能理解的方式总结 Harness Engineering：</p>
+<blockquote>
+<p><strong>大模型是一匹千里马。马跑得再快，没有缰绳也到不了目的地。给马配缰绳这件事，本身就是一个专业领域。</strong></p>
+</blockquote>
+<p>这个领域可能不会永远存在。当马足够聪明，自己认得路、懂交通规则、会避险，缰绳自然就松了。但在那之前，区别就在于：有人还在反复调 prompt，有人已经在系统性地搭 Harness。</p>
+<p>后者是更早拿到结果的人。</p>
+<hr>
+<blockquote>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+</blockquote>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

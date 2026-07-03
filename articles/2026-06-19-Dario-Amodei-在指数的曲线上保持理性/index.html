@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dario Amodei：在指数的曲线上保持理性 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-06-19">2026年6月19日</time>
+            <span class="dotsep"></span>
+            <span>8 分钟阅读</span>
+          </div>
+          <h1 class="article-title">Dario Amodei：在指数的曲线上保持理性</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>如果你是一个中国 AI 用户，你对 Anthropic 的感受大概是复杂的。</p>
+<p>Claude 好用。Claude Code 可能是目前最强的编程助手。但你也知道，这家公司对中国大陆用户关上了门——不是技术限制，是主动切断。它的 CEO 公开呼吁对华芯片出口管制，公开将中国描述为"威权国家 + AI =《1984》或更糟"。</p>
+<p>很容易产生一种直觉：这是一家"反华"的公司，或者至少是一个对中国抱有敌意的硅谷精英在主导。</p>
+<p>但如果你愿意暂时搁置这种直觉，花 69 分钟看完 Dario Amodei 在 Bloomberg "The Circuit"（2026 年 6 月 10 日首播）上的深度访谈，你可能会发现一些不那么简单的东西。这不是一篇为 Dario 辩护的文章。这是一次理解——理解一个人的世界观如何贯穿他对技术、商业、军事、信任和中国的全部判断。理解不保证认同，但不理解一定导致误判。</p>
+<hr>
+<h2 id="什么都没发生什么都没发生然后一切同时爆发">"什么都没发生，什么都没发生——然后一切同时爆发"</h2>
+<p>Dario 描述 AI 发展节奏时用了一个相对论的比喻："假设你乘坐一艘飞船以相对论速度飞离地球。你睡一觉醒来，地球上已经过了两天。你继续加速，再睡一觉，地球上过了三天。下一次，四天。"</p>
+<p>这就是他眼中的 AI。他把这叫"平滑指数"（smooth exponential）。核心含义是：AI 能力不是某一天突然觉醒，而是每年大约 10 倍的持续加速。在这个视角下，不存在所谓的"奇点时刻"——整个过程就是一条持续加速的曲线。</p>
+<p>这个框架是 Dario 一切决策的底层操作系统。</p>
+<p>它解释了为什么他反感硅谷的两种典型极端。一种说任何监管都会"毁灭创新"，另一种说政府应该"全部接管"。他的原话是——"Come on folks！你们从最极端的反监管，跳到完全共产主义式的政府接管。我们需要一个更理性、更温和的方法。"</p>
+<p>它解释了他反复用的一个词——<strong>maturity</strong>（成熟）。"悠悠球式地在'我不担心'和'天哪今天必须恐慌'之间摇摆，是不成熟决策的标志。成熟的决策是：不能忽视风险，不能自满，但必须理性应对——像外科医生做手术一样，像军官指挥军事行动一样。"</p>
+<p>它也解释了他对中国的态度。这不是情绪化的"喜欢或不喜欢"，而是在指数曲线上对"威权 + AI"风险的一次理性评估——你当然可以不同意评估结论，但把它简化成"反华"会错过真正重要的东西。</p>
+<hr>
+<h2 id="对华强硬三层叠加不止一种动机">对华强硬：三层叠加，不止一种动机</h2>
+<p>Dario 的中国立场是三层逻辑的叠加。</p>
+<p><strong>第一层：地缘政治竞争。</strong> 访谈中他直言："我一直公开主张对华芯片出口管制。我说这些是因为我认为中国在 AI 能力上领先对美国、对世界民主状态是非常不利的。"他说这话时明确知道芯片制造商不赞同——"但这没有阻止我。我现在还在说，即使我们签了更多合作协议。"他承认投资者可能希望他闭嘴，态度是——"我们都可以在一边合作的同时在另一边持有分歧。我们都是成年人了。"</p>
+<p><strong>第二层：对政权性质的判断。</strong> 他在百度工作过一年。他没有把这段经历描绘成"觉醒时刻"，但提到一件事：获取语音识别数据的方式。"他们说得不寒而栗——'我们不关心中国的隐私，所以我们有所有的语音识别数据。'"这是十多年前的百度，放在今天看也许是一个特定时期的切片。但这段经历显然进入了他对"技术权力在没有制衡的社会中会如何运作"的判断。他接着提到了新疆、香港、海外言论压制——"CCP 可以伸入美国的商业网络压制批评。那是一个威权国家。一个 IT 威权国家。当我看到这一点与 AI 结合时，你真的会得到一个《1984》般或更糟的反乌托邦。"</p>
+<p><strong>第三层：技术能力扩散的恐惧。</strong> 这一层和前两层不同——它不涉及"中国 AI 太强了"，而涉及"不够强的 AI 也可能太危险"。当被问到中国开源模型是否构成威胁时，他的回答是：前沿模型的智能优势仍然巨大，但"Mythos 级别的网络能力十二个月后可能任何人都能下载"。最可怕的不是中国追上来，而是即使追不上，滞后模型的 cyber 攻击能力也可能拉低所有人的安全底线。</p>
+<p>三层叠加，构成了 Anthropic 对华政策的内核。你可以逐条反驳——芯片管制是否在延缓技术扩散的同时也阻碍了全球 AI 安全的协作？把中国定调为"1984 式反乌托邦"是否过度简化了一个复杂社会的内部张力？开源模型的安全风险是否可以用其他方式管理？</p>
+<p>这些讨论都值得展开。但在讨论之前，有一个事实值得先看：</p>
+<p>"我们在中国问题上言行一致。我们切断了对模型的访问——没有人要求我们这样做。那让我们损失了几亿美元，在当时几亿美元是我们收入的相当大一部分。"</p>
+<p>你不必同意他的判断。但当一个公司为一个立场实实在在付了几亿美元的时候，这个立场背后的逻辑至少值得被认真审视。</p>
+<hr>
+<h2 id="Mythos不发布一个超级武器的商业代价">Mythos：不发布一个"超级武器"的商业代价</h2>
+<p>如果说中国问题是 Dario 价值观的"外部测试"，那 Mythos 就是"内部测试"。</p>
+<p>Mythos 是 Anthropic 迄今最强大的网络安全模型。它的核心能力不是聊天或编程——而是发现代码漏洞并转化为可利用的攻击。在 Firefox 中它找到了 271 个新漏洞。前代模型一个都没找到。在未做任何提示的情况下，早期获得访问权限的公司主动联系 Anthropic——"他们说这是超级武器，你应该需要持枪证才能使用。请不要发布。"</p>
+<p>Dario 的决定是：暂不公开发布。</p>
+<p>这个决定在商业上意味着什么？"这件事在商业上严重损害了我们。Mythos 在 Anthropic 内部极大加速了研究和生产——如果在外部发布，同样会带来巨大的商业价值。"他每天接到客户电话要求访问 Mythos，有国家在打电话要求访问。而美国政府和安全团队在另一边说：等等，有反情报风险。</p>
+<p>当其他 AI 公司或社交媒体上的评论者说 Mythos 只是"一场精心策划的 PR 秀"时，Dario 的回应是一连串反问——如果是 PR，为什么不发布最强大的模型来赚钱？为什么要承受商业损失？</p>
+<p>他用了一个不常见的词——<strong>gravitas</strong>（庄重）。"这一切都显示出令人难以置信的缺乏庄重和成熟。我们需要一起面对这个时刻。"</p>
+<p>你可以继续怀疑他的动机。但有一个基本事实绕不过去：不发布 Mythos 让 Anthropic 损失了钱。愿意为自己的价值观承受经济损失，是区分"话术"和"信念"最朴素的标准。</p>
+<hr>
+<h2 id="爱国者的红线">爱国者的红线</h2>
+<p>访谈中最难被剪成三秒短视频的部分，是 Dario 对军事应用的立场。因为他同时说了两件表面矛盾的事。</p>
+<p>一方面：他是美国国防部最早的 AI 合作者之一。"我们是第一家和国防部签约、在涉密网络上部署模型的 AI 公司。"当被问到 AI 帮助美军提升打击效率时——"从每天打击 1000 个目标提升到了 5000 个"——他的回答是："我支持这种能力。更强的能力不引发战争，它威慑战争。你相信这个国家吗？你希望这个国家在世界舞台上更强大还是更弱？我是爱国者。"</p>
+<p>另一方面：他划了绝对红线。全面自主武器——绝对不行。大规模监控——绝对不行。他的原则陈述是——"民主赢了，但如果民主做了这些事情，也不值得。"</p>
+<p>当主持人追问伊朗女校被炸事件——150 多名儿童死亡——以及 Claude 是否在打击中扮演了角色时，他没有否认或回避，而是说"我们不知道模型是如何被使用的"。然后他回到了核心原则："我们看到的是 Claude 辅助，但人类做最终决定。所以是人类做了那个决定，不是 Claude。想象一个世界——不是 Claude，因为我们不允许——但别人的 AI 模型自己做决定，人类根本看不到。这就是我们在反对的。"</p>
+<p>"人做最终决定"——六个字听起来简单。在 AI 能力指数级增长的背景下，它是一道极其重要的分界线。它不保证没有悲剧，但它保证悲剧的责任归属仍然在人类决策者身上。</p>
+<p>这段对话展示了 Dario 一个很少被注意的特质：他可以同时持有两个方向上的信念。他希望美国强大，但他不认为强大可以为所欲为。他和政府合作，但他给自己留了"被开掉"的制度空间——他主导设立的 Long Term Benefit Trust 在理论上可以罢免他。用他自己的话说："我不相信一个人或一个公司可以成为英雄。只有制衡无处不在才是出路。"</p>
+<hr>
+<h2 id="我们为什么要信任你">"我们为什么要信任你？"</h2>
+<p>整场访谈中最意外的时刻，是 Dario 被问到"我们为什么要信任你"时的回答。</p>
+<p>他没有说"因为我们一直是对的"。没有说"因为我们的技术是最好的"。</p>
+<p>他说的是："我认为从 distrust 开始，如果你对我和 Anthropic 一无所知，是相当理性的。硅谷已经失去了世界的大量信任，需要重新赢得。"</p>
+<p>这个回答跳出了科技 CEO 的标准剧本。他承认了不信任的合理性。承认了自己所在的行业存在信用赤字。然后他没有要求别人相信他——他列了一张清单：</p>
+<ul>
+<li>对华切断访问：几亿美元损失</li>
+<li>Mythos 不发布：商业损失</li>
+<li>Claude 2 延迟发布：为了安全研究</li>
+<li>Long Term Benefit Trust：可以被炒掉的制度安排</li>
+</ul>
+<p>"我们不是完美的，我们犯错误。但我会请人们看整体的历史。如果把这些加起来，对我们最一致的假设是什么？我认为那个最一致的假设是——我们是真心在尝试做正确的事。我们是不完美的组织，永远在混乱中，永远在尝试修复。很多小失误，很多出错的事。但根本上，我们有一个诚实和认真的图景——关于如何做正确的事——我们正在努力执行这个图景。"</p>
+<p>这段话的有效期取决于 Anthropic 未来的行为。但它至少提供了一样东西：一个可以被验证的命题。</p>
+<hr>
+<h2 id="最后">最后</h2>
+<p>如果你是一个关注 AI 的中国人，读完这些可能有几种反应。</p>
+<p>你可能仍然对 Dario 的对华立场感到愤怒——他认为中国 + AI 意味着《1984》，而你生活在一个远比他描述的更复杂的现实中，你认为这个判断粗暴、傲慢、缺乏对中国内部多元性的感知。</p>
+<p>你也可能觉得他的一些说法确实值得琢磨——不是因为认同他对中国的定调，而是因为"价值观与商业模式对齐"、"用行动而非声明证明诚信"、"在极端之间寻找理性路径"这些原则本身不分国界。</p>
+<p>但最重要的事可能是另一件：Anthropic 和 Dario Amodei 是中国 AI 用户和管理者绕不开的存在。不是因为你们喜欢他们，而是因为他们正在用一套自洽的逻辑、配上真金白银的代价，做一件很少有人在认真做的事——在指数级增长的技术面前，试图保持有原则的立场。</p>
+<p>Dario 在访谈最后说，他认同的历史人物不是奥本海默，而是 Leo Szilard——那个最早提出链式反应概念、然后穷尽一生试图控制它的人。在他眼中，奥本海默是"失败案例"——一个被赋予过大权力的个体，最终被权力反噬。</p>
+<p>他的核心信念是：没有人应该成为英雄。只有制衡——公司制衡政府，政府制衡公司，公众制衡两者——才能让 AI 这条指数曲线不冲出轨道。</p>
+<p>你是否同意他的结论，是另一回事。但至少值得理解这个人和这家公司——因为他们的存在本身，就是对 AI 行业的一种压力测试。</p>
+<hr>
+<blockquote>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+</blockquote>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

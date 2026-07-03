@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>用规则代替软件：一个 Agent 完成从构思到发布的完整写作链路 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-05-18">2026年5月18日</time>
+            <span class="dotsep"></span>
+            <span>11 分钟阅读</span>
+          </div>
+          <h1 class="article-title">用规则代替软件：一个 Agent 完成从构思到发布的完整写作链路</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>写一篇能发布的公众号文章，需要在几个软件之间切换？</p>
+<p>我以前的答案是五个：Obsidian 写稿、Figma 画流程图、某生图工具做封面、微信编辑器排版、公众号后台发布。每一步切一次工具，每切一次就丢一次上下文。更麻烦的是，AI 辅助写作的质量忽高忽低——同样的 Prompt，有时候给的是结构清晰的分析，有时候是一篇"在当今时代……值得注意的是……综上所述"的教科书。</p>
+<p>半年前我开始系统性地用 Claude Code 的工作区规则机制重构整个写作流程。现在，一个 Agent 会话覆盖从选题到发布的完整链路。这篇文章拆解这个规则系统的构建方法，以及每个设计决策背后的价值判断。</p>
+<h2 id="不是更好的Prompt是规则系统">不是更好的 Prompt，是规则系统</h2>
+<p>大多数人对 AI 写作的想象是一行 Prompt 换一篇成稿。现实是 Prompt 只解决 30% 的问题。剩下 70% 是流程控制、质量把关和格式转换。</p>
+<p>举一个典型的失败场景：你让 AI 写一篇法律实务文章。它给了你一篇结构完整的稿子，但第 3 段引用的法条已经废止，第 5 段的案例是编的，全文用"第一…第二…第三"串联，结尾"综上所述"——发出去同行一眼看出是 AI 写的。</p>
+<p>这些不是 Prompt 能解决的问题。Prompt 可以告诉 AI "不要编法条"，但 AI 不知道自己在编法条——它只是在做概率预测。你需要的是一个规则系统：在 AI 引用法条前，先让它去权威数据库查一遍；在案例嵌入前，先让它去本地案例库全文检索匹配；在成稿后，再用独立的 humanizer-zh 扫一遍句式痕迹。</p>
+<p>工作区规则的本质，是把写作全流程的决策树、质量闸门和工具路由固化为可执行的指令。不是"写一个更好的 Prompt"，而是"造一套不需要 Prompt 的机制"。</p>
+<h2 id="五层规则架构">五层规则架构</h2>
+<p>工作区规则不是一个大文件，而是一个分层加载的系统。每一层只加载当前任务需要的规则。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420"&gt;
+  &lt;rect width="600" height="420" fill="#fff" rx="4"/&gt;
+  &lt;text x="300" y="28" text-anchor="middle" font-size="17" font-weight="700" fill="#222"&gt;工作区规则五层架构&lt;/text&gt;
+
+  &lt;!-- L1 --&gt;
+  &lt;rect x="30" y="48" width="540" height="52" fill="#f5f5f5" stroke="#333" stroke-width="1.5" rx="2"/&gt;
+  &lt;text x="45" y="70" font-size="12" font-weight="700" fill="#c41e3a"&gt;L1 全局基础层&lt;/text&gt;
+  &lt;text x="45" y="88" font-size="10.5" fill="#555"&gt;CLAUDE.md + rules/ — 角色定位、法律分析框架、检索规范、工具边界（所有项目共享）&lt;/text&gt;
+
+  &lt;!-- L2 --&gt;
+  &lt;rect x="30" y="108" width="540" height="52" fill="#fff" stroke="#666" stroke-width="1" rx="2"/&gt;
+  &lt;text x="45" y="130" font-size="12" font-weight="700" fill="#c41e3a"&gt;L2 工作区主规则&lt;/text&gt;
+  &lt;text x="45" y="148" font-size="10.5" fill="#555"&gt;.claude/CLAUDE.md — 撰写模式、选题锚点、类别路由、输出流程、文件结构&lt;/text&gt;
+
+  &lt;!-- L3 --&gt;
+  &lt;rect x="30" y="168" width="260" height="56" fill="#fff" stroke="#999" stroke-width="0.8" rx="2"/&gt;
+  &lt;text x="45" y="190" font-size="11" font-weight="700" fill="#333"&gt;L3a 风格库（7套）&lt;/text&gt;
+  &lt;text x="45" y="206" font-size="9.5" fill="#777"&gt;语气区间、结构模板、金句密度&lt;/text&gt;
+  &lt;text x="45" y="219" font-size="9.5" fill="#777"&gt;AI痕迹控制策略&lt;/text&gt;
+
+  &lt;rect x="310" y="168" width="260" height="56" fill="#fff" stroke="#999" stroke-width="0.8" rx="2"/&gt;
+  &lt;text x="325" y="190" font-size="11" font-weight="700" fill="#333"&gt;L3b 排版主题库（9套）&lt;/text&gt;
+  &lt;text x="325" y="206" font-size="9.5" fill="#777"&gt;微信HTML渲染、H1-H3层级&lt;/text&gt;
+  &lt;text x="325" y="219" font-size="9.5" fill="#777"&gt;间距系统、色彩方案&lt;/text&gt;
+
+  &lt;!-- L4 --&gt;
+  &lt;rect x="30" y="232" width="260" height="56" fill="#fff" stroke="#999" stroke-width="0.8" rx="2"/&gt;
+  &lt;text x="45" y="254" font-size="11" font-weight="700" fill="#333"&gt;L4a 案例库&lt;/text&gt;
+  &lt;text x="45" y="270" font-size="9.5" fill="#777"&gt;判决书/裁决书全文检索&lt;/text&gt;
+  &lt;text x="45" y="283" font-size="9.5" fill="#777"&gt;脱敏规则 + 有机嵌入&lt;/text&gt;
+
+  &lt;rect x="310" y="232" width="260" height="56" fill="#fff" stroke="#999" stroke-width="0.8" rx="2"/&gt;
+  &lt;text x="325" y="254" font-size="11" font-weight="700" fill="#333"&gt;L4b 发布脚本（6个）&lt;/text&gt;
+  &lt;text x="325" y="270" font-size="9.5" fill="#777"&gt;封面生成 → 图片处理&lt;/text&gt;
+  &lt;text x="325" y="283" font-size="9.5" fill="#777"&gt;HTML排版 → 草稿箱&lt;/text&gt;
+
+  &lt;!-- L5 --&gt;
+  &lt;rect x="30" y="296" width="540" height="52" fill="#f9f9f9" stroke="#333" stroke-width="1.5" rx="2"/&gt;
+  &lt;text x="45" y="318" font-size="12" font-weight="700" fill="#c41e3a"&gt;L5 外部 Skill 层&lt;/text&gt;
+  &lt;text x="45" y="336" font-size="10.5" fill="#555"&gt;humanizer-zh（去AI痕迹）/ 知识库路由 / 法律检索MCP — 跨工作区共享&lt;/text&gt;
+
+  &lt;!-- Right labels --&gt;
+  &lt;text x="582" y="78" font-size="8.5" fill="#999"&gt;常驻&lt;/text&gt;
+  &lt;text x="582" y="138" font-size="8.5" fill="#999"&gt;项目&lt;/text&gt;
+  &lt;text x="582" y="198" font-size="8.5" fill="#999"&gt;按类型&lt;/text&gt;
+  &lt;text x="582" y="262" font-size="8.5" fill="#999"&gt;按需&lt;/text&gt;
+  &lt;text x="582" y="326" font-size="8.5" fill="#999"&gt;共享&lt;/text&gt;
+
+  &lt;!-- Connector arrows --&gt;
+  &lt;line x1="576" y1="100" x2="576" y2="108" stroke="#ccc" stroke-width="0.8"/&gt;
+  &lt;line x1="576" y1="160" x2="576" y2="168" stroke="#ccc" stroke-width="0.8"/&gt;
+  &lt;line x1="576" y1="224" x2="576" y2="232" stroke="#ccc" stroke-width="0.8"/&gt;
+  &lt;line x1="576" y1="288" x2="576" y2="296" stroke="#ccc" stroke-width="0.8"/&gt;
+
+  &lt;!-- Design principle note --&gt;
+  &lt;text x="300" y="398" font-size="10" fill="#aaa" text-anchor="middle"&gt;按需加载 · 上下文不浪费 · 通用能力跨项目复用&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>这个分层结构背后有三个设计决策。</p>
+<p><strong>按需加载，不浪费上下文</strong>。全局基础层（L1）包含所有项目共享的规则——角色定位、法律分析框架、检索规范。每次会话自动加载。工作区主规则（L2）只在进入文章撰写目录时加载。风格库和排版主题（L3）只在实际写作时才读取具体文件。上下文是有限资源，不能把不参与当前决策的规则塞进去。</p>
+<p><strong>关注点分离</strong>。写作质量控制（L3a 风格库）和视觉呈现（L3b 排版主题）是两个独立维度。一篇法律实务文章可以用"精致蓝调"主题排版，也可以改用"黑白简约"——风格库定义了文章该怎么写，主题库定义了文章该怎么展示。两者解耦后可以自由组合。</p>
+<p><strong>通用能力跨项目复用</strong>。案例库（L4a）和发布脚本（L4b）是文章撰写工作区专用的。但 humanizer-zh、知识库路由、法律检索 MCP 这些能力（L5）是所有工作区共享的——合同审核、咨询分析、讲座准备都在用同一套基础设施。</p>
+<h2 id="七类文章七套风格文件">七类文章，七套风格文件</h2>
+<p>AI 写作最常见的失败模式是语气错位——用写论文的方式写公众号，用写微博的方式写法律意见书。</p>
+<p>每次 Prompt 里写"请用专业但通俗的语气"解决不了这个问题——太模糊了。我做了七套风格文件，每套精确到：</p>
+<ul>
+<li><strong>语气区间</strong>：方法论型是"清晰、有体系、不卖弄"，观点型是"有立场、第一人称、金句密度高"</li>
+<li><strong>结构模板</strong>：方法论型是"一句话定义 → 痛点 → 核心框架 → 逐要素展开 → 常见错误 → 适用边界"，法律实务型是"结论 → 依据 → 边界 → 行动"</li>
+<li><strong>论证密度</strong>：数据报告型"数据先行，反直觉发现驱动"，法律评论型"以法律为锚点评事件，控制结论边界"</li>
+<li><strong>AI 痕迹控制策略</strong>：每套风格文件都列出了该类文章最常见的 AI 痕迹和破解方法。观点型禁止"在当今时代"式宏大开头，方法论型禁止"综上所述"教科书收尾</li>
+</ul>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 260"&gt;
+  &lt;rect width="600" height="260" fill="#fff" rx="4"/&gt;
+  &lt;text x="300" y="25" text-anchor="middle" font-size="16" font-weight="700" fill="#222"&gt;类别路由决策树&lt;/text&gt;
+
+  &lt;!-- Root --&gt;
+  &lt;rect x="220" y="42" width="160" height="32" fill="#333" rx="3"/&gt;
+  &lt;text x="300" y="63" text-anchor="middle" font-size="11" fill="#fff" font-weight="700"&gt;文章主题&lt;/text&gt;
+
+  &lt;!-- Branches --&gt;
+  &lt;line x1="250" y1="74" x2="100" y2="100" stroke="#999" stroke-width="0.8"/&gt;
+  &lt;line x1="300" y1="74" x2="300" y2="100" stroke="#999" stroke-width="0.8"/&gt;
+  &lt;line x1="350" y1="74" x2="500" y2="100" stroke="#999" stroke-width="0.8"/&gt;
+
+  &lt;!-- Q1 --&gt;
+  &lt;rect x="30" y="102" width="140" height="36" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="2"/&gt;
+  &lt;text x="100" y="118" text-anchor="middle" font-size="10" font-weight="700" fill="#333"&gt;涉及法条/案例？&lt;/text&gt;
+  &lt;text x="100" y="132" text-anchor="middle" font-size="9" fill="#666"&gt;→ 法律实务 / 法律评论&lt;/text&gt;
+
+  &lt;rect x="230" y="102" width="140" height="36" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="2"/&gt;
+  &lt;text x="300" y="118" text-anchor="middle" font-size="10" font-weight="700" fill="#333"&gt;AI/方法论/框架？&lt;/text&gt;
+  &lt;text x="300" y="132" text-anchor="middle" font-size="9" fill="#666"&gt;→ 方法论/思维型&lt;/text&gt;
+
+  &lt;rect x="430" y="102" width="140" height="36" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="2"/&gt;
+  &lt;text x="500" y="118" text-anchor="middle" font-size="10" font-weight="700" fill="#333"&gt;工具/教程/评测？&lt;/text&gt;
+  &lt;text x="500" y="132" text-anchor="middle" font-size="9" fill="#666"&gt;→ 技术实战型&lt;/text&gt;
+
+  &lt;!-- Q2 level --&gt;
+  &lt;line x1="100" y1="138" x2="70" y2="162" stroke="#ccc" stroke-width="0.6"/&gt;
+  &lt;line x1="100" y1="138" x2="130" y2="162" stroke="#ccc" stroke-width="0.6"/&gt;
+  &lt;line x1="300" y1="138" x2="300" y2="162" stroke="#ccc" stroke-width="0.6"/&gt;
+  &lt;line x1="500" y1="138" x2="470" y2="162" stroke="#ccc" stroke-width="0.6"/&gt;
+  &lt;line x1="500" y1="138" x2="530" y2="162" stroke="#ccc" stroke-width="0.6"/&gt;
+
+  &lt;rect x="15" y="164" width="110" height="30" fill="#fff" stroke="#ccc" stroke-width="0.6" rx="2"/&gt;
+  &lt;text x="70" y="183" text-anchor="middle" font-size="9" fill="#555"&gt;评事件 → 法律评论&lt;/text&gt;
+
+  &lt;rect x="130" y="164" width="110" height="30" fill="#fff" stroke="#ccc" stroke-width="0.6" rx="2"/&gt;
+  &lt;text x="185" y="183" text-anchor="middle" font-size="9" fill="#555"&gt;实务操作 → 法律实务&lt;/text&gt;
+
+  &lt;rect x="245" y="164" width="110" height="30" fill="#fff" stroke="#ccc" stroke-width="0.6" rx="2"/&gt;
+  &lt;text x="300" y="183" text-anchor="middle" font-size="9" fill="#555"&gt;思想/趋势 → 观点型&lt;/text&gt;
+
+  &lt;rect x="415" y="164" width="110" height="30" fill="#fff" stroke="#ccc" stroke-width="0.6" rx="2"/&gt;
+  &lt;text x="470" y="183" text-anchor="middle" font-size="9" fill="#555"&gt;数据报告 → 数据报告型&lt;/text&gt;
+
+  &lt;rect x="530" y="164" width="55" height="30" fill="#fff" stroke="#ccc" stroke-width="0.6" rx="2"/&gt;
+  &lt;text x="557" y="183" text-anchor="middle" font-size="9" fill="#555"&gt;学术&lt;/text&gt;
+
+  &lt;!-- Result --&gt;
+  &lt;text x="300" y="225" font-size="10" fill="#999" text-anchor="middle"&gt;路由结果 → 自动加载对应风格文件（语气 + 结构 + 金句密度 + AI痕迹控制）&lt;/text&gt;
+  &lt;text x="300" y="248" font-size="10" fill="#999" text-anchor="middle"&gt;跨类别时以主导内容决定主风格，局部吸收其他风格要素&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>这七套风格文件的核心价值不是"写得比别人好"，而是<strong>质量基准线</strong>。同一类文章，每次调用同一套风格文件，出来的语气、结构、深度是一致的——不需要每次重新调试 Prompt。</p>
+<h2 id="配图零成本SVG嵌入本地转换">配图零成本：SVG 嵌入 + 本地转换</h2>
+<p>公众号文章的配图通常有三个来源：自己做、找人做、网上找。三条路都有摩擦——Figma 要单独打开，设计师要沟通需求，网图有版权风险。</p>
+<p>这个工作区用了一套零摩擦方案：AI 撰写正文时，遇到"纯文字难以讲清"的地方，直接在 Markdown 里嵌入 SVG 代码块。多步骤流程、多主体法律关系、框架层级——这些场景用简洁的框图比文字直观得多。</p>
+<p>技术管线也很轻：发布时 <code>wechat_images.py</code> 自动检测 <code> </code>`<code>svg </code> 代码块，用 <code>cairosvg</code> 本地渲染为 PNG，然后上传微信 CDN。毫秒级完成，不依赖任何外部生图 API。</p>
+<p>三个约束保证质量：每篇文章配图不超过 3 张，风格统一为黑白灰无衬线极简线条，只在确实需要视觉辅助时配图。约束的目的是防止"为配图而配图"——有些文章根本不需要图，但需要的那些段落，SVG 比截屏和网图好用得多。</p>
+<h2 id="封面生成CodexCLI替代付费API">封面生成：Codex CLI 替代付费 API</h2>
+<p>之前我做封面用的是 DALL-E API——单独付费，额度焦虑，每次还要切到另一个工具操作。后来发现 Codex CLI 内置了 image_gen 能力（等效 GPT Image 2），Plus 和 Pro 会员的额度已经覆盖了。</p>
+<p>实现方式是 <code>wechat_cover.py</code>，一段 Python 脚本。它读取文章的标题、副标题和正文前 3000 字，自动构造一个专业级概念海报 Prompt，然后调用 <code>codex exec --enable image_generation</code>。</p>
+<p>Prompt 的设计花了最多功夫。不是简单的"生成一张封面图"，而是一个反复打磨的设计系统：先理解主题语义 → 自动选择视觉锚点 → 决定图文融合方式 → 长标题自动提炼三层文字系统（主视觉大字 / 完整标题 / 辅助信息）→ 按主题类型匹配视觉策略。AI/知识类优先终端、档案盒、路径线；金融类优先图表裂缝、波动曲线；教程类优先地图、阶梯、入口。</p>
+<p>最终生成的海报：黑白极简、现代编辑设计、作品集封面基调。右下角带 CSLawyer 连笔签名。从执行命令到出图，一张封面大约 1-2 分钟，成本为零。</p>
+<h2 id="去AI痕迹改的是节奏不是词">去 AI 痕迹：改的是节奏，不是词</h2>
+<p>AI 写作的痕迹不在用词上，在节奏上。一段文字读起来"像 AI 写的"，通常是因为几个特征叠加在一起：</p>
+<ul>
+<li>每段都是"主题句 + 展开 + 小结"的等长结构</li>
+<li>连接词高度集中在"首先…其次…再次…最后""值得注意的是""在当今时代"</li>
+<li>段落首句总是概括性声明（"XX 是一个重要的议题"）</li>
+<li>结尾一定是"综上所述"或"总而言之"加一段复读</li>
+</ul>
+<p>humanizer-zh 这个 Skill 做的事不是替换同义词。它打破的是节奏——把等长段落变成长短交替，把"第一…第二…第三"改成更自然的过渡方式，砍掉每个段落首句的概括声明，直接进入内容，结尾自然收束而不是教科书式总结。</p>
+<p>它的执行时机在正文完成之后，与封面生成并行。两个任务互相独立，等封面那 1-2 分钟里 humanizer-zh 已经在改稿了。</p>
+<h2 id="发布管线一条命令到草稿箱">发布管线：一条命令到草稿箱</h2>
+<p>写完稿、配完图、生成封面之后，最后一步是推到微信公众号草稿箱。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200"&gt;
+  &lt;rect width="600" height="200" fill="#fff" rx="4"/&gt;
+  &lt;text x="300" y="24" text-anchor="middle" font-size="15" font-weight="700" fill="#222"&gt;发布管线（一条命令完成）&lt;/text&gt;
+
+  &lt;!-- Steps --&gt;
+  &lt;rect x="18" y="46" width="78" height="50" fill="#333" rx="3"/&gt;
+  &lt;text x="57" y="68" text-anchor="middle" font-size="10" fill="#fff" font-weight="700"&gt;Markdown&lt;/text&gt;
+  &lt;text x="57" y="84" text-anchor="middle" font-size="9" fill="#ddd"&gt;终稿&lt;/text&gt;
+
+  &lt;text x="110" y="76" font-size="16" fill="#999"&gt;→&lt;/text&gt;
+
+  &lt;rect x="125" y="46" width="78" height="50" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="3"/&gt;
+  &lt;text x="164" y="68" text-anchor="middle" font-size="10" fill="#333" font-weight="700"&gt;SVG→PNG&lt;/text&gt;
+  &lt;text x="164" y="84" text-anchor="middle" font-size="9" fill="#777"&gt;cairosvg&lt;/text&gt;
+
+  &lt;text x="217" y="76" font-size="16" fill="#999"&gt;→&lt;/text&gt;
+
+  &lt;rect x="232" y="46" width="78" height="50" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="3"/&gt;
+  &lt;text x="271" y="68" text-anchor="middle" font-size="10" fill="#333" font-weight="700"&gt;图片上传&lt;/text&gt;
+  &lt;text x="271" y="84" text-anchor="middle" font-size="9" fill="#777"&gt;微信CDN&lt;/text&gt;
+
+  &lt;text x="324" y="76" font-size="16" fill="#999"&gt;→&lt;/text&gt;
+
+  &lt;rect x="339" y="46" width="78" height="50" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="3"/&gt;
+  &lt;text x="378" y="68" text-anchor="middle" font-size="10" fill="#333" font-weight="700"&gt;HTML排版&lt;/text&gt;
+  &lt;text x="378" y="84" text-anchor="middle" font-size="9" fill="#777"&gt;9套主题&lt;/text&gt;
+
+  &lt;text x="431" y="76" font-size="16" fill="#999"&gt;→&lt;/text&gt;
+
+  &lt;rect x="446" y="46" width="78" height="50" fill="#c41e3a" rx="3"/&gt;
+  &lt;text x="485" y="68" text-anchor="middle" font-size="10" fill="#fff" font-weight="700"&gt;草稿箱&lt;/text&gt;
+  &lt;text x="485" y="84" text-anchor="middle" font-size="9" fill="#fdd"&gt;Finder标记&lt;/text&gt;
+
+  &lt;text x="538" y="76" font-size="16" fill="#999"&gt;→&lt;/text&gt;
+
+  &lt;rect x="553" y="46" width="32" height="50" fill="#fff" stroke="#ccc" stroke-width="0.6" rx="3"/&gt;
+  &lt;text x="569" y="76" text-anchor="middle" font-size="10" fill="#555"&gt;审核&lt;/text&gt;
+
+  &lt;!-- Details below --&gt;
+  &lt;text x="300" y="120" font-size="9.5" fill="#777" text-anchor="middle"&gt;封面图自动插入正文首部 | MD5去重避免重复上传 | 仅发布到草稿箱，不自动群发&lt;/text&gt;
+
+  &lt;!-- Command line --&gt;
+  &lt;rect x="60" y="140" width="480" height="42" fill="#2d2d2d" rx="4"/&gt;
+  &lt;text x="300" y="158" text-anchor="middle" font-size="10" fill="#6f6" font-family="monospace"&gt;python .claude/scripts/wechat_publish.py publish article.md --gen-cover --theme minimal-bw&lt;/text&gt;
+  &lt;text x="300" y="174" text-anchor="middle" font-size="9" fill="#aaa"&gt;一条命令 = 图片处理 + 封面生成 + HTML排版 + 草稿箱 + Finder标记"已推送"&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>六个 Python 脚本支撑这条管线：<code>wechat_publish.py</code>（总入口）、<code>wechat_cover.py</code>（封面生成）、<code>wechat_images.py</code>（图片下载/上传/MD5 去重）、<code>wechat_html.py</code>（Markdown → 微信 HTML，支持 9 套排版主题）、<code>wechat_api.py</code>（微信 API 客户端，token 管理和草稿创建）。全部在本地运行，图片上传到微信 CDN（不占永久素材配额）。</p>
+<p>发布到草稿箱后，脚本自动用 macOS Finder 注释给项目文件夹标记"已推送"。在 Finder 列表视图里一眼就能看出哪些文章已经发过。</p>
+<h2 id="顺便建了一个文章知识库">顺便建了一个文章知识库</h2>
+<p>选题双锚点、类别路由、封面生成、发布管线——这些设计都是为了写好一篇文章。但这套规则系统还顺带产出了一个东西，它的长期价值可能比单篇文章更大。</p>
+<p>每篇文章自动创建 <code>YYYYMMDD_主题/</code> 文件夹，内部严格三层结构：</p>
+<pre class="code-block"><code>20260518_文章工作区规则构建方法/
+├── input/
+│   └── 用户需求与原始材料.md    ← 原始想法、材料、触发语境
+├── scratch/
+│   ├── 大纲.md                  ← 构思过程的决策痕迹
+│   └── 草稿_v1.md               ← 修改迭代的中间状态
+└── output/
+    └── 20260518_用规则代替软件…….md  ← 终稿</code></pre>
+<p>这本质上是一个<strong>自动化的个人知识管理系统</strong>。三层目录对应了知识生产的三个阶段：</p>
+<ul>
+<li><code>input/</code> 保存了"为什么写这篇文章"的初始语境。三个月后回头翻，你不会只看到一篇成稿——你会看到当时的原始材料、触发问题、想表达的核心思想。知识复用从这里开始。</li>
+<li><code>scratch/</code> 保留了"怎么写的"决策过程。大纲的结构选择、为什么放弃了某个角度——这些中间产物往往比终稿包含更多思考。下次写同类文章，不是从零开始，而是从上次的决策经验开始。</li>
+<li><code>output/</code> 是可交付的成果。按日期和主题命名，时间线就是目录树。</li>
+</ul>
+<p>所有操作都是规则自动驱动的——不需要手动建目录、不需要记得把材料放进对应文件夹、不需要写完后整理归档。规则的每一步（input 存档、scratch 输出大纲、output 输出终稿）在执行时就完成了归档。增量成本为零。</p>
+<p>再加上 Finder 注释标记的"已推送"状态，整个目录就是一个可浏览、可检索的文章馆。按时间排序就是作品年表，按主题搜索就是领域知识库。这个知识库的维护没有增加任何人力工作——它是写作流程的自然副产品。</p>
+<h2 id="法律类文章的专属防线">法律类文章的专属防线</h2>
+<p>法律写作有一个通用 AI 绕不过去的问题：它不知道自己在编法条。</p>
+<p>模型训练数据里有大量法条文本，但不知道哪些已经废止、哪些有地域适用范围、哪些条文在实践中已经被裁判观点实质修正。更危险的是案例编造——AI 能生成格式完全正确的"判决书摘要"，但案号、当事人、裁判观点全是虚构的。</p>
+<p>这个工作区为法律类文章设了两道防线。</p>
+<p><strong>第一道：案例库全文检索。</strong> 本地 <code>.claude/case-library/</code> 目录存放真实判决书和裁决书（只读，不做二次加工）。写法律文章时，在大纲确定后用 <code>rga</code> 全文检索案例库，匹配核心法律问题 + 行业 + 项目类型。找得到的案例才有资格嵌入正文。找不到就不强行嵌入。每一处案例引用都经过强制脱敏——去掉公司名留行业、去掉地点留项目类型、金额给量级不给精确数字。读者能感知到"这是一个真实的大项目"，但无法定位到具体公司和具体项目。</p>
+<p><strong>第二道：知识库交叉引用。</strong> 按全局规则 <code>knowledge-base-crossref.md</code> 的路由表，检索本地知识库中该法律领域的最新规范、裁判观点和研究资料，验证文章引用的法条时效性和权威性。知识库不足时再补充 MCP 法律数据库检索。</p>
+<p>两道防线过滤掉的是同一个东西：AI 的幻觉。区别在于第一道管"案例真假"，第二道管"法条对错"。</p>
+<h2 id="构建工作区规则的五个坑">构建工作区规则的五个坑</h2>
+<p>做这个系统的过程中踩了不少坑。这些坑是方法论文章该诚实交代的部分。</p>
+<p><strong>坑一：把 CLAUDE.md 写成说明书。</strong> 最早版本的 CLAUDE.md 写了很多"写作建议"——"开头要抓人""论证要有力""结尾要收得住"。这些话对 AI 毫无意义。它需要的是决策树，不是建议。现在的规则全部是"当 A 时做 B""禁止 C""D 步骤必须先于 E"，每条都可执行、可验证。</p>
+<p><strong>坑二：规则太细，AI 反而僵化。</strong> 有一个版本我把每种文章类别的段落数、每段字数都做了规定。结果 AI 写出来的东西像填表格，毫无弹性。后来改成了"区间"定义——风格文件定义的是"2000-5000 字"而不是"3500 字"，是"中密度金句"而不是"每 300 字一个金句"。</p>
+<p><strong>坑三：把所有规则塞进一个文件。</strong> 初始版本的工作区 CLAUDE.md 有 500 多行，每次打开项目全部加载。实际上一篇文章只用得到其中一小部分规则。分层后上下文消耗大幅下降——法律类文章不加载技术实战型的风格规则，非法律类文章不触发案例库检索。</p>
+<p><strong>坑四：忽略"不做什么"。</strong> "在非法律文章中堆砌法条""模糊归因""使用夸张修辞""跳过 humanizer-zh"——这些禁令实际上比正向指令更关键。正向指令告诉 AI 怎么做，禁令直接阻止 AI 的默认坏习惯。通用 AI 被训练成"乐于助人"，它会自然地用法条来"丰富"非法律文章、用"专家认为"来增加权威感。这些倾向要靠禁令来截断。</p>
+<p><strong>坑五：脚本和规则脱节。</strong> 最早封面生成是用单独的命令行工具，和写作流程不在同一个上下文里。结果是规则说"正文完成后生成封面"，但 AI 经常忘记执行这一步。把封面生成封装成脚本并写进规则中的强制步骤后，遗漏率归零了——规则明确说"在正文完成后，执行 <code>python .claude/scripts/wechat_publish.py cover {md_path}</code>"，不需要 AI 自己判断要不要做。</p>
+<h2 id="适用边界">适用边界</h2>
+<p>不是每个写作者都需要搭这套系统。</p>
+<p><strong>适用的场景</strong>：有固定发布节奏的公众号或博客作者；专业领域（法律、医疗、金融）的内容创作者——品质一致性比效率更重要；需要多品类写作的人——同一个人要写法律实务、行业评论、工具教程，每类都需要不同的语气和质量控制。</p>
+<p><strong>不适用的情况</strong>：一次性写作任务——搭系统的成本大于收益；纯创意写作——规则会抑制发散性；多人协作场景——这套规则是为单人全流程设计的，团队协作需要额外考虑权限和版本控制。</p>
+<p>核心判断标准很简单：如果你每年写超过 20 篇非虚构类文章，而且对品质一致性有要求，这个规则系统值得搭。偶尔写一篇，每次单独调 Prompt 就够了。</p>
+<hr>
+<p>规则系统搭好之后，最明显的变化不是"写得更好"，而是"写得更轻松"。以前写一篇文章要切五个软件，现在一个 Agent 会话从头跑到尾。省下的不是时间——是切换工具时的摩擦和上下文丢失。每次切工具都是在重新加载"这篇文章在讲什么"到脑子里。当所有环节在一个上下文里跑完，那些因为切换而丢失的判断和信息，就不会丢了。</p>
+<p>这篇文章本身就是这个工作区的一个完整测试案例。从选题到发布，全部在当前 Agent 会话中完成。</p>
+<hr>
+<blockquote>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。</p>
+</blockquote>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

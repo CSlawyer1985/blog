@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>月入百万的AI中转站，钱到底从哪来？ — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-07-01">2026年7月1日</time>
+            <span class="dotsep"></span>
+            <span>7 分钟阅读</span>
+          </div>
+          <h1 class="article-title">月入百万的AI中转站，钱到底从哪来？</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>2026 年 3 月，深潮 TechFlow 写 OpenClaw 淘金热时提到一件事：倒卖 Token API 的中转站，有人单月盈利上百万。</p>
+<p>这个数字不一定代表行业平均水平。但它解释了一个现象：为什么最近到处都是「低价 Claude」「满血模型」「国内直连」。</p>
+<p>我花了几天把市面上常见的中转站摸了一遍，先说结论：<strong>AI 中转站赚钱，靠的不是模型能力。</strong></p>
+<p>它赚的是三笔钱：访问门槛的钱、额度管理的钱、以及信息不透明的钱。</p>
+<p>这篇文章不写「怎么搭站」。那东西一写就容易变成灰色教程，没意思。</p>
+<p>我更关心另一个问题：我在客户端里输入一句提示词，最后到底是不是去了 Anthropic 的 Claude 真实服务器？中间经过了几层？返回时又经过了谁的手？</p>
+<p>这条路径说不清，低价就没有意义。</p>
+<h2 id="01中转站卖的不是模型是入口">01 中转站卖的不是模型，是入口</h2>
+<p>官方 API 对国内很多用户有四个门槛：网络、支付、账号、协议。</p>
+<p>中转站把这四个问题包起来，给一个 base_url 和一个 sk-xxx，用户在 Cursor、Claude Code、Chatbox 或自己的脚本里一填，就能跑。</p>
+<p>说白了就是把麻烦藏起来。</p>
+<p>这里面第一笔钱来自支付和站内汇率。用户用人民币充值，后台用虚拟美元计价，甚至出现「1 元人民币 = 1 美刀额度」——也就是说，所谓「刀」往往不是银行汇率意义上的美元，而是站内额度单位。汇率差本身就是利润。</p>
+<p>第二笔钱来自额度池。轻度用户充了 100 元，只用了 10 元就停了；重度用户把 Claude Code 接到项目里跑一晚上，站长再靠限速、排队、换上游去扛。这个池子本质上是赌用户用不完——赌赢了就是纯利。</p>
+<p>第三笔钱来自模型和渠道的不透明。用户买的是「我能用上 Claude」这个结果，但很少能验证背后到底是哪条通道。</p>
+<p>中转站利润不是来自模型本身，而是来自入口、额度和不透明路由。</p>
+<h2 id="02一次请求先过的是中转站自己的账本">02 一次请求，先过的是中转站自己的账本</h2>
+<p>先把一条正常请求拆开。</p>
+<p>我在客户端输入：</p>
+<pre class="code-block"><code class="language-json">{
+  "model": "claude-sonnet-4-5",
+  "messages": [
+    { "role": "user", "content": "帮我分析这段代码的问题" }
+  ],
+  "stream": true
+}</code></pre>
+<p>客户端不会直接去 Anthropic。它会把请求发到中转站提供的地址，比如 <code>https://api.example-relay.com/v1/chat/completions</code>。</p>
+<p>然后经过三层，请求才真正离开中转站。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320"&gt;
+  &lt;rect width="600" height="320" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#333"&gt;一次提示词请求的完整路径&lt;/text&gt;
+
+  &lt;!-- 客户端 --&gt;
+  &lt;rect x="30" y="55" width="90" height="36" rx="4" fill="#f0f0f0" stroke="#999" stroke-width="1"/&gt;
+  &lt;text x="75" y="77" text-anchor="middle" font-size="12" fill="#333"&gt;你的客户端&lt;/text&gt;
+
+  &lt;line x1="120" y1="73" x2="155" y2="73" stroke="#999" stroke-width="1" marker-end="url(#arrow)"/&gt;
+
+  &lt;!-- 接入层 --&gt;
+  &lt;rect x="160" y="50" width="100" height="46" rx="4" fill="#f0f0f0" stroke="#999" stroke-width="1"/&gt;
+  &lt;text x="210" y="68" text-anchor="middle" font-size="11" fill="#555"&gt;接入层&lt;/text&gt;
+  &lt;text x="210" y="83" text-anchor="middle" font-size="9" fill="#999"&gt;CF/Nginx/网关&lt;/text&gt;
+
+  &lt;line x1="260" y1="73" x2="295" y2="73" stroke="#999" stroke-width="1" marker-end="url(#arrow)"/&gt;
+
+  &lt;!-- 鉴权层 --&gt;
+  &lt;rect x="300" y="50" width="100" height="46" rx="4" fill="#f0f0f0" stroke="#999" stroke-width="1"/&gt;
+  &lt;text x="350" y="68" text-anchor="middle" font-size="11" fill="#555"&gt;鉴权层&lt;/text&gt;
+  &lt;text x="350" y="83" text-anchor="middle" font-size="9" fill="#999"&gt;Key/余额/分组&lt;/text&gt;
+
+  &lt;line x1="400" y1="73" x2="435" y2="73" stroke="#999" stroke-width="1" marker-end="url(#arrow)"/&gt;
+
+  &lt;!-- 计费 --&gt;
+  &lt;rect x="440" y="50" width="100" height="46" rx="4" fill="#f0f0f0" stroke="#999" stroke-width="1"/&gt;
+  &lt;text x="490" y="68" text-anchor="middle" font-size="11" fill="#555"&gt;计费预估&lt;/text&gt;
+  &lt;text x="490" y="83" text-anchor="middle" font-size="9" fill="#999"&gt;估算+冻结&lt;/text&gt;
+
+  &lt;!-- 分隔线 --&gt;
+  &lt;line x1="30" y1="115" x2="570" y2="115" stroke="#ccc" stroke-width="1" stroke-dasharray="4,4"/&gt;
+  &lt;text x="300" y="135" text-anchor="middle" font-size="11" fill="#999"&gt;—— 到此为止，请求还没碰到 Claude ——&lt;/text&gt;
+
+  &lt;!-- 路由层 --&gt;
+  &lt;rect x="160" y="155" width="100" height="46" rx="4" fill="#e8e8e8" stroke="#333" stroke-width="1.5"/&gt;
+  &lt;text x="210" y="173" text-anchor="middle" font-size="11" font-weight="700" fill="#333"&gt;路由层&lt;/text&gt;
+  &lt;text x="210" y="188" text-anchor="middle" font-size="9" fill="#666"&gt;决定钱从哪来&lt;/text&gt;
+
+  &lt;line x1="260" y1="178" x2="295" y2="178" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/&gt;
+
+  &lt;!-- 真实API --&gt;
+  &lt;rect x="300" y="155" width="130" height="46" rx="4" fill="#d4d4d4" stroke="#333" stroke-width="1.5"/&gt;
+  &lt;text x="365" y="173" text-anchor="middle" font-size="11" font-weight="700" fill="#333"&gt;Anthropic / OpenAI&lt;/text&gt;
+  &lt;text x="365" y="188" text-anchor="middle" font-size="9" fill="#666"&gt;真实模型服务器&lt;/text&gt;
+
+  &lt;!-- 返回路径 --&gt;
+  &lt;line x1="430" y1="195" x2="430" y2="225" stroke="#999" stroke-width="1"/&gt;
+  &lt;line x1="430" y1="225" x2="75" y2="225" stroke="#999" stroke-width="1"/&gt;
+  &lt;line x1="75" y1="225" x2="75" y2="250" stroke="#999" stroke-width="1" marker-end="url(#arrow)"/&gt;
+
+  &lt;text x="300" y="218" text-anchor="middle" font-size="9" fill="#999"&gt;返回：格式转换 → 日志记录 → 计费结算&lt;/text&gt;
+
+  &lt;!-- 返回客户端 --&gt;
+  &lt;rect x="30" y="272" width="90" height="36" rx="4" fill="#f0f0f0" stroke="#999" stroke-width="1"/&gt;
+  &lt;text x="75" y="294" text-anchor="middle" font-size="12" fill="#333"&gt;你的客户端&lt;/text&gt;
+
+  &lt;!-- 箭头定义 --&gt;
+  &lt;defs&gt;
+    &lt;marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"&gt;
+      &lt;path d="M0,0 L10,5 L0,10 Z" fill="#999"/&gt;
+    &lt;/marker&gt;
+  &lt;/defs&gt;
+&lt;/svg&gt;</code></pre>
+<p>很多人以为中转站就是一个反向代理：进来、转发、回来。</p>
+<p>实际不是。</p>
+<p>一个能赚钱的中转站，前半段最重要的是账本、分组和限流。因为用户不会平均地用模型——有人一天问两句，有人把 AI 编程工具接到真实项目里连续跑。站长赚不赚钱，先看能不能识别这种用量差异。</p>
+<h2 id="03真正分叉在路由层">03 真正分叉在路由层</h2>
+<p>请求通过账本之后，进入路由层。这一步决定了钱从哪里来，也决定了风险从哪里来。</p>
+<p>我把它拆成三种模式。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360"&gt;
+  &lt;rect width="600" height="360" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#333"&gt;三种上游模式对比&lt;/text&gt;
+
+  &lt;!-- 表头 --&gt;
+  &lt;rect x="15" y="42" width="100" height="28" fill="#333"/&gt;
+  &lt;text x="65" y="60" text-anchor="middle" font-size="11" font-weight="700" fill="#fff"&gt;模式&lt;/text&gt;
+
+  &lt;rect x="115" y="42" width="145" height="28" fill="#333"/&gt;
+  &lt;text x="187" y="60" text-anchor="middle" font-size="11" font-weight="700" fill="#fff"&gt;背后是什么&lt;/text&gt;
+
+  &lt;rect x="260" y="42" width="145" height="28" fill="#333"/&gt;
+  &lt;text x="332" y="60" text-anchor="middle" font-size="11" font-weight="700" fill="#fff"&gt;为什么便宜&lt;/text&gt;
+
+  &lt;rect x="405" y="42" width="180" height="28" fill="#333"/&gt;
+  &lt;text x="495" y="60" text-anchor="middle" font-size="11" font-weight="700" fill="#fff"&gt;主要风险&lt;/text&gt;
+
+  &lt;!-- 模式一 --&gt;
+  &lt;rect x="15" y="70" width="100" height="90" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="65" y="110" text-anchor="middle" font-size="11" font-weight="700" fill="#2a7d2a"&gt;官方 Key 转发&lt;/text&gt;
+
+  &lt;rect x="115" y="70" width="145" height="90" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="187" y="95" text-anchor="middle" font-size="10" fill="#555"&gt;Anthropic/OpenAI/&lt;/text&gt;
+  &lt;text x="187" y="112" text-anchor="middle" font-size="10" fill="#555"&gt;Azure/AWS Bedrock&lt;/text&gt;
+  &lt;text x="187" y="129" text-anchor="middle" font-size="10" fill="#555"&gt;真实 API Key&lt;/text&gt;
+
+  &lt;rect x="260" y="70" width="145" height="90" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="332" y="95" text-anchor="middle" font-size="10" fill="#555"&gt;批量采购&lt;/text&gt;
+  &lt;text x="332" y="112" text-anchor="middle" font-size="10" fill="#555"&gt;汇率套利&lt;/text&gt;
+  &lt;text x="332" y="129" text-anchor="middle" font-size="10" fill="#555"&gt;统一计费&lt;/text&gt;
+
+  &lt;rect x="405" y="70" width="180" height="90" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="495" y="95" text-anchor="middle" font-size="10" fill="#c41e3a"&gt;成本高，价格很难离谱低&lt;/text&gt;
+  &lt;text x="495" y="120" text-anchor="middle" font-size="10" fill="#c41e3a"&gt;利润空间有限&lt;/text&gt;
+
+  &lt;!-- 模式二 --&gt;
+  &lt;rect x="15" y="160" width="100" height="90" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="65" y="200" text-anchor="middle" font-size="11" font-weight="700" fill="#d4a017"&gt;订阅账号池&lt;/text&gt;
+  &lt;text x="65" y="216" text-anchor="middle" font-size="9" fill="#999"&gt;逆向&lt;/text&gt;
+
+  &lt;rect x="115" y="160" width="145" height="90" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="187" y="185" text-anchor="middle" font-size="10" fill="#555"&gt;Claude Pro/Max 等&lt;/text&gt;
+  &lt;text x="187" y="202" text-anchor="middle" font-size="10" fill="#555"&gt;订阅账号 + 脚本&lt;/text&gt;
+  &lt;text x="187" y="219" text-anchor="middle" font-size="10" fill="#555"&gt;自动化 → 包装成 API&lt;/text&gt;
+
+  &lt;rect x="260" y="160" width="145" height="90" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="332" y="185" text-anchor="middle" font-size="10" fill="#555"&gt;订阅额度多人共享&lt;/text&gt;
+  &lt;text x="332" y="202" text-anchor="middle" font-size="10" fill="#555"&gt;边际成本趋近于零&lt;/text&gt;
+
+  &lt;rect x="405" y="160" width="180" height="90" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="495" y="185" text-anchor="middle" font-size="10" fill="#c41e3a"&gt;易封号、限流&lt;/text&gt;
+  &lt;text x="495" y="202" text-anchor="middle" font-size="10" fill="#c41e3a"&gt;协议不稳定&lt;/text&gt;
+  &lt;text x="495" y="219" text-anchor="middle" font-size="10" fill="#c41e3a"&gt;Claude Code 工具调用异常&lt;/text&gt;
+
+  &lt;!-- 模式三 --&gt;
+  &lt;rect x="15" y="250" width="100" height="90" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="65" y="290" text-anchor="middle" font-size="11" font-weight="700" fill="#c41e3a"&gt;小中转接&lt;/text&gt;
+  &lt;text x="65" y="306" text-anchor="middle" font-size="11" font-weight="700" fill="#c41e3a"&gt;大中转&lt;/text&gt;
+
+  &lt;rect x="115" y="250" width="145" height="90" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="187" y="275" text-anchor="middle" font-size="10" fill="#555"&gt;自己不持稳定上游&lt;/text&gt;
+  &lt;text x="187" y="292" text-anchor="middle" font-size="10" fill="#555"&gt;接别人的接口&lt;/text&gt;
+  &lt;text x="187" y="309" text-anchor="middle" font-size="10" fill="#555"&gt;再包装一层赚差价&lt;/text&gt;
+
+  &lt;rect x="260" y="250" width="145" height="90" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="332" y="275" text-anchor="middle" font-size="10" fill="#555"&gt;利润来自再包装&lt;/text&gt;
+  &lt;text x="332" y="292" text-anchor="middle" font-size="10" fill="#555"&gt;无需投入真实成本&lt;/text&gt;
+
+  &lt;rect x="405" y="250" width="180" height="90" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="495" y="275" text-anchor="middle" font-size="10" fill="#c41e3a"&gt;故障不可解释&lt;/text&gt;
+  &lt;text x="495" y="292" text-anchor="middle" font-size="10" fill="#c41e3a"&gt;责任边界消失&lt;/text&gt;
+  &lt;text x="495" y="309" text-anchor="middle" font-size="10" fill="#c41e3a"&gt;最不透明&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p><strong>第一种是最干净的。</strong> 中转站自己持有 Anthropic、OpenAI、Azure、AWS Bedrock 等官方或准官方渠道的 Key。用户请求进来后，中转站把用户 Key 换成自己的官方 Key，再把请求转发到真实 API。</p>
+<p>New API 和 LiteLLM 这类开源项目，做的就是这类网关能力：多模型接入、协议转换、路由、计费、失败重试、成本统计。</p>
+<p>这个模式不是天然有问题。很多企业内部也会自建 AI Gateway，把 OpenAI、Claude、Gemini 统一到一个入口，方便做权限、成本和审计。</p>
+<p>问题在于，企业自用网关的目标是<strong>可控</strong>，中转站的目标通常是<strong>便宜和可售卖</strong>。这两个目标会冲突。</p>
+<p><strong>第二种是订阅账号池逆向。</strong> 站长买很多 Claude Pro、Max 或其他订阅账号，用自动化脚本登录网页或客户端，把用户的提示词塞进去，等网页返回结果，再抓出来包装成 API 响应。</p>
+<p>用户以为自己在调 API，其实后面可能是浏览器自动化、客户端逆向、Cookie 池、代理 IP 池。</p>
+<p>这里有个根本性的坑：网页和客户端不是为 API 服务设计的。它们有自己的系统提示词、频率限制、风控策略和会话状态。中转站硬把它包装成 API，就会出现奇怪的问题：同样的提示词今天能跑，明天 403；短问题能回答，长上下文突然断掉；Claude Code 的 tool use 表现不稳定。</p>
+<p>这不是用户写错了。这是中转站把非 API 通道伪装成了 API。</p>
+<p><strong>第三种是小中转接大中转。</strong> 我以为自己买的是某个中转站，实际上它后面又接了另一个中转站。它自己没有官方 Key，也没有稳定账号池，只是拿别人的接口再包装一层。</p>
+<p>这类站最大的特点是解释不了故障。用户问为什么 429，它说上游限流；问为什么模型不对，它说上游兜底；问为什么扣费异常，它说上游计费延迟。听起来都合理，但没有任何可验证信息。</p>
+<p>这就是我最不喜欢的一类。因为它不只是便宜不便宜的问题，而是<strong>责任边界消失了</strong>。</p>
+<h2 id="04返回路径更敏感">04 返回路径更敏感</h2>
+<p>请求到了真实模型服务器，Claude 或 OpenAI 开始生成内容。如果是流式输出，官方会通过 SSE（Server-Sent Events）返回一段一段事件——这解释了为什么客户端里会一个字一个字出来。</p>
+<p>但中转站在中间。返回也不是「官方直接回到用户」。</p>
+<p>真实路径大概是：模型服务器 → 中转站上游连接 → 中转站格式转换和日志 → 中转站计费结算 → 用户客户端。</p>
+<p>这里最敏感的是<strong>日志</strong>。</p>
+<p>中转站理论上可以看到用户发出的 prompt，也可以看到模型返回的 response。它可以选择只记录用量、状态码、耗时、Token 数，也可以把完整对话存下来。</p>
+<p>我以前觉得「我又不写什么机密，怕什么」。后来我想了一下，如果我把整个项目目录交给 AI 编程工具，中转站拿到的就不是一句聊天，而是一部分工作现场。这件事性质就变了。</p>
+<p>用户在 Claude Code 里跑项目时，提示词里可能包含 <code>.env</code>、客户数据、源码、数据库结构、内部文档。哪怕我自己做了 <code>.gitignore</code>，也不代表 AI 工具不会在上下文里带出敏感片段。</p>
+<p>中转站不是单纯网络代理。它是能读到内容的中间人。</p>
+<p>所以这里就有最离谱的赚钱方式：把信息卖给厂商。有些「大量免费使用 xx 模型」的中转站，可能就是了。</p>
+<h2 id="05故障信号诊断看报错暴露了哪一层">05 故障信号诊断：看报错暴露了哪一层</h2>
+<p>中转站日常出问题，不要只看报错文本。要看它暴露了哪一层。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 310"&gt;
+  &lt;rect width="600" height="310" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#333"&gt;故障信号 → 暴露的上游结构&lt;/text&gt;
+
+  &lt;!-- 表头 --&gt;
+  &lt;rect x="15" y="42" width="180" height="26" fill="#333"/&gt;
+  &lt;text x="105" y="60" text-anchor="middle" font-size="11" font-weight="700" fill="#fff"&gt;故障现象&lt;/text&gt;
+
+  &lt;rect x="195" y="42" width="130" height="26" fill="#333"/&gt;
+  &lt;text x="260" y="60" text-anchor="middle" font-size="11" font-weight="700" fill="#fff"&gt;可能位置&lt;/text&gt;
+
+  &lt;rect x="325" y="42" width="260" height="26" fill="#333"/&gt;
+  &lt;text x="455" y="60" text-anchor="middle" font-size="11" font-weight="700" fill="#fff"&gt;暴露的问题&lt;/text&gt;
+
+  &lt;!-- 行1 --&gt;
+  &lt;rect x="15" y="68" width="180" height="30" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="105" y="87" text-anchor="middle" font-size="10" fill="#333"&gt;经常 401 / Key invalid&lt;/text&gt;
+
+  &lt;rect x="195" y="68" width="130" height="30" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="260" y="87" text-anchor="middle" font-size="10" fill="#555"&gt;鉴权层 / 上游 Key&lt;/text&gt;
+
+  &lt;rect x="325" y="68" width="260" height="30" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="455" y="87" text-anchor="middle" font-size="10" fill="#555"&gt;Key 管理混乱或真实 Key 被封&lt;/text&gt;
+
+  &lt;!-- 行2 --&gt;
+  &lt;rect x="15" y="98" width="180" height="30" fill="#fff" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="105" y="117" text-anchor="middle" font-size="10" fill="#333"&gt;经常 429 / 速率限制&lt;/text&gt;
+
+  &lt;rect x="195" y="98" width="130" height="30" fill="#fff" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="260" y="117" text-anchor="middle" font-size="10" fill="#555"&gt;上游额度池&lt;/text&gt;
+
+  &lt;rect x="325" y="98" width="260" height="30" fill="#fff" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="455" y="117" text-anchor="middle" font-size="10" fill="#555"&gt;官方 Key 额度不足或订阅池被打满&lt;/text&gt;
+
+  &lt;!-- 行3 --&gt;
+  &lt;rect x="15" y="128" width="180" height="30" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="105" y="147" text-anchor="middle" font-size="10" fill="#333"&gt;高峰期排队很久&lt;/text&gt;
+
+  &lt;rect x="195" y="128" width="130" height="30" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="260" y="147" text-anchor="middle" font-size="10" fill="#555"&gt;路由层 / 账号池&lt;/text&gt;
+
+  &lt;rect x="325" y="128" width="260" height="30" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="455" y="147" text-anchor="middle" font-size="10" fill="#555"&gt;用低成本池子对赌轻度用户&lt;/text&gt;
+
+  &lt;!-- 行4 --&gt;
+  &lt;rect x="15" y="158" width="180" height="30" fill="#fff" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="105" y="177" text-anchor="middle" font-size="10" fill="#333"&gt;Claude Code 工具调用异常&lt;/text&gt;
+
+  &lt;rect x="195" y="158" width="130" height="30" fill="#fff" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="260" y="177" text-anchor="middle" font-size="10" fill="#555"&gt;协议转换层&lt;/text&gt;
+
+  &lt;rect x="325" y="158" width="260" height="30" fill="#fff" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="455" y="177" text-anchor="middle" font-size="10" fill="#555"&gt;OpenAI 格式硬转 Claude，细节未适配&lt;/text&gt;
+
+  &lt;!-- 行5 --&gt;
+  &lt;rect x="15" y="188" width="180" height="30" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="105" y="207" text-anchor="middle" font-size="10" fill="#333"&gt;模型自称和面板不一致&lt;/text&gt;
+
+  &lt;rect x="195" y="188" width="130" height="30" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="260" y="207" text-anchor="middle" font-size="10" fill="#555"&gt;路由层 / 提示词层&lt;/text&gt;
+
+  &lt;rect x="325" y="188" width="260" height="30" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="455" y="207" text-anchor="middle" font-size="10" fill="#555"&gt;可能被降级，或被系统提示词伪装&lt;/text&gt;
+
+  &lt;!-- 行6 --&gt;
+  &lt;rect x="15" y="218" width="180" height="30" fill="#fff" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="105" y="237" text-anchor="middle" font-size="10" fill="#333"&gt;输出风格突然变化&lt;/text&gt;
+
+  &lt;rect x="195" y="218" width="130" height="30" fill="#fff" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="260" y="237" text-anchor="middle" font-size="10" fill="#555"&gt;上游切换&lt;/text&gt;
+
+  &lt;rect x="325" y="218" width="260" height="30" fill="#fff" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="455" y="237" text-anchor="middle" font-size="10" fill="#555"&gt;真实模型可能换了，或被注入系统提示词&lt;/text&gt;
+
+  &lt;!-- 行7 --&gt;
+  &lt;rect x="15" y="248" width="180" height="30" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="105" y="267" text-anchor="middle" font-size="10" fill="#333"&gt;扣费和用量对不上&lt;/text&gt;
+
+  &lt;rect x="195" y="248" width="130" height="30" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="260" y="267" text-anchor="middle" font-size="10" fill="#555"&gt;计费层&lt;/text&gt;
+
+  &lt;rect x="325" y="248" width="260" height="30" fill="#fafafa" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  &lt;text x="455" y="267" text-anchor="middle" font-size="10" fill="#555"&gt;Token 估算、缓存计费或倍率配置有问题&lt;/text&gt;
+
+  &lt;!-- 底部提示 --&gt;
+  &lt;text x="300" y="300" text-anchor="middle" font-size="11" fill="#c41e3a"&gt;用故障信号反推问题发生在哪一层&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>这里最值得盯的是两个信号。</p>
+<p>第一，模型能力突然不稳定。如果同一个模型名，上午能处理复杂代码，晚上连工具调用都乱掉，这不像正常波动，更像路由换了。</p>
+<p>第二，站长永远用「上游问题」解释一切。真正直连官方或自持稳定渠道的服务商，至少能告诉我是哪类错误：余额不足、RPM 限流、TPM 限流、模型维护、账号封禁、协议转换失败。只会说「上游炸了」，多半说明它自己也不知道上游是谁。</p>
+<h2 id="06靠谱中转站更像网关不像倒卖摊位">06 靠谱中转站更像网关，不像倒卖摊位</h2>
+<p>合规的 AI Gateway 和灰色中转站，表面都给一个 API 地址。</p>
+<p>区别在运营目标。</p>
+<p>靠谱网关关心的是：权限、成本、可观测、故障切换、日志边界、协议兼容。</p>
+<p>灰色中转关心的是：低价、引流、充值、上游套利、尽量别被封。</p>
+<p>这两个东西看起来都能用，但不是一个物种。</p>
+<p>我的判断很简单：中转站如果能把调用路径讲清楚，把日志边界讲清楚，把故障归因讲清楚，它就有机会变成基础设施；如果它只能把「低价 Claude」四个字写得很大，它大概率只是把别人的不确定性转卖给我。</p>
+<hr>
+<p>AI 时代最贵的不是 Token。</p>
+<p>是我把工作现场交出去之后，还以为自己只是省了几块钱。</p>
+<hr>
+<p>当然，我自己没有做过中转站，说得不对的，还请各位评论区指教。</p>
+<p><strong>参考资料</strong></p>
+<p>[1] OpenClaw 淘金热，谁在暴富？ — TechFlow, 2026-03</p>
+<p>[2] AI 中转站黑话大全整理 — V2EX</p>
+<p>[3] AI 中转站的底裤，扒给你看 — V2EX</p>
+<p>[4] New API — QuantumNous/new-api（GitHub）</p>
+<p>[5] LiteLLM — BerriAI/litellm（GitHub）</p>
+<p>[6] Anthropic Streaming Messages — docs.anthropic.com</p>
+<p>[7] OpenAI Streaming Responses — platform.openai.com</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

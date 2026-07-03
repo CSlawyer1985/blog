@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我用 1760 条微信消息给自己"算了一命"，发现算命可以不玄 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">未分类</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-国资监管的悖论-红线越硬-经营越软/" class="sidebar-link">国资监管的悖论：红线越硬，经营越软</a>
+      
+      <a href="/articles/2026-06-24-我用-1760-条微信消息给自己-算了一命-发现算命可以不玄/" class="sidebar-link">我用 1760 条微信消息给自己"算了一命"，发现算命可以不玄</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">未分类</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-06-24">2026年6月24日</time>
+            <span class="dotsep"></span>
+            <span>7 分钟阅读</span>
+          </div>
+          <h1 class="article-title">我用 1760 条微信消息给自己"算了一命"，发现算命可以不玄</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>做过 MBTI 吗？或者看过星座解析、测过九型人格？</p>
+<p>做完那一刻，多半会有个反应：这说得也太准了，简直就是我。</p>
+<p>但你停下来再想一秒，把这些描述拿给你的同事、你妈、你前任看，他们大概也会觉得"这说的不就是我"。不是因为你人格万能，是因为这些描述本来就设计得对谁都成立。心理学里叫巴纳姆效应（Barnum effect），又叫福勒效应。它的本质不是"算准了你"，是"迎合了你"：先塞给你一个标签（你是 INTJ、你是天蝎座），再让你自己去生活里找证据对号入座。证据是为结论服务的，怎么解释都通。</p>
+<p>我最近找到一个真正"准"的算命方式。它不问你生辰八字，不问你出生城市，甚至不问你觉得自己是个什么样的人。它只读你过去几个月在微信里到底说了什么。</p>
+<p>这大概是真正意义上的赛博算命。这篇文章讲两件事：它为什么比传统算命准，以及你怎么用它给自己算一命。</p>
+<h2 id="一两种算命两种认识论">一、两种算命，两种认识论</h2>
+<p>传统算命和聊天记录画像，差的不是准不准，是认识论的根本不同。</p>
+<p>传统算命是"先结论，后证据"。你是 INTJ——好，你看，你喜欢独处，你独立思考，你不爱无效社交。每一条都成立，但每一条都是先有靶子再射箭。你只记住了对得上结论的证据，忽略了反例，心理学管这叫确认偏误（confirmation bias）。</p>
+<p>聊天记录画像是反过来的，"先证据，后结论"。一千多条发言摆在那儿，先统计，先归纳，结论是从证据里长出来的，不是预先设定的。</p>
+<p>打个比方：一个先画靶再射箭，怎么射怎么中；一个先把箭射出去，再看落在哪里。画靶的那个让你舒服，射箭的那个让你没法骗自己。</p>
+<p>星座告诉你你"应该"是谁，聊天记录告诉你你"到底"是谁。</p>
+<h2 id="二为什么聊天记录是最硬的画像数据">二、为什么聊天记录是最硬的画像数据</h2>
+<p>问卷、心理测试、自我陈述，都败在同一个点上：你会美化自己。没有谁在填"你是否容易冲动"时会心甘情愿勾"经常"。</p>
+<p>聊天记录不会。它有四个其他数据源都比不上的优势。</p>
+<p>第一，长期积累。几千条消息铺在几个月里，会抹平一时的情绪和状态。你某天连发十条暴躁消息，在总量里被稀释到看不见；你持续三个月在深夜发技术讨论，才会真正显示成"作息偏晚"。</p>
+<p>第二，自然状态。发微信的时候，没人想着"这句话以后会被分析"，所以它最难伪装。你伪装不了一千条消息，伪装的痕迹本身也会被统计出来。</p>
+<p>第三，跨场景。工作群里的你、兴趣群里的你、你主导的项目群里的你，是三个不同的侧面。同时取，才能看到立体的你，而不是单一场景下的面具。</p>
+<p>第四，对抗自我美化。问卷你会往好了填，聊天记录记下了你以为自己没说过的每一句话。</p>
+<p>你问自己"我是个怎样的人"，答案多半经过美化。数据替你回答，它不会。</p>
+<h2 id="三怎么算四步法">三、怎么算：四步法</h2>
+<p>讲清楚为什么准，接下来说怎么算。整套方法四步，照着都能跑。</p>
+<h3 id="第1步取数">第 1 步：取数</h3>
+<p>用 wechat-cli 把能反映你不同侧面的场景导出来。关键只有一句：不要只取一个群，会偏。</p>
+<p>一个人在工作群里往往是"硬"的——交代任务、催进度、拍板。只看工作群，你会得出"这人冷漠高效"的结论。但你可能同时在某个兴趣群里是个话痨，在你主导的项目群里是个鼓励型的人。至少取三个场景：一个工作场景、一个兴趣或学习场景、一个你深度参与的项目场景。</p>
+<p>导出命令很简单：</p>
+<pre class="code-block"><code class="language-bash">wechat-cli export "群名" --format markdown --output 工作群样本.md</code></pre>
+<p>导出后，只取你自己说的话（脚本里按发言者标记提取），剥离掉别人的内容。你分析的是你，不是群。</p>
+<h3 id="第2步量化">第 2 步：量化</h3>
+<p>这一步给自己拉一份九个维度的数据骨架：消息长度分布、发言时段（看作息）、表情符号、标点习惯、高频口头禅、思维态度关键词、消息功能类型、中英文比例、各场景发言量。</p>
+<p>核心逻辑其实很短：正则提取你的发言，然后用计数器统计。下面这段是骨架，够你照着改：</p>
+<pre class="code-block"><code class="language-python">import re
+from collections import Counter
+
+# wechat-cli 导出格式：[2026-03-12 14:35] me: 消息内容
+pat = re.compile(r'\[\d{4}-\d{2}-\d{2} (\d{2}):\d{2}\] me: (.*?)(?=\n\[|\Z)', re.S)
+mine = [(int(h), c.strip()) for h, c in pat.findall(open('工作群样本.md').read())]
+
+# 维度一：作息——看你是夜猫子还是早鸟
+hours = Counter(h for h, _ in mine)
+
+# 维度二：标点——感叹号多=情绪外露，问号多=爱探讨
+puncts = Counter(p for _, c in mine for p in '！？。，' if p in c)
+
+# 维度三：思维态度——自定义词表，按你的语言习惯调整
+keywords = {
+    '行动': ['试', '做', '搞', '现在', '执行', '完成'],
+    '质疑': ['问题', '但是', '为什么', '风险', '不一定'],
+    '鼓励': ['你可以', '支持', '加油', '不错', '很棒'],
+    '谦逊': ['也许', '我不', '不确定', '可能错'],
+}
+for dim, words in keywords.items():
+    total = sum(c.count(w) for _, c in mine for w in words)
+    print(dim, total)</code></pre>
+<p>词表是关键，也是你要花心思的地方。它会决定你看到的是什么颜色的自己。词表偏"积极"，画像就偏阳光；词表偏"批判"，画像就偏犀利。所以词表要平衡，覆盖行动、质疑、鼓励、谦逊多个维度，别只挑你想看的。</p>
+<p>量化给的是"骨架"，不是"诊断"。看到"行动类词 340 次"，不是说你就该被贴上"行动型人格"的标签，是说你的语言里行动词占比高，这是个线索，不是定性。</p>
+<h3 id="第3步质性">第 3 步：质性</h3>
+<p>这一步最容易被跳过，也最不能跳过。</p>
+<p>量化告诉你"你是行动派"，但"怎么个行动法"得看具体样本。同样是高频词"做"，"我今天要把这个案子拿下"和"做做看吧，不行再说"，完全是两种人。</p>
+<p>所以要分层抽样细读：深度表达、提问、鼓励、质疑、日常，各类各取若干条，还原血肉。这一步的作用是防止数据被误读，同一个高频词在不同语境里意味完全不同。数据告诉你骨架长什么样，质性告诉你这副骨架上挂的是肌肉还是脂肪。</p>
+<h3 id="第4步交叉印证盲区自省">第 4 步：交叉印证 + 盲区自省</h3>
+<p>前三步是算，这一步是验和省。</p>
+<p>量化数据和质性样本要互相验证。数据说"克制"，你就去样本里找，是不是确实没有情绪化表达；如果样本里其实有不少情绪外露，那就是量化分类有问题，得回头调词表。</p>
+<p>更关键的是写局限。一份诚实的画像，结尾必须写"它看不到什么"。比如：只取了群聊没取私聊，一对一的沟通风格和情感表达就没覆盖到；量化分类是启发式，不是严格心理量表；质性解读带主观，换个人读可能读出不同的你。不写局限的画像，本质上是另一种巴纳姆，假装什么都看清了。</p>
+<h2 id="四我拿自己开了一刀">四、我拿自己开了一刀</h2>
+<p>这套方法我不是空想的，我拿自己开过刀。取了三个最能反映我不同侧面的群，导出一千七百六十条我自己的发言，跑了量化，细读了样本。</p>
+<p>有几个数字让我自己都愣了一下。不是没想到，是没想到差距会这么大。</p>
+<p>一千七百六十条消息，我一共只用了十九个表情符号。你问我"你爱用表情吗"，我会说"还行吧，偶尔用用"。数据说：几乎为零。</p>
+<p>行动类词出现三百四十次（试、做、现在、执行、干、搞），谦逊自省类词只有十五次。我一直觉得自己挺谦虚的，数据说：你是个行动压倒一切的人，谦逊只是偶尔的点缀。</p>
+<p>鼓励他人类词七十二次，"你可以""支持""加油"反复出现。这个我没料到。我自己都没意识到，在群里我这么爱鼓励人。</p>
+<p>这三个数字，每一个都不是我"觉得"的，是数据算出来的。如果我靠自我感觉给自己画像，大概率会写偏，多写几句谦逊，少写几句行动力，因为人下意识都想把自己往"均衡"上描。数据不给你这个机会。它把你过去半年说过的每一句话摊开，让你想美化都无处下手。</p>
+<p>这大概就是证据先行的好处：你不是在给自己写鉴定，是在读一份你已经交出去了的、没法反悔的答卷。</p>
+<h2 id="五三个坑">五、三个坑</h2>
+<p>方法讲完了，说三个最容易栽的坑。</p>
+<p>第一个坑，把量化当心理测量。词频分类是启发式，不是严格的心理量表。"行动词三百多次"只能说明你语言里行动词多，不能直接诊断你是什么人格类型。看到数字就想贴标签，是这套方法最大的诱惑，也是最大的误用。</p>
+<p>第二个坑，样本偏差。前面说了，只取工作群，整个人会显得很硬很冷。但反过来，只取你和密友的私聊，又会显得很软很碎。取样决定了你看到的是哪个侧面的你，取样不全，画像就是偏的。</p>
+<p>第三个坑，质性解读的主观性。同一句话，你自己读和别人读，味道可能完全不同。你写的"行吧"，你以为是爽快答应，别人可能读成勉强敷衍。重要的结论，最好找个信得过的人交叉读一遍，让另一个人也看看你的样本，看他读出来的那个你，是不是你认识的那个你。</p>
+<h2 id="六适用边界">六、适用边界</h2>
+<p>最后说清楚这方法的边界，免得被用过头。</p>
+<p>先说隐私。原始聊天数据绝不外传，不上传任何外部服务，别图省事丢给某个 AI 让它"帮你分析"。结论可以脱敏后讲给别人听，原始记录只留在你自己机器上。你分析的是自己，这份数据也只有你自己有权看。</p>
+<p>它也不能替代专业心理评估。这是自我认知的工具，不是心理诊断工具。真有需要专业人士介入的状态，找专业人士，别找脚本。</p>
+<p>说到底，这套方法的价值不在标签，在镜子。用它是为了得出"我是 XX 型"，就白用了——标签谁都会贴。它真正给的是一面逃避不了的镜子：你以为自己怎样，和你实际怎样，中间那个落差，才是这趟"算命"真正的收获。它不定义你是谁，只是把你做过的事摆出来，让你自己看。</p>
+<h2 id="写在最后">写在最后</h2>
+<p>真正的了解自己，从来不是回答"我是谁"这个抽象问题。是回答另一个具体得多的问题：我过去半年到底说了什么、做了什么、把时间花在了哪里。</p>
+<p>"我是谁"可以美化，可以搪塞，可以今天一个样明天一个样。但你过去半年发出去的那一千多条消息改不了，它们已经躺在那儿了。</p>
+<p>聊天记录不会算命。但它会说真话。</p>
+<p>这大概就是所有算命都想做到、却从没做到的事。</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

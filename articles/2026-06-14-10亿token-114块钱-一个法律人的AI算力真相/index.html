@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10亿token，114块钱——一个法律人的AI算力真相 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-06-14">2026年6月14日</time>
+            <span class="dotsep"></span>
+            <span>3 分钟阅读</span>
+          </div>
+          <h1 class="article-title">10亿token，114块钱——一个法律人的AI算力真相</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>先看两组数字。</p>
+<p>第一组：2026年6月的前11天，我用DeepSeek跑了9.85亿token。总共花了114块人民币。</p>
+<p>第二组：同一天，我在OpenRouter上跑了一个任务，用了几个顶级模型。20分钟，1750万token，32美金——按今天的汇率，大概230块。</p>
+<p>换算一下：114块钱买将近10亿token；230块钱买1750万token。单位价格差了将近100倍。</p>
+<p>不需要任何解释，你就能感受到某种荒诞。</p>
+<p>但重点不是"DeepSeek好便宜"。你得理解这个差价背后的机制。理解了，才知道怎么选模型、怎么用AI、怎么花钱。</p>
+<hr>
+<h2 id="缓存命中一个大多数人不知道的省钱机制">缓存命中：一个大多数人不知道的省钱机制</h2>
+<p>你每一次跟AI对话，系统会把之前的聊天记录、规则文件、上下文窗口内的所有内容重新投喂给大模型。每发一轮消息，它都要重新"读"一遍历史。</p>
+<p>按常理想，聊得越久，投喂量越大，费用应该指数级增长。但实际上不是。</p>
+<p>因为有一个机制叫<strong>缓存命中（cache hit）</strong>。</p>
+<p>那些重复发送、没有变化的内容——你的系统规则、工作区指令、前几轮已经投喂过的上下文——AI系统会识别出来：这部分我不需要重新计算，直接复用上一次的结果。这个复用，按极低的价格计费。</p>
+<p>DeepSeek的缓存命中价格是每百万token 2分5。正常的输入价格是每百万token 3块。差了120倍。</p>
+<p><strong>你的工作越结构化，AI就越便宜。</strong></p>
+<p>那些认真搭建了工作区规则、写了一整套CLAUDE.md、建立了分层rules体系的人——他们的AI使用成本不是更高，是更低。规则写得越多，缓存命中的内容就越多，每次对话的边际成本就无限逼近于零。</p>
+<p>我跑的那些分析任务，大量是法律内容——合同审核、案件分析、法规检索。这些场景天然适合缓存命中：多轮对话、大量重复上下文。10亿token只要114块钱，不是奇迹，是结构。</p>
+<hr>
+<h2 id="频繁切换模型才是最烧钱的操作">频繁切换模型，才是最烧钱的操作</h2>
+<p>有一个很容易踩的坑：在同一轮对话里切换不同厂商的模型。</p>
+<p>你第一轮用DeepSeek，第二轮切到千问，第三轮再切到GPT——每一次切换，对新模型来说，你的整个上下文都是全新数据，前面的缓存全部作废。每一次切换等于缓存清零，从头按input价格算。</p>
+<p>这就是为什么我在OpenRouter上20分钟花30美金。不是模型本身贵到离谱，是在模型之间频繁路由，缓存命中率趋近于零。</p>
+<p>省钱的第一原则：<strong>选一个主力模型，尽量不切。</strong></p>
+<hr>
+<h2 id="包月还是按量">包月还是按量？</h2>
+<p>模型付费两种模式：包月订阅，和按量付费。</p>
+<p>一般规律是长期大量用包月划算，偶尔用按量更灵活。</p>
+<p>但DeepSeek把这条规律打破了。</p>
+<p>它没有包月套餐，只有按量付费。但它的按量付费，比很多厂商的包月套餐还便宜。而且按量付费有一个包月永远比不了的优势：<strong>不会停。</strong></p>
+<p>很多包月套餐有限制：5小时调用次数上限、每周调用上限、每月调用上限——三个维度叠加。你5小时没用完，一周指标到了，不能用；一周没用完，一个月到了，也不能用。任务正跑到一半，突然告诉你"请等待5小时后刷新"。</p>
+<p>DeepSeek没有这些。账户里有余额，它就永远在工作。</p>
+<p>我的建议：<strong>主力用DeepSeek按量付费，配一个GPT的20美金包月应急。</strong>日常任务——合同审查、法律检索、文书草稿——DeepSeek完全够用。偶尔特别复杂的任务，切到GPT处理一下，再切回来。</p>
+<p>我个人的配置：DeepSeek按量（主力）+ 智谱包月（备用）+ GPT 20美金（应急）+ GitHub Copilot 10美金（编程场景）。四套加起来，一个月不到400块。比我之前任何一款法律数据库的订阅费都便宜。</p>
+<hr>
+<h2 id="用量才是真正的指标">用量，才是真正的指标</h2>
+<p>很多人花大量时间比较"哪个模型便宜几毛钱"。用量大的时候这有价值，用量还不够大的时候，它只是虚假的精打细算。</p>
+<p>我在课程里跟学员说过一句话："每天平均消耗3000万token以上，我觉得可能算是入门了。"</p>
+<p>这不是门槛，是信号。当你的token消耗到这个量级，AI已经嵌入了你工作的多个场景——你可能一边在审合同，一边在分析案件材料，一边在检索法规。你并行的不是任务，是思维。</p>
+<p>在这个量级到来之前，不要太纠结哪个模型最省钱。先选一个好用的，把量用上去。用量本身，就是你与AI融合程度的真实度量。</p>
+<p>10亿token，114块钱。这个数字的意义不是"便宜"——是它说明了一件事：<strong>一个法律人完全可以在不增加经济负担的前提下，把AI变成日常工作的基础设施。</strong></p>
+<hr>
+<p>四明山法师AI夜校第三期即将开放报名。算力策略、模型选择、本地部署——这些都是课程的一部分。但我们真正教的，不是"用哪个模型便宜"，是如何让AI成为你法律工作中的常量，而不是偶尔打开的玩具。</p>
+<p>培养法律与AI的双语者。第三期见。</p>
+<hr>
+<blockquote>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+</blockquote>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 240"&gt;
+  &lt;defs&gt;
+    &lt;style&gt;
+      text { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
+    &lt;/style&gt;
+  &lt;/defs&gt;
+  &lt;rect width="600" height="240" fill="#fff"/&gt;
+  &lt;text x="300" y="32" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1a1a"&gt;同一个任务，两种算力的代价&lt;/text&gt;
+
+  &lt;!-- 左侧：DeepSeek --&gt;
+  &lt;rect x="30" y="55" width="250" height="160" rx="6" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="1"/&gt;
+  &lt;text x="155" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a"&gt;DeepSeek 按量付费&lt;/text&gt;
+  &lt;text x="155" y="115" text-anchor="middle" font-size="28" font-weight="700" fill="#2e7d32"&gt;¥114&lt;/text&gt;
+  &lt;text x="155" y="138" text-anchor="middle" font-size="12" fill="#888"&gt;9.85亿 token&lt;/text&gt;
+  &lt;text x="155" y="158" text-anchor="middle" font-size="12" fill="#888"&gt;11天 · 大量缓存命中&lt;/text&gt;
+  &lt;text x="155" y="178" text-anchor="middle" font-size="12" fill="#888"&gt;无流量包限制 · 有余额永不停&lt;/text&gt;
+
+  &lt;!-- 右侧：OpenRouter顶级模型 --&gt;
+  &lt;rect x="320" y="55" width="250" height="160" rx="6" fill="#fff3f3" stroke="#ffcdd2" stroke-width="1"/&gt;
+  &lt;text x="445" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#1a1a1a"&gt;OpenRouter 顶级模型&lt;/text&gt;
+  &lt;text x="445" y="115" text-anchor="middle" font-size="28" font-weight="700" fill="#c62828"&gt;$32&lt;/text&gt;
+  &lt;text x="445" y="138" text-anchor="middle" font-size="12" fill="#888"&gt;1,750万 token&lt;/text&gt;
+  &lt;text x="445" y="158" text-anchor="middle" font-size="12" fill="#888"&gt;20分钟 · 频繁切换模型&lt;/text&gt;
+  &lt;text x="445" y="178" text-anchor="middle" font-size="12" fill="#888"&gt;缓存命中率趋近于零&lt;/text&gt;
+
+  &lt;!-- 中间分隔线 --&gt;
+  &lt;text x="300" y="140" text-anchor="middle" font-size="20" font-weight="700" fill="#999"&gt;vs&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

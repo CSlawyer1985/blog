@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>一文透视深圳法院AI辅助审判系统 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-05-19">2026年5月19日</time>
+            <span class="dotsep"></span>
+            <span>31 分钟阅读</span>
+          </div>
+          <h1 class="article-title">一文透视深圳法院AI辅助审判系统</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<h2 id="一报告说明与方法论">一、报告说明与方法论</h2>
+<p>这份报告想做的事很简单：把深圳法院AI辅助审判系统（以下简称"智审系统"）的来龙去脉、技术构造、实际效果和舆论反响，尽可能诚实地梳理一遍。</p>
+<p>以下分析全部基于公开可得材料，分四类：经同行评审的学术论文（以牛津大学《法律分析》期刊发表的Liu & Li论文为核心）[1]、最高人民法院和深圳中院的官方发布[2]、人民法院报和深圳特区报等权威媒体的报道[3]，以及法律从业者和行业观察者的公开评论[4]。我没有法院内部数据，不知道AI辅助判决的实际比例，也没有使用过这套系统。材料的边界就是分析的边界——这一点先做声明，我们无法获得内部数据，不能对公开资料的内容真实性作出评判，请谨慎参考本文信息。</p>
+<p>我的立场是观察者，不是推销者，也不是审判者。先呈现事实，再给出判断。先肯定做得好的地方，再指出需要改进的地方。对于批评观点，不因人废言也不因言废人——评价标准只有三条：是否基于对系统工作原理的理解？是否有可验证的事实支撑？论证逻辑是否自洽？特此说明。</p>
+<p>本文可能不科学、不严谨、不准确，仅仅是信息的整理和我自己不成熟观点的表达，您有不同认识欢迎评论留言，原则上我们认为你是对的。</p>
+<hr>
+<h2 id="二探索路径深圳AI辅助审判的完整脉络">二、探索路径：深圳AI辅助审判的完整脉络</h2>
+<h3 id="21前史从电脑量刑到智慧法院">2.1 前史：从电脑量刑到智慧法院</h3>
+<p>深圳系统的诞生不是突然的技术突变，而是中国司法智能化探索二十余年的延续。</p>
+<p>最早可以追溯到2004年。山东省淄博市淄川区法院引入电脑辅助量刑技术，根据犯罪情节自动计算刑期[5]。这个尝试在当时引发了"机器取代法官"的激烈争议——二十年后回头看，争议的框架几乎没有变过。淄川法院当时的回应也很熟悉：电脑只是辅助工具，法官才是审判主体[6]。受限于彼时的技术条件，所谓电脑量刑不过是基于量刑表格的简单查询和算术，远不能与今天的大语言模型相提并论，但人机关系的核心命题已经浮出水面。</p>
+<p>2015年，"智慧法院"战略正式提出，中国法院进入信息化3.0阶段[7]。2016年AlphaGo战胜李世石，在全球范围内触发了"AI法官 vs 人类法官"的审判主体性辩论。2021年，《人民法院在线诉讼规则》出台，在线诉讼有了制度框架。</p>
+<p>真正的拐点出现在2022年。ChatGPT的发布让大语言模型从实验室进入公众视野，同年12月，最高人民法院出台《关于规范和加强人工智能司法应用的意见》（法发〔2022〕33号）[8]，明确提出"辅助而非替代"的定位。这份文件的重要性怎么强调都不过分——它在技术爆发的前夜确立了制度底线：AI可以进入法院，但不能坐上审判席。</p>
+<h3 id="22深圳探索的核心时间线">2.2 深圳探索的核心时间线</h3>
+<p>深圳系统的研发始于2023年。以下是关键节点：</p>
+<p><strong>2023年8月</strong>，深圳中院成立"人工智能辅助审判应用工程"专班，列为"一把手"工程[9]。11名法官从审判岗位抽调出来全职参与开发，研发团队整体进驻法院大楼[10]。</p>
+<p><strong>2024年1月</strong>，系统开始试运行。6个月试运行期间辅助立案29.1万件，辅助生成文书初稿1.16万份[11]。</p>
+<p><strong>2024年6月28日</strong>，系统正式上线运行，成为中国首个司法审判垂直领域大语言模型应用[12]。功能覆盖立案、阅卷、庭审、裁判、执行全流程共85个节点。</p>
+<p><strong>2025年1月</strong>，Liu & Li的论文在线发表于牛津大学《法律分析》期刊[13]——这是全球首篇对深圳法院使用大语言模型生成裁判文书进行系统实证研究的学术论文，也是迄今为止对深圳系统技术细节披露最充分的文献。</p>
+<p><strong>2025年6月</strong>，"龙藤"人工智能辅助执行系统在龙华法院上线，这是全国首个执行全流程AI系统[14]。</p>
+<p><strong>2025年全年</strong>，深圳法官人均结案744件，同比增加249件，高出全省平均水平261件；案件上诉率同比下降35.1%，一审改判发回重审率下降33.3%，均为近十年最优[15]。</p>
+<p><strong>2026年3月</strong>，最高法院院长张军在全国两会上公开评价该系统"效果非常好"，并透露已在11个省（自治区、直辖市）的23家法院试点[16]。次月，深圳中院副院长邝肖华在广东省人工智能应用对接大会上宣布，系统已纳入全国统一办案平台[17]。截至2026年4月，系统累计辅助超过60万件案件的审理，完成2400万次模型任务，智能推送法律规定和案例超过1300万条[18]。</p>
+<p>深圳系统的出现不是单一原因的结果，而是多重因素的交汇：制度层面有最高法2022年意见提供合法性框架；压力层面有深圳"案多人少"的极端矛盾（2023年处理约30.8万件案件[19]）；资源层面有深圳市委市政府的GPU专项保障；技术层面有面壁智能提供的大语言模型能力和2022年后大模型技术的整体突破。</p>
+<h3 id="23三地模式比较中国数字法院的三种路径">2.3 三地模式比较：中国数字法院的三种路径</h3>
+<p>理解深圳模式，不能只看深圳。庞闻淙和孙凯（2025）首次系统提出了中国数字法院三种建设模式的比较框架[20]：</p>
+<p>| 维度 | 上海模式 | 苏州模式 | 深圳模式 |</p>
+<p>|------|----------|----------|----------|</p>
+<p>| <strong>核心路径</strong> | "纠错式" | "要素式" | "辅助式" |</p>
+<p>| <strong>技术侧重</strong> | 大数据碰撞比对，程序/实体问题预先提示 | 法律要素解构，从起诉状/答辩状中提取要素 | 全流程85节点覆盖，从立案到执行无断点 |</p>
+<p>| <strong>代表功能</strong> | 当事人诉讼主体资格丧失自动提示 | 庭审笔录要素化生成争议焦点 | 立案智审+智能阅卷+智能庭审+文书生成 |</p>
+<p>| <strong>主要局限</strong> | 推送精准度不高，依赖人工筛查关键字 | OCR识别对材料形式要求高，仅适用部分案由 | 前置表单填写耗时，未标注AI参与内容 |</p>
+<p>三种模式的共同困境比各自的特色更有分析价值。庞闻淙和孙凯指出了三重共性：数据壁垒（公安、工商、法院之间的数据共享不畅通）、信息噪声（AI生成的检索和推送结果中存在干扰信息，需要办案法官额外甄别）、以及"辅助外延"的持续扩张争议（"辅助"的范围在实践中不断拓宽，但制度边界没有同步更新）[21]。</p>
+<p>从工程架构的角度看，这三条路径的本质差异在于"将AI安放在司法工作流中的哪个环节"。上海选择安放在后置校验环节（判决作出后的纠错提示），苏州选择安放在中置要素解构环节（从起诉到庭审的阶段），深圳则选择安放在全流程嵌入环节。这不是技术路径之争，而是工程架构的选择——没有一种方案在出厂时就优于另一种，因为它们面对的问题、可用的资源、所处的制度环境各不相同。</p>
+<hr>
+<h2 id="三技术全景算力模型与数据的现状解构">三、技术全景：算力、模型与数据的现状解构</h2>
+<h3 id="31模型端务实且克制的技术路线">3.1 模型端：务实且克制的技术路线</h3>
+<p>深圳系统的模型架构是分层的，像一个"技术三明治"：</p>
+<p><strong>底层基座</strong>是"法信法律基座大模型"。这是人民法院出版社主导、在清华大学科研成果转化的千亿参数通用大模型基座上，经过法律语料精调训练的领域基础模型[22]。训练语料来自最高人民法院"法信"法律大数据平台，总量为3.2亿篇、3.67万亿字[23]，涵盖法律文献、裁判文书、案例和学术观点，并融入了18万法律知识体系编码[24]。</p>
+<p><strong>中层领域模型</strong>由面壁智能（北京面壁智能科技有限公司，清华NLP实验室孵化）与深圳中院合作开发[25]。根据Liu & Li论文的披露，该模型参数规模与GPT-3.5相当（GPT-3.5含1750亿参数），训练语料约2万亿汉字，上下文窗口也与GPT-3.5相当，模型不开源，仅在深圳法院系统内部使用[26]。深圳迪博技术有限公司作为"智审系统"的开发方，在供应链中承担系统集成角色[27]。</p>
+<p><strong>上层引擎</strong>采用多模型架构：通用大模型负责语言理解和推理，专业模型负责法律领域的精准判断[28]。系统还首创了树状提示词工程，以确保裁判规则的统一适用[29]。</p>
+<p>这里有一个判断需要先说出来：深圳系统的技术路线选择是务实且正确的。它没有试图做一个"全能AI法官"，没有追求端到端的自动化裁判——这是最容易犯的错误，也是德国法官说"机器不能审判人类"[30]时最担心的情形。深圳的工程师和法官们选择了相反的路径：把AI拆解成85个节点的专项Agent，每个节点只做一件事——立案审查、材料提取、类案检索、庭审提纲生成、文书初稿起草、类案同判检测、文书质量校验。工程的克制本身就是一种判断力。</p>
+<h3 id="32数据端表征与真实之间的缝隙">3.2 数据端：表征与真实之间的缝隙</h3>
+<p>模型吃进去什么数据，比模型本身有多少参数更重要。</p>
+<p>深圳系统的训练数据基础是3.2亿篇法律文献，这是量的层面。质的层面，数据来源包括：全部现行法律、行政法规和司法解释文本、中国裁判文书网和人民法院案例库的裁判文书、法学著作和学术论文、法答网问答数据、法信网知识体系，以及58个省级政务数据接口的实时接入[31]。</p>
+<p>系统的RAG（检索增强生成）架构通过实时检索权威法律数据库来降低大模型"幻觉"——即AI生成事实性错误内容的概率。这是正确的工程方向，但RAG降低了幻觉概率，不能消除幻觉。细微幻觉——比如概括裁判原则时的不准确、援引法条时的轻微偏差——仍然可能发生。</p>
+<p>但这里有一个更深层的问题，不是技术能解决的。裁判文书呈现的是裁判的<strong>结果和理由</strong>，而非裁判的<strong>实际形成过程</strong>。法官的自由心证——那些在庭审过程中形成的直觉、对证人可信度的判断、合议庭讨论中的权衡和妥协——不会完整地留在裁判文书里。用裁判文书训练出来的模型，学到的永远是"裁判的形式表达"而非"裁判的实际思维"。这个缝隙是根本性的，不是数据扩容能解决的。赵雪芬（2026）指出，目前裁判文书的上网量已经大幅萎缩——2023年仅217万件上网，而全国法院当年结案4527万件[32]——这意味着训练数据对真实裁判图景的覆盖率还在下降。</p>
+<p>能用的数据本就不完整，不完整的数据又只能反映裁判的表面逻辑。数据端的核心挑战不是"数据不够"，而是"数据的表征与真实裁判过程之间存在结构性缝隙"。</p>
+<h3 id="33算力端">3.3 算力端</h3>
+<p>深圳系统的算力投入，行业分析者引用了一个数字：相当于5800多张H100的规模[33]。法院专网本地部署，不依赖公有云，深圳市委市政府协调保障了专网GPU资源[34]。具体硬件供应商（华为昇腾、NVIDIA或曙光等）未公开。</p>
+<p>这个算力量级在2026年的语境下不算惊人——但放在法院专网的封闭环境中，是一个足够支撑全流程辅助的规模。更重要的是本地化部署的决策本身：在公有云和本地专网之间选择了后者，这意味着对数据安全的高度重视和对"法院数据不出院"原则的遵守。</p>
+<h3 id="34功能体系与法官-AI互动模式">3.4 功能体系与法官-AI互动模式</h3>
+<p>85个节点的全流程覆盖大致可以归纳为六个阶段：</p>
+<p><strong>立案阶段</strong>：立案智审进行35项标准核查，材料要素化提取支持48类文书识别，准确率超过95%，标准文字识别率达99.9%[35]。</p>
+<p><strong>阅卷阶段</strong>：智能文档结构化，提取212项关键数据，自动生成案件摘要和争议焦点归纳[36]。</p>
+<p><strong>庭审准备</strong>：类案推送（以合同纠纷为例，每案精准推送23个相似案例），生成庭审提纲，预判争议焦点和问题提示[37]。</p>
+<p><strong>庭审阶段</strong>：实时语音转写、要素比对提示、法规即时检索[38]。</p>
+<p><strong>裁判文书</strong>：这是最核心的环节。法官先识别争议焦点并作出初步判断，AI围绕法官的判断生成裁判说理，辅助生成文书初稿，然后进行类案同判检测和文书质量校验[39]。</p>
+<p><strong>执行与诉源治理</strong>：208类纠纷的预判调解难点，案件多维标识与对比[40]。"龙藤"执行系统在此基础之上专门处理执行环节。</p>
+<p>这里有必要仔细拆解最核心的四步互动模型——这是Liu & Li论文对深圳系统最关键的学术发现[41]：</p>
+<ol>
+<li><strong>法官查明事实</strong>：根据证据和庭审情况查明案件事实</li>
+<li><strong>法官初步判断</strong>：识别争议焦点，对每个争议焦点作出初步判断</li>
+<li><strong>AI生成说理</strong>：AI根据法官的初步判断和已查明事实，生成裁判说理</li>
+<li><strong>法官修订定稿</strong>：法官审阅、修改AI生成的说理，形成最终判决</li>
+</ol>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200"&gt;
+  &lt;rect width="600" height="200" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#333"&gt;深圳系统四步互动模型（Liu &amp;amp; Li 2024）&lt;/text&gt;
+  &lt;!-- Step 1 --&gt;
+  &lt;rect x="20" y="55" width="100" height="50" rx="4" fill="#1a1a1a"/&gt;
+  &lt;text x="70" y="76" text-anchor="middle" font-size="11" fill="#fff"&gt;法官查明事实&lt;/text&gt;
+  &lt;text x="70" y="92" text-anchor="middle" font-size="9" fill="#aaa"&gt;证据 + 庭审&lt;/text&gt;
+  &lt;!-- arrow 1→2 --&gt;
+  &lt;line x1="120" y1="80" x2="155" y2="80" stroke="#333" stroke-width="1.5" marker-end="url(#arrowhead)"/&gt;
+  &lt;!-- Step 2 --&gt;
+  &lt;rect x="160" y="55" width="100" height="50" rx="4" fill="#1a1a1a"/&gt;
+  &lt;text x="210" y="76" text-anchor="middle" font-size="11" fill="#fff"&gt;法官初步判断&lt;/text&gt;
+  &lt;text x="210" y="92" text-anchor="middle" font-size="9" fill="#aaa"&gt;识别争议焦点&lt;/text&gt;
+  &lt;!-- arrow 2→3 --&gt;
+  &lt;line x1="260" y1="80" x2="295" y2="80" stroke="#333" stroke-width="1.5" marker-end="url(#arrowhead)"/&gt;
+  &lt;!-- Step 3 --&gt;
+  &lt;rect x="300" y="50" width="115" height="60" rx="4" fill="#c41e3a"/&gt;
+  &lt;text x="357" y="73" text-anchor="middle" font-size="11" fill="#fff" font-weight="700"&gt;AI 生成说理&lt;/text&gt;
+  &lt;text x="357" y="91" text-anchor="middle" font-size="9" fill="#fcc"&gt;← 关键环节&lt;/text&gt;
+  &lt;!-- arrow 3→4 --&gt;
+  &lt;line x1="415" y1="80" x2="450" y2="80" stroke="#333" stroke-width="1.5" marker-end="url(#arrowhead)"/&gt;
+  &lt;!-- Step 4 --&gt;
+  &lt;rect x="455" y="55" width="120" height="50" rx="4" fill="#1a1a1a"/&gt;
+  &lt;text x="515" y="76" text-anchor="middle" font-size="11" fill="#fff"&gt;法官修订定稿&lt;/text&gt;
+  &lt;text x="515" y="92" text-anchor="middle" font-size="9" fill="#aaa"&gt;审阅 + 修改&lt;/text&gt;
+  &lt;!-- bottom note --&gt;
+  &lt;line x1="160" y1="130" x2="440" y2="130" stroke="#999" stroke-width="0.5" stroke-dasharray="4,3"/&gt;
+  &lt;text x="300" y="150" text-anchor="middle" font-size="10" fill="#888"&gt;人 类 法 官 主 导&lt;/text&gt;
+  &lt;text x="300" y="175" text-anchor="middle" font-size="10" fill="#c41e3a"&gt;AI 仅在第三步介入&lt;/text&gt;
+  &lt;!-- marker --&gt;
+  &lt;defs&gt;&lt;marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"&gt;&lt;polygon points="0 0, 8 3, 0 6" fill="#333"/&gt;&lt;/marker&gt;&lt;/defs&gt;
+&lt;/svg&gt;</code></pre>
+<p>这个设计是精巧的。法官只让AI做第三步——生成说理，前两步（事实认定和初步判断）完全保留给人类。表面上看，人类法官把握方向，AI只是"高级文书员"。但这个设计的隐含前提是：<strong>法官能够在审阅环节独立地、有效地审查AI生成的说理质量</strong>。这个大前提恰恰是未被验证的。我们将在第四章和第五章回到这个问题。</p>
+<hr>
+<h2 id="四短板分析与迭代建议">四、短板分析与迭代建议</h2>
+<h3 id="41已识别的短板">4.1 已识别的短板</h3>
+<h4 id="411模型层面的制约">4.1.1 模型层面的制约</h4>
+<p>第一，能力边界。~175B参数级别的大语言模型在处理常规法律推理时表现可用，但在涉及多层嵌套法律关系的复杂案件、需要价值衡量的边缘案件中，能力的上限是实际的限制。</p>
+<p>第二，可解释性困境。AI生成说理时，其推理链路无法被完全追溯。"人工智能并不能像人一样真正'理解'其输出的内容，只是基于符号间数学关联进行最大化组合"[42]——这是大语言模型的基础性特征，不是深圳系统的设计缺陷。但问题在于，深圳系统应用在"高利害领域"——涉及人身自由和财产权利的司法裁判——这一基础性特征的风险后果被放大了。</p>
+<p>第三，"越会写越不安全"的悖论。Liu & Li论文提出了一个深刻的反直觉发现：模型能力越强，越能把有问题的初步判断写得逻辑严密、法理充沛、像"正确答案"[43]。换句话说，在当前的编排方式下，模型的写作能力越强，法官发现错误的难度反而越大——优秀的文笔可能包装了错误的判断。</p>
+<h4 id="412数据层面的制约">4.1.2 数据层面的制约</h4>
+<p>除了前文已述的"表征与真实之间的缝隙"和裁判文书上网萎缩的问题，还有两个值得注意的制约。</p>
+<p>一是数据壁垒。庞闻淙和孙凯（2025）指出，公安、工商等部门与法院之间的数据共享仍不畅通[44]。训练数据的供应链存在断点。</p>
+<p>二是数据分类分级标准的缺失。李梦琳（2026）指出，在智能辅助审判中存在包含个人敏感信息的数据未能得到相应级别保护的情况，在数据共享和流转环节面临较高的泄露风险[45]。</p>
+<h4 id="413制度层面的制约">4.1.3 制度层面的制约</h4>
+<p>这是目前最突出、也最容易解决但至今未解决的短板。</p>
+<p>第一，判决书不标注AI参与内容。这是一个透明度问题，但不止于透明度。不标注，外部就无法独立评估AI辅助的实际效果。学界无法研究"AI辅助对裁判质量的影响"——因为根本不知道哪些判决书有AI参与、参与到了什么程度。</p>
+<p>第二，AI辅助判决的比例未公开。"辅助"是否在实质上已经演变为"替代"，无法被外部验证。郑璇（2026）提出了一个很难绕开的问题：当一个系统从填表和日程提示延伸到生成"本院认为"部分时，"辅助"这个词没有变，但它的实质内容已经完全变了[46]。</p>
+<p>第三，司法责任认定在AI参与下的模糊化。陈子君（2026）系统地分析了这个问题：算法黑箱导致主观过错认定更加困难；技术人员和监管者对裁判的"隐性嵌入"消解了法官的主体地位；责任推诿风险在AI参与后显著扩大[47]。她的核心洞察是——AI系统的参数设置本身就是一种规则判断，技术人员从工具提供者变成了规则塑造者[48]，但现有的司法责任制没有为这种角色转变做好准备。</p>
+<h4 id="414生态层面的制约">4.1.4 生态层面的制约</h4>
+<p>一是当事人端感知空白。没有任何公开的当事人对AI辅助审判的信任度调查。当事人在法庭上面对的可能是一个部分由AI生成裁判理由的判决——但他们不知道，也没有人问过他们的感受。</p>
+<p>二是律师端系统性反馈缺失。目前公开的律师反馈仅有零散的正面个例。</p>
+<p>三是年轻法官培养通道的担忧。郑璇（2026）提出了一个直击要害的问题：AI接管了裁判文书初稿的撰写后，年轻法官助理"没有地方练判断的肌肉"[49]。这个问题缺乏系统的实证支撑——我们不知道在没有AI系统之前，法官助理的实际培养状况如何；也不知道AI接管的工作量和培养通道损失的工作量是否完全重合。但作为一个需要关注的风险信号，它值得被认真对待。</p>
+<h3 id="42迭代建议">4.2 迭代建议</h3>
+<h4 id="421技术层面从顺从助手到反方助手">4.2.1 技术层面：从"顺从助手"到"反方助手"</h4>
+<p>深圳系统做得好的地方应当先被肯定：RAG+多模型架构的防幻觉设计、85节点专项Agent的拆解思路、树状提示词工程——这些选择在工程上是正确的。</p>
+<p>但这里有一个更关键的工程选择需要被重新审视：当前四步模型的运行逻辑是，法官先形成倾向，AI再为这个倾向生成支持性理由。AI扮演的是"顺从型助手"——你给观点，它帮你说圆。</p>
+<p>同一个大语言模型，其实可以被编排成三种完全不同的角色：</p>
+<ul>
+<li><strong>顺从型助手</strong>：你给观点，它帮你把观点说圆</li>
+<li><strong>审稿型助手</strong>：它检查你的观点有没有漏洞</li>
+<li><strong>对抗型助手</strong>：它专门从反方向攻击你的观点——找反例、找相反规范、找不利类案、找事实缺口</li>
+</ul>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 240"&gt;
+  &lt;rect width="600" height="240" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="28" text-anchor="middle" font-size="15" font-weight="700" fill="#333"&gt;同一 LLM 的三种编排方式&lt;/text&gt;
+  &lt;!-- Type 1 --&gt;
+  &lt;rect x="15" y="50" width="180" height="155" rx="4" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;rect x="15" y="50" width="180" height="32" rx="4" fill="#888"/&gt;
+  &lt;text x="105" y="71" text-anchor="middle" font-size="12" fill="#fff" font-weight="700"&gt;① 顺从型助手&lt;/text&gt;
+  &lt;text x="105" y="108" text-anchor="middle" font-size="11" fill="#555"&gt;你给观点&lt;/text&gt;
+  &lt;text x="105" y="128" text-anchor="middle" font-size="11" fill="#555"&gt;→ 它帮你说圆&lt;/text&gt;
+  &lt;line x1="45" y1="145" x2="165" y2="145" stroke="#ddd" stroke-width="0.5"/&gt;
+  &lt;text x="105" y="168" text-anchor="middle" font-size="9" fill="#c41e3a"&gt;深圳系统当前模式&lt;/text&gt;
+  &lt;text x="105" y="185" text-anchor="middle" font-size="9" fill="#999"&gt;（Liu &amp;amp; Li 2024）&lt;/text&gt;
+  &lt;!-- Arrow --&gt;
+  &lt;text x="220" y="135" text-anchor="middle" font-size="22" fill="#333"&gt;→&lt;/text&gt;
+  &lt;!-- Type 2 --&gt;
+  &lt;rect x="240" y="50" width="180" height="155" rx="4" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;rect x="240" y="50" width="180" height="32" rx="4" fill="#1a1a1a"/&gt;
+  &lt;text x="330" y="71" text-anchor="middle" font-size="12" fill="#fff" font-weight="700"&gt;② 审稿型助手&lt;/text&gt;
+  &lt;text x="330" y="108" text-anchor="middle" font-size="11" fill="#555"&gt;检查你的观点&lt;/text&gt;
+  &lt;text x="330" y="128" text-anchor="middle" font-size="11" fill="#555"&gt;→ 找漏洞、标风险&lt;/text&gt;
+  &lt;line x1="270" y1="145" x2="390" y2="145" stroke="#ddd" stroke-width="0.5"/&gt;
+  &lt;text x="330" y="168" text-anchor="middle" font-size="9" fill="#1a1a1a"&gt;司法校验场景适用&lt;/text&gt;
+  &lt;text x="330" y="185" text-anchor="middle" font-size="9" fill="#999"&gt;法条校验 / 类案比对&lt;/text&gt;
+  &lt;!-- Arrow --&gt;
+  &lt;text x="445" y="135" text-anchor="middle" font-size="22" fill="#333"&gt;→&lt;/text&gt;
+  &lt;!-- Type 3 --&gt;
+  &lt;rect x="460" y="50" width="125" height="155" rx="4" fill="#e8e8e8" stroke="#1a1a1a" stroke-width="1.5"/&gt;
+  &lt;rect x="460" y="50" width="125" height="32" rx="4" fill="#1a1a1a"/&gt;
+  &lt;text x="522" y="71" text-anchor="middle" font-size="12" fill="#fff" font-weight="700"&gt;③ 对抗型&lt;/text&gt;
+  &lt;text x="522" y="108" text-anchor="middle" font-size="11" fill="#1a1a1a" font-weight="600"&gt;从反方攻击&lt;/text&gt;
+  &lt;text x="522" y="128" text-anchor="middle" font-size="11" fill="#1a1a1a" font-weight="600"&gt;你的观点&lt;/text&gt;
+  &lt;line x1="480" y1="145" x2="565" y2="145" stroke="#ddd" stroke-width="0.5"/&gt;
+  &lt;text x="522" y="168" text-anchor="middle" font-size="9" fill="#1a1a1a"&gt;← 司法最需要&lt;/text&gt;
+  &lt;text x="522" y="185" text-anchor="middle" font-size="9" fill="#999"&gt;反方论证/不利类案&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>深圳系统目前的运行逻辑更接近第一种。但司法场景真正需要的，是第二种和第三种。</p>
+<p>这不是模型能力的限制，是系统编排方式的限制。Liu & Li论文的核心发现——AI在结构上偏向法官的初步判断，减少法官自我纠错的机会——指向的也是同一个问题：不是"AI不够聪明"，而是"AI被编排成了单边论证工具"。这是工程选择问题，不是技术天花板问题。</p>
+<p>因此，技术层面的核心建议是：<strong>将AI的默认角色从"帮法官把判决写得更漂亮"扭转为"帮法官发现自己可能错在哪里"</strong>。</p>
+<p>做法是：在AI生成裁判说理之后，增加一层独立的对抗性审查——由独立模型从反方立场审视说理质量，强制检索不利类案、相反规范和可能的法律适用风险，将双面论证结果同时推送给法官。大语言模型并不天然只能制造"闭环"；它也可以被设计成"破环工具"。人的问题在于常常不愿意主动找反对自己的理由——AI的价值恰恰在于它可以被<strong>强制要求</strong>寻找反对理由。</p>
+<p>更进一步的建议是：司法AI的优先方向应从"<strong>生成</strong>"转向"<strong>校验</strong>"。不是"帮我写一份支持这个结论的判决书"，而是：</p>
+<ul>
+<li>法条是否现行有效？</li>
+<li>类案是否真的类似？</li>
+<li>裁判依据是否存在层级冲突？</li>
+<li>是否遗漏了当事人的关键抗辩？</li>
+<li>是否存在同案不同判的风险？</li>
+<li>事实认定是否有证据支撑？</li>
+</ul>
+<p>这些场景中，AI不是替代法官，而是增加一层审查。这个方向比"AI写判决"更正当，也更有实际价值。</p>
+<h4 id="422制度层面">4.2.2 制度层面</h4>
+<p>第一，逐步建立AI参与裁判文书的标注制度。可以从程序性裁定（如管辖权异议、保全裁定）开始试点，要求文书末尾标注"本案裁定由AI辅助生成，经法官审阅确认"。</p>
+<p>第二，建立法官对AI建议的采纳/拒绝率统计，作为系统迭代的反馈闭环。采纳率过高和拒绝率过高都是异常信号——前者可能意味着自动化偏误（automation bias）[50]，后者可能意味着系统推送的内容质量有问题。</p>
+<p>第三，建立可追溯的责任链条。AI使用过程应当全程留痕：使用了哪个模型、调用了哪些材料、生成了哪些建议、法官采纳了哪些、排除了哪些。当事人应当有权知道AI在多大程度上参与了自己案件的处理。司法权可以使用工具，但不能让工具变成责任黑箱。</p>
+<p>第四，不同案件类型应当分层处理。小额、标准化、事实简单的案件，可以更多使用AI做流程辅助和文书初稿；复杂商事案件可以用AI做证据梳理和争点树，但裁判理由必须高度人工审查；死刑案件、重大人身自由案件、未成年人案件，应当设置更高门槛，限制AI参与核心裁判理由的生成。司法AI的合理路径不是一刀切，而是分级治理。</p>
+<h4 id="423生态层面">4.2.3 生态层面</h4>
+<p>一是启动当事人和律师端的系统性调研。在论证AI辅助对司法公正的影响时，不能只有"一升两降"的宏观指标，还需要"人"的感知。</p>
+<p>二是保持年轻法律人独立撰写裁判文书初稿的训练机制。将AI定位为"复核工具"而非"替代撰写工具"——让年轻法官先独立写完初稿，再用AI来校验和补充，而非反过来。</p>
+<hr>
+<h2 id="五舆论光谱正向与负向观点的逐一评价">五、舆论光谱：正向与负向观点的逐一评价</h2>
+<h3 id="51评价方法论">5.1 评价方法论</h3>
+<p>评价一个关于AI审判的观点，我的标准是三条：第一，作者是否基于对系统工作原理的理解在说话，还是在对着一个自己想象中的"AI审判"在说话？第二，有没有可验证的事实支撑，还是纯靠修辞驱动？第三，论证逻辑是否自洽——前提和结论之间有没有跳步？</p>
+<p>评价AI系统，尤其需要在三个维度交汇处做判断：技术可行性、工程约束和法律价值。单一维度的批评——只讲技术风险不讲工程可解性，只讲法律原则不讲技术现实——往往有其局限。</p>
+<p>以下评价分为三个组：正向观点的评价、值得认真对待的批评、价值有限的批评。每一个评价都试图先肯定对方看到了什么，再指出忽略了什么。</p>
+<h3 id="52正向观点的评价">5.2 正向观点的评价</h3>
+<p><strong>"一升两降证明效率与公正可以并行"</strong>。深圳的"一升两降"数据——人均结案744件（↑249）、上诉率↓35.1%、发改率↓33.3%[51]——是真实的，也是有价值的。在一个"案多人少"被讨论了几十年的领域，有具体数字证明效率提升，本身就是进步。但需要追问的是："公正"仅用上诉率和发改率来衡量是否足够？这个衡量方式隐含着"二审判断是正确的参照系"的假设。而上诉率和发改率也受多种非质量因素影响——比如AI生成的裁判文书说理更充分，客观上降低了当事人上诉的意愿，但这不一定等同于裁判本身更"公正"。效率的提升是确定的；公正的提升需要更多维度的衡量。</p>
+<p><strong>"16国来取经证明国际认可"</strong>。全国170多家单位前来学习，越南、葡萄牙、新加坡等16个国家以及港澳地区司法行政部门来深考察——这些是事实[52]。但关注不等于认可。国际同行来考察一套由法院主导开发的AI审判系统，其动机可能包括了解、学习、警惕或以上皆有。德国法官在交流中明确说"机器不能审判人类"[53]——这种来自不同司法哲学传统的声音，才是国际交流中真正值得倾听的反馈，而不是笼统地概括为"16国来取经"。</p>
+<p><strong>"防幻觉的工程化方案"</strong>。RAG+多模型协作+法官终审的三层防御在工程思路上是正确的[54]。工程化的方法确实将幻觉从"致命缺陷"降级为"可管理的技术风险"。但三层防御降低了幻觉的概率，不能消除幻觉。细微幻觉——如概括裁判原则时的微妙不准确、援引条文时的轻微偏差——仍可能穿透三层防御，且比明显的错误更难以被法官在审阅中发现。</p>
+<p><strong>"权责清晰：AI辅助+法官终审"</strong>。制度层面的权责设计是清晰的：AI运行结果仅供参考，法官是最终裁判者[55]。但制度设计上的清晰和执行层面的实际运作是两回事。衣俊霖（2025）提出"人机合谋"的概念，指出在预测审判的逻辑下——法官先有倾向、AI再为倾向生成理由——法官可能实质上形成了对AI建议的盲从[56]。当法官形成了路径依赖后，"程序上有权拒绝AI建议"和"实际上能否拒绝AI建议"是两回事。</p>
+<p><strong>"促进年轻法官成长"</strong>。直觉上合理——系统像一个"数字导师"，帮助新法官快速上手。但需要警惕反向效果。在四步模型中，AI接管了最需要年轻法官练习的环节——写"本院认为"。写判决理由本身就是裁判者自我审查、自我说服、自我约束的过程。这个过程的训练价值不能被AI的"效率辅助"所替代。</p>
+<h3 id="53负向观点的评价">5.3 负向观点的评价</h3>
+<h4 id="值得认真对待的批评">值得认真对待的批评</h4>
+<p><strong>"偏见回声"（Echoes of Bias）——Liu & Li（2024）</strong></p>
+<p>这是目前关于深圳系统最具学术价值的批评，也是唯一经过国际同行评审的学术论证[57]。</p>
+<p>论证路径是：法官先独立完成事实认定和初步判断（Step 1-2，AI不参与），然后AI基于法官的已有判断生成支持性理由（Step 3），在这一步中AI选择性组织材料，为法官的初步判断提供"完美包装"，客观上减少了法官在写作过程中自我纠错的机会。Liu & Li的实验证据发现，AI辅助显著降低了法官在模拟判决中参考反方观点的概率[58]。</p>
+<p>这个批评直指四步模型的根本设计问题——不是AI做得不好，而是AI被编排的方式在结构上偏向法官的初步判断。它不提供反方论证，不提示替代方案，不质疑法官的前提。"模型能力越强，越能把有问题的初步判断写得像没问题"[59]。</p>
+<p>Liu & Li的实验证据是"提示性"（suggestive）而非"决定性"（conclusive）的——他们的实验使用的是ChatGPT-3.5而非深圳法院的专用模型，实验场景是模拟的电车难题变体而非真实庭审[60]。从"提示性证据"到"确定性结论"之间，还需要更多独立实证。</p>
+<p><strong>"算法黑箱与可解释性困境"——衣俊霖（2025）、王思琪（2025）</strong></p>
+<p>衣俊霖在《中国法学》上的论文将人机协同审判的信任问题拆解为人格信任、制度信任和算法信任三个维度，论证了大语言模型"实际上并不真正理解法律文本的含义，只是基于符号间数学关联进行最大化组合"这一基础性局限[61]。王思琪（2025）则从技术哲学的角度论证了人工智能的可解释性难题以及难以应对时空变迁的缺陷[62]。</p>
+<p>这两篇论文的水准在现有公开文献中属于第一梯队。但需要区分的是：可解释性困境是<strong>所有</strong>大语言模型应用在<strong>所有</strong>高利害领域共同面临的问题，不是深圳系统特有的问题。深圳系统在"高利害领域"应用这一特性放大了问题的后果，但没有改变问题的性质。</p>
+<p><strong>"司法责任认定模糊"——陈子君（2026）</strong></p>
+<p>陈子君的论证扎实且系统。她指出三个递进的问题：第一，算法黑箱使法官主观过错的认定过程变得更难追溯；第二，技术人员和监管者通过参数设置和规则定义，对裁判产生了"隐性嵌入"，实质上参与了规则塑造；第三，在效率与公正的价值张力中，责任推诿的风险会因AI的参与而扩大。她提出的解决方案——以技术性正当程序构建沟通协商空间，基于比例原则对不同场景进行风险分级——在制度设计思路上是合理的[63]。</p>
+<p><strong>"数据安全四类风险"——李梦琳（2026）</strong></p>
+<p>李梦琳将AI辅助审判的数据风险归纳为四类：数据泄露（集中存储的司法数据库成为攻击目标）、数据污染（错误或虚假数据混入训练语料）、算法歧视（训练数据中的历史偏见被模型放大）和对抗攻击（恶意构造的输入数据干扰模型判断）[64]。四类风险的识别是准确的。但这四类风险对<strong>任何</strong>AI系统都适用——医疗AI、金融AI、自动驾驶AI都面临同类风险。针对深圳系统的<strong>具体</strong>分析——这种特定的架构和部署方式在多大程度上放大或缓解了这些风险——还不够充分。</p>
+<h4 id="价值有限的批评">价值有限的批评</h4>
+<p><strong>"AI不能审判人类"</strong></p>
+<p>这是部分自媒体评论中反复出现的论点，也是传播效果最好的口号之一。但它是一个稻草人论证。深圳系统从设计之初就明确定位为"辅助而非替代"——2022年最高法意见、邓修明在SCO会议上的表态、深圳中院的官方表述，全部使用"辅助"一词[65]。批评一个系统做了它明确说不会做的事，逻辑上不成立。</p>
+<p>德国法官说"机器不能审判人类"[66]，这句话本身是对的。但需要区分两个不同的命题：命题A——"机器不能审判人类"（价值判断），命题B——"深圳系统正在让机器审判人类"（事实判断）。德国法官说的是A，自媒体把A包装成了B。德国法官的立场反映的是司法哲学传统的差异——大陆法系的法官对审判权的理解与普通法系不同，与中国法院面临的实际压力也不同。这种差异值得尊重和倾听，但不构成对深圳系统的具体技术评价。</p>
+<p><strong>"语义偷渡"——郑璇（2026）</strong></p>
+<p>郑璇提出了一个原创性很强的概念："语义偷渡"——"辅助"这个词从填表、日程提示一路演变到生成"本院认为"，词没有变，实质内容已经完全变了[67]。这个概念的洞察力是真实的。在法律科技领域，概念本身的精确性就是分析价值。</p>
+<p>但"偷渡"这个隐喻暗示这是一个蓄意的、隐蔽的过程——有人在偷偷把"替代"塞进"辅助"的筐里。而实际上，深圳系统的功能演进在官方报道中是公开透明的：上线当日最高人民法院公众号就发布了功能全景图[68]。功能的扩张不是"偷渡"，而是公开的递进。</p>
+<p>更准确的表述应该是"语义承载的持续扩张"——"辅助"一词所承载的功能边界在不断拓宽，这个拓宽的过程需要被讨论和审视，而不是被揭露和谴责。这是一个需要讨论的治理问题，不是一个需要揭发的阴谋。</p>
+<p><strong>"法官培养通道断裂"——郑璇（2026）</strong></p>
+<p>这个担忧直觉上合理，但缺乏实证支撑。有三个问题需要被追问：第一，在没有AI系统之前，法官助理的实际培养状况如何？法官助理数量是否充足，每个人是否有足够的独立写判决的机会？第二，AI系统接管的工作量和培养通道损失的工作量是否完全重合？如果AI接管的主要是"形式化的文书整理"而非法官助理本应学习的"实质法律判断"，则培养通道的损失可能被高估。第三，AI辅助是否可能<strong>加速</strong>培养——通过让年轻法官更快地看到"好的裁判说理应该是什么样"，缩短从模仿到独立的周期？这些问题的答案目前都是未知的。</p>
+<p><strong>"认知麻醉剂"——小明哥哥/《算法的神龛》（2026）</strong></p>
+<p>这篇文章是截至2026年5月所有公开批评中文学表达最有力的一篇，也是逻辑结构最值得商榷的一篇[69]。</p>
+<p>它的论证链条存在五个问题：</p>
+<p>第一，它把"最差用法"当成了"技术本质"。文章隐含着"大语言模型天然就是顺着人的观点往下写的马屁精"的判断。但实际上，大语言模型既可以被编排成顺从型助手，也可以被编排成审稿型或对抗型助手。后两种用法在技术上完全可行——问题在于编排的选择，不在于模型的宿命。</p>
+<p>第二，它虚构了"没有AI的人更理性"的基准。文章批评AI偏误，但从未处理一个前提问题：没有AI的时候，人类法官就没有确认偏误吗？经验偏见、地域偏见、职业惯性、类案路径依赖、情绪疲劳——"手搓"判决也不是纯净理性的产物。讨论AI风险，应当比较的是"人类单独判断的偏误率"和"人类在合理AI辅助下判断的偏误率"，而不是"AI的现实缺陷"和"人类的理想状态"。</p>
+<p>第三，它低估了大语言模型的"反向纠偏能力"。大语言模型不仅可以顺着观点写，也可以被强制要求从相反的视角审视同一问题。AI并不天然只能制造"闭环"，它也可以被设计成"破环工具"。人的问题在于常常不愿意主动找反对自己的理由——AI的价值恰恰在于它<strong>可以</strong>被强制要求寻找反对理由。</p>
+<p>第四，它把"AI生成裁判理由"等同于"AI审判人类"。AI在司法中的应用至少有几个层次：事务辅助、信息辅助、分析辅助、论证辅助、判断替代。前四层都不等于"机器审判人类"。把问题推到"算法成为神明""代码构建牢笼"，有传播效果，但在专业分析层面是过度概括。</p>
+<p>第五——这是最重要的一点——这篇文章<strong>有一个不能忽视的价值</strong>。它准确抓住了"法官先有倾向，AI再为倾向生成理由"这个具体风险的危害。它提醒我们：如果AI只是根据法官初步判断生成支持性理由，确实可能把原本还需要反复推敲的判断包装得更完整、更自洽、更像"正确答案"。这个担忧与Liu & Li的"偏见回声"在逻辑上是同源的。</p>
+<p>文章的问题不在于"担忧"本身错了，而在于从"担忧"直接跳到了"禁止"——中间跳过了"如何通过工程编排、制度设计和能力提升来治理这个风险"的全部讨论。它是一篇把AI风险讲成了AI宿命的文章。它真正的价值不在于结论——结论站不住——而在于它提出的那个具体担忧值得所有做司法AI的人认真对待。</p>
+<p><strong>"商业公司参与的技术资本风险"——niclawyer/松悟轩（2026）</strong></p>
+<p>商业公司参与公共司法系统的建设，确实存在利益冲突风险——这是一个重要的制度警惕[70]。但该批评没有具体分析参与方的身份和参与模式：面壁智能与深圳中院是委托开发关系，人民法院出版社是最高法院的直属事业单位，迪博技术是系统集成商。三者均非"商业资本控制司法"的模式。将"商业公司参与"直接等同于"技术资本控制司法"，是概念上的过度跳跃。</p>
+<hr>
+<h2 id="六结语我所理解的AI辅助审判">六、结语：我所理解的AI辅助审判</h2>
+<p>深圳法院的AI辅助审判系统，在工程务实性和制度克制性上值得肯定。它的技术路线是正确的——不追求全能AI法官，拆解为85个专项Agent，RAG+多模型防幻觉，法院专网本地部署。它的定位表述也是正确的——"辅助而非替代"，从最高法到深圳中院层层背书。</p>
+<p>但当前最根本的张力不在技术层面，在透明度层面。判决书不标注AI参与内容、AI辅助判决比例不公开——这种信息不对称，长期来看会侵蚀司法公信力本身。一个部分由AI生成的裁判理由，如果当事人不知道、律师不知道、上级法院不知道、研究者不知道、公众不知道，那么"辅助"是否已经在实质上变成了"替代"，就成了一个不可回答的问题。不可回答的问题最伤信任。</p>
+<p>我想用四组关系来收束全文的讨论。</p>
+<p><strong>第一组：技术发展与价值边界。</strong> 技术不会因为道德担忧而停止发展——从电脑量刑到ChatGPT，这二十多年已经反复证明这一点。但观点讨论并非没有意义。它不能阻止技术发展，却可以塑造技术进入法院的方式：以什么身份进入、在哪些环节进入、由谁控制、如何留痕、如何纠错、如何追责。讨论这些具体的工程和制度问题，比讨论"AI应不应该进法院"更有建设性。</p>
+<p><strong>第二组：人类偏误与算法偏误。</strong> 不能假设人类天然中立、机器天然偏误。更真实的情况是：人有人的偏误——确认偏误、经验偏见、路径依赖、情绪疲劳；机器有机器的偏误——训练数据偏差、幻觉、迎合用户倾向。人机结合可能放大偏误，也可能纠正偏误。关键变量不是"有没有AI"，而是"人机协作机制怎么设计"。设计得好，AI可以是反偏误工具；设计得不好，AI可以是偏误放大器。目前的深圳系统在这道选择题上还没有给出明确答案。</p>
+<p><strong>第三组：效率提升与责任承担。</strong> AI可以帮法官节省事务性时间——这是好事。但不能让法官逃避判断责任——这是底线。好的AI应用，让法官有更多精力处理真正困难的法律问题；坏的AI应用，让法官从思考者变成审稿人。判断的标准很简单：AI是在减轻法官的"劳动"，还是在减轻法官的"思考"？前者值得追求，后者值得警惕。</p>
+<p><strong>第四组：裁判生成与裁判审查。</strong> AI最危险的用法，是直接生成一个看似完美、实则悬浮的裁判结论。AI最有价值的用法，是审查一个裁判结论是否真的站得住脚。所以，司法AI的优先发展方向，不应该是"帮我写一份支持这个结论的判决书"——而应该是"请你尽最大能力证明这个结论可能是错的"。从"生成"转向"校验"，从"顺从助手"转向"反方助手"——这是一个决定性的工程选择，也是我对这个领域最核心的判断。</p>
+<p>深圳系统的故事还没有讲完。它是一个仍在演化中的过程，不是一个已经完成的成品。用工程化的思路持续迭代、建立度量指标和反馈闭环——这比在"做"与"不做"之间二选一，更需要耐心，也更难。但这可能是唯一正确的路。</p>
+<hr>
+<h2 id="注释">注释</h2>
+<p>[1] John Zhuang Liu & Xueyao Li, "How do judges use large language models? Evidence from Shenzhen", <em>Journal of Legal Analysis</em>, Vol. 16, No. 1, 2024, pp. 235-262, published online 2 January 2025. 以下简称"Liu & Li (2024)"。</p>
+<p>[2] 包括：《深圳中院今日上线人工智能辅助审判系统》，最高人民法院公众号，2024年6月28日；邓修明在SCO第20届首席大法官会议上的发言，载于Supreme People's Court of China English edition, 2025年4月24日；张军在2026年全国两会上的发言（转引自深圳发布，2026年3月10日）；邝肖华在广东省人工智能应用对接大会上的发言，2026年4月27日。</p>
+<p>[3] 包括：《深圳"AI+审判"引16个国家来"取经"》，深圳特区报/深圳发布，2026年4月1日；《全国首个！深圳法院"龙藤"人工智能辅助执行系统正式上线》，羊城晚报，2025年6月9日。</p>
+<p>[4] 包括：周杰LEGAL，《深圳法院到底是怎么用AI辅助审判的？》，微信公众号，2026年5月5日；吕盈辉/法知能 LawAI，《深圳AI辅助审判系统将在全国推广》，微信公众号，2026年4月28日；郑璇 Legal Team，《思考观察 深圳AI审判来了，法院还在不在？》，微信公众号，2026年5月12日；小明哥哥，《算法的神龛》，微信公众号，2026年5月19日；niclawyer/松悟轩，《当法官有了"数字助理"——深圳AI审判实践启示录》，微信公众号，2026年5月7日；崔春霞，《诉责一姐崔春霞：关于深圳法院AI试点的三点扎心感悟》，微信公众号，2026年5月7日。</p>
+<p>[5] 衣俊霖，《论人机协同审判的信任构建》，《中国法学》2025年第2期。衣俊霖将中国"人机对抗、人机协同"的讨论至少追溯到2004年的淄川法院电脑量刑。</p>
+<p>[6] 同上。</p>
+<p>[7] 游劝荣，《人工智能赋能新时代审判工作高质量发展的机遇、挑战及应对》。游劝荣为湖北省高级人民法院院长，本文分析了人工智能司法应用的四个发展阶段。</p>
+<p>[8] 《最高人民法院关于规范和加强人工智能司法应用的意见》（法发〔2022〕33号），2022年12月发布。</p>
+<p>[9] 转引自《最高院院长 深圳"智审系统"已在全国试用！》，深圳发布/迪博技术公众号，2026年3月13日。</p>
+<p>[10] Liu & Li (2024), supra note 1; 郑璇(2026), supra note 4.</p>
+<p>[11] 《深圳中院今日上线人工智能辅助审判系统》，最高人民法院公众号，2024年6月28日。</p>
+<p>[12] 同上。</p>
+<p>[13] Liu & Li (2024), supra note 1.</p>
+<p>[14] 《全国首个！深圳法院"龙藤"人工智能辅助执行系统正式上线》，羊城晚报，2025年6月9日。</p>
+<p>[15] 《深圳"AI+审判"引16个国家来"取经"》，深圳特区报/深圳发布，2026年4月1日。数据来源为深圳中院工作报告。</p>
+<p>[16] 转引自《最高院院长 深圳"智审系统"已在全国试用！》，supra note 9。</p>
+<p>[17] 邝肖华在广东省人工智能应用对接大会上的发言，2026年4月27日。转引自吕盈辉/法知能 LawAI，supra note 4。</p>
+<p>[18] 同上。</p>
+<p>[19] Liu & Li (2024), supra note 1.</p>
+<p>[20] 庞闻淙、孙凯，《面向未来：数字法院智能化应用路径的再优化——以上海、苏州、深圳的建设模式为样本》，2025年。以下简称"庞闻淙 & 孙凯 (2025)"。</p>
+<p>[21] 同上。</p>
+<p>[22] 最高人民法院官网，"法信法律基座大模型"研发成果发布报道，2024年11月15日。转引自《供应商与技术方案》，input/供应商与技术方案.md。</p>
+<p>[23] 同上。</p>
+<p>[24] 同上。</p>
+<p>[25] Liu & Li (2024), supra note 1.</p>
+<p>[26] 同上。原文："are of a similar scale to GPT-3.5 (GPT-3.5 comprises 175 billion parameters)."</p>
+<p>[27] 转引自《最高院院长 深圳"智审系统"已在全国试用！》，supra note 9。迪博技术公众号转载了张军院长文章，并在文末标注了自身作为"智审系统"开发方的身份。</p>
+<p>[28] Liu & Li (2024), supra note 1; 《深圳中院今日上线人工智能辅助审判系统》，supra note 11.</p>
+<p>[29] 《深圳中院今日上线人工智能辅助审判系统》，supra note 11.</p>
+<p>[30] 小明哥哥(2026)，supra note 4。作者转述2024年11月在科隆、法兰克福与德国法官交流时听到的表述。需注意此为经转述的个人交流，非正式立场声明。</p>
+<p>[31] 邝肖华(2026.04.27)，supra note 17; 《深圳中院今日上线人工智能辅助审判系统》，supra note 11.</p>
+<p>[32] 赵雪芬，《人工智能在司法裁判中的应用反思》，《湖北经济学院学报》2026年第1期，第47-51页。</p>
+<p>[33] 郑璇(2026)，supra note 4。该数据为行业分析者转述，非官方精确数据。</p>
+<p>[34] Liu & Li (2024), supra note 1.</p>
+<p>[35] 《深圳中院今日上线人工智能辅助审判系统》，supra note 11；Liu & Li (2024), supra note 1.</p>
+<p>[36] 同上。</p>
+<p>[37] 同上。23个类案推送案例见《深圳"AI+审判"引16个国家来"取经"》，深圳特区报，2026年4月1日（转引深圳中院法官表述）。</p>
+<p>[38] 同上。</p>
+<p>[39] Liu & Li (2024), supra note 1.</p>
+<p>[40] 《深圳中院今日上线人工智能辅助审判系统》，supra note 11.</p>
+<p>[41] Liu & Li (2024), supra note 1.</p>
+<p>[42] 王思琪，《人工智能技术介入法院运作：逻辑、边界与规制》，2025年，文章编号1009-5101(2025)05-0064-07。转引部分为作者对大语言模型技术特征的哲学反思。</p>
+<p>[43] Liu & Li (2024), supra note 1. 原文论证："the more capable the model, the more convincingly it can dress up a flawed preliminary judgment as a sound one."</p>
+<p>[44] 庞闻淙 & 孙凯 (2025), supra note 20.</p>
+<p>[45] 李梦琳，《智能辅助审判中的数据安全与隐私保护亟须关注》，2026年。作者单位为中共河南省委党校。李梦琳将风险归纳为数据泄露、数据污染、算法歧视和对抗攻击四类。</p>
+<p>[46] 郑璇(2026)，supra note 4.</p>
+<p>[47] 陈子君，《人机协同审判模式中司法责任的智能化因应》，《交大法学》2026年第2期，DOI:10.19375/j.cnki.31-2075/d.2026.02.004。</p>
+<p>[48] 同上。</p>
+<p>[49] 郑璇(2026)，supra note 4.</p>
+<p>[50] Automation bias 指人类倾向于过度信任自动化系统的输出，降低独立判断的警惕性。衣俊霖(2025)在"人机合谋"论述中涉及了这一心理学概念。</p>
+<p>[51] Supra note 15.</p>
+<p>[52] 同上。</p>
+<p>[53] 小明哥哥(2026)，supra note 4.</p>
+<p>[54] 吕盈辉/法知能 LawAI，supra note 4.</p>
+<p>[55] 邓修明在SCO第20届首席大法官会议上的发言，supra note 2.</p>
+<p>[56] 衣俊霖(2025)，supra note 5.</p>
+<p>[57] Liu & Li (2024), supra note 1.</p>
+<p>[58] 同上。</p>
+<p>[59] 同上。</p>
+<p>[60] 同上。</p>
+<p>[61] 衣俊霖(2025)，supra note 5.</p>
+<p>[62] 王思琪(2025)，supra note 42.</p>
+<p>[63] 陈子君(2026)，supra note 47.</p>
+<p>[64] 李梦琳(2026)，supra note 45.</p>
+<p>[65] 法发〔2022〕33号，supra note 8; 邓修明SCO发言，supra note 55; 《深圳中院今日上线人工智能辅助审判系统》，supra note 11.</p>
+<p>[66] 小明哥哥(2026)，supra note 4.</p>
+<p>[67] 郑璇(2026)，supra note 4.</p>
+<p>[68] 《深圳中院今日上线人工智能辅助审判系统》，supra note 11.</p>
+<p>[69] 小明哥哥(2026)，supra note 4.</p>
+<p>[70] niclawyer/松悟轩(2026)，supra note 4.</p>
+<hr>
+<blockquote>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。</p>
+</blockquote>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>为什么 AI 不喜欢 Excel？ — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-06-04">2026年6月4日</time>
+            <span class="dotsep"></span>
+            <span>6 分钟阅读</span>
+          </div>
+          <h1 class="article-title">为什么 AI 不喜欢 Excel？</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>这是"AI 不喜欢系列"的第三篇。</p>
+<p>第一篇讲了 .docx——本质是 ZIP + XML 文档工程包，人类用它编辑和协作，AI 被样式碎片和修订痕迹折磨。</p>
+<p>第二篇讲了 PDF——本质是固定版面的电子纸，人类用它归档和签章，AI 连正文在哪里都不知道。</p>
+<p>这一篇讲 Excel。和前两篇有个重要区别：Excel 有两种格式，得先分清楚。</p>
+<h2 id="一xls和xlsx不是同一代人">一、.xls 和 .xlsx：不是同一代人</h2>
+<p>很多人以为 .xls 和 .xlsx 只是版本不同。实际上它们是两种完全不同的文件格式。</p>
+<p><strong>.xls 是老式二进制格式。</strong> Excel 97-2003 时代的产物，基于 Microsoft 的 OLE 复合文档结构。你可以把它理解成一个 Excel 专用的二进制容器——不是文本，不是 XML，不是 ZIP。把 .xls 改成 .zip 解压不了。要读取它，需要专门的解析器：Excel 本身、LibreOffice、Python 的 xlrd、Apache POI，或者商业库如 Aspose。</p>
+<p><strong>.xlsx 是新式 ZIP + XML 格式。</strong> Excel 2007 之后的默认格式，和 .docx 是同一套设计哲学。把 <code>表格.xlsx</code> 改成 <code>表格.zip</code>，解压后你能看到：</p>
+<blockquote>
+<p>[Content_Types].xml</p>
+<p>\_rels/</p>
+<p>docProps/</p>
+<p>xl/</p>
+</blockquote>
+<p>核心在 <code>xl/</code> 目录里：</p>
+<blockquote>
+<p>xl/workbook.xml — 工作簿结构</p>
+<p>xl/worksheets/sheet1.xml — 第一个工作表</p>
+<p>xl/sharedStrings.xml — 重复文本的字符串池</p>
+<p>xl/styles.xml — 字体、边框、颜色、数字格式</p>
+<p>xl/theme/theme1.xml — 主题</p>
+<p>xl/\_rels/workbook.xml.rels — 关系文件</p>
+</blockquote>
+<p>和 .docx 一模一样的配方：ZIP 壳 + XML 肉 + 关系文件做胶水。</p>
+<p>所以先记住一个简单结论：<strong>.xls ≈ 老式二进制黑盒，.xlsx ≈ ZIP + XML 表格包。</strong> AI 对 .xlsx 的处理能力比 .xls 好很多，但两种格式都有各自的麻烦。</p>
+<h2 id="二人类为什么离不开Excel">二、人类为什么离不开 Excel？</h2>
+<p>Excel 不是单纯的表格工具。它是一个轻量级业务系统。</p>
+<p>它能同时承载数据录入、计算公式、筛选排序、统计汇总、图表展示、格式标注、批量清单、财务测算、项目管理和台账维护——一个文件解决从原始数据到分析结论的全链条。</p>
+<p>法律和商业场景里，Excel 几乎无处不在：工程款结算表、付款台账、债权债务明细、房源清单、股权结构表、投资测算表、诉讼案件台账、证据目录、合同履行进度表、违约金计算表、报销费用清单。</p>
+<p>人类喜欢 Excel 的原因就一句话：它既能看，又能算，还能改。</p>
+<p>但这恰好也是 AI 头疼的根源。</p>
+<h2 id="三AI为什么头疼七个核心问题">三、AI 为什么头疼？七个核心问题</h2>
+<h3 id="1单元格是二维坐标不是自然语言">1. 单元格是二维坐标，不是自然语言</h3>
+<p>AI 最喜欢的输入是连续文本：</p>
+<blockquote>
+<p>甲方应于合同签订后 15 日内支付第一期款项。</p>
+</blockquote>
+<p>Excel 给你的却是二维网格：</p>
+<blockquote>
+<p>A1: 付款节点</p>
+<p>B1: 比例</p>
+<p>C1: 条件</p>
+<p>A2: 第一期</p>
+<p>B2: 30%</p>
+<p>C2: 合同签订后 15 日内</p>
+</blockquote>
+<p>AI 得自己判断：第一行是不是表头，每一列是什么字段，每一行是不是一条独立记录。人眼扫一下就懂的事，机器要多做好几步推理。</p>
+<h3 id="2合并单元格人类的美观AI的噩梦">2. 合并单元格：人类的美观，AI 的噩梦</h3>
+<p>很多 Excel 这样设计：</p>
+<blockquote>
+<p>A1:C1 合并 → "某项目付款计划表"</p>
+<p>A2:A5 合并 → "一期工程"</p>
+<p>B2: 第一笔</p>
+<p>B3: 第二笔</p>
+<p>B4: 第三笔</p>
+</blockquote>
+<p>人类自然知道 B2、B3、B4 都归属于"一期工程"。但程序读取时，只有 A2 单元格有值，A3、A4、A5 是空的。如果不做合并单元格填充，AI 看到的是：</p>
+<blockquote>
+<p>一期工程 | 第一笔</p>
+<p>空 | 第二笔</p>
+<p>空 | 第三笔</p>
+</blockquote>
+<p>上下文断了。</p>
+<p>法律场景里这尤其危险。比如"违约责任"四个字是跨行合并的标题，下面列着"第 1 项：逾期付款""第 2 项：逾期交付"。如果"违约责任"丢了，AI 不知道这两行属于哪个类别。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 260"&gt;
+  
+  &lt;!-- 左侧：人类看到的 --&gt;
+  &lt;rect x="20" y="15" width="270" height="230" rx="4" fill="#f5faf5" stroke="#4a9e4a" stroke-width="1.5"/&gt;
+  &lt;text x="155" y="42" text-anchor="middle" font-size="14" font-weight="700" fill="#4a9e4a"&gt;人类看到的&lt;/text&gt;
+  
+  &lt;!-- 模拟表格 --&gt;
+  &lt;rect x="40" y="55" width="230" height="26" rx="2" fill="#e8f5e8" stroke="#4a9e4a" stroke-width="0.5"/&gt;
+  &lt;text x="155" y="73" text-anchor="middle" font-size="11" fill="#333" font-weight="600"&gt;违约责任（合并单元格标题）&lt;/text&gt;
+  
+  &lt;rect x="40" y="81" width="115" height="22" fill="#fff" stroke="#ccc" stroke-width="0.5"/&gt;
+  &lt;rect x="155" y="81" width="115" height="22" fill="#fff" stroke="#ccc" stroke-width="0.5"/&gt;
+  &lt;text x="97" y="96" text-anchor="middle" font-size="10" fill="#333"&gt;第1项：逾期付款&lt;/text&gt;
+  &lt;text x="212" y="96" text-anchor="middle" font-size="10" fill="#555"&gt;0.05%/日&lt;/text&gt;
+  
+  &lt;rect x="40" y="103" width="115" height="22" fill="#fff" stroke="#ccc" stroke-width="0.5"/&gt;
+  &lt;rect x="155" y="103" width="115" height="22" fill="#fff" stroke="#ccc" stroke-width="0.5"/&gt;
+  &lt;text x="97" y="118" text-anchor="middle" font-size="10" fill="#333"&gt;第2项：逾期交付&lt;/text&gt;
+  &lt;text x="212" y="118" text-anchor="middle" font-size="10" fill="#555"&gt;0.05%/日&lt;/text&gt;
+
+  &lt;text x="155" y="150" text-anchor="middle" font-size="10" fill="#4a9e4a"&gt;"违约责任"覆盖下面两行 ✓&lt;/text&gt;
+
+  &lt;!-- 右侧：AI 读到的 --&gt;
+  &lt;rect x="310" y="15" width="270" height="230" rx="4" fill="#fff5f5" stroke="#c41e3a" stroke-width="1.5"/&gt;
+  &lt;text x="445" y="42" text-anchor="middle" font-size="14" font-weight="700" fill="#c41e3a"&gt;AI 读到的（未填充合并单元格）&lt;/text&gt;
+
+  &lt;rect x="330" y="55" width="230" height="26" rx="2" fill="#ffe8e8" stroke="#c41e3a" stroke-width="0.5"/&gt;
+  &lt;text x="445" y="73" text-anchor="middle" font-size="11" fill="#c41e3a" font-weight="600"&gt;违约责任&lt;/text&gt;
+
+  &lt;rect x="330" y="81" width="115" height="22" fill="#fff" stroke="#ccc" stroke-width="0.5"/&gt;
+  &lt;rect x="445" y="81" width="115" height="22" fill="#fff" stroke="#ccc" stroke-width="0.5"/&gt;
+  &lt;text x="387" y="96" text-anchor="middle" font-size="10" fill="#c41e3a"&gt;第1项：逾期付款&lt;/text&gt;
+  &lt;text x="502" y="96" text-anchor="middle" font-size="10" fill="#555"&gt;0.05%/日&lt;/text&gt;
+
+  &lt;rect x="330" y="103" width="115" height="22" fill="#fff" stroke="#ccc" stroke-width="0.5"/&gt;
+  &lt;rect x="445" y="103" width="115" height="22" fill="#fff" stroke="#ccc" stroke-width="0.5"/&gt;
+  &lt;text x="387" y="118" text-anchor="middle" font-size="10" fill="#555"&gt;第2项：逾期交付&lt;/text&gt;
+  &lt;text x="502" y="118" text-anchor="middle" font-size="10" fill="#555"&gt;0.05%/日&lt;/text&gt;
+
+  &lt;text x="445" y="150" text-anchor="middle" font-size="10" fill="#c41e3a"&gt;第2项丢了归属 ✗&lt;/text&gt;
+
+  &lt;!-- 底部说明 --&gt;
+  &lt;rect x="40" y="180" width="520" height="55" rx="3" fill="#f8f8f8" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="300" y="200" text-anchor="middle" font-size="12" fill="#555"&gt;合并单元格只有左上角有值，其余位置为空&lt;/text&gt;
+  &lt;text x="300" y="222" text-anchor="middle" font-size="12" fill="#555"&gt;不做"向下填充"，AI 丢失层级归属关系&lt;/text&gt;
+
+&lt;/svg&gt;</code></pre>
+<h3 id="3一个sheet里塞了好几个表">3. 一个 sheet 里塞了好几个表</h3>
+<p>标准数据表很简单：第一行字段名，后面每行一条记录。</p>
+<p>但真实世界的 Excel 很少这么干净。更常见的布局是：上面有标题，中间有说明文字，左边是主表，右边是备注列，下面是汇总行，旁边还有临时计算区。</p>
+<p>比如一个工程款结算的 sheet：</p>
+<blockquote>
+<p>A1: "XX 项目结算汇总表"</p>
+<p>A3:D10: 工程款明细</p>
+<p>F3:H8: 税费测算</p>
+<p>A13:D16: 付款计划</p>
+<p>A20:D25: 争议金额说明</p>
+</blockquote>
+<p>人类靠视觉位置自然区分这些区域。AI 得先做表格区域识别——哪里是表，哪里是标题，哪里是脚注，哪里是备注，哪里是计算区。这比读 CSV 多了好几层推理。</p>
+<h3 id="4公式结果和公式本身两套信息">4. 公式结果和公式本身：两套信息</h3>
+<p>Excel 的核心价值是公式。一个单元格显示 <code>1,000,000</code>，背后可能是 <code>=B2*C2-D2</code>。</p>
+<p>AI 分析时要做一个选择：看计算结果，还是审查公式逻辑，还是两者都要？</p>
+<p>违约金计算表里，<code>=本金 <em> 日利率 </em> 逾期天数</code>——只读结果不知道逻辑对不对，只读公式不知道当前数值是多少。</p>
+<p>再加上公式引用错误、隐藏行列、手工覆盖公式、外部链接、循环引用、跨 sheet 引用、公式缓存未更新——Excel 对 AI 来说不是简单的"读表"，而是要判断每个数字到底是输入值、计算值、汇总值，还是人工拍的结果。</p>
+<h3 id="5显示值和真实值不一样">5. 显示值和真实值不一样</h3>
+<p>一个单元格显示 <code>2024 年 5 月 1 日</code>，内部值可能是 <code>45413</code>——因为 Excel 的日期本质是序列号。</p>
+<p>显示 <code>30%</code>，内部值是 <code>0.3</code>。显示 <code>1,000,000.00</code>，内部值是 <code>1000000</code>。</p>
+<p>AI 如果只拿到原始值，觉得莫名其妙；只拿到显示值，又丢了精确计算能力。</p>
+<p>法律场景里特别注意：<code>0.05%/日</code> 不能误读成 <code>0.05/日</code>——差 100 倍。</p>
+<h3 id="6隐藏的内容你以为没有AI可能读到了">6. 隐藏的内容：你以为没有，AI 可能读到了</h3>
+<p>Excel 可以隐藏行、隐藏列、隐藏 sheet、筛选后的数据、批注、公式、受保护区域。</p>
+<p>人打开文件时可能只看到筛选后的 20 行。但程序读取时可能读到全部 2000 行。反过来——重要信息藏在隐藏 sheet 里，AI 默认没读到——问题更大。</p>
+<p>法律尽调、财务审查、证据分析中，这种"看到的不全，读到的也不全"是个实实在在的坑。</p>
+<h3 id="7颜色标注不是稳定语义">7. 颜色标注不是稳定语义</h3>
+<p>真实 Excel 重度依赖视觉标注：红色是有问题，黄色是待确认，绿色是已完成，删除线是不采用，加粗是小计，灰色是不计入。</p>
+<p>但这些规则不在数据里。人类凭经验知道"黄色单元格要重点看"，AI 只读文本时完全感受不到。即使读到了样式信息，也不知道这个颜色在这个文件里代表什么。没有图例，颜色就是噪音。</p>
+<h2 id="四Excelvs它的同类一张表">四、Excel vs 它的同类：一张表</h2>
+<p>| 格式 | 本质 | 人类喜欢它的原因 | AI 不喜欢它的原因 |</p>
+<p>|------|------|-----------------|------------------|</p>
+<p>| .xls | 老式二进制表格 | 兼容旧系统，老业务表多 | 二进制黑盒，解析复杂 |</p>
+<p>| .xlsx | ZIP + XML 表格包 | 能算、能排版、能做台账 | 合并单元格、公式、样式、隐藏数据 |</p>
+<p>| .csv | 纯文本二维表 | 简单、可交换、可 diff | 样式和公式丢失（但 AI 最喜欢） |</p>
+<h2 id="五为什么AI最喜欢CSV">五、为什么 AI 最喜欢 CSV？</h2>
+<p>CSV 长这样：</p>
+<blockquote>
+<p>付款节点,付款比例,付款条件</p>
+<p>第一期,30%,合同签订后 15 日内</p>
+<p>第二期,50%,主体验收后</p>
+<p>第三期,20%,竣工验收后</p>
+</blockquote>
+<p>它的好处很朴素：一行一条记录，一列一个字段，没有合并单元格，没有复杂样式，没有隐藏对象，没有公式依赖。容易 diff，容易入库，容易分析。对 AI 来说它接近数据库表——这恰恰是 AI 最舒服的输入形态。</p>
+<p>代价当然也有：没有样式，没有公式，没有多个工作表，不适合复杂排版，不适合人类做综合台账。</p>
+<p>所以实际工作里的分工应该是：</p>
+<ul>
+<li><strong>Excel</strong>：给人维护和协作</li>
+<li><strong>CSV</strong>：给机器读取和分析</li>
+<li><strong>JSON</strong>：给系统表达复杂嵌套结构</li>
+<li><strong>Markdown</strong>：给 AI 处理文字说明</li>
+</ul>
+<h2 id="六法律场景下的实操建议">六、法律场景下的实操建议</h2>
+<p><strong>证据目录、案件台账、合同清单</strong>——尽量用规范表格。第一行就是字段名，一行只放一条记录，不要合并单元格，不要空行隔开，不要一个 sheet 放多个表，不要只用颜色表达含义。</p>
+<p>比如：</p>
+<blockquote>
+<p>证据编号 | 证据名称 | 形成时间 | 证明目的 | 页码</p>
+<p>证据 1 | 施工合同 | 2021-01-01 | 证明合同关系 | 1-20</p>
+<p>证据 2 | 付款凭证 | 2021-03-01 | 证明付款事实 | 21-25</p>
+</blockquote>
+<p>这种表 AI 读起来毫无压力。</p>
+<p><strong>工程款、违约金、利息计算表</strong>——保留公式和计算结果两套信息。最好加上：本金、起算日、截止日、天数、日利率、计算公式、计算结果。不要只给一个最终金额。AI 审查计算逻辑时，需要看到"这个金额是怎么算出来的"。</p>
+<p><strong>复杂 Excel</strong>——先拆分再交给 AI：</p>
+<blockquote>
+<p>Excel 原件（保留）</p>
+<p>↓ 拆分每个 sheet</p>
+<p>↓ 识别每个表格区域</p>
+<p>↓ 转成 CSV / JSON</p>
+<p>↓ 附上字段解释</p>
+<p>↓ 再交给 AI 分析</p>
+</blockquote>
+<h2 id="七三篇一起看">七、三篇一起看</h2>
+<p>这个系列写了三种办公格式，结论可以汇成一张表：</p>
+<p>| | .docx | PDF | .xlsx |</p>
+<p>|------|------|-----|------|</p>
+<p>| 本体 | ZIP + XML 文档包 | 固定版面电子纸 | ZIP + XML 表格包 |</p>
+<p>| 人的需求 | 编辑、批注、协作 | 归档、签章、打印一致 | 计算、排版、台账 |</p>
+<p>| AI 的痛点 | 文本被样式切碎 | 缺少语义结构 | 合并单元格、公式、样式噪声 |</p>
+<p>| 一句话 | 装修好的办公室 | 办公室的高清照片 | 塞满便签和公式的工作台 |</p>
+<p>三种格式，一个共同规律：人类靠视觉和经验理解文件，AI 靠结构和文本。越灵活、越视觉化、越依赖人工习惯的格式，AI 越头疼。</p>
+<p>所以最务实的策略不是"不用这些格式"——在法律行业不可能。而是建立一条清晰的转换流水线：人用 Office 格式协作和交付，机器用 Markdown/CSV/JSON 理解和分析，各取所需，互不耽误。</p>
+<hr>
+<blockquote>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+</blockquote>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

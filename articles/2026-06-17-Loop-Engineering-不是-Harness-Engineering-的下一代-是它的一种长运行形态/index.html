@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loop Engineering 不是 Harness Engineering 的下一代，是它的一种长运行形态 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-06-17">2026年6月17日</time>
+            <span class="dotsep"></span>
+            <span>5 分钟阅读</span>
+          </div>
+          <h1 class="article-title">Loop Engineering 不是 Harness Engineering 的下一代，是它的一种长运行形态</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>这两天，我的信息流被"Loop Engineering"占领了。</p>
+<p>叙事很整齐：AI 工程方法经历了 Prompt Engineering → Context Engineering → Harness Engineering，现在正式进入 Loop Engineering 时代。文章一篇比一篇恢宏，仿佛旧范式正在被新范式替代。</p>
+<p>但我越读越觉得不对劲。</p>
+<p>不是因为 Loop 这个概念没有价值。它捕捉到了一个真实的变化。人开始从亲自 Prompt Agent，转向设计能够持续发现任务、调用 Agent、验证结果并再次运行的自动化系统。这个变化是真实的。</p>
+<p>问题出在命名上：把一个 Harness 体系内的编排模式，包装成了与 Harness 平级、甚至超越 Harness 的"新时代"。</p>
+<hr>
+<h2 id="这轮热潮是怎么来的">这轮热潮是怎么来的</h2>
+<p>这一轮传播的直接来源非常集中。</p>
+<p>2026 年 6 月 7 日，Addy Osmani 发表《Loop Engineering》，引用了 Peter Steinberger 和 Claude Code 负责人 Boris Cherny 的两句话：</p>
+<ul>
+<li>不应该再亲自 Prompt Agent，而应当设计"能够 Prompt Agent 的循环"；</li>
+<li>"我现在不再直接 Prompt Claude，我的工作是写 Loop。"</li>
+</ul>
+<p>Addy 随后将 Loop 描述为一个系统：自动发现和分配工作，定时或事件触发，启动 Agent，检查结果，写入外部状态，决定下一项工作，再次执行。</p>
+<p>但 Addy 自己其实已经明确说了：Loop Engineering"位于 Harness 之上一层"。更直白地说，是"一个运行在定时器上、能够产生辅助 Agent、并把结果重新喂给自己的 Harness"。</p>
+<p>这句话恰恰说明，它并没有摆脱 Harness。所谓 Loop 仍然要依赖：Automations、Worktrees、Skills、MCP/Connectors、Sub-agents、外部 Memory、权限控制、评估器、状态机、失败重试、人工接管。这些全部是 Harness 的组成部分，或者 Harness 所提供的运行原语。</p>
+<p>这个词更像是一线实践者对工作方式变化的一个传播性概括，而不是经过系统定义、边界论证和实践验证的成熟学科。</p>
+<hr>
+<h2 id="Loop只是控制流形态不是完整工程体系">Loop 只是控制流形态，不是完整工程体系</h2>
+<p>这里需要做一个区分。不能把 Loop Engineering 简单地等同于 Claude Code 的 <code>/loop</code> 命令。后者只是 Claude Code 在单次 CLI 会话内反复执行 Prompt 的轻量触发机制。当前博主讨论的 Loop Engineering 范围要大得多：定时器触发、任务发现与分类、建立隔离工作区、调用 Agent 执行、另一 Agent 验证、记录进度、判断继续或停止或升级给人、进入下一轮。</p>
+<p>它是一个更完整的编排模式。但问题在于：这个模式里的所有能力，都不来自 Loop 本身。</p>
+<p>在每一轮循环内部，系统仍然需要回答：模型能看到什么上下文？能使用哪些工具？权限边界在哪里？如何保存和恢复状态？失败后怎么处理？多 Agent 如何隔离？什么时候停止，什么时候交还给人？</p>
+<p>这些问题的答案，全部属于 Harness 设计。Anthropic 对 Agent Harness 的定义非常清楚：Harness 是使模型能够作为 Agent 运作的系统，负责处理输入、编排工具调用并返回结果。Claude Code 本身就是一个 Agent Harness。</p>
+<p>从系统结构上看，四个概念的关系不是线性替代：</p>
+<pre class="code-block"><code>Model
+  ↓
+Prompt / Context
+  ↓
+Agent Harness
+  ├─ 工具
+  ├─ 权限
+  ├─ Skills
+  ├─ Hooks
+  ├─ Memory
+  ├─ Sub-agents
+  ├─ Evaluators
+  ├─ Worktrees
+  └─ 状态管理
+         ↓
+Loop / Schedule / Event Trigger</code></pre>
+<p>Loop 甚至不是严格位于 Harness"上面"，而是 Harness 内部可采用的一种控制策略。Harness = 执行环境 + 控制结构。Loop = Harness 可采用的其中一种控制结构。</p>
+<p>单纯因为系统多了 <code>while not done: run_agent()</code> 就宣布进入一个新工程时代，命名膨胀的痕迹太重了。</p>
+<hr>
+<h2 id="这四个概念本来就不是同一层级">这四个概念本来就不是同一层级</h2>
+<p>互联网最容易制造的叙事，就是把不同层级的东西排成进化树：</p>
+<blockquote>
+<p>Prompt Engineering → Context Engineering → Harness Engineering → Loop Engineering</p>
+</blockquote>
+<p>仿佛前者已经过时，后者依次替代前者。</p>
+<p>实际上，四个词的研究对象完全不同：</p>
+<p>| 概念 | 主要工程对象 | 回答的问题 |</p>
+<p>|------|------------|----------|</p>
+<p>| Prompt Engineering | 单次指令表达 | 怎么把任务说清楚 |</p>
+<p>| Context Engineering | 输入信息的选择与组织 | 模型这一次应当看到什么 |</p>
+<p>| Harness Engineering | Agent 的运行环境与约束系统 | 模型如何使用工具、权限、状态和反馈完成任务 |</p>
+<p>| Loop Design | 重复执行与持续反馈机制 | 系统何时再次运行，如何利用上一轮结果 |</p>
+<p>它们不是版本迭代关系。它们是包含和协同关系。一次 Loop 需要一个 Harness 执行，一次 Harness 执行需要组织 Context，Context 中仍然包含 Prompt。</p>
+<p>不存在"Prompt 时代结束，Loop 时代到来"。实际发生的是：随着 Agent 自主运行时间增长，工程重心从单条 Prompt 逐步扩展到 Context、Harness、Evaluation 和长期状态管理。这是关注面的扩张，不是旧范式被新范式替代。</p>
+<hr>
+<h2 id="Anthropic自己的研究也这么说">Anthropic 自己的研究也这么说</h2>
+<p>Anthropic 在长时间运行 Agent 的研究中，始终使用的是 Harness 语言，而不是 Loop Engineering。</p>
+<p>2025 年 11 月，Anthropic 为长期任务设计的方案包括：初始化 Agent、分阶段编码、claude-progress.txt、Git 历史、每轮留下结构化交接材料、跨 Context Window 恢复工作。这些 Agent 当然在反复循环执行，但 Anthropic 称之为"long-running agent harness"，并明确指出：仅仅把模型放进循环中并不足以完成复杂应用。</p>
+<p>2026 年 3 月，Anthropic 进一步设计了 Planner、Generator、Evaluator、Context reset、Structured handoff、多轮迭代。这已经具备了今天所谓 Loop Engineering 的大部分结构，但 Anthropic 依然将其称为 Harness Design，而且明确说这些多 Agent 和循环机制是建立在原有 Harness 基础之上的。</p>
+<p>技术结构早已存在。新出现的主要是命名，而不是全新的工程对象。</p>
+<hr>
+<h2 id="Loop真正新增的是一个值得强调的控制维度">Loop 真正新增的，是一个值得强调的控制维度</h2>
+<p>Loop 这个概念并非毫无价值。它提醒使用者从一次性任务转向持续性系统。</p>
+<p>以前是：人找任务 → 人写 Prompt → Agent 执行。</p>
+<p>Loop 之后是：系统找任务 → 系统组装 Context → Agent 执行 → 系统验证 → 系统记录 → 系统再次触发。</p>
+<p>其中真正值得独立研究的问题包括：触发策略（定时、事件还是状态变化）、停止条件（怎样防止无限循环）、反馈设计（上一轮结果如何影响下一轮）、状态持久化（怎样跨会话保存进度）、任务选择（系统下一步做什么）、验证机制（谁检查 Agent）、升级机制（何时交给人）、成本预算、幂等性、漂移控制和退化控制。</p>
+<p>这些确实构成一个相对聚焦的工程专题。但比较合适的名字可能是 Agent Loop Design、Long-running Agent Orchestration 或 Recurring Agent Workflow Design，而不是用"Loop Engineering"制造一种已经超越 Harness Engineering 的历史阶段感。</p>
+<hr>
+<h2 id="一个更准确的定位">一个更准确的定位</h2>
+<p>我建议用三个层次重新理解这件事。</p>
+<p>第一层，Agent Loop。模型内部已经存在基本循环：观察、推理、工具调用、获取结果、再推理。这是 Agent 能够行动的基本机制。</p>
+<p>第二层，Harness。Harness 决定这个循环如何运行：允许调用什么工具、读取什么上下文、采用什么权限、如何验证、如何处理错误、如何保存状态、何时终止。</p>
+<p>第三层，Long-running Orchestration。通过定时器、事件、任务队列或外部状态，反复启动 Harness：发现任务、启动 Harness、得到结果、更新外部状态、再发现任务。</p>
+<p>所谓 Loop Engineering 主要是在强调第三层。但第三层并没有使第二层失效。相反，它越长期、越自动，越依赖成熟的 Harness。</p>
+<p>简化成一个公式：</p>
+<blockquote>
+<p>Loop Engineering ≈ Harness Engineering + 定时触发 + 跨轮次状态传递 + 任务发现</p>
+</blockquote>
+<p>这不是一个新范式。这是 Harness Engineering 在持续运行场景中的一种配置。</p>
+<hr>
+<p>Loop 不是 Harness 之后的新范式，而是 Harness 走向持续运行以后暴露出来的一个编排维度。</p>
+<p>Loop Engineering 不是 Harness Engineering 的下一代，是它的一种长运行形态。</p>
+<p>或者更尖锐一点：Loop 只是让 Harness 再跑一遍。没有好的 Harness，Loop 只是在重复制造错误。</p>
+<p>下次有人在时间线上宣布"X Engineering"时代来临，先别急着转发。看看 X 到底定义了什么新控制结构，改变了什么解题方式。如果答案只是"它让旧系统多跑了几次"，那不是工程革命，是营销革命。</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

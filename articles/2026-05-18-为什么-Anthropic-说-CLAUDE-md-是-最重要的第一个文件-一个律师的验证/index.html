@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>为什么 Anthropic 说 CLAUDE.md 是"最重要的第一个文件"——一个律师的验证 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-05-18">2026年5月18日</time>
+            <span class="dotsep"></span>
+            <span>8 分钟阅读</span>
+          </div>
+          <h1 class="article-title">为什么 Anthropic 说 CLAUDE.md 是"最重要的第一个文件"——一个律师的验证</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>Anthropic 在 2026 年 5 月发布了一份《The Founder's Playbook: Building an AI-Native Startup》，面向用 Claude Code 做产品的技术创业者。整份文档翻下来，有一句话反复出现：</p>
+<blockquote>
+<p>"CLAUDE.md is the single most important file to create first."</p>
+</blockquote>
+<p>></p>
+<blockquote>
+<p>CLAUDE.md 是需要创建的第一个、也是最重要的文件。</p>
+</blockquote>
+<p>一个配置文件，凭什么是"最重要的第一个文件"？</p>
+<p>作为一个非技术出身的律师，我用了几个月时间构建了一套完整的 CLAUDE.md 体系。回头再看 Anthropic 的判断，每一个论点都被我的实践验证了。这篇文章就把这套体系和踩过的坑摊开来讲，供同样在用 Claude Code 的法律同行参考。</p>
+<h2 id="Anthropic到底说了什么">Anthropic 到底说了什么</h2>
+<p>先把原文的关键论述摆出来，用律师能懂的方式转译一下。</p>
+<p><strong>论述一：没有文档，每次会话都在从零推断。</strong></p>
+<p>原文："Without specs and architectural constraints written down somewhere the AI can read, each session re-derives foundational decisions from scratch, and those decisions drift."</p>
+<p>中译：如果没有把规格说明和架构约束写在 AI 能读到的地方，每次会话都会从头重新推断基础决策，而这些决策会逐渐漂移。</p>
+<p>放到法律场景里：如果你不告诉 AI "法律文书的证据认定不能超出当事人主张的范围"，它每次会话都会重新推断一遍这个规则，而且每次推断的结果可能不一样。上一轮它还知道不能替当事人扩写证明目的，下一轮为了"语言更通顺"就替当事人把证明逻辑补全了。这就是原文说的 "drift"（漂移）。</p>
+<p><strong>论述二：没有护栏，产出功能正常但结构混乱。</strong></p>
+<p>原文："Letting Claude Code build without guardrails produces a codebase that will be functional but structurally incoherent."</p>
+<p>中译：在没有护栏的情况下让 Claude Code 构建，会产出一个功能正常但结构混乱的代码库。</p>
+<p>法律场景对应：AI 写出来的合同审查意见看起来有模有样，条款逐条分析，风险点也列了，但细看发现——证据编号跳号、合同简称前后不统一、风险分级没有统一标准、金额前后对不上。每一句单拿出来都能用，合在一起就是乱的。</p>
+<p><strong>论述三：目标是能解释结构的产出，而不仅仅是能用的产出。</strong></p>
+<p>原文："The goal is a codebase whose structure you can explain, not just a codebase that runs."</p>
+<p>中译：目标是一个你能解释其结构的代码库，而不仅仅是一个能运行的代码库。</p>
+<p>这句话放到法律工作里更直白：你要的不是一份"看着像法律意见书"的文档，而是一份你能向客户解释清楚"为什么这个风险是高风险、那个是低风险、依据是什么"的文档。结构可解释，比内容能跑重要得多。</p>
+<p><strong>论述四：每会话5分钟的文档记录是廉价保险。</strong></p>
+<p>原文："Five minutes of documentation per session is cheap insurance against architectural drift that compounds into an unmanageable codebase."</p>
+<p>中译：每次会话花五分钟做文档记录，是对抗架构漂移的廉价保险——架构漂移会累积成一个失控的代码库。</p>
+<p>这一条我深有体会。我现在的 rules 文件体系加起来大概 3000 行 Markdown。听起来很多，但它是几十次会话积累下来的，平均每次也就几行到几十行的增量。如果不在每次踩坑后立刻写进 rules，下次遇到同样的问题，你又要花 10 分钟口头解释一遍，AI 还不一定记住。</p>
+<h2 id="我的四层体系">我的四层体系</h2>
+<p>说了这么多"为什么"，该说"我做了什么"了。</p>
+<p>我的 CLAUDE.md 体系分四层，从上到下加载量递减、精度递增：</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340"&gt;
+  &lt;rect width="600" height="340" fill="#fff" rx="4"/&gt;
+  &lt;text x="300" y="28" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#333"&gt;CLAUDE.md 四层体系&lt;/text&gt;
+  &lt;!-- Layer 1 --&gt;
+  &lt;rect x="40" y="48" width="520" height="56" rx="4" fill="#f5f5f5" stroke="#333" stroke-width="1.2"/&gt;
+  &lt;text x="56" y="70" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#333"&gt;Layer 1 · CLAUDE.md&lt;/text&gt;
+  &lt;text x="56" y="90" font-family="system-ui, sans-serif" font-size="11.5" fill="#666"&gt;全局 + 项目级｜每次 session 加载｜架构分层、硬性约束、目录约定&lt;/text&gt;
+  &lt;!-- Layer 2 --&gt;
+  &lt;rect x="60" y="116" width="480" height="56" rx="4" fill="#fafafa" stroke="#555" stroke-width="1"/&gt;
+  &lt;text x="76" y="138" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#333"&gt;Layer 2 · .claude/rules/&lt;/text&gt;
+  &lt;text x="76" y="158" font-family="system-ui, sans-serif" font-size="11.5" fill="#666"&gt;~10 个规则文件｜无 paths 的每次加载，有 paths 的按条件加载&lt;/text&gt;
+  &lt;!-- Layer 3 --&gt;
+  &lt;rect x="80" y="184" width="440" height="56" rx="4" fill="#f5f5f5" stroke="#888" stroke-width="0.8"/&gt;
+  &lt;text x="96" y="206" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#333"&gt;Layer 3 · .claude/skills/&lt;/text&gt;
+  &lt;text x="96" y="226" font-family="system-ui, sans-serif" font-size="11.5" fill="#666"&gt;50+ 个 skill｜按需调用｜合同审核、文书写作、去 AI 痕迹……&lt;/text&gt;
+  &lt;!-- Layer 4 --&gt;
+  &lt;rect x="100" y="252" width="400" height="56" rx="4" fill="#fafafa" stroke="#aaa" stroke-width="0.6"/&gt;
+  &lt;text x="116" y="274" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#333"&gt;Layer 4 · memory/&lt;/text&gt;
+  &lt;text x="116" y="294" font-family="system-ui, sans-serif" font-size="11.5" fill="#666"&gt;跨会话经验｜自动索引、手动读取｜踩坑记录 + 项目快照&lt;/text&gt;
+  &lt;!-- side labels --&gt;
+  &lt;text x="574" y="82" font-family="system-ui, sans-serif" font-size="10" fill="#999" text-anchor="end"&gt;常驻&lt;/text&gt;
+  &lt;text x="534" y="150" font-family="system-ui, sans-serif" font-size="10" fill="#999" text-anchor="end"&gt;常驻&lt;/text&gt;
+  &lt;text x="514" y="218" font-family="system-ui, sans-serif" font-size="10" fill="#999" text-anchor="end"&gt;按需&lt;/text&gt;
+  &lt;text x="494" y="286" font-family="system-ui, sans-serif" font-size="10" fill="#999" text-anchor="end"&gt;手动&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<h3 id="第一层CLAUDEmd">第一层：CLAUDE.md</h3>
+<p>我的全局 CLAUDE.md 大约 80 行，做了三件事：</p>
+<p><strong>定义架构分层</strong>——告诉 AI 这四层体系怎么运作、什么时候加载什么。这相当于给 AI 一张地图，让它知道自己的知识从哪来、边界在哪。</p>
+<p><strong>硬性约束</strong>——几条红线：禁止自动修改 rules 文件、禁止随意在 scratch/output 之外创建文件、规则进化必须走 bad case → memory → 用户审查 → 手动更新 rules 的流程。</p>
+<p><strong>文件架构约定</strong>——所有法律项目默认遵循 input/（只读原始材料）、scratch/（工作区）、output/（最终交付物）三层目录。这保证了 AI 不会去改原始合同，也不会把中间产物混进交付文件夹。</p>
+<p>每个项目还有自己的项目级 CLAUDE.md。比如"文章撰写"工作区的 CLAUDE.md 定义了七种文章类别、各自的风格文件路径、案例库机制、输出流程。这东西的作用是：我打开任何一个项目文件夹，AI 就自动进入对应的工作模式，不需要我再说"你现在是文章撰写助手"。</p>
+<h3 id="第二层clauderules">第二层：.claude/rules/</h3>
+<p>这一层是目前最厚的一层，大约 10 个规则文件。每个文件解决一类反复出现的问题。</p>
+<p>举几个例子，让读者感受一下 rules 解决的是什么层面的事：</p>
+<p><strong>legal-doc-editing.md</strong>（法律文书编辑纪律）：定义了五组内容分离——证据列举、质证意见、证据认定、查明事实、争议焦点分析。核心纪律就一句话："后一组的内容不能比前一组走得更远。"查明事实不能超出证据认定，争议分析不能超出查明事实。这条规则存在的原因：AI 太喜欢"帮你把话说完整"，写完证据认定顺手就把法理分析也补了，但那不是证据认定该干的事。</p>
+<p><strong>legal-research.md</strong>（法律研究规范）：规定了来源溯源标签体系——每一条法律依据后面必须标注是"法条原文""裁判文书"还是"模型知识——需验证"。这解决了另一个 AI 的老毛病：一本正经地编造法条。有了标签体系，读者（包括未来的我）一眼就能看出哪些依据需要人工复核。</p>
+<p><strong>general-legal.md</strong>（通用法律分析规则）：定义了风险分级（高/中/低/待核实）和风险评价六维度方法论（风险定性、风险敞口、发生概率、可规避性、商业权衡、紧迫性）。没有这套标准之前，AI 要么把所有问题都写成"重大风险"，要么没有区分度。</p>
+<p>这些 rules 有个共同特点：每一条背后都至少有一次踩坑经历。不是预设的理论框架，是出了问题之后写下来的纠正指令。</p>
+<h3 id="第三层claudeskills">第三层：.claude/skills/</h3>
+<p>Skills 是按需加载的，不会每次 session 都占 context。目前有 50 多个，涵盖合同审核、法律文书写作、去 AI 痕迹、飞书集成、PPT 生成等。</p>
+<p>Skills 和 Rules 的区别在于：Rules 是约束（"你不能做什么""必须怎么做"），Skills 是能力（"怎么做好一件事"）。合同审核 Skill 里有完整的审核流程——Phase 0 基础信息提取、Phase 1 风险识别、Phase 2 条款审查、Phase 3 知识库检索、Phase 4 综合意见。这些流程太长了，放进 Rules 会撑爆 context，只有实际审核合同时才调用。</p>
+<h3 id="第四层memory">第四层：memory/</h3>
+<p>Memory 是跨会话的经验记录。分为三类：</p>
+<ul>
+<li><strong>feedback</strong>：用户纠正的记录。比如"批注版合同必须走 Document Library 三步法，禁止 python-docx 裸 API 加红色标注文字"。这些纠正如果不记下来，下次会话 AI 还是会用错误的方式。</li>
+<li><strong>project</strong>：项目状态快照，方便跨会话衔接。</li>
+<li><strong>reference</strong>：外部资源索引。</li>
+</ul>
+<p>Memory 不会自动加载——新会话启动时只加载 MEMORY.md 索引文件，具体的反馈条目按需读取。这控制了 context 占用。</p>
+<h2 id="踩坑记录">踩坑记录</h2>
+<p>这部分是全文最值钱的内容。以下每个坑都实打实浪费过我至少半小时。</p>
+<h3 id="坑一没建rules同一个规矩说了二三十遍">坑一：没建 rules，同一个规矩说了二三十遍</h3>
+<p>最早的时候，我就一个光秃秃的 CLAUDE.md，里面写了"你是法律助手"。然后每次会话我都要口头解释：法律文书的证据不能扩写，风险分级要按高/中/低来，引用法条必须标注出处，合同审核要先做结构化提取再做风险识别……</p>
+<p>说一遍 AI 照做了，下次会话全忘。更要命的是，同一会话里前面说好的规矩，到了后面 context 快满的时候 AI 开始"简化处理"，规矩就不守了。</p>
+<p>把反复说的规矩写成 rules 文件之后，这个问题彻底消失。rules 是每次 session 自动加载的，不依赖我的口头提醒。</p>
+<h3 id="坑二rules写太长context溢出">坑二：rules 写太长，context 溢出</h3>
+<p>第二个极端：我把能想到的规矩全塞进一个 rules 文件，写了将近 2000 行。结果是 context 被撑满，留给实际工作的空间不够，AI 回复质量明显下降。</p>
+<p>解决方法是拆分。按功能模块拆成独立文件——法律研究一个、文书编辑一个、工具使用一个、检索策略一个。每个文件控制在 200-400 行。</p>
+<p>更进一步，给部分 rules 加了 <code>paths</code> 条件——只有当工作文件匹配特定路径时才加载。比如合同审核的 rules 只有在合同审核项目目录下才加载，写文章时不占空间。</p>
+<h3 id="坑三memory和rules边界没划清">坑三：memory 和 rules 边界没划清</h3>
+<p>一开始我把一些本该写进 rules 的内容记在了 memory 里。比如"项目级 CLAUDE.md 应该放在 .claude/ 目录下而不是项目根目录"——这是一个规则，不是经验。写在 memory 里意味着 AI 不一定会遵守。</p>
+<p>后来划了一条线：</p>
+<ul>
+<li><strong>Rules</strong>：AI 必须遵守的行为准则。格式是"禁止……""必须……""当……时执行……"</li>
+<li><strong>Memory</strong>：人的纠正记录和项目状态。格式是"用户指出……""下次注意……"</li>
+</ul>
+<p>Rules 改变行为，Memory 保留经验。两者不能混用。</p>
+<h3 id="坑四项目级CLAUDEmd放错了位置">坑四：项目级 CLAUDE.md 放错了位置</h3>
+<p>我一开始把项目级 CLAUDE.md 放在项目根目录。Claude Code 能读到，但有个副作用：每次有人在项目根目录加文件或改文件，context 加载会受影响，偶尔出现配置加载顺序不一致的问题。</p>
+<p>后来统一改成放在 <code>.claude/</code> 目录下，和全局配置的层级关系更清晰，加载也更稳定。</p>
+<h2 id="效果对比">效果对比</h2>
+<p>有体系和没体系的效率差异，用一个具体场景说明：合同审核。</p>
+<p><strong>没有体系时</strong>：每次开新会话审核合同，前 10-15 分钟在给 AI 解释审核标准——风险怎么分级、法条引用怎么标注、输出格式是什么、哪些条款是标配。解释完之后，AI 前 2-3 份合同还在磨合，到第 4 份合同才比较顺手。context 快满的时候质量又开始下降。</p>
+<p><strong>有体系后</strong>：打开合同审核项目，rules 和 skill 自动加载。AI 已经知道审核流程是 5 个 Phase，知道风险分级标准，知道引用法条必须标注出处，知道最终意见书要包含哪些模块。第一份合同开始就是按标准流程走的，不需要磨合期。一份 30 页的商业租赁合同，从上传到输出完整的审查意见，大概 15 分钟。</p>
+<p>保守估计，这套体系让我在合同审核场景的 AI 协作效率提升了 3-4 倍。不是 AI 变聪明了，是它不用每次都从零学起了。</p>
+<h2 id="局限">局限</h2>
+<p>说完了好处，说说局限，免得读者以为这是银弹。</p>
+<p><strong>维护成本不低。</strong>我现在的四层体系加起来超过 3000 行配置，这些配置需要持续维护。法律法规更新了，legal-research.md 的时效触发机制要调整；踩了新坑，要写进 memory 再沉淀成 rules；新加了 skill，要更新 tool-usage.md 的路由表。平均每周花在维护上的时间大约 30 分钟到 1 小时。</p>
+<p><strong>学习曲线陡峭。</strong>CLAUDE.md 的语法不复杂，就是 Markdown，但"写什么、不写什么、写到哪一层"需要经验。新手最常见的错误要么是写得太细（把操作步骤当规则写），要么是写得太抽象（"请保持专业"这种没有任何约束力的废话）。</p>
+<p><strong>不适合 AI 使用频率低的人。</strong>如果你一周只用一两次 Claude Code，每次做的事情也不一样，投入时间建这套体系的 ROI 不高。直接在每次会话开头把关键要求说清楚，可能比维护配置文件更划算。</p>
+<p><strong>不能替代判断力。</strong>这套体系解决的是"一致性问题"——让 AI 每次都按同一个标准做事。但它不能解决"正确性问题"——如果 rules 里写的标准本身有问题，AI 会稳定地重复错误。规则的来源还是人的专业判断。</p>
+<h2 id="收束">收束</h2>
+<p>Anthropic 说 CLAUDE.md 是"最重要的第一个文件"，这句话我完全同意。但我想补充一个它没说的角度：</p>
+<p>CLAUDE.md 不是配置文件。配置文件是告诉系统怎么跑的参数。CLAUDE.md 是你的专业判断力的外化——你把"什么是好的法律分析""什么是严谨的证据认定""什么是可靠的法律研究"这些原本只存在于你脑子里的标准，翻译成了机器可读的指令。</p>
+<p>写 rules 的过程本身就是一次对自己工作方法论的系统梳理。你被迫把隐性的专业经验显性化。</p>
+<p>在用 Claude Code 的人，我的建议是：现在就开始写你的第一个 CLAUDE.md，哪怕只有 10 行。不需要一开始就建四层体系，先把你最常重复的那条规矩写下来。等你发现自己在第二次口头解释同一个问题的时候，把它加进去。</p>
+<p>Anthropic 说的"每次会话 5 分钟的文档记录"，确实是对架构漂移最廉价的保险。</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

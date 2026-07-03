@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>不写代码，也能工程化——一个律师的 Agentic Coding 实践 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-05-18">2026年5月18日</time>
+            <span class="dotsep"></span>
+            <span>6 分钟阅读</span>
+          </div>
+          <h1 class="article-title">不写代码，也能工程化——一个律师的 Agentic Coding 实践</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>Anthropic 在 2025 年 5 月发布了一份给创业者的指南《The Founder's Playbook: Building an AI-Native Startup》，里面有一段话让我反复读了三遍：</p>
+<blockquote>
+<p>"Agentic coding tools now allow every aspiring founder to describe what they want to build in plain language and direct AI to generate, test, debug, and refactor a production-grade codebase at the speed and scale of a full engineering team."</p>
+</blockquote>
+<p>翻译过来：Agentic coding 工具让每个创始人都能用自然语言描述想要构建的东西，并指挥 AI 以工程团队的速度和规模生成、测试、调试和重构生产级代码库。</p>
+<p>报告中还有一个更直接的判断：<strong>"someone with no engineering background can build production software that brings their idea to life"</strong>——没有工程背景的人也能构建生产级软件。</p>
+<p>我是律师。不写代码。但过去几个月，我用 Claude Code 的 Agentic Coding 能力，搭建了一套完整的工程化工作体系。这篇文章是我踩过的坑和得出的结论。</p>
+<h2 id="一个律师搭出了什么">一个律师搭出了什么</h2>
+<p>先说结果。以下是我在 Claude Code 中构建的所有"工程化产物"：</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 380"&gt;
+  &lt;rect width="600" height="380" fill="#fafafa" rx="4"/&gt;
+
+  &lt;!-- 核心层 --&gt;
+  &lt;rect x="200" y="16" width="200" height="44" rx="22" fill="#333"/&gt;
+  &lt;text x="300" y="44" text-anchor="middle" font-size="15" font-weight="600" fill="#fff" font-family="system-ui, sans-serif"&gt;Claude Code（Agentic Coding 环境）&lt;/text&gt;
+
+  &lt;!-- 连线：核心→工具层 --&gt;
+  &lt;line x1="220" y1="60" x2="120" y2="90" stroke="#999" stroke-width="1"/&gt;
+  &lt;line x1="300" y1="60" x2="300" y2="90" stroke="#999" stroke-width="1"/&gt;
+  &lt;line x1="380" y1="60" x2="480" y2="90" stroke="#999" stroke-width="1"/&gt;
+
+  &lt;!-- 工具层 --&gt;
+  &lt;text x="300" y="88" text-anchor="middle" font-size="11" fill="#888" font-family="system-ui, sans-serif"&gt;工具层（MCP + Skills）&lt;/text&gt;
+  &lt;rect x="30" y="96" width="110" height="32" rx="4" fill="#f0f0f0" stroke="#ddd"/&gt;
+  &lt;text x="85" y="117" text-anchor="middle" font-size="11" fill="#555" font-family="system-ui, sans-serif"&gt;yuandian&lt;/text&gt;
+  &lt;rect x="155" y="96" width="90" height="32" rx="4" fill="#f0f0f0" stroke="#ddd"/&gt;
+  &lt;text x="200" y="117" text-anchor="middle" font-size="11" fill="#555" font-family="system-ui, sans-serif"&gt;filesystem&lt;/text&gt;
+  &lt;rect x="260" y="96" width="90" height="32" rx="4" fill="#f0f0f0" stroke="#ddd"/&gt;
+  &lt;text x="305" y="117" text-anchor="middle" font-size="11" fill="#555" font-family="system-ui, sans-serif"&gt;web-scout&lt;/text&gt;
+  &lt;rect x="365" y="96" width="90" height="32" rx="4" fill="#f0f0f0" stroke="#ddd"/&gt;
+  &lt;text x="410" y="117" text-anchor="middle" font-size="11" fill="#555" font-family="system-ui, sans-serif"&gt;puppeteer&lt;/text&gt;
+  &lt;rect x="470" y="96" width="90" height="32" rx="4" fill="#f0f0f0" stroke="#ddd"/&gt;
+  &lt;text x="515" y="117" text-anchor="middle" font-size="11" fill="#555" font-family="system-ui, sans-serif"&gt;lark（飞书）&lt;/text&gt;
+
+  &lt;!-- 连线：工具层→产出层 --&gt;
+  &lt;line x1="85" y1="128" x2="65" y2="170" stroke="#bbb" stroke-width="1" stroke-dasharray="3,3"/&gt;
+  &lt;line x1="200" y1="128" x2="190" y2="170" stroke="#bbb" stroke-width="1" stroke-dasharray="3,3"/&gt;
+  &lt;line x1="305" y1="128" x2="310" y2="170" stroke="#bbb" stroke-width="1" stroke-dasharray="3,3"/&gt;
+  &lt;line x1="410" y1="128" x2="430" y2="170" stroke="#bbb" stroke-width="1" stroke-dasharray="3,3"/&gt;
+  &lt;line x1="515" y1="128" x2="540" y2="170" stroke="#bbb" stroke-width="1" stroke-dasharray="3,3"/&gt;
+
+  &lt;!-- 产出层 --&gt;
+  &lt;text x="300" y="168" text-anchor="middle" font-size="11" fill="#888" font-family="system-ui, sans-serif"&gt;产出层&lt;/text&gt;
+  &lt;rect x="20" y="176" width="100" height="36" rx="4" fill="#fff" stroke="#333"/&gt;
+  &lt;text x="70" y="192" text-anchor="middle" font-size="10" fill="#333" font-family="system-ui, sans-serif"&gt;微信公众号&lt;/text&gt;
+  &lt;text x="70" y="205" text-anchor="middle" font-size="10" fill="#333" font-family="system-ui, sans-serif"&gt;发布管线&lt;/text&gt;
+  &lt;rect x="140" y="176" width="100" height="36" rx="4" fill="#fff" stroke="#333"/&gt;
+  &lt;text x="190" y="192" text-anchor="middle" font-size="10" fill="#333" font-family="system-ui, sans-serif"&gt;合同审核&lt;/text&gt;
+  &lt;text x="190" y="205" text-anchor="middle" font-size="10" fill="#333" font-family="system-ui, sans-serif"&gt;docx 处理链&lt;/text&gt;
+  &lt;rect x="260" y="176" width="100" height="36" rx="4" fill="#fff" stroke="#333"/&gt;
+  &lt;text x="310" y="192" text-anchor="middle" font-size="10" fill="#333" font-family="system-ui, sans-serif"&gt;知识库&lt;/text&gt;
+  &lt;text x="310" y="205" text-anchor="middle" font-size="10" fill="#333" font-family="system-ui, sans-serif"&gt;全文检索系统&lt;/text&gt;
+  &lt;rect x="380" y="176" width="100" height="36" rx="4" fill="#fff" stroke="#333"/&gt;
+  &lt;text x="430" y="192" text-anchor="middle" font-size="10" fill="#333" font-family="system-ui, sans-serif"&gt;飞书&lt;/text&gt;
+  &lt;text x="430" y="205" text-anchor="middle" font-size="10" fill="#333" font-family="system-ui, sans-serif"&gt;集成工具链&lt;/text&gt;
+  &lt;rect x="500" y="176" width="80" height="36" rx="4" fill="#fff" stroke="#333"/&gt;
+  &lt;text x="540" y="192" text-anchor="middle" font-size="10" fill="#333" font-family="system-ui, sans-serif"&gt;Rules&lt;/text&gt;
+  &lt;text x="540" y="205" text-anchor="middle" font-size="10" fill="#333" font-family="system-ui, sans-serif"&gt;规则体系&lt;/text&gt;
+
+  &lt;!-- 底部数字 --&gt;
+  &lt;line x1="30" y1="240" x2="570" y2="240" stroke="#e0e0e0" stroke-width="1"/&gt;
+  &lt;text x="65" y="268" text-anchor="middle" font-size="28" font-weight="700" fill="#333" font-family="system-ui, sans-serif"&gt;5&lt;/text&gt;
+  &lt;text x="65" y="286" text-anchor="middle" font-size="10" fill="#888" font-family="system-ui, sans-serif"&gt;个 Python 脚本&lt;/text&gt;
+  &lt;text x="185" y="268" text-anchor="middle" font-size="28" font-weight="700" fill="#333" font-family="system-ui, sans-serif"&gt;9&lt;/text&gt;
+  &lt;text x="185" y="286" text-anchor="middle" font-size="10" fill="#888" font-family="system-ui, sans-serif"&gt;套排版主题&lt;/text&gt;
+  &lt;text x="310" y="268" text-anchor="middle" font-size="28" font-weight="700" fill="#333" font-family="system-ui, sans-serif"&gt;10+&lt;/text&gt;
+  &lt;text x="310" y="286" text-anchor="middle" font-size="10" fill="#888" font-family="system-ui, sans-serif"&gt;个 Rules 文件&lt;/text&gt;
+  &lt;text x="430" y="268" text-anchor="middle" font-size="28" font-weight="700" fill="#333" font-family="system-ui, sans-serif"&gt;90+&lt;/text&gt;
+  &lt;text x="430" y="286" text-anchor="middle" font-size="10" fill="#888" font-family="system-ui, sans-serif"&gt;个 Skills&lt;/text&gt;
+  &lt;text x="540" y="268" text-anchor="middle" font-size="28" font-weight="700" fill="#333" font-family="system-ui, sans-serif"&gt;5&lt;/text&gt;
+  &lt;text x="540" y="286" text-anchor="middle" font-size="10" fill="#888" font-family="system-ui, sans-serif"&gt;个 MCP 集成&lt;/text&gt;
+
+  &lt;!-- 底部说明 --&gt;
+  &lt;text x="300" y="330" text-anchor="middle" font-size="11" fill="#aaa" font-family="system-ui, sans-serif"&gt;全部由一个不会写代码的律师，通过自然语言指挥 AI 构建&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>这些不是 demo，不是玩具项目。它们每天在用。</p>
+<h2 id="五个案例逐一拆解">五个案例，逐一拆解</h2>
+<h3 id="案例一微信公众号发布管线">案例一：微信公众号发布管线</h3>
+<p>需求很简单：写完 Markdown 文章，一条命令推到公众号草稿箱。</p>
+<p>但"推到草稿箱"拆开来看，包含：Markdown 转 HTML（微信编辑器不认标准 Markdown）、图片上传到微信 CDN（外链图片会被过滤）、排版主题切换（不同文章风格不同）、封面图生成、草稿箱创建、完成后在 Finder 里打个标记。</p>
+<p>我用自然语言把这些需求逐步描述给 Claude Code。它构建了五个 Python 脚本：<code>wechat_publish.py</code>（一键发布入口，串联所有步骤）、<code>wechat_html.py</code>（Markdown 转微信公众号 HTML，内置 9 套排版主题）、<code>wechat_api.py</code>（微信 API 客户端，处理 token 管理和图片上传）、<code>wechat_images.py</code>（图片下载上传加 MD5 去重）、<code>wechat_cover.py</code>（调用 Codex CLI + GPT Image 2 生成封面概念海报）。</p>
+<p>最终效果：</p>
+<pre class="code-block"><code class="language-bash">python .claude/scripts/wechat_publish.py publish article.md --gen-cover --theme 红黑极简</code></pre>
+<p>一条命令，从 Markdown 到草稿箱。本文就是这么发布的。</p>
+<h3 id="案例二合同审核docx处理链">案例二：合同审核 docx 处理链</h3>
+<p>合同审核是我的核心业务。以前用 python-docx 读取合同，人工逐条审查。现在 Claude Code 通过 docx skill 的 Redlining workflow（红线批注工作流），能自动读取合同 docx、做结构化分析、生成审查意见、生成带批注的修订版合同。</p>
+<p>这里有一个技术细节值得展开，因为我在这个上面栽了整整一周。</p>
+<h3 id="案例三法律知识库全文检索">案例三：法律知识库全文检索</h3>
+<p>我的法律知识库有数千份文件，格式混杂（md/pdf/docx）。Claude Code 配置了 <code>rga</code>（ripgrep-all）工具后，能在几秒内跨格式全文检索。</p>
+<p>比如我审核一份施工合同时，想查"建设工程施工合同无效后的价款结算"相关的司法观点和地方口径，一条搜索指令下去，相关的司法解释、最高法判例、浙江高院指导意见全部出来了。以前这个动作要翻半天文件夹。</p>
+<h3 id="案例四MCP集成">案例四：MCP 集成</h3>
+<p>MCP（Model Context Protocol，模型上下文协议）是 AI Agent 调用外部工具的标准化接口。我给 Claude Code 接了 yuandian（法律法规和案例检索）、filesystem（文件系统操作，只读，后面会说原因）、web-scout（网络搜索）、puppeteer（浏览器自动化）、context7（技术文档实时检索）。AI 直接调用，不需要我人工中转。</p>
+<h3 id="案例五飞书集成">案例五：飞书集成</h3>
+<p>通过 lark 系列技能，Claude Code 能操作飞书文档读写、日历管理、多维表格、即时通讯、视频会议记录。案件管理、日程安排、团队协作都串进了 AI 工作流。</p>
+<h2 id="踩坑记录">踩坑记录</h2>
+<p>这是本文最重要的部分。成功经验哪里都有，失败经历才值钱。</p>
+<h3 id="坑一直接说需求和工程化地说需求差别巨大">坑一："直接说需求"和"工程化地说需求"差别巨大</h3>
+<p>最开始我用 Claude Code 的方式很原始——每次打开 session，就说"帮我写一个发布文章的脚本"。AI 确实写了，能用。但下一个 session 打开，我又得从头解释一遍需求。文件放哪里、叫什么名字、排版什么风格、图片怎么处理——每次重复。</p>
+<p>后来我学会了写 <code>CLAUDE.md</code>。这个文件相当于给 AI 的项目说明书。我把发布流程、文件结构、命名规则、风格要求全写进去。AI 每次 session 启动时自动读取，不用重复解释。</p>
+<p>再后来，我发现不同类型的任务需要不同的规则。合同审核和文章撰写的逻辑完全不同。于是我又建了 <code>.claude/rules/</code> 目录，按场景拆分规则文件——合同审核规则、法律研究规则、文书编辑纪律、工具使用规范……现在有 10 个以上的规则文件，覆盖了法律工作的各个维度。</p>
+<p><strong>教训</strong>：Agentic Coding 的效率，取决于你能不能把需求"工程化"地表达。同一个需求，随口说和写成文档，产出质量天差地别。这不要求你会写代码，但要求你有把模糊想法拆解成明确步骤的能力——这恰恰是律师擅长的事。</p>
+<h3 id="坑二docx中文字符拆分被坑了一整周">坑二：docx 中文字符拆分——被坑了一整周</h3>
+<p>合同 docx 用 python-docx 读取时，中文经常被拆成单个字符的 run。什么是 run？在 docx 的 XML 结构里，同一段文字可能被分成多个片段，每个片段（run）有自己的格式属性。Word 这样做是为了支持局部加粗、变色等格式。</p>
+<p>问题在于，Word 的分段逻辑对中文不太友好。"甲方"两个字可能变成"甲"（加粗）和"方"（不加粗）两个 run，甚至一个汉字被拆成多个 Unicode 片段。这导致 AI 在做文本定位和替换时，搜索"甲方"搜不到，因为它实际上被存成了两个独立的片段。</p>
+<p>这个 bug 我跟 Claude Code 来回折腾了一周。起初我只说"输出不对"，AI 改了半天也没改到点子上。后来我把问题描述改成了："第3段第2行的'甲方'被分成了两个不同格式的 run 片段，搜索定位不到。"</p>
+<p><strong>教训</strong>：用自然语言描述问题时，越具体越好。"输出不对"是无效信息。"第3段第2行的特定文字被分成了两个不同格式的片段"才是有效信息。Agentic Coding 不是念咒——你描述问题的精度，决定了 AI 解决问题的效率。</p>
+<h3 id="坑三MCP工具的安全边界">坑三：MCP 工具的安全边界</h3>
+<p>最初我给 filesystem MCP（文件系统操作工具）配置了写权限。某次 session 中，AI 在处理合同时差点覆盖了原始合同文件。吓得我出了一身冷汗——原始证据材料被覆盖，在法律业务里是不可接受的事故。</p>
+<p>之后我严格限制 filesystem MCP 只读。所有写操作只用本地 Write 工具，而且写之前 Claude Code 会自动确认路径。</p>
+<p><strong>教训</strong>：给 AI 工具权限时，默认最小权限。确实需要再加。这跟法律里的"最小必要原则"一样——不是不信任，是风险控制。</p>
+<h3 id="坑四脚本维护的非技术人员之痛">坑四：脚本维护的"非技术人员之痛"</h3>
+<p>脚本出 bug 了，我不会 debug。</p>
+<p>解决方式很原始：把完整的错误信息贴给 Claude Code，让它自己修。偶尔修不好，就让它重写整个函数。</p>
+<p>这个过程里我得出一个认知：我不需要理解代码，但我得理解系统架构。说白了就是搞清楚三件事——每个脚本做什么（输入什么、输出什么）、脚本之间怎么串联（上游输出是下游输入）、数据怎么流（文件从哪来、到哪去、中间经过什么处理）。</p>
+<p>这三件事用自然语言就能描述清楚，不需要懂编程。但你必须花时间把这个架构想清楚。Anthropic 那份报告里说的——从"我有一个想法"到"我有一个产品"的时间线被压缩了——前提是你得能把想法拆解成可执行的步骤。</p>
+<h2 id="这套东西的局限">这套东西的局限</h2>
+<p>诚实说几个不太舒服的点。</p>
+<p>维护成本不低。脚本和规则需要持续更新。Claude Code 升级、MCP 接口变化、业务流程调整，都会导致东西需要修。我修不了代码，只能找 AI 修。偶尔 AI 也修不好，就得花时间重写。</p>
+<p>学习曲线不在代码层面，而在工程化思维层面。不写代码，但需要理解"分层""解耦""输入输出"这些概念。如果你的工作本身就是结构化的（比如法律文书天然讲究层次），转过来难度不大。但工作方式偏直觉和经验驱动的人，上手会有一段不短的适应期。</p>
+<p>也不适合所有人。如果你的工作内容稳定、重复性流程不多，投入产出比不高。这套东西有价值的前提是：你有重复执行的流程，而且这些流程的步骤可以被明确描述。</p>
+<p>还有一个问题是绑定特定工具。这套体系建立在 Claude Code 之上，规则文件、Skills 机制、MCP 集成方式都是 Claude Code 的约定。换工具的话，迁移成本不低。</p>
+<h2 id="回到Anthropic的判断">回到 Anthropic 的判断</h2>
+<p>Anthropic 在那份报告里说：<strong>"When the founding pool expands beyond people with engineering backgrounds, you get startups built by people with radically different lived experiences, solving real problems that the traditional tech-founder pipeline never prioritized."</strong></p>
+<p>当创始人群扩展到工程背景之外，你会得到由完全不同人生经历的人创建的公司，解决传统技术创始人从未关注过的真实问题。</p>
+<p>这段话对律师同样成立。法律行业的真实痛点——合同审查的重复劳动、法律检索的低效、文书排版的时间消耗——这些问题在技术圈排不上优先级。因为做工具的人不审合同，不写法律意见书，不在凌晨两点对着一份 200 页的施工合同逐条标注风险。</p>
+<p>Agentic Coding 让你可以自己搭，不用等某个 SaaS 公司做出"法律 AI 产品"。前提是：你得知道自己的问题是什么，而且能把问题拆解成明确的步骤。</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

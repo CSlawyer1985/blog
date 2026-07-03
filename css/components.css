@@ -1,0 +1,184 @@
+/* ═══════════════════════════════════════════
+   Components — Shared component styles
+   Most component styles now live in base.css & home.css
+   This file is kept minimal — article pages may extend it
+   ═══════════════════════════════════════════ */
+
+/* ── Article pages can use these shared styles ── */
+
+/* Article content container (for article detail pages) */
+.article-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: calc(var(--nav-h) + 48px) var(--pad-x) 64px;
+}
+
+.article-container h1 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(28px, 4vw, 39px);
+  line-height: 1.3;
+  margin-bottom: 24px;
+}
+
+.article-container .article-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 48px;
+  font-size: 14px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.article-container .article-body {
+  font-family: var(--sans-cjk);
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--ink-soft);
+}
+
+.article-container .article-body p {
+  margin-bottom: 1.5em;
+}
+
+.article-container .article-body h2 {
+  font-family: var(--serif-cjk);
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--ink);
+  margin-top: 48px;
+  margin-bottom: 16px;
+}
+
+.article-container .article-body h3 {
+  font-family: var(--serif-cjk);
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--ink);
+  margin-top: 36px;
+  margin-bottom: 12px;
+}
+
+/* Code blocks in articles */
+.article-container pre {
+  background: #1a1a2e;
+  color: #e8e3d8;
+  padding: 20px 24px;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 24px 0;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.article-container code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+}
+
+.article-container blockquote {
+  border-left: 3px solid var(--accent);
+  padding: 4px 20px;
+  margin: 24px 0;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Back link */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 32px;
+  transition: color .25s;
+}
+.back-link:hover { color: var(--accent); }
+.back-link .arr { transition: transform .25s var(--ease); }
+.back-link:hover .arr { transform: translateX(-4px); }
+
+/* Article card (for category/all pages) */
+.article-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 24px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line);
+  transition: padding-left .3s var(--ease);
+}
+.article-row:hover { padding-left: 12px; }
+.article-row__title {
+  font-family: var(--serif-cjk);
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--ink);
+  transition: color .25s;
+}
+.article-row:hover .article-row__title { color: var(--accent); }
+.article-row__meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.article-row__tag { color: var(--ink); font-weight: 500; }
+.article-row__date { font-variant-numeric: tabular-nums; }
+.article-row__arr { color: var(--ink); transition: transform .3s var(--ease), color .3s; }
+.article-row:hover .article-row__arr { transform: translateX(5px); color: var(--accent); }
+
+/* Category pills */
+.category-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+.cat-pill {
+  padding: 6px 16px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  font-size: 13px;
+  font-family: var(--mono);
+  letter-spacing: .04em;
+  color: var(--muted);
+  cursor: pointer;
+  background: none;
+  transition: all .2s;
+}
+.cat-pill:hover { color: var(--accent); border-color: var(--accent); }
+.cat-pill.is-active { background: var(--accent); color: var(--paper); border-color: var(--accent); }
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 64px 0;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* Skeleton loading */
+.skeleton {
+  background: linear-gradient(90deg, var(--line) 25%, transparent 50%, var(--line) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s var(--ease) infinite;
+  border-radius: 2px;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute; top: -100%; left: 16px;
+  background: var(--accent); color: #fff;
+  padding: 8px 16px; z-index: 1000;
+  border-radius: 2px; font-weight: 600;
+}
+.skip-link:focus { top: 8px; }

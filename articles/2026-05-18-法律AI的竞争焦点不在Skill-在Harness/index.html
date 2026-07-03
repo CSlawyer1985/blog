@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>法律AI的竞争焦点不在Skill，在Harness — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（90）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（73）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（10）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+      <a href="/articles/2026-06-25-律师行业的K型分化-AI不是淘汰律师-是分化律师/" class="sidebar-link">律师行业的K型分化：AI不是淘汰律师，是分化律师</a>
+      
+      <a href="/articles/2026-06-21-知识库不只是往里加-最难的是退出/" class="sidebar-link">知识库不只是往里加——最难的是退出</a>
+      
+      <a href="/articles/2026-06-21-不是所有数据都该放进同一个知识库-法律数据的四级权限/" class="sidebar-link">不是所有数据都该放进同一个知识库——法律数据的四级权限</a>
+      
+      <a href="/articles/2026-06-21-灵光乍现为什么需要一群人-AI应用不是一个人的事/" class="sidebar-link">灵光乍现为什么需要一群人——AI应用不是一个人的事</a>
+      
+      <a href="/articles/2026-06-21-法律人数据源的四级金字塔-真正拉开差距的-在第四层/" class="sidebar-link">法律人数据源的四级金字塔——真正拉开差距的，在第四层</a>
+      
+      <a href="/articles/2026-06-21-法律人-你为什么不敢分享/" class="sidebar-link">法律人，你为什么不敢分享</a>
+      
+      <a href="/articles/2026-06-21-模型审计为什么没有终点-一个课程群里所有人都想问的问题/" class="sidebar-link">模型审计为什么没有终点——一个课程群里所有人都想问的问题</a>
+      
+      <a href="/articles/2026-06-21-数据采集的三种姿势-从手工到全自动-中间有一个最实用的选项/" class="sidebar-link">数据采集的三种姿势——从手工到全自动，中间有一个最实用的选项</a>
+      
+      <a href="/articles/2026-06-21-数据清洗的三层分工-机器能做的-别让大模型来/" class="sidebar-link">数据清洗的三层分工——机器能做的，别让大模型来</a>
+      
+      <a href="/articles/2026-06-21-开源精神-法律人最缺也最需要的一种工作方式/" class="sidebar-link">开源精神——法律人最缺也最需要的一种工作方式</a>
+      
+      <a href="/articles/2026-06-21-你一边喊着大模型泄密-一边在微信上传客户合同/" class="sidebar-link">你一边喊着大模型泄密，一边在微信上传客户合同</a>
+      
+      <a href="/articles/2026-06-21-四种脱敏方法的能力边界-知道什么能自动化-比知道怎么自动化更重要/" class="sidebar-link">四种脱敏方法的能力边界——知道什么能自动化，比知道怎么自动化更重要</a>
+      
+      <a href="/articles/2026-06-21-数据多不等于好用-判断值不值得投入的四个标准/" class="sidebar-link">数据多不等于好用——判断值不值得投入的四个标准</a>
+      
+      <a href="/articles/2026-06-21-两个长期资产-AI时代法律人的真正积累/" class="sidebar-link">两个长期资产——AI时代法律人的真正积累</a>
+      
+      <a href="/articles/2026-06-21-从PDF到AI可用的Markdown-minerU转换后最常见的七类清洗问题/" class="sidebar-link">从PDF到AI可用的Markdown——minerU转换后最常见的七类清洗问题</a>
+      
+      <a href="/articles/2026-06-21-给每份法律资料办张身份证-YAML-Front-Matter入门/" class="sidebar-link">给每份法律资料办张身份证——YAML Front Matter入门</a>
+      
+      <a href="/articles/2026-06-21-你的知识库需要一个地图-LLM-Wiki-入门/" class="sidebar-link">你的知识库需要一个地图——LLM Wiki 入门</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-05-18">2026年5月18日</time>
+            <span class="dotsep"></span>
+            <span>6 分钟阅读</span>
+          </div>
+          <h1 class="article-title">法律AI的竞争焦点不在Skill，在Harness</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>!<a href="cover.png">封面</a></p>
+<p>!<a href="cover.png">封面</a></p>
+<p>最近因为陆续做了一些AI认知方面的分享，加上开源了Claude-for-Legal-ZH（中国法适配版）项目以及合同审核、法律分析几个项目，我接到了不少交流或评测邀请。北京、上海多家做法律AI产品的公司，也有不少个人开发者，来聊产品方向和技术路线。</p>
+<p>这些交流里有一个非常一致的倾向：几乎所有人都在强调同一个词——Skill（可复用的AI能力单元）。做产品的说自己在堆Skill库，做投资的问"你们的Skill有多少个"，做竞品分析的比较"谁的Skill覆盖面更广"。</p>
+<p>整个法律AI赛道似乎正在形成一个集体判断：Skill就是法律AI的产品核心，谁掌握了最多、最好的Skill，谁就赢了。</p>
+<p>这个判断只对了一半。Skill确实重要，但它不是全部，甚至不是最难的部分。我想说清楚为什么，从我在这几轮交流中发现的问题说起。</p>
+<h2 id="Skill为什么重要但不够">Skill为什么重要但不够</h2>
+<p>Skill是一段封装好的指令，让AI在特定场景下执行特定任务。"审查一份买卖合同"是一个Skill，"检索某个案由的类案"是一个Skill，"提取合同中的关键条款"也是一个Skill。它就是工具箱里的一把扳手，确实不可或缺。没有Skill，AI面对法律场景什么事也干不了。</p>
+<p>但Skill有几个自身框架内解决不了的局限。</p>
+<p>它首先是扁平的。Skill要么放在全局，要么放在项目，中间没有层。法律工作的复杂度却是分层的：有些规则对所有案件通用，比如证据认定的一般原则；有些规则只适用于某个业务领域，比如建设工程特有的结算规则；还有些规则只针对某个具体项目，比如某个客户的专属审查标准。你把一个合同审查Skill放在全局，它照顾不到项目的特殊性；放在项目里，又失去了通用性。这不是Skill写得不好，是Skill这个容器本身的结构限制。</p>
+<p>更麻烦的是上下文割裂。每个Skill独立运行，Skill之间没有状态传递。合同审核做完发现了风险条款，这个发现能不能自动喂给后续的风险评估？案例检索找到了三个类案，能不能自动进入下一个写作环节作为论据？在纯Skill架构下，这些"之间"的事没人管。每个Skill只对自己的输入输出负责，不关心上下游。</p>
+<p>还有一个根本性的问题：能力不等于编排。拥有一百个法律Skill，和拥有一个能协同调用这一百个Skill的系统，是完全不同的事。100个零件散落在地上不等于一辆车。零件之间的关系——谁先谁后、谁调谁、什么条件下触发——才是让零件变成系统的关键。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 260"&gt;
+  &lt;rect width="600" height="260" fill="#fafafa" rx="4"/&gt;
+  &lt;text x="130" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#333" font-family="system-ui, sans-serif"&gt;纯 Skill 架构&lt;/text&gt;
+  &lt;rect x="30" y="52" width="90" height="34" rx="3" fill="#e8e8e8" stroke="#ccc" stroke-width="1"/&gt;
+  &lt;text x="75" y="74" text-anchor="middle" font-size="11" fill="#666" font-family="system-ui, sans-serif"&gt;合同审查&lt;/text&gt;
+  &lt;rect x="140" y="48" width="90" height="34" rx="3" fill="#e8e8e8" stroke="#ccc" stroke-width="1"/&gt;
+  &lt;text x="185" y="70" text-anchor="middle" font-size="11" fill="#666" font-family="system-ui, sans-serif"&gt;案例检索&lt;/text&gt;
+  &lt;rect x="60" y="102" width="90" height="34" rx="3" fill="#e8e8e8" stroke="#ccc" stroke-width="1"/&gt;
+  &lt;text x="105" y="124" text-anchor="middle" font-size="11" fill="#666" font-family="system-ui, sans-serif"&gt;法条查询&lt;/text&gt;
+  &lt;rect x="170" y="98" width="90" height="34" rx="3" fill="#e8e8e8" stroke="#ccc" stroke-width="1"/&gt;
+  &lt;text x="215" y="120" text-anchor="middle" font-size="11" fill="#666" font-family="system-ui, sans-serif"&gt;文书起草&lt;/text&gt;
+  &lt;rect x="100" y="155" width="90" height="34" rx="3" fill="#e8e8e8" stroke="#ccc" stroke-width="1"/&gt;
+  &lt;text x="145" y="177" text-anchor="middle" font-size="11" fill="#666" font-family="system-ui, sans-serif"&gt;风险评估&lt;/text&gt;
+  &lt;text x="130" y="230" text-anchor="middle" font-size="12" fill="#999" font-family="system-ui, sans-serif"&gt;各 Skill 独立运行，互不关联&lt;/text&gt;
+  &lt;line x1="278" y1="125" x2="322" y2="125" stroke="#333" stroke-width="2"/&gt;
+  &lt;polygon points="320,120 330,125 320,130" fill="#333"/&gt;
+  &lt;text x="470" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#333" font-family="system-ui, sans-serif"&gt;Harness 架构&lt;/text&gt;
+  &lt;rect x="350" y="42" width="240" height="185" rx="4" fill="none" stroke="#333" stroke-width="1.8"/&gt;
+  &lt;text x="470" y="62" text-anchor="middle" font-size="11" fill="#333" font-weight="600" font-family="system-ui, sans-serif"&gt;HARNESS 编排层&lt;/text&gt;
+  &lt;line x1="358" y1="70" x2="582" y2="70" stroke="#e0e0e0" stroke-width="1"/&gt;
+  &lt;rect x="358" y="78" width="108" height="26" rx="2" fill="#f0f0f0" stroke="#aaa" stroke-width="1"/&gt;
+  &lt;text x="412" y="95" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif"&gt;规则引擎&lt;/text&gt;
+  &lt;rect x="474" y="78" width="108" height="26" rx="2" fill="#f0f0f0" stroke="#aaa" stroke-width="1"/&gt;
+  &lt;text x="528" y="95" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif"&gt;工具路由&lt;/text&gt;
+  &lt;rect x="358" y="112" width="108" height="26" rx="2" fill="#f0f0f0" stroke="#aaa" stroke-width="1"/&gt;
+  &lt;text x="412" y="129" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif"&gt;知识编排&lt;/text&gt;
+  &lt;rect x="474" y="112" width="108" height="26" rx="2" fill="#f0f0f0" stroke="#aaa" stroke-width="1"/&gt;
+  &lt;text x="528" y="129" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif"&gt;状态管理&lt;/text&gt;
+  &lt;rect x="358" y="146" width="224" height="26" rx="2" fill="#f0f0f0" stroke="#aaa" stroke-width="1"/&gt;
+  &lt;text x="470" y="163" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif"&gt;工作流管线&lt;/text&gt;
+  &lt;line x1="358" y1="182" x2="582" y2="182" stroke="#e0e0e0" stroke-width="1"/&gt;
+  &lt;rect x="358" y="190" width="68" height="24" rx="2" fill="#e0e0e0" stroke="#bbb" stroke-width="1"/&gt;
+  &lt;text x="392" y="206" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui, sans-serif"&gt;Skill A&lt;/text&gt;
+  &lt;rect x="434" y="190" width="68" height="24" rx="2" fill="#e0e0e0" stroke="#bbb" stroke-width="1"/&gt;
+  &lt;text x="468" y="206" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui, sans-serif"&gt;Skill B&lt;/text&gt;
+  &lt;rect x="510" y="190" width="68" height="24" rx="2" fill="#e0e0e0" stroke="#bbb" stroke-width="1"/&gt;
+  &lt;text x="544" y="206" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui, sans-serif"&gt;Skill C&lt;/text&gt;
+  &lt;text x="470" y="247" text-anchor="middle" font-size="12" fill="#999" font-family="system-ui, sans-serif"&gt;Harness 调度 Skill，协同运转&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<h2 id="真正的壁垒在编排层">真正的壁垒在编排层</h2>
+<p>我想再强调这个概念：Harness（驾驭层）。</p>
+<p>Harness不是AI本身，是让AI在真实工作场景中可靠运转的那套工程体系。打个粗略的比方：如果AI模型是发动机，Harness就是整台车——传动系统、刹车系统、仪表盘、安全气囊——让发动机的动力能可靠地传到轮子上的所有东西。</p>
+<p>具体来说，Harness管几件事：什么时候触发什么规则，规则冲突时怎么排优先级；什么任务用什么工具，工具挂了怎么降级；什么场景调什么知识库，不同来源的信息可信度怎么标注；从输入到输出的完整流程怎么串，每个环节的质检标准是什么；跨步骤、跨会话的上下文怎么延续。</p>
+<p>在这个架构里，Skill只是一个被调度的能力单元，和命令行工具、MCP服务器（一种让AI调用外部工具的标准接口）、规则文件是平级关系。调度它们的不是某个全能的Skill，是Harness。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 290"&gt;
+  &lt;rect width="600" height="290" fill="#fafafa" rx="4"/&gt;
+  &lt;text x="300" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#333" font-family="system-ui, sans-serif"&gt;Harness 分层架构示意&lt;/text&gt;
+  &lt;rect x="60" y="42" width="480" height="46" rx="3" fill="#f2f2f2" stroke="#aaa" stroke-width="1.5"/&gt;
+  &lt;text x="300" y="62" text-anchor="middle" font-size="12" font-weight="600" fill="#333" font-family="system-ui, sans-serif"&gt;全局规则层&lt;/text&gt;
+  &lt;text x="300" y="78" text-anchor="middle" font-size="10" fill="#888" font-family="system-ui, sans-serif"&gt;证据认定原则 · 法律研究规范 · 输出规范&lt;/text&gt;
+  &lt;rect x="100" y="102" width="400" height="46" rx="3" fill="#e8e8e8" stroke="#999" stroke-width="1.5"/&gt;
+  &lt;text x="300" y="122" text-anchor="middle" font-size="12" font-weight="600" fill="#333" font-family="system-ui, sans-serif"&gt;领域规则层&lt;/text&gt;
+  &lt;text x="300" y="138" text-anchor="middle" font-size="10" fill="#888" font-family="system-ui, sans-serif"&gt;建工结算规则 · 投融资审查标准 · 合同分类路由&lt;/text&gt;
+  &lt;rect x="140" y="162" width="320" height="46" rx="3" fill="#ddd" stroke="#888" stroke-width="1.5"/&gt;
+  &lt;text x="300" y="182" text-anchor="middle" font-size="12" font-weight="600" fill="#333" font-family="system-ui, sans-serif"&gt;项目规则层&lt;/text&gt;
+  &lt;text x="300" y="198" text-anchor="middle" font-size="10" fill="#888" font-family="system-ui, sans-serif"&gt;客户专属标准 · 案件特定配置&lt;/text&gt;
+  &lt;rect x="80" y="228" width="100" height="30" rx="2" fill="#d0d0d0" stroke="#aaa" stroke-width="1"/&gt;
+  &lt;text x="130" y="248" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif"&gt;Skill 插件&lt;/text&gt;
+  &lt;rect x="195" y="228" width="100" height="30" rx="2" fill="#d0d0d0" stroke="#aaa" stroke-width="1"/&gt;
+  &lt;text x="245" y="248" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif"&gt;CLI 工具&lt;/text&gt;
+  &lt;rect x="310" y="228" width="100" height="30" rx="2" fill="#d0d0d0" stroke="#aaa" stroke-width="1"/&gt;
+  &lt;text x="360" y="248" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif"&gt;MCP 服务&lt;/text&gt;
+  &lt;rect x="425" y="228" width="100" height="30" rx="2" fill="#d0d0d0" stroke="#aaa" stroke-width="1"/&gt;
+  &lt;text x="475" y="248" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif"&gt;知识库&lt;/text&gt;
+  &lt;text x="300" y="280" text-anchor="middle" font-size="10" fill="#aaa" font-family="system-ui, sans-serif"&gt;能力单元层 — 被 Harness 调度，不做调度&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>Harness比Skill难复制得多。一段Prompt封装的Skill，竞争对手花几天就能逆向。你写了一个合同审查Skill，别人拿你的输出样本做参照，迭代几轮也能做到八九不离十。但Harness是系统工程——架构设计、分层规则、工具链编排、知识库治理，每一个环节都需要和具体的法律业务深度磨合。这种磨合是在真实案件中、在客户反馈中、在一次次幻觉和错误中迭代出来的，不是坐在办公室里能想出来的。</p>
+<p>一句话：Skill是菜谱，Harness是后厨管理体系。菜谱可以抄，但一家餐厅能不能稳定出菜，看的是管理体系。</p>
+<p>行业里也能看到这个趋势。Anthropic自己在Claude for Legal上的方向，推的是整套工作流编排能力，不是一个Skill市场。真正在企业级场景跑通的法律AI产品，竞争力都不在单一Skill的数量上，而在整体系统的可靠性上。</p>
+<h2 id="几个会被问到的反驳">几个会被问到的反驳</h2>
+<p>说到这里，通常会引来几个反驳，我逐个回应。</p>
+<p>有人会说，Skill多了自然能组合出复杂工作流。其实不能。组合需要编排逻辑，编排逻辑本身是更高层的设计。你可以有最齐全的一箱子工具，但没有施工图告诉你先用哪个后用哪个、遇到意外怎么处理，工具箱再满也是摆设。</p>
+<p>也有人说，用户不需要懂Harness，用好Skill就行了。短期确实如此。用户还在"试一试"的阶段，单个Skill好不好用确实是第一感知。但一旦进入日常依赖——律师每天用它审合同、写文书、做检索——Skill的局限就会暴露：同一个任务今天和昨天的结果不一致，不同Skill的输出互相矛盾，想针对自己的案件做一点定制却改不了。企业级客户需要的不是更多Skill，是更可控的系统。</p>
+<p>还有人会问，那你的意思是Skill就不重要了？不是。Skill是Harness的必要组件，没有好的Skill，Harness就是空架子。问题在于把Skill当成"全部"还是"一部分"。这个定位判断，决定了产品方向的天壤之别。</p>
+<h2 id="交流中的隐忧">交流中的隐忧</h2>
+<p>回到那些交流场景。</p>
+<p>每一场对话我都认真听了。一个很明显的规律：越是把Skill当成产品核心的团队，在"系统可靠性"这个点上越容易语焉不详。问"合同审核做完发现问题，怎么自动流转到下一个环节"——答不上来。问"不同项目的规则差异怎么处理"——说"我们正在做"。问"跨会话的上下文怎么保持一致"——沉默。</p>
+<p>这些都不是靠加更多Skill能解决的。它们是编排层的问题。</p>
+<p>这让我有些担忧。如果整个行业都在朝Skill堆量的方向狂奔，忽视了编排层的建设，客户最终拿到的是"能力很多但系统不可靠"的产品。法律场景对可靠性的容忍度极低。律师可以接受AI偶尔不够聪明，但没法接受它今天说的和明天说的不一样，或者在一个关键条款上悄悄改了判断。一次严重的流程断裂，可能就让客户彻底失去信任。</p>
+<p>而客户失去信任之后，离开的不是某一家产品，是"法律AI"这个品类。这对整个行业都是灾难。</p>
+<h2 id="我也走过弯路">我也走过弯路</h2>
+<p>我最早搭法律AI工作流的时候，也在堆Skill。合同审核、案例检索、法条查询、文书起草，一个一个往上加，加完觉得自己挺厉害。</p>
+<p>很快碰到了天花板。瓶颈不在单个Skill的能力上，在它们之间怎么协同：什么时候调哪个Skill，不同项目的规则差异怎么适配，知识库的权威性和时效性怎么保证，跨步骤的状态怎么传递。</p>
+<p>后来我把重心转到了Harness上。做了分层规则引擎——全局规则对所有项目生效，领域规则只对特定业务生效，项目规则只对当前案件生效。做了工具路由表——什么任务用什么工具，工具挂了怎么降级。做了知识库交叉引用——写完文章自动检索知识库，验证引用的法条和案例是否仍然有效。做了输出流程管线——从大纲到正文到去AI痕迹到附作者简介，每个环节有明确的质检标准。</p>
+<p>这些不是Skill。但它们决定了Skill能不能在正确的时机、以正确的方式被调用。开源出来的Claude for Legal项目，核心架构就是这个思路——Skill只是Harness里的一个插件元素。</p>
+<h2 id="结尾">结尾</h2>
+<p>法律AI的下一阶段竞争，焦点会从"谁有更多Skill"转向"谁的Harness更可靠"。</p>
+<p>如果你在做法律AI——做产品也好，给自己搭工具也好——花在编排层架构上的时间，至少应该和花在单个Skill上一样多。不是Skill不重要。是光有零件不够，你得把它们装成一台能跑的车。</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalAGI.cn" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

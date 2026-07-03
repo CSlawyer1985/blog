@@ -1,0 +1,23 @@
+/* ───── 陈石 · 法与AI — Design Tokens ───── */
+:root {
+  --paper: #F3EDE3;
+  --ink: #1A1714;
+  --accent: #C0392B;
+  --accent-glow: rgba(192, 57, 43, 0.5);
+  --line: #C9C0B2;
+  --muted: #7d756a;
+  --ink-soft: #3a342d;
+
+  --serif: 'Playfair Display', 'Noto Serif SC', Georgia, serif;
+  --serif-cjk: 'Noto Serif SC', 'Playfair Display', serif;
+  --sans: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+  --sans-cjk: 'Noto Sans SC', 'Inter', sans-serif;
+  --mono: ui-monospace, 'SF Mono', 'Menlo', 'Roboto Mono', monospace;
+
+  --nav-h: 78px;
+  --pad-x: clamp(32px, 5vw, 72px);
+  --rail-x: 48px;
+  --ease: cubic-bezier(.22, .61, .36, 1);
+
+  /* i18n: data attributes control visibility */
+}
