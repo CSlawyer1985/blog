@@ -31,6 +31,7 @@ from config import ARTICLE_WORKSPACE
 PNGQUANT_BIN = "/opt/homebrew/bin/pngquant"
 COVER_QUALITY = "65-80"       # 文章封面：平衡质量与体积
 ASSET_QUALITY = "70-90"       # 头像/二维码等关键素材：更高质量
+COVER_MAX_WIDTH = 1400        # 封面最大宽度（2x retina，实际显示 ≤700px）
 
 
 def build():
@@ -139,9 +140,10 @@ def copy_cover_images(articles: list) -> int:
                 shutil.copy2(src, dest)
                 count += 1
 
-                # 自动压缩 PNG 封面图
+                # 先缩放到合理尺寸，再压缩
                 if ext == '.png':
                     before = os.path.getsize(dest)
+                    resize_image(dest, COVER_MAX_WIDTH)
                     if compress_image(dest, COVER_QUALITY):
                         after = os.path.getsize(dest)
                         saved = (before - after) / before * 100
@@ -152,6 +154,36 @@ def copy_cover_images(articles: list) -> int:
     if compressed:
         print(f"  ✅ 已压缩 {compressed} 张封面图")
     return count
+
+
+def resize_image(path: str, max_width: int) -> bool:
+    """用 Pillow 缩放图片到指定最大宽度（保持比例）。
+
+    Args:
+        path: 图片文件路径
+        max_width: 最大宽度（像素），超过此宽度才缩放
+
+    Returns:
+        True 如果进行了缩放，False 如果跳过
+    """
+    if not os.path.isfile(path):
+        return False
+
+    try:
+        from PIL import Image
+        img = Image.open(path)
+        if img.width <= max_width:
+            return False  # 已经够小，跳过
+
+        # 计算新高度（保持比例）
+        ratio = max_width / img.width
+        new_h = int(img.height * ratio)
+        img = img.resize((max_width, new_h), Image.LANCZOS)
+        img.save(path, optimize=True)
+        return True
+    except Exception as e:
+        print(f"  ⚠️  缩放失败: {path} — {e}")
+        return False
 
 
 def compress_image(path: str, quality: str = COVER_QUALITY) -> bool:
@@ -243,6 +275,7 @@ def compress_existing():
     for f in cover_files:
         before = os.path.getsize(f)
         quality = COVER_QUALITY
+        resize_image(f, COVER_MAX_WIDTH)  # 先缩放到合理尺寸
         if compress_image(f, quality):
             after = os.path.getsize(f)
             saved = (before - after) / before * 100
