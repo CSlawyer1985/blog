@@ -245,6 +245,7 @@ function initWritingList() {
       if (list) renderWritingList(list, articles);
     })
     .catch(function() {
+      if (feat) updateFeatureCard({slug:'2026-07-02-高权限-Agent-上线前-先写三张清单',title:'高权限 Agent 上线前，先写三张清单',category_label:'AI+法律',date:'2026-07-02',read_time:6,excerpt:''});
       if (list) renderWritingList(list, getFallbackArticles());
     });
 }
