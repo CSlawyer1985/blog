@@ -542,3 +542,13 @@ function initMobileNav() {
   if (document.readyState !== "loading") init();
   else document.addEventListener("DOMContentLoaded", init);
 })();
+
+/* ── Visitor Counter ── */
+(function() {
+  var el = document.getElementById('visitor-num');
+  if (!el) return;
+  fetch('https://api.countapi.xyz/hit/cslawyer-blog/visits')
+    .then(function(r) { return r.json(); })
+    .then(function(d) { el.textContent = d.value.toLocaleString(); })
+    .catch(function() { el.textContent = ''; });
+})();

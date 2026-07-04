@@ -140,12 +140,12 @@
 .about__right{padding-top:clamp(18px,1.5vw,24px);}
 
 .about__title{
-  font-family:var(--serif);font-weight:500;
+  font-family:var(--serif);font-weight:600;
   font-size:clamp(72px,7.2vw,126px);line-height:.92;
   margin-bottom:28px;
 }
 .about__bio p{
-  font-family:var(--sans-cjk);font-weight:300;
+  font-family:var(--sans-cjk);font-weight:400;
   font-size:clamp(16px,1.35vw,22px);line-height:1.65;
   color:var(--ink-soft);max-width:31em;margin-bottom:12px;
 }
@@ -162,9 +162,10 @@
     linear-gradient(90deg,rgba(201,192,178,.14) 1px,transparent 1px) 0 0/31px 100%;
 }
 .bp__img{
-  position:absolute;bottom:0;left:50%;
-  transform:translateX(-47%);
-  width:47%;height:auto;max-width:none;
+  position:absolute;top:50%;left:53%;
+  transform:translate(-50%,-50%);
+  width:44%;aspect-ratio:1;border-radius:50%;
+  object-fit:cover;
   mix-blend-mode:multiply;
   filter:saturate(0) contrast(1.05);
 }
@@ -172,11 +173,12 @@
   position:absolute;top:50%;left:53%;
   width:44%;aspect-ratio:1;transform:translate(-50%,-50%);
   border:1px solid rgba(192,57,43,.16);border-radius:50%;
+  pointer-events:none;
 }
 /* No photo fallback */
 .bp__img-placeholder{
   position:absolute;bottom:12%;left:50%;
-  transform:translateX(-47%);
+  transform:translateX(-50%);
   width:47%;height:60%;
   display:flex;align-items:center;justify-content:center;
   font-family:var(--serif);font-size:clamp(24px,3vw,40px);
@@ -914,6 +916,11 @@ a.cbar__item:hover .cbar__arr{transform:translateX(5px);color:var(--accent);}
 .to-top:hover{color:var(--ink);}
 .to-top .arr{transition:transform .25s var(--ease);}
 .to-top:hover .arr{transform:translateY(-3px);}
+.visitor-counter{
+  font-size:12px;color:var(--muted);letter-spacing:.04em;
+  white-space:nowrap;
+}
+.visitor-num{font-variant-numeric:tabular-nums;}
 
 /* ═══════════ RESPONSIVE ═══════════ */
 @media (max-width:1100px){
@@ -975,7 +982,6 @@ a.cbar__item:hover .cbar__arr{transform:translateX(5px);color:var(--accent);}
   }
   .about__right{padding-top:0;}
   .blueprint{height:auto;aspect-ratio:1.34;}
-  .bp__img{width:55%;transform:translateX(-46%);}
   .flow{margin-bottom:38px;}
   .signal{max-width:none;margin-left:0;}
   .srow > a,.srow.srow--soon{

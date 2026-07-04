@@ -1,7 +1,46 @@
 {
-  "updated": "2026-07-01",
-  "total": 90,
+  "updated": "2026-07-02",
+  "total": 94,
   "articles": [
+    {
+      "id": "2026-07-02-高权限-Agent-上线前-先写三张清单",
+      "title": "高权限 Agent 上线前，先写三张清单",
+      "date": "2026-07-02",
+      "date_str": "2026年7月2日",
+      "category_id": "ai-law",
+      "category_label": "AI+法律",
+      "char_count": 2689,
+      "read_time": 7,
+      "excerpt": "",
+      "has_cover": true,
+      "slug": "2026-07-02-高权限-Agent-上线前-先写三张清单"
+    },
+    {
+      "id": "2026-07-02-法律资料别急着进知识库-先给它一本留痕账",
+      "title": "法律资料别急着进知识库，先给它一本留痕账",
+      "date": "2026-07-02",
+      "date_str": "2026年7月2日",
+      "category_id": "ai-law",
+      "category_label": "AI+法律",
+      "char_count": 2103,
+      "read_time": 5,
+      "excerpt": "",
+      "has_cover": true,
+      "slug": "2026-07-02-法律资料别急着进知识库-先给它一本留痕账"
+    },
+    {
+      "id": "2026-07-02-法律人学-AI-最缺的不是工具",
+      "title": "法律人学 AI，最缺的不是工具",
+      "date": "2026-07-02",
+      "date_str": "2026年7月2日",
+      "category_id": "ai-law",
+      "category_label": "AI+法律",
+      "char_count": 2235,
+      "read_time": 6,
+      "excerpt": "",
+      "has_cover": true,
+      "slug": "2026-07-02-法律人学-AI-最缺的不是工具"
+    },
     {
       "id": "2026-07-01-国资监管的悖论-红线越硬-经营越软",
       "title": "国资监管的悖论：红线越硬，经营越软",
@@ -40,6 +79,19 @@
       "excerpt": "",
       "has_cover": true,
       "slug": "2026-07-01-月入百万的AI中转站-钱到底从哪来"
+    },
+    {
+      "id": "2026-06-30-六类建工争议的答案被改写-最高法建工司法解释二施行首日实务解读",
+      "title": "六类建工争议的答案被改写——最高法建工司法解释二施行首日实务解读",
+      "date": "2026-06-30",
+      "date_str": "2026年6月30日",
+      "category_id": "legal-practice",
+      "category_label": "法律实务",
+      "char_count": 4031,
+      "read_time": 10,
+      "excerpt": "",
+      "has_cover": true,
+      "slug": "2026-06-30-六类建工争议的答案被改写-最高法建工司法解释二施行首日实务解读"
     },
     {
       "id": "2026-06-30-政府项目审计-财政评审的最长期限限制-建工解释二第13条对-久审不决-的终结",

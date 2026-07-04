@@ -17,6 +17,7 @@
 import sys
 import os
 import shutil
+import subprocess
 
 # 确保项目根目录在 path 中
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -25,6 +26,11 @@ from scripts.extract_articles import scan_articles
 from scripts.generate_index import generate_articles_index, generate_site_json, write_json
 from scripts.generate_pages import generate_all
 from config import ARTICLE_WORKSPACE
+
+# ── 图片压缩配置 ──
+PNGQUANT_BIN = "/opt/homebrew/bin/pngquant"
+COVER_QUALITY = "65-80"       # 文章封面：平衡质量与体积
+ASSET_QUALITY = "70-90"       # 头像/二维码等关键素材：更高质量
 
 
 def build():
@@ -110,8 +116,9 @@ def check_assets():
 
 
 def copy_cover_images(articles: list) -> int:
-    """从文章工作区复制封面图到博客输出目录"""
+    """从文章工作区复制封面图到博客输出目录，并自动压缩"""
     count = 0
+    compressed = 0
     project_root = os.path.dirname(__file__)
     workspace = ARTICLE_WORKSPACE
 
@@ -131,9 +138,66 @@ def copy_cover_images(articles: list) -> int:
                 dest = os.path.join(dest_dir, f'cover{ext}')
                 shutil.copy2(src, dest)
                 count += 1
+
+                # 自动压缩 PNG 封面图
+                if ext == '.png':
+                    before = os.path.getsize(dest)
+                    if compress_image(dest, COVER_QUALITY):
+                        after = os.path.getsize(dest)
+                        saved = (before - after) / before * 100
+                        print(f"  📷 {a['slug'][:50]}... 压缩: {before//1024}KB → {after//1024}KB ({saved:.0f}%)")
+                        compressed += 1
                 break
 
+    if compressed:
+        print(f"  ✅ 已压缩 {compressed} 张封面图")
     return count
+
+
+def compress_image(path: str, quality: str = COVER_QUALITY) -> bool:
+    """用 pngquant 压缩 PNG 图片，原地替换。
+
+    Args:
+        path: 图片文件路径
+        quality: 质量范围，如 "65-80"
+
+    Returns:
+        True 如果压缩成功，False 如果跳过或失败
+    """
+    if not os.path.isfile(path):
+        return False
+
+    ext = os.path.splitext(path)[1].lower()
+    if ext != '.png':
+        return False  # 非 PNG 跳过（后续可扩展 WebP 转换）
+
+    if not os.path.isfile(PNGQUANT_BIN):
+        print(f"  ⚠️  pngquant 未安装 ({PNGQUANT_BIN})，跳过压缩")
+        return False
+
+    # 在临时目录生成压缩版，压缩成功则原地替换
+    tmp = path + '.tmp'
+    try:
+        subprocess.run(
+            [PNGQUANT_BIN, f'--quality={quality}', '--speed', '1',
+             '--force', '--output', tmp, path],
+            check=True, capture_output=True
+        )
+        # 验证压缩后文件有效且比原文件小
+        if os.path.isfile(tmp) and os.path.getsize(tmp) > 0:
+            if os.path.getsize(tmp) < os.path.getsize(path):
+                os.replace(tmp, path)
+                return True
+            else:
+                os.remove(tmp)  # 没变小，保留原文件
+                return False
+        return False
+    except subprocess.CalledProcessError as e:
+        print(f"  ⚠️  压缩失败: {path} — {e.stderr.decode() if e.stderr else e}")
+        # 清理临时文件
+        if os.path.isfile(tmp):
+            os.remove(tmp)
+        return False
 
 
 def show_stats():
@@ -154,8 +218,56 @@ def show_stats():
         print(f"  [{a['date']}] [{a['category_label']}] {a['title']}")
 
 
+def compress_existing():
+    """压缩博客输出目录中所有已有 PNG 图片（articles/ 和 assets/）"""
+    import glob
+    project_root = os.path.dirname(os.path.abspath(__file__))
+    patterns = [
+        os.path.join(project_root, 'articles', '**', '*.png'),
+        os.path.join(project_root, 'assets', '*.png'),
+    ]
+    files = []
+    for pat in patterns:
+        files.extend(glob.glob(pat, recursive=True))
+
+    # 区分封面和素材
+    cover_files = [f for f in files if '/articles/' in f]
+    asset_files = [f for f in files if '/assets/' in f]
+
+    total_before = sum(os.path.getsize(f) for f in files)
+    compressed = 0
+
+    print(f"共找到 {len(files)} 张图片（{len(cover_files)} 张封面 + {len(asset_files)} 张素材）")
+    print(f"压缩前总大小: {total_before/1024/1024:.1f} MB\n")
+
+    for f in cover_files:
+        before = os.path.getsize(f)
+        quality = COVER_QUALITY
+        if compress_image(f, quality):
+            after = os.path.getsize(f)
+            saved = (before - after) / before * 100
+            print(f"  {os.path.relpath(f, project_root)}: {before//1024}KB → {after//1024}KB ({saved:.0f}%)")
+            compressed += 1
+
+    for f in asset_files:
+        before = os.path.getsize(f)
+        quality = ASSET_QUALITY  # 头像等素材用更高质量
+        if compress_image(f, quality):
+            after = os.path.getsize(f)
+            saved = (before - after) / before * 100
+            print(f"  {os.path.relpath(f, project_root)}: {before//1024}KB → {after//1024}KB ({saved:.0f}%)")
+            compressed += 1
+
+    total_after = sum(os.path.getsize(f) for f in files)
+    print(f"\n  ✅ 已压缩 {compressed} 张")
+    print(f"  总大小: {total_before/1024/1024:.1f}MB → {total_after/1024/1024:.1f}MB "
+          f"({(total_before - total_after)/total_before*100:.0f}%)")
+
+
 if __name__ == '__main__':
     if '--stats' in sys.argv or '-s' in sys.argv:
         show_stats()
+    elif '--compress' in sys.argv or '-c' in sys.argv:
+        compress_existing()
     else:
         build()
