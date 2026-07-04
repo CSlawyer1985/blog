@@ -466,8 +466,10 @@ function initMobileNav() {
       var r = media.getBoundingClientRect();
       boxW = r.width; boxH = r.height;
       extPx = boxW * EXT;
+      // 粒子垂直偏移（微调对齐），正数=下移
+      var Y_OFF = 12;
       canvas.style.left = (-extPx) + "px";
-      canvas.style.top = "0px";
+      canvas.style.top = Y_OFF + "px";
       canvas.style.width = (boxW + extPx) + "px";
       canvas.style.height = boxH + "px";
       canvas.style.position = "absolute";
@@ -490,7 +492,10 @@ function initMobileNav() {
       }
     }
 
-    function repositionCanvas() {}
+    function repositionCanvas() {
+      measure();
+      layoutTargets(false);
+    }
 
     function frame(now) {
       var elapsed = now - t0;
