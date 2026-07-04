@@ -466,8 +466,8 @@ function initMobileNav() {
       var r = media.getBoundingClientRect();
       boxW = r.width; boxH = r.height;
       extPx = boxW * EXT;
-      // 粒子垂直偏移（微调对齐），正数=下移
-      var Y_OFF = 12;
+      // 粒子垂直偏移（正数=下移），以衬衫白色领子区域对齐为参照
+      var Y_OFF = 18;
       canvas.style.left = (-extPx) + "px";
       canvas.style.top = Y_OFF + "px";
       canvas.style.width = (boxW + extPx) + "px";
