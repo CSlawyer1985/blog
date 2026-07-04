@@ -232,7 +232,7 @@ function initTerminal() {
 function initWritingList() {
   var list = document.getElementById('writing-list');
   var feat = document.getElementById('feat-article');
-  if (\!list && \!feat) return;
+  if (!list && !feat) return;
 
   fetch('data/articles.json')
     .then(function(res) { return res.json(); })
@@ -251,7 +251,7 @@ function initWritingList() {
 
 function updateFeatureCard(a) {
   var feat = document.getElementById('feat-article');
-  if (\!feat) return;
+  if (!feat) return;
   feat.href = 'articles/' + a.slug + '/';
 
   var img = feat.querySelector('.feat__img');
