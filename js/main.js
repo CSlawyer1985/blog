@@ -228,51 +228,80 @@ function initTerminal() {
   }
 }
 
-/* ─── Writing List Population ─── */
+/* ─── Writing List + Feature Card ─── */
 function initWritingList() {
-  const list = document.getElementById('writing-list');
-  if (!list) return;
+  var list = document.getElementById('writing-list');
+  var feat = document.getElementById('feat-article');
+  if (\!list && \!feat) return;
 
-  // Try to fetch articles data
   fetch('data/articles.json')
-    .then(res => res.json())
-    .then(data => {
-      const articles = Array.isArray(data) ? data : (data.articles || []);
-      renderWritingList(list, articles);
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      var articles = Array.isArray(data) ? data : (data.articles || []);
+      if (articles.length === 0) return;
+      // Feature card: always shows latest article (index 0)
+      if (feat) updateFeatureCard(articles[0]);
+      // Writing list: articles 1-3
+      if (list) renderWritingList(list, articles);
     })
-    .catch(() => {
-      // Fallback: hardcoded articles
-      renderWritingList(list, getFallbackArticles());
+    .catch(function() {
+      if (list) renderWritingList(list, getFallbackArticles());
     });
 }
 
+function updateFeatureCard(a) {
+  var feat = document.getElementById('feat-article');
+  if (\!feat) return;
+  feat.href = 'articles/' + a.slug + '/';
+
+  var img = feat.querySelector('.feat__img');
+  if (img) {
+    img.src = 'articles/' + a.slug + '/cover.png';
+    img.onerror = function() {
+      if (img.parentElement) img.parentElement.style.background = 'linear-gradient(135deg,#2c3e50,#8b2500)';
+      img.style.display = 'none';
+    };
+  }
+
+  var titleEl = document.getElementById('feat-title');
+  var dekEl = document.getElementById('feat-dek');
+  var tagEl = document.getElementById('feat-tag');
+  var dateEl = document.getElementById('feat-date');
+  var readtimeEl = document.getElementById('feat-readtime');
+
+  if (titleEl) titleEl.innerHTML = escapeHTML(a.title);
+  if (dekEl) dekEl.textContent = a.excerpt || '';
+  if (tagEl) tagEl.textContent = a.category_label || '';
+  if (dateEl) dateEl.textContent = (a.date || '').replace(/-/g, '.');
+  if (readtimeEl) readtimeEl.textContent = (a.read_time || '5') + ' 分钟阅读';
+}
+
 function renderWritingList(list, articles) {
-  // Skip the first article (it's the feature card)
-  const listArticles = articles.slice(1, 4);
+  var listArticles = articles.slice(1, 4);
   if (listArticles.length === 0) return;
 
-  list.innerHTML = listArticles.map((a, i) => {
-    const idx = String(i + 2).padStart(2, '0');
-    const thumb = a.has_cover
-      ? `<span class="wpost__thumb"><img src="articles/${a.slug}/cover.png" alt="" loading="lazy" onerror="this.parentElement.style.display='none'"></span>`
+  list.innerHTML = listArticles.map(function(a, i) {
+    var idx = String(i + 2).padStart(2, '0');
+    var thumb = a.has_cover
+      ? '<span class="wpost__thumb"><img src="articles/' + a.slug + '/cover.png" alt="" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></span>'
       : '';
-    return `
-      <a class="wpost" href="articles/${a.slug}/">
-        <span class="wpost__idx">${idx}</span>
-        <div class="wpost__body">
-          <h3 class="wpost__title">${a.title}</h3>
-          <div class="wpost__meta">
-            <span class="wpost__tag">${a.category_label || ''}</span>
-            <span class="dotsep"></span>
-            <span>${a.date || ''}</span>
-            <span class="wpost__views">
-              <svg class="viewico" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.7" d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
-              ${a.read_time || '5'} 分钟阅读
-            </span>
-          </div>
-        </div>
-        ${thumb}
-      </a>`;}).join('');
+    return '<a class="wpost" href="articles/' + a.slug + '/">' +
+      '<span class="wpost__idx">' + idx + '</span>' +
+      '<div class="wpost__body">' +
+        '<h3 class="wpost__title">' + escapeHTML(a.title) + '</h3>' +
+        '<div class="wpost__meta">' +
+          '<span class="wpost__tag">' + (a.category_label || '') + '</span>' +
+          '<span class="dotsep"></span>' +
+          '<span>' + (a.date || '') + '</span>' +
+          '<span class="wpost__views">' +
+            '<svg class="viewico" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.7" d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>' +
+            (a.read_time || '5') + ' 分钟阅读' +
+          '</span>' +
+        '</div>' +
+      '</div>' +
+      thumb +
+    '</a>';
+  }).join('');
 }
 
 function getFallbackArticles() {
@@ -281,6 +310,12 @@ function getFallbackArticles() {
     { slug: '2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文', title: '读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文', category_label: 'AI+法律', date: '2026.07.01', read_time: '10', has_cover: true },
     { slug: '2026-07-01-月入百万的AI中转站-钱到底从哪来', title: '月入百万的AI中转站，钱到底从哪来？', category_label: 'AI+法律', date: '2026.07.01', read_time: '7', has_cover: true },
   ];
+}
+
+function escapeHTML(str) {
+  var div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
 }
 
 /* ─── Mobile Nav ─── */
