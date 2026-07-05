@@ -146,7 +146,7 @@
 }
 .about__bio p{
   font-family:var(--sans-cjk);font-weight:400;
-  font-size:clamp(16px,1.35vw,22px);line-height:1.65;
+  font-size:clamp(14.5px,1.15vw,18px);line-height:1.7;
   color:var(--ink-soft);max-width:31em;margin-bottom:12px;
 }
 
@@ -1034,7 +1034,6 @@ a.cbar__item:hover .cbar__arr{transform:translateX(5px);color:var(--accent);}
     gap:38px;
   }
   .about__title{font-size:clamp(56px,18vw,76px);margin-bottom:22px;}
-  .about__bio p{font-size:15.5px;line-height:1.7;}
   .blueprint{
     max-width:100%;aspect-ratio:1.16;margin-top:34px;overflow:hidden;
   }
