@@ -588,8 +588,23 @@ function initMobileNav() {
 (function() {
   var el = document.getElementById('visitor-num');
   if (!el) return;
-  fetch('https://api.countapi.xyz/hit/cslawyer-blog/visits')
+  var KEY = 'blog-visit-count';
+  var DAY = 86400000;
+
+  // Try server-side counter first
+  fetch('https://api.counterapi.dev/v1/cslawyer-blog/unique-visits/up')
     .then(function(r) { return r.json(); })
-    .then(function(d) { el.textContent = d.value.toLocaleString(); })
-    .catch(function() { el.textContent = ''; });
+    .then(function(d) { el.textContent = (d.count || 0).toLocaleString(); })
+    .catch(function() {
+      // Fallback: localStorage counter (one count per browser)
+      var now = Date.now();
+      var data = localStorage.getItem(KEY);
+      var record = data ? JSON.parse(data) : { count: 0, lastVisit: 0 };
+      if (now - record.lastVisit > DAY) {
+        record.count += 1;
+        record.lastVisit = now;
+        localStorage.setItem(KEY, JSON.stringify(record));
+      }
+      el.textContent = record.count.toLocaleString();
+    });
 })();

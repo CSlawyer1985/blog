@@ -916,11 +916,7 @@ a.cbar__item:hover .cbar__arr{transform:translateX(5px);color:var(--accent);}
 .to-top:hover{color:var(--ink);}
 .to-top .arr{transition:transform .25s var(--ease);}
 .to-top:hover .arr{transform:translateY(-3px);}
-.visitor-counter{
-  font-size:12px;color:var(--muted);letter-spacing:.04em;
-  white-space:nowrap;
-}
-.visitor-num{font-variant-numeric:tabular-nums;}
+#visitor-num{font-variant-numeric:tabular-nums;}
 
 /* ═══════════ RESPONSIVE ═══════════ */
 @media (max-width:1100px){
