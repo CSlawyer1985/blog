@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>陈石 · 法律人 × AI Builder</title>
+  <meta name="description" content="陈石 — 建工/房地产律师 × AI+法律先行者。浙江海泰律师事务所副主任、高级合伙人。著《赋能法律人：AI底层思维与应用范式》。">
+  <style>
+    /* ===== 1. Variables ===== */
+    :root {
+      --paper: #F3EDE3;
+      --ink: #1A1714;
+      --accent: #C0392B;
+      --line: #C9C0B2;
+      --muted: #7d756a;
+      --ink-soft: #3a342d;
+
+      --serif: 'Playfair Display', 'Noto Serif SC', Georgia, serif;
+      --serif-cjk: 'Noto Serif SC', 'Playfair Display', serif;
+      --sans: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+
+      --nav-h: 78px;
+      --pad-x: clamp(32px, 5vw, 72px);
+      --ease: cubic-bezier(.22, .61, .36, 1);
+    }
+
+    /* ===== 2. Reset + Base ===== */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    img{display:block;max-width:100%;}
+    a{color:inherit;text-decoration:none;}
+
+    html,body{overflow:hidden;height:100%;}
+    body{
+      background:var(--paper);
+      color:var(--ink);
+      font-family:var(--sans);
+      -webkit-font-smoothing:antialiased;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+    }
+    body::before{
+      content:"";
+      position:fixed;inset:0;z-index:1;pointer-events:none;
+      opacity:.045;mix-blend-mode:multiply;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* ===== 3. Nav ===== */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:var(--nav-h);
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 var(--pad-x);
+      border-bottom:1px solid var(--line);
+      background:rgba(244,239,230,.82);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:var(--serif);
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:var(--ink);transition:color .25s;}
+    .nav__links a:hover{color:var(--accent);}
+    .nav__links .sep{color:var(--line);font-weight:300;}
+
+    /* ===== 4. Split Layout ===== */
+    .split{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      height:calc(100dvh - var(--nav-h));
+      margin-top:var(--nav-h);
+      position:relative;
+      z-index:2;
+    }
+    /* ===== 4b. Membrane / Wave Canvas ===== */
+    .membrane{
+      position:absolute;top:0;bottom:0;left:50%;
+      width:48px;transform:translateX(-50%);
+      z-index:11;pointer-events:none;
+      overflow:visible;
+    }
+    /* Wave canvas — dynamically computed boundary */
+    .membrane__canvas{
+      position:absolute;top:0;left:0;
+      width:100%;height:100%;
+      display:block;
+    }
+
+    .panel{
+      overflow-y:auto;
+      overflow-x:hidden;
+      display:flex;
+      flex-direction:column;
+      scroll-behavior:smooth;
+    }
+    .panel__inner{
+      padding:clamp(32px,5vw,56px) clamp(24px,4vw,48px);
+      flex:1;
+      display:flex;
+      flex-direction:column;
+    }
+
+    /* ===== 5. Panel: Lawyer (Light) ===== */
+    .panel--lawyer{
+      background:var(--paper);
+    }
+
+    /* ===== 6. Panel: AI Builder (Dark) ===== */
+    .panel--ai{
+      background:var(--ink);
+      color:var(--paper);
+    }
+
+    /* ===== 7. Panel Shared ===== */
+    .p-label{
+      font-size:10px;font-weight:600;letter-spacing:.14em;
+      text-transform:uppercase;
+      display:flex;align-items:center;gap:10px;
+      margin-bottom:6px;
+    }
+    .panel--lawyer .p-label{color:var(--accent);}
+    .panel--ai .p-label{color:var(--accent);}
+    .p-label::before{content:"";width:20px;height:1px;}
+    .panel--lawyer .p-label::before{background:var(--accent);}
+    .panel--ai .p-label::before{background:var(--accent);}
+
+    .p-title{
+      font-family:var(--serif-cjk);
+      font-size:clamp(26px,4vw,38px);
+      font-weight:700;
+      line-height:1.15;
+      letter-spacing:-.01em;
+      margin-bottom:clamp(28px,4vw,40px);
+    }
+    .panel--ai .p-title{color:var(--paper);}
+
+    .p-block{margin-bottom:clamp(24px,3vw,36px);}
+    .p-block:last-child{margin-bottom:0;}
+
+    .p-block__label{
+      font-size:10px;font-weight:600;letter-spacing:.1em;
+      text-transform:uppercase;
+      margin-bottom:14px;
+      display:flex;align-items:center;gap:8px;
+    }
+    .panel--lawyer .p-block__label{color:var(--accent);}
+    .panel--ai .p-block__label{color:var(--accent);}
+    .p-block__label::after{content:"";flex:1;height:1px;}
+    .panel--lawyer .p-block__label::after{background:rgba(201,192,178,.4);}
+    .panel--ai .p-block__label::after{background:rgba(243,237,227,.1);}
+
+    /* ===== 8. Lawyer: Stats ===== */
+    .lstats{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:1px;
+      background:var(--line);
+      margin-bottom:clamp(24px,3vw,36px);
+    }
+    .lstats__item{
+      background:var(--paper);
+      padding:clamp(16px,2vw,24px) clamp(12px,1.5vw,16px);
+      text-align:center;
+    }
+    .lstats__num{
+      font-family:var(--serif);
+      font-size:clamp(26px,3vw,38px);
+      font-weight:700;
+      color:var(--ink);
+      line-height:1.1;
+    }
+    .lstats__num span{font-size:.55em;font-weight:400;}
+    .lstats__label{
+      font-size:11px;color:var(--muted);
+      margin-top:4px;letter-spacing:.02em;
+    }
+
+    /* Client logo grid */
+    .client-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:1px;
+      margin-top:12px;
+    }
+    .client-grid span{
+      background:var(--paper);
+      padding:clamp(10px,1.5vw,14px) clamp(6px,1vw,10px);
+      font-family:var(--serif-cjk);
+      font-size:clamp(12px,1.4vw,14px);
+      font-weight:600;
+      color:var(--ink-soft);
+      text-align:center;
+      letter-spacing:.02em;
+      display:flex;align-items:center;justify-content:center;
+      min-height:clamp(36px,3vw,44px);
+      transition:color .25s;
+      border-right:1px solid rgba(201,192,178,.4);
+      border-bottom:1px solid rgba(201,192,178,.4);
+    }
+    .client-grid span:nth-child(4n){border-right:none;}
+    .client-grid span:nth-last-child(-n+2){border-bottom:none;}
+    .client-grid span:hover{color:var(--ink);}
+
+    /* ===== 9. Lawyer: Positions ===== */
+    .pos-item{
+      padding:clamp(10px,1.5vw,14px) 0;
+      border-bottom:1px solid rgba(201,192,178,.4);
+    }
+    .pos-item:first-child{padding-top:0;}
+    .pos-item:last-child{border-bottom:none;padding-bottom:0;}
+    .pos-item__title{
+      font-family:var(--serif-cjk);
+      font-size:15px;font-weight:600;
+      color:var(--ink);line-height:1.4;
+    }
+    .pos-item__org{
+      font-size:12px;color:var(--muted);margin-top:1px;
+    }
+
+    /* ===== 10. Lawyer: Honors ===== */
+    .honor-list{list-style:none;}
+    .honor-list li{
+      padding:clamp(8px,1.2vw,12px) 0;
+      border-bottom:1px solid rgba(201,192,178,.4);
+      font-size:13px;line-height:1.5;
+      color:var(--ink-soft);
+      display:flex;align-items:baseline;gap:8px;
+    }
+    .honor-list li:first-child{padding-top:0;}
+    .honor-list li:last-child{border-bottom:none;padding-bottom:0;}
+    .honor-list li::before{
+      content:"";flex-shrink:0;
+      width:3px;height:3px;border-radius:50%;
+      background:var(--accent);margin-top:7px;
+    }
+
+    .practices{
+      font-size:13px;line-height:1.8;color:var(--ink-soft);
+    }
+    .practices b{color:var(--ink);font-weight:600;}
+
+    /* ===== 11. AI: Book ===== */
+    .book-row{
+      display:grid;
+      grid-template-columns:clamp(80px,10vw,120px) 1fr;
+      gap:clamp(16px,2vw,24px);
+      align-items:start;
+      margin-bottom:clamp(24px,3vw,36px);
+    }
+    .book-thumb{
+      width:100%;
+      box-shadow:0 3px 16px rgba(0,0,0,.4);
+      border-radius:2px;
+      display:block;
+    }
+    .book-meta{}
+    .book-meta h4{
+      font-family:var(--serif-cjk);
+      font-size:clamp(15px,1.8vw,18px);
+      font-weight:700;
+      color:var(--paper);
+      line-height:1.35;
+      margin-bottom:8px;
+    }
+    .book-meta p{
+      font-size:12px;line-height:1.65;
+      color:rgba(243,237,227,.55);
+      margin-bottom:12px;
+    }
+    .book-meta__buy{
+      display:inline-flex;align-items:center;gap:6px;
+      margin-right:24px;
+      font-size:11px;font-weight:600;letter-spacing:.04em;
+      color:var(--accent);
+      border-bottom:1px solid var(--accent);
+      padding-bottom:1px;
+      transition:gap .3s var(--ease);
+    }
+    .book-meta__buy:hover{gap:10px;}
+
+    /* ===== 12. AI: Night School ===== */
+    .ns-card{
+      padding:clamp(16px,2vw,24px);
+      border:1px solid rgba(243,237,227,.12);
+      margin-bottom:clamp(24px,3vw,36px);
+    }
+    .ns-card h4{
+      font-family:var(--serif-cjk);
+      font-size:clamp(15px,1.8vw,18px);
+      font-weight:700;
+      color:var(--paper);
+      line-height:1.35;
+      margin-bottom:6px;
+    }
+    .ns-card p{
+      font-size:12px;line-height:1.65;
+      color:rgba(243,237,227,.5);
+      margin-bottom:10px;
+    }
+    .ns-card__link{
+      display:inline-flex;align-items:center;gap:6px;
+      font-size:11px;font-weight:600;
+      color:var(--accent);
+      border-bottom:1px solid var(--accent);
+      padding-bottom:1px;
+      transition:gap .3s var(--ease);
+    }
+    .ns-card__link:hover{gap:10px;}
+
+    /* ===== 13. AI: Projects ===== */
+    .proj-list{}
+    .proj-item{
+      display:flex;align-items:center;gap:8px;
+      padding:clamp(8px,1.2vw,10px) 0;
+      border-bottom:1px solid rgba(243,237,227,.08);
+      font-size:12px;color:rgba(243,237,227,.6);
+      transition:color .25s;
+    }
+    .proj-item:first-child{padding-top:0;}
+    .proj-item:last-child{border-bottom:none;padding-bottom:0;}
+    .proj-item:hover{color:var(--paper);}
+    .proj-item__name{
+      font-weight:600;color:var(--paper);
+      white-space:nowrap;
+    }
+    .proj-item__desc{
+      flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    }
+    .proj-item__star{
+      display:inline-flex;align-items:center;gap:3px;
+      font-size:10px;font-weight:600;
+      color:rgba(243,237,227,.35);
+      flex-shrink:0;
+      margin-left:auto;
+      transition:color .25s;
+    }
+    .proj-item:hover .proj-item__star{color:rgba(243,237,227,.6);}
+    .proj-item__star svg{width:11px;height:11px;opacity:.5;}
+    .proj-item .arr{
+      font-size:10px;flex-shrink:0;
+      opacity:0;transform:translateX(-4px);
+      transition:all .25s var(--ease);
+    }
+    .proj-item:hover .arr{opacity:1;transform:translateX(0);}
+
+    /* ===== 14. AI: Lectures ===== */
+    .lec-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+    }
+    .lec-item{
+      background:#1e1c1a;
+      position:relative;
+      overflow:hidden;
+      display:block;
+      transition:opacity .3s;
+      border-radius:2px;
+    }
+    .lec-item:hover{opacity:.85;}
+    .lec-item img{
+      display:block;
+      width:100%;height:auto;
+    }
+    .lec-item__cap{
+      padding:8px 10px;
+      background:rgba(0,0,0,.7);
+      z-index:2;
+    }
+    .lec-item__cap h5{
+      font-size:11px;font-weight:600;
+      color:var(--paper);line-height:1.3;
+    }
+    .lec-item__cap span{
+      font-size:10px;color:rgba(243,237,227,.5);margin-top:2px;display:block;
+    }
+
+    /* ===== 15. Footer ===== */
+    .p-footer{
+      margin-top:auto;
+      padding-top:clamp(20px,3vw,32px);
+      border-top:1px solid;
+      display:flex;justify-content:space-between;align-items:center;
+      font-size:12px;gap:12px;
+    }
+    .panel--lawyer .p-footer{border-color:rgba(201,192,178,.4);color:var(--muted);}
+    .panel--ai .p-footer{border-color:rgba(243,237,227,.1);color:rgba(243,237,227,.35);}
+    .p-footer__back{
+      display:inline-flex;align-items:center;gap:5px;
+      transition:color .25s;
+    }
+    .panel--lawyer .p-footer__back:hover{color:var(--accent);}
+    .panel--ai .p-footer__back:hover{color:var(--accent);}
+    .p-footer__back .arr{transition:transform .3s var(--ease);}
+    .p-footer__back:hover .arr{transform:translateX(-3px);}
+
+    /* ===== 16. Vertical accent mark (top-center of each panel) ===== */
+    .panel__accent{
+      position:absolute;
+      top:clamp(32px,5vw,56px);
+      width:24px;height:2px;
+      background:var(--accent);
+    }
+
+    /* ===== 17. Responsive: Stack on mobile ===== */
+    @media (max-width:860px){
+      html,body{overflow:auto;height:auto;}
+      .split{
+        grid-template-columns:1fr;
+        height:auto;
+        margin-top:var(--nav-h);
+      }
+      .membrane{display:none;}
+      .panel{overflow-y:visible;}
+      .panel__inner{padding:clamp(28px,5vw,40px) var(--pad-x);}
+
+      .lstats{grid-template-columns:repeat(3,1fr);}
+      .book-row{grid-template-columns:100px 1fr;}
+      .p-footer{padding-top:24px;margin-top:24px;}
+    }
+
+    @media (max-width:600px){
+      :root{--pad-x:20px;}
+      .nav{padding:0 var(--pad-x);height:64px;}
+      .nav__brand{font-size:18px;}
+      .nav__links{font-size:10px;gap:8px;}
+      .nav__links .sep{display:none;}
+
+      .split{margin-top:64px;}
+      .panel__inner{padding:24px var(--pad-x);}
+      .p-title{font-size:28px;margin-bottom:24px;}
+      .lec-grid{grid-template-columns:1fr;}
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important;}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <header class="nav" role="banner">
+    <a href="index.html" class="nav__brand" aria-label="CSLawyer — 回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>
+      CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="主导航">
+      <a href="index.html#about">关于</a>
+      <span class="sep">/</span>
+      <a href="index.html#writing">文章</a>
+      <span class="sep">/</span>
+      <a href="index.html#speak">演讲</a>
+      <span class="sep">/</span>
+      <a href="index.html#build">创造</a>
+      <span class="sep">/</span>
+      <a href="about.html" style="color:var(--accent);">聊聊</a>
+    </nav>
+  </header>
+
+  <!-- ═══ Split Panels ═══ -->
+  <main class="split">
+
+    <!-- Membrane: wave boundary drawn by Canvas -->
+    <div class="membrane" aria-hidden="true">
+      <canvas class="membrane__canvas"></canvas>
+    </div>
+
+    <!-- Left: Lawyer -->
+    <section class="panel panel--lawyer" id="lawyer">
+      <div class="panel__inner">
+        <h1 class="p-title">Lawyer</h1>
+
+        <!-- Stats -->
+        <div class="lstats" aria-label="关键数据">
+          <div class="lstats__item">
+            <div class="lstats__num">15<span>年+</span></div>
+            <div class="lstats__label">执业年限</div>
+          </div>
+          <div class="lstats__item">
+            <div class="lstats__num">千亿<span>+</span></div>
+            <div class="lstats__label">服务项目投资额</div>
+          </div>
+          <div class="lstats__item">
+            <div class="lstats__num">6<span>项</span></div>
+            <div class="lstats__label">各级荣誉</div>
+          </div>
+        </div>
+
+        <!-- Positions -->
+        <div class="p-block">
+          <div class="p-block__label">职务与身份</div>
+          <div class="pos-item">
+            <div class="pos-item__title">副主任、高级合伙人</div>
+            <div class="pos-item__org">浙江海泰律师事务所</div>
+          </div>
+          <div class="pos-item">
+            <div class="pos-item__title">常务理事</div>
+            <div class="pos-item__org">宁波市律师协会</div>
+          </div>
+          <div class="pos-item">
+            <div class="pos-item__title">仲裁员</div>
+            <div class="pos-item__org">第七届宁波仲裁委员会</div>
+          </div>
+          <div class="pos-item">
+            <div class="pos-item__title">民事行政案件咨询专家</div>
+            <div class="pos-item__org">检察机关</div>
+          </div>
+          <div class="pos-item">
+            <div class="pos-item__title">官方认证讲师</div>
+            <div class="pos-item__org">Cherry Studio</div>
+          </div>
+          <div class="pos-item">
+            <div class="pos-item__title">之江青年律师讲师团讲师</div>
+            <div class="pos-item__org">浙江省律师协会</div>
+          </div>
+          <div class="pos-item">
+            <div class="pos-item__title">实习律师培训讲师</div>
+            <div class="pos-item__org">浙江省律师协会</div>
+          </div>
+        </div>
+
+        <!-- Honors -->
+        <div class="p-block">
+          <div class="p-block__label">荣誉与奖项</div>
+          <ul class="honor-list">
+            <li>ALB China 区域市场十五佳</li>
+            <li>商法 A-List 法律精英</li>
+            <li>LegalOne 实务先锋 45 强</li>
+            <li>律新社管理合伙人 20 佳</li>
+            <li>律新社并购领域品牌之星</li>
+            <li>第一届、第二届宁波律协诉讼/仲裁文书大赛一等奖</li>
+            <li>江东区级青年岗位能手</li>
+            <li>青年律师公益之星</li>
+          </ul>
+        </div>
+
+        <!-- Practice -->
+        <div class="p-block">
+          <div class="p-block__label">执业领域</div>
+          <p class="practices">
+            <b>建设工程与房地产</b> · <b>投融资</b> · <b>收购兼并</b> · <b>商事争议解决</b>。曾服务多家大型企业集团、上市公司、金融机构及政府单位，覆盖房地产、基础设施、制造业、新能源、金融等行业。
+          </p>
+        </div>
+
+        <div class="p-block">
+          <div class="p-block__label">服务客户</div>
+          <div class="client-grid">
+            <span>万科</span><span>华润置地</span><span>信达地产</span><span>保利发展</span>
+            <span>旭辉集团</span><span>大唐发电</span><span>招商蛇口</span><span>中交地产</span>
+            <span>金地集团</span><span>中海地产</span><span>万年基业</span><span>泛迪集团</span>
+            <span>宁麓置地</span><span>兴达石业</span><span>宁波枢纽</span><span>中国金茂</span>
+            <span>广恒混凝土</span><span>广天重工</span><span>滕头置业</span><span>黄岩城建</span>
+            <span>臻挚私募</span><span>新亚建设</span><span>大环房地产</span><span>黄岩经开</span>
+            <span>嘉铁置业</span><span>宝利进出口</span><span>黄岩城投</span>
+          </div>
+        </div>
+
+
+        <!-- Footer -->
+        <div class="p-footer">
+          <span>&copy; 2026 陈石</span>
+          <a href="index.html" class="p-footer__back">
+            <span class="arr">&larr;</span> 返回首页
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right: AI Builder -->
+    <section class="panel panel--ai" id="aibuilder">
+      <div class="panel__inner">
+        <h2 class="p-title">AI Builder</h2>
+
+        <!-- Book -->
+        <div class="book-row">
+          <picture>
+            <source srcset="assets/book-cover.webp" type="image/webp">
+            <img class="book-thumb" src="assets/book-cover.png" alt="《赋能法律人》封面">
+          </picture>
+          <div class="book-meta">
+            <h4>赋能法律人：AI底层思维与应用范式</h4>
+            <p>写给法律人的 AI 入门书。不讲算法、不写代码——从 Prompt Engineering 到 Agent 工作流，建立 AI 时代的底层认知框架。</p>
+            <a class="book-meta__buy" href="https://mp.weixin.qq.com/s/BRsQx1QnbwotZellqABqtw" target="_blank" rel="noopener">
+              书籍详情 &rarr;
+            </a>
+            <a class="book-meta__buy" href="https://detail.tmall.com/item.htm?abbucket=15&id=1010240469579" target="_blank" rel="noopener">
+              购买本书 &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- Night School -->
+        <div class="ns-card">
+          <h4>四明山法师 AI 夜校</h4>
+          <p>面向法律人的AI公益实训项目。每期围绕真实法律工作场景，手把手带教，培养业务与技术的双语者。</p>
+          <a class="ns-card__link" href="https://cslawyer1985.github.io/xinchun-ai-prework/" target="_blank" rel="noopener">
+            前往夜校 &rarr;
+          </a>
+        </div>
+
+        <!-- Projects -->
+        <div class="p-block">
+          <div class="p-block__label">开源项目</div>
+          <div class="proj-list">
+            <a class="proj-item" href="https://github.com/CSlawyer1985/claude-for-legal-ZH" target="_blank" rel="noopener">
+              <span class="proj-item__name">claude-for-legal-ZH</span>
+              <span class="proj-item__desc">Claude Code 中国法适配</span>
+              <span class="proj-item__star">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>
+                534
+              </span>
+              <span class="arr">&rarr;</span>
+            </a>
+            <a class="proj-item" href="https://github.com/CSlawyer1985/contract-review-pro" target="_blank" rel="noopener">
+              <span class="proj-item__name">contract-review-pro</span>
+              <span class="proj-item__desc">专业合同审核 Skill</span>
+              <span class="proj-item__star">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>
+                180
+              </span>
+              <span class="arr">&rarr;</span>
+            </a>
+            <a class="proj-item" href="https://github.com/CSlawyer1985/china-lawyer-analyst" target="_blank" rel="noopener">
+              <span class="proj-item__name">china-lawyer-analyst</span>
+              <span class="proj-item__desc">中国法律分析 Skill</span>
+              <span class="proj-item__star">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>
+                148
+              </span>
+              <span class="arr">&rarr;</span>
+            </a>
+            <a class="proj-item" href="https://github.com/CSlawyer1985/excellent-judgment-doc-skill" target="_blank" rel="noopener">
+              <span class="proj-item__name">excellent-judgment-doc</span>
+              <span class="proj-item__desc">裁判文书生成与评判</span>
+              <span class="proj-item__star">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>
+                33
+              </span>
+              <span class="arr">&rarr;</span>
+            </a>
+            <a class="proj-item" href="https://github.com/CSlawyer1985/legalwiki" target="_blank" rel="noopener">
+              <span class="proj-item__name">legalwiki</span>
+              <span class="proj-item__desc">法律概念结构化知识库</span>
+              <span class="proj-item__star">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>
+                6
+              </span>
+              <span class="arr">&rarr;</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Lectures -->
+        <div class="p-block">
+          <div class="p-block__label">讲座与分享</div>
+          <div class="lec-grid">
+            <div class="lec-item">
+              <img src="assets/lectures/lec32.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>南京律协两公委《法律人的AI应用实践》</h5>
+                <span>2026-06-16 · 南京</span>
+              </div>
+            </div>
+            <a class="lec-item" href="https://mp.weixin.qq.com/s/I5UI95BKQJtpk26ESqqfJQ" target="_blank" rel="noopener">
+              <img src="assets/lectures/lec30.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>法德东恒共探AI赋能律师成长</h5>
+                <span>2026-05-16 · 南京</span>
+              </div>
+            </a>
+            <a class="lec-item" href="https://mp.weixin.qq.com/s/26--tXk214WZrPDoL-Dl8g" target="_blank" rel="noopener">
+              <img src="assets/lectures/lec29.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>海曙区AI赋能青年律师业务培训</h5>
+                <span>2026-03-28 · 宁波</span>
+              </div>
+            </a>
+            <a class="lec-item" href="https://mp.weixin.qq.com/s/Ur9O2rFyZF8P8-_kE-oQIQ" target="_blank" rel="noopener">
+              <img src="assets/lectures/lec31.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>新春第一课：AI律师应用经验分享</h5>
+                <span>2026-03-04 · 宁波</span>
+              </div>
+            </a>
+            <div class="lec-item">
+              <img src="assets/lectures/lec28.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>杭州律协数智委《法律人AI应用实践》</h5>
+                <span>2026-03-23 · 杭州</span>
+              </div>
+            </div>
+            <div class="lec-item">
+              <img src="assets/lectures/lec26.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>康达（宁波）所《法律人AI赋能之路》</h5>
+                <span>2026-01-21 · 宁波</span>
+              </div>
+            </div>
+            <div class="lec-item">
+              <img src="assets/lectures/lec23.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>大成（台州）所《法律人的AI赋能之路》</h5>
+                <span>2026-01-11 · 台州</span>
+              </div>
+            </div>
+            <a class="lec-item" href="https://mp.weixin.qq.com/s/d2SRCC6cwilbO7-od3ak7A" target="_blank" rel="noopener">
+              <img src="assets/lectures/lec00.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>包头律协"AI赋能律师"培训</h5>
+                <span>2025-12-23 · 包头</span>
+              </div>
+            </a>
+            <div class="lec-item">
+              <img src="assets/lectures/lec22.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>鄞州区"青马工程"青年律师培训班</h5>
+                <span>2025-12-05 · 宁波</span>
+              </div>
+            </div>
+            <div class="lec-item">
+              <img src="assets/lectures/lec21.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>省律协第九期律师执业集中培训</h5>
+                <span>2025-11-08 · 杭州</span>
+              </div>
+            </div>
+            <a class="lec-item" href="https://mp.weixin.qq.com/s/poXJ7xgD6IDcpLY4Gs_niQ" target="_blank" rel="noopener">
+              <img src="assets/lectures/lec01.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>宁波市青年律师训练营</h5>
+                <span>2025-11-07 · 宁波</span>
+              </div>
+            </a>
+            <a class="lec-item" href="https://mp.weixin.qq.com/s/PK9wURcMxazrOWV1WdMK9A" target="_blank" rel="noopener">
+              <img src="assets/lectures/lec25.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>法律人AI应用思维与避坑指南</h5>
+                <span>2025-10-23 · 线上</span>
+              </div>
+            </a>
+            <div class="lec-item">
+              <img src="assets/lectures/lec20.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>宁海县司法局AI应用培训</h5>
+                <span>2025-10-18 · 宁海</span>
+              </div>
+            </div>
+            <div class="lec-item">
+              <img src="assets/lectures/lec19.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>省律协第八期律师执业集中培训</h5>
+                <span>2025-09-25 · 杭州</span>
+              </div>
+            </div>
+            <a class="lec-item" href="https://mp.weixin.qq.com/s/xTFbLdhYepp-OmWSFs-qZA" target="_blank" rel="noopener">
+              <img src="assets/lectures/lec02.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>"法律人的AI赋能之路"讲座</h5>
+                <span>2025-09-17 · 象山</span>
+              </div>
+            </a>
+            <div class="lec-item">
+              <img src="assets/lectures/lec18.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>海泰所《生成式AI的"隐藏技能"》</h5>
+                <span>2025-09-05 · 宁波</span>
+              </div>
+            </div>
+            <div class="lec-item">
+              <img src="assets/lectures/lec17.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>杭州律协合规委AI培训</h5>
+                <span>2025-09-01 · 杭州</span>
+              </div>
+            </div>
+            <a class="lec-item" href="https://mp.weixin.qq.com/s/2TUbJxVxo8yiYFqyAQSR7Q" target="_blank" rel="noopener">
+              <img src="assets/lectures/lec03.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>合伙人午餐分享会：解锁AI</h5>
+                <span>2025-08-29 · 宁波</span>
+              </div>
+            </a>
+            <a class="lec-item" href="https://mp.weixin.qq.com/s/yKPcOxIw2n-_gjcLEAgXxg" target="_blank" rel="noopener">
+              <img src="assets/lectures/lec04.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>2025年宁波律师论坛</h5>
+                <span>2025-07-27 · 宁波</span>
+              </div>
+            </a>
+            <div class="lec-item">
+              <img src="assets/lectures/lec16.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>中银（宁波）所《生成式AI原理》</h5>
+                <span>2025-06-20 · 宁波</span>
+              </div>
+            </div>
+            <a class="lec-item" href="https://mp.weixin.qq.com/s/zoARF81hs1k_wI-ltmC1kw" target="_blank" rel="noopener">
+              <img src="assets/lectures/lec05.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>余姚市依法治市培训班</h5>
+                <span>2025-06-16 · 余姚</span>
+              </div>
+            </a>
+            <div class="lec-item">
+              <img src="assets/lectures/lec15.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>信达地产华东区域《AI应用通识课》</h5>
+                <span>2025-06-14 · 宁波</span>
+              </div>
+            </div>
+            <a class="lec-item" href="https://mp.weixin.qq.com/s/FTm0iaVeBGi8eIS3G8h-2A" target="_blank" rel="noopener">
+              <img src="assets/lectures/lec06.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>省律协律所主任管理培训班</h5>
+                <span>2025-06-09 · 杭州</span>
+              </div>
+            </a>
+            <a class="lec-item" href="https://mp.weixin.qq.com/s/bPeq7If_g66Afesb4ZIwPQ" target="_blank" rel="noopener">
+              <img src="assets/lectures/lec07.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>"AI赋能法律实践"交流会</h5>
+                <span>2025-06-06 · 杭州</span>
+              </div>
+            </a>
+            <div class="lec-item">
+              <img src="assets/lectures/lec14.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>全国律协青训班《法律人如何拥抱AI》</h5>
+                <span>2025-04-19 · 宁波</span>
+              </div>
+            </div>
+            <a class="lec-item" href="https://mp.weixin.qq.com/s/tAY1wsYC50v2_pWAYlKzBQ" target="_blank" rel="noopener">
+              <img src="assets/lectures/lec24.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>以AI为帆，驶向法律的深蓝</h5>
+                <span>2025-04-22 · 宁波</span>
+              </div>
+            </a>
+            <div class="lec-item">
+              <img src="assets/lectures/lec27.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>市国资委第十六期法治讲堂</h5>
+                <span>2025-03-27 · 宁波</span>
+              </div>
+            </div>
+            <div class="lec-item">
+              <img src="assets/lectures/lec13.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>六和所《AI法律行业应用通识课》</h5>
+                <span>2025-03-23 · 杭州</span>
+              </div>
+            </div>
+            <div class="lec-item">
+              <img src="assets/lectures/lec12.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>天册（宁波）所《生成式AI通识课》</h5>
+                <span>2025-03-14 · 宁波</span>
+              </div>
+            </div>
+            <div class="lec-item">
+              <img src="assets/lectures/lec11.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>宁波律协秘书处AI培训</h5>
+                <span>2025-03-04 · 宁波</span>
+              </div>
+            </div>
+            <div class="lec-item">
+              <img src="assets/lectures/lec10.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>宁波市司法局AI应用专题讲座</h5>
+                <span>2025-03-04 · 宁波</span>
+              </div>
+            </div>
+            <a class="lec-item" href="https://mp.weixin.qq.com/s/CM8KU3XRjRvxUl7JdOycnw" target="_blank" rel="noopener">
+              <img src="assets/lectures/lec08.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>《生成式AI通识与应用》分享会</h5>
+                <span>2025-02-20 · 宁波</span>
+              </div>
+            </a>
+            <a class="lec-item" href="https://mp.weixin.qq.com/s/VWRzO0yFTyGmz5s_mDFfpA" target="_blank" rel="noopener">
+              <img src="assets/lectures/lec09.webp" alt="" loading="lazy" width="400" height="225">
+              <div class="lec-item__cap">
+                <h5>觉醒时代：法律人如何拥抱AI</h5>
+                <span>2025-02-09 · 宁波</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="p-footer">
+          <span>&copy; 2026 陈石</span>
+          <a href="index.html" class="p-footer__back">
+            <span class="arr">&larr;</span> 返回首页
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+<script>
+(function(){
+  var canvas = document.querySelector('.membrane__canvas');
+  if(!canvas)return;
+
+  var ctx = canvas.getContext('2d');
+  var PAPER = '#F3EDE3';
+  var INK   = '#1A1714';
+  var LINE  = '#C9C0B2';
+  var dpr = window.devicePixelRatio || 1;
+  var running = true;
+
+  function resize(){
+    var rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width  = rect.width  * dpr;
+    canvas.height = rect.height * dpr;
+    canvas.style.width  = rect.width  + 'px';
+    canvas.style.height = rect.height + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function draw(now){
+    if(!running)return;
+    var w = canvas.width  / dpr;
+    var h = canvas.height / dpr;
+    var cx = w / 2;
+    var t = now * 0.001;  // seconds
+
+    ctx.clearRect(0, 0, w, h);
+
+    /* ── Build wave path ── */
+    ctx.beginPath();
+    ctx.moveTo(cx, -4);
+
+    var step = 3;  // px per segment — smooth
+    for(var y = 0; y <= h + 4; y += step){
+      var progress = y / h;
+      /* compound wave: slow large-amplitude + faster small-amplitude + phase shift */
+      var amp1 = 10 + Math.sin(t * 0.35) * 3;          // slow breathing 12-24px
+      var amp2 = 4  + Math.cos(t * 0.55 + progress * 5) * 2;  // secondary ripple
+      var ph1  = Math.sin(t * 0.25) * 0.6;             // phase wobble
+      var base = Math.sin(progress * Math.PI * 4.2 + ph1 + t * 0.18);
+      var ripple = Math.sin(progress * Math.PI * 13 + t * 0.7) * 0.35;
+      var x = cx + base * amp1 + ripple * amp2;
+      ctx.lineTo(x, y);
+    }
+
+    /* close along center line (bottom → top) */
+    ctx.lineTo(cx, h + 4);
+    ctx.lineTo(cx, -4);
+    ctx.closePath();
+
+    /* ── Fill: left-of-wave = ink, right-of-wave = paper ── */
+    ctx.save();
+    ctx.clip();
+
+    /* Left zone: ink filling → visible on light bg where wave bulges left */
+    ctx.fillStyle = INK;
+    ctx.fillRect(0, -4, cx, h + 8);
+
+    /* Right zone: paper filling → visible on dark bg where wave bulges right */
+    ctx.fillStyle = PAPER;
+    ctx.fillRect(cx, -4, cx, h + 8);
+
+    ctx.restore();
+
+    /* wave outline hidden — only fill visible */
+
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>

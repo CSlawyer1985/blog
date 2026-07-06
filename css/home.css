@@ -840,6 +840,10 @@ body.theme-speak .cross::after{background:rgba(242,238,230,.55);}
   font-family:var(--serif);font-weight:500;
   font-size:clamp(72px,10vw,150px);line-height:1;letter-spacing:-.01em;
 }
+.contact__title a{
+  color:inherit;transition:color .3s var(--ease);
+}
+.contact__title a:hover{color:var(--accent);}
 .contact__underline{position:absolute;left:2%;right:2%;bottom:-2px;width:96%;height:.16em;overflow:visible;}
 .contact__sub{font-family:var(--sans-cjk);font-size:clamp(17px,1.6vw,21px);color:var(--ink-soft);margin-top:30px;}
 .contact__status{
