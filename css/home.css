@@ -29,7 +29,7 @@
   line-height:.82;letter-spacing:-.04em;
   white-space:nowrap;
 }
-.hero__wordmark a{color:inherit;-webkit-text-stroke:inherit;transition:color .3s;}
+.hero__wordmark a{color:var(--paper);-webkit-text-stroke:1px rgba(26,23,20,.25);text-shadow:-1px -1px 0 rgba(255,255,255,.15),1px 1px 0 rgba(26,23,20,.2),2px 2px 3px rgba(26,23,20,.08);transition:color .3s;}
 .hero__wordmark a:hover{color:var(--accent);}
   /* Debossed steel-stamp effect */
   color:var(--paper);
