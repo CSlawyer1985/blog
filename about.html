@@ -131,12 +131,18 @@
     .panel--ai .p-label::before{background:var(--accent);}
 
     .p-title{
+      display:inline-block;
+      width:fit-content;
       font-family:var(--serif-cjk);
       font-size:clamp(26px,4vw,38px);
       font-weight:700;
       line-height:1.15;
       letter-spacing:-.01em;
       margin-bottom:clamp(28px,4vw,40px);
+      background:var(--accent);
+      color:var(--paper);
+      padding:4px 8px;
+      border-radius:4px;
     }
     .panel--ai .p-title{color:var(--paper);}
 
@@ -230,15 +236,12 @@
       border-bottom:1px solid rgba(201,192,178,.4);
       font-size:13px;line-height:1.5;
       color:var(--ink-soft);
-      display:flex;align-items:baseline;gap:8px;
+      display:flex;align-items:center;gap:8px;
     }
     .honor-list li:first-child{padding-top:0;}
     .honor-list li:last-child{border-bottom:none;padding-bottom:0;}
-    .honor-list li::before{
-      content:"";flex-shrink:0;
-      width:3px;height:3px;border-radius:50%;
-      background:var(--accent);margin-top:7px;
-    }
+    .honor-list li::before{content:none;}
+    .honor-logo{flex-shrink:0;height:16px;width:auto;margin-right:6px;opacity:.85;align-self:center;}
 
     .practices{
       font-size:13px;line-height:1.8;color:var(--ink-soft);
@@ -530,14 +533,14 @@
         <div class="p-block">
           <div class="p-block__label">荣誉与奖项</div>
           <ul class="honor-list">
-            <li>ALB China 区域市场十五佳</li>
-            <li>商法 A-List 法律精英</li>
-            <li>LegalOne 实务先锋 45 强</li>
-            <li>律新社管理合伙人 20 佳</li>
-            <li>律新社并购领域品牌之星</li>
-            <li>第一届、第二届宁波律协诉讼/仲裁文书大赛一等奖</li>
-            <li>江东区级青年岗位能手</li>
-            <li>青年律师公益之星</li>
+            <li><img src="assets/logo-alb.png" alt="ALB" class="honor-logo" width="54" height="20">ALB China 区域市场十五佳</li>
+            <li><img src="assets/logo-shangfa.png" alt="商法" class="honor-logo" width="69" height="20">商法 A-List 法律精英</li>
+            <li><img src="assets/logo-legalone.png" alt="LegalOne" class="honor-logo" width="77" height="20">LegalOne 实务先锋 45 强</li>
+            <li><img src="assets/logo-lvxinshe.png" alt="律新社" class="honor-logo" width="69" height="20">律新社管理合伙人 20 佳</li>
+            <li><img src="assets/logo-lvxinshe.png" alt="律新社" class="honor-logo" width="69" height="20">律新社并购领域品牌之星</li>
+            <li><img src="assets/logo-lvxie.png" alt="律协" class="honor-logo" width="47" height="20">第一届、第二届宁波律协诉讼/仲裁文书大赛一等奖</li>
+            <li><img src="assets/logo-lvxie.png" alt="律协" class="honor-logo" width="47" height="20">江东区级青年岗位能手</li>
+            <li><img src="assets/logo-lvxie.png" alt="律协" class="honor-logo" width="47" height="20">青年律师公益之星</li>
           </ul>
         </div>
 
