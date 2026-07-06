@@ -69,6 +69,23 @@
     .nav__links a:hover{color:var(--accent);}
     .nav__links .sep{color:var(--line);font-weight:300;}
 
+    /* Language toggle */
+    .nav__lang-group{display:inline-flex;align-items:center;gap:0;margin-left:12px;}
+    .nav__lang{
+      font-size:10px;font-weight:600;letter-spacing:.08em;color:var(--muted);
+      cursor:pointer;background:none;border:1px solid var(--line);
+      padding:4px 8px;transition:all .2s;
+      font-family:var(--mono,sans-serif);
+    }
+    .nav__lang:first-child{border-radius:2px 0 0 2px;border-right:none;}
+    .nav__lang:last-child{border-radius:0 2px 2px 0;}
+    .nav__lang:hover{color:var(--accent);}
+    .nav__lang.is-active{color:var(--paper);background:var(--accent);border-color:var(--accent);}
+
+    /* i18n */
+    html[data-lang="zh"] [lang="en"]{display:none;}
+    html[data-lang="en"] [lang="zh"]{display:none;}
+
     /* ===== 4. Split Layout ===== */
     .split{
       display:grid;
@@ -455,7 +472,7 @@
       CSLawyer
     </a>
     <nav class="nav__links" aria-label="主导航">
-      <a href="index.html#about">关于</a>
+      <a href="index.html">首页</a>
       <span class="sep">/</span>
       <a href="index.html#writing">文章</a>
       <span class="sep">/</span>
@@ -464,6 +481,10 @@
       <a href="index.html#build">创造</a>
       <span class="sep">/</span>
       <a href="about.html" style="color:var(--accent);">聊聊</a>
+      <span class="nav__lang-group">
+        <button class="nav__lang is-active" data-lang="zh" aria-label="中文">中</button>
+        <button class="nav__lang" data-lang="en" aria-label="English">EN</button>
+      </span>
     </nav>
   </header>
 
@@ -484,54 +505,54 @@
         <div class="lstats" aria-label="关键数据">
           <div class="lstats__item">
             <div class="lstats__num">15<span>年+</span></div>
-            <div class="lstats__label">执业年限</div>
+            <div class="lstats__label"><span lang="zh">执业年限</span><span lang="en">Years of Practice</span></div>
           </div>
           <div class="lstats__item">
             <div class="lstats__num">千亿<span>+</span></div>
-            <div class="lstats__label">服务项目投资额</div>
+            <div class="lstats__label"><span lang="zh">服务项目投资额</span><span lang="en">Transaction Value</span></div>
           </div>
           <div class="lstats__item">
             <div class="lstats__num">6<span>项</span></div>
-            <div class="lstats__label">各级荣誉</div>
+            <div class="lstats__label"><span lang="zh">各级荣誉</span><span lang="en">Honors</span></div>
           </div>
         </div>
 
         <!-- Positions -->
         <div class="p-block">
-          <div class="p-block__label">职务与身份</div>
+          <div class="p-block__label"><span lang="zh">职务与身份</span><span lang="en">Positions</span></div>
           <div class="pos-item">
-            <div class="pos-item__title">副主任、高级合伙人</div>
-            <div class="pos-item__org">浙江海泰律师事务所</div>
+            <div class="pos-item__title"><span lang="zh">副主任、高级合伙人</span><span lang="en">Deputy Director, Senior Partner</span></div>
+            <div class="pos-item__org"><span lang="zh">浙江海泰律师事务所</span><span lang="en">Zhejiang Haitai Law Firm</span></div>
           </div>
           <div class="pos-item">
-            <div class="pos-item__title">常务理事</div>
-            <div class="pos-item__org">宁波市律师协会</div>
+            <div class="pos-item__title"><span lang="zh">常务理事</span><span lang="en">Standing Council Member</span></div>
+            <div class="pos-item__org"><span lang="zh">宁波市律师协会</span><span lang="en">Ningbo Lawyers Association</span></div>
           </div>
           <div class="pos-item">
-            <div class="pos-item__title">仲裁员</div>
-            <div class="pos-item__org">第七届宁波仲裁委员会</div>
+            <div class="pos-item__title"><span lang="zh">仲裁员</span><span lang="en">Arbitrator</span></div>
+            <div class="pos-item__org"><span lang="zh">第七届宁波仲裁委员会</span><span lang="en">7th Ningbo Arbitration Commission</span></div>
           </div>
           <div class="pos-item">
-            <div class="pos-item__title">民事行政案件咨询专家</div>
-            <div class="pos-item__org">检察机关</div>
+            <div class="pos-item__title"><span lang="zh">民事行政案件咨询专家</span><span lang="en">Civil & Administrative Advisory Expert</span></div>
+            <div class="pos-item__org"><span lang="zh">检察机关</span><span lang="en">Procuratorial Organs</span></div>
           </div>
           <div class="pos-item">
-            <div class="pos-item__title">官方认证讲师</div>
-            <div class="pos-item__org">Cherry Studio</div>
+            <div class="pos-item__title"><span lang="zh">官方认证讲师</span><span lang="en">Certified Instructor</span></div>
+            <div class="pos-item__org"><span lang="zh">Cherry Studio</span><span lang="en">Cherry Studio</span></div>
           </div>
           <div class="pos-item">
-            <div class="pos-item__title">之江青年律师讲师团讲师</div>
-            <div class="pos-item__org">浙江省律师协会</div>
+            <div class="pos-item__title"><span lang="zh">之江青年律师讲师团讲师</span><span lang="en">Zhejiang Young Lawyers Lecturer</span></div>
+            <div class="pos-item__org"><span lang="zh">浙江省律师协会</span><span lang="en">Zhejiang Lawyers Association</span></div>
           </div>
           <div class="pos-item">
-            <div class="pos-item__title">实习律师培训讲师</div>
-            <div class="pos-item__org">浙江省律师协会</div>
+            <div class="pos-item__title"><span lang="zh">实习律师培训讲师</span><span lang="en">Trainee Lawyer Instructor</span></div>
+            <div class="pos-item__org"><span lang="zh">浙江省律师协会</span><span lang="en">Zhejiang Lawyers Association</span></div>
           </div>
         </div>
 
         <!-- Honors -->
         <div class="p-block">
-          <div class="p-block__label">荣誉与奖项</div>
+          <div class="p-block__label"><span lang="zh">荣誉与奖项</span><span lang="en">Honors & Awards</span></div>
           <ul class="honor-list">
             <li><img src="assets/logo-alb.png" alt="ALB" class="honor-logo" width="54" height="20">ALB China 区域市场十五佳</li>
             <li><img src="assets/logo-shangfa.png" alt="商法" class="honor-logo" width="69" height="20">商法 A-List 法律精英</li>
@@ -546,14 +567,17 @@
 
         <!-- Practice -->
         <div class="p-block">
-          <div class="p-block__label">执业领域</div>
-          <p class="practices">
+          <div class="p-block__label"><span lang="zh">执业领域</span><span lang="en">Practice Areas</span></div>
+          <p class="practices" lang="zh">
             <b>建设工程与房地产</b> · <b>投融资</b> · <b>收购兼并</b> · <b>商事争议解决</b>。曾服务多家大型企业集团、上市公司、金融机构及政府单位，覆盖房地产、基础设施、制造业、新能源、金融等行业。
+          </p>
+          <p class="practices" lang="en">
+            <b>Construction & Real Estate</b> · <b>Investment & Financing</b> · <b>M&A</b> · <b>Commercial Dispute Resolution</b>. Served major enterprises, listed companies, financial institutions, and government bodies across real estate, infrastructure, manufacturing, new energy, and finance sectors.
           </p>
         </div>
 
         <div class="p-block">
-          <div class="p-block__label">服务客户</div>
+          <div class="p-block__label"><span lang="zh">服务客户</span><span lang="en">Clients</span></div>
           <div class="client-grid">
             <span>万科</span><span>华润置地</span><span>信达地产</span><span>保利发展</span>
             <span>旭辉集团</span><span>大唐发电</span><span>招商蛇口</span><span>中交地产</span>
@@ -589,7 +613,8 @@
           </picture>
           <div class="book-meta">
             <h4>赋能法律人：AI底层思维与应用范式</h4>
-            <p>写给法律人的 AI 入门书。不讲算法、不写代码——从 Prompt Engineering 到 Agent 工作流，建立 AI 时代的底层认知框架。</p>
+            <p lang="zh">写给法律人的 AI 入门书。不讲算法、不写代码——从 Prompt Engineering 到 Agent 工作流，建立 AI 时代的底层认知框架。</p>
+            <p lang="en">An AI primer for legal professionals. No algorithms, no code — from Prompt Engineering to Agent workflows, build foundational understanding for the AI era.</p>
             <a class="book-meta__buy" href="https://mp.weixin.qq.com/s/BRsQx1QnbwotZellqABqtw" target="_blank" rel="noopener">
               书籍详情 &rarr;
             </a>
@@ -602,7 +627,8 @@
         <!-- Night School -->
         <div class="ns-card">
           <h4>四明山法师 AI 夜校</h4>
-          <p>面向法律人的AI公益实训项目。每期围绕真实法律工作场景，手把手带教，培养业务与技术的双语者。</p>
+          <p lang="zh">面向法律人的AI公益实训项目。每期围绕真实法律工作场景，手把手带教，培养业务与技术的双语者。</p>
+            <p lang="en">A pro-bono AI training program for legal professionals. Each session focuses on real-world legal workflows, hands-on mentoring, cultivating bilinguals of business & technology.</p>
           <a class="ns-card__link" href="https://cslawyer1985.github.io/xinchun-ai-prework/" target="_blank" rel="noopener">
             前往夜校 &rarr;
           </a>
@@ -610,7 +636,7 @@
 
         <!-- Projects -->
         <div class="p-block">
-          <div class="p-block__label">开源项目</div>
+          <div class="p-block__label"><span lang="zh">开源项目</span><span lang="en">Open Source</span></div>
           <div class="proj-list">
             <a class="proj-item" href="https://github.com/CSlawyer1985/claude-for-legal-ZH" target="_blank" rel="noopener">
               <span class="proj-item__name">claude-for-legal-ZH</span>
@@ -662,7 +688,7 @@
 
         <!-- Lectures -->
         <div class="p-block">
-          <div class="p-block__label">讲座与分享</div>
+          <div class="p-block__label"><span lang="zh">讲座与分享</span><span lang="en">Speaking</span></div>
           <div class="lec-grid">
             <div class="lec-item">
               <img src="assets/lectures/lec32.webp" alt="" loading="lazy" width="400" height="225">
@@ -910,6 +936,26 @@
 
   </main>
 
+<script>
+/* i18n language toggle */
+(function(){
+  var html = document.documentElement;
+  var btns = document.querySelectorAll('.nav__lang[data-lang]');
+  var saved = localStorage.getItem('blog-lang') || 'zh';
+  setLang(saved);
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){
+      var l = this.dataset.lang;
+      setLang(l);
+      localStorage.setItem('blog-lang',l);
+    });
+  });
+  function setLang(l){
+    html.setAttribute('data-lang',l);
+    btns.forEach(function(b){b.classList.toggle('is-active',b.dataset.lang===l);});
+  }
+})();
+</script>
 <script>
 (function(){
   var canvas = document.querySelector('.membrane__canvas');
