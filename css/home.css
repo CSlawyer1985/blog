@@ -28,6 +28,9 @@
   font-size:clamp(160px,24vw,440px);
   line-height:.82;letter-spacing:-.04em;
   white-space:nowrap;
+}
+.hero__wordmark a{color:inherit;transition:color .3s;}
+.hero__wordmark a:hover{color:var(--accent);}
   /* Debossed steel-stamp effect */
   color:var(--paper);
   -webkit-text-stroke:1px rgba(26,23,20,.25);
