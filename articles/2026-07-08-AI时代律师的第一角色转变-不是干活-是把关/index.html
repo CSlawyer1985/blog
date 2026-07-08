@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI时代律师的第一角色转变：不是干活，是把关 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（118）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（94）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（18）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-08-你和AI聊了三天的案件-重新打开它-不认识你了/" class="sidebar-link">你和AI聊了三天的案件，重新打开它：不认识你了</a>
+      
+      <a href="/articles/2026-07-08-你用过的法律AI产品-为什么总是不够好用-一个办公室里没人能回答的问题/" class="sidebar-link">你用过的法律AI产品，为什么总是不够好用？一个办公室里没人能回答的问题</a>
+      
+      <a href="/articles/2026-07-08-律师注意-有人在你的文件里藏了看不见的指令/" class="sidebar-link">律师注意！有人在你的文件里藏了看不见的指令</a>
+      
+      <a href="/articles/2026-07-08-AI时代律师的第一角色转变-不是干活-是把关/" class="sidebar-link">AI时代律师的第一角色转变：不是干活，是把关</a>
+      
+      <a href="/articles/2026-07-08-讲完课-我在视频号刷到了-WorkBuddy-创始人/" class="sidebar-link">讲完课，我在视频号刷到了 WorkBuddy 创始人</a>
+      
+      <a href="/articles/2026-07-08-Agent时代律师的第一道分水岭-会不会-养-规则/" class="sidebar-link">Agent时代律师的第一道分水岭：会不会"养"规则</a>
+      
+      <a href="/articles/2026-07-02-高权限-Agent-上线前-先写三张清单/" class="sidebar-link">高权限 Agent 上线前，先写三张清单</a>
+      
+      <a href="/articles/2026-07-02-越贵模型反而越便宜-那个被忽略的-重试税/" class="sidebar-link">越贵模型反而越便宜：那个被忽略的"重试税"</a>
+      
+      <a href="/articles/2026-07-02-法律资料别急着进知识库-先给它一本留痕账/" class="sidebar-link">法律资料别急着进知识库，先给它一本留痕账</a>
+      
+      <a href="/articles/2026-07-02-中国-AI-模型为什么能便宜几十倍/" class="sidebar-link">中国 AI 模型为什么能便宜几十倍</a>
+      
+      <a href="/articles/2026-07-02-把-AI-额度分成五层-算力时代的-峰谷电价/" class="sidebar-link">把 AI 额度分成五层：算力时代的"峰谷电价"</a>
+      
+      <a href="/articles/2026-07-02-Token-会被当成石油交易/" class="sidebar-link">Token 会被当成石油交易</a>
+      
+      <a href="/articles/2026-07-02-你-AI-账单里有三种价格在同时跑/" class="sidebar-link">你 AI 账单里有三种价格在同时跑</a>
+      
+      <a href="/articles/2026-07-02-AI-时代最值钱的不是模型-是-水电煤-层/" class="sidebar-link">AI 时代最值钱的不是模型，是"水电煤"层</a>
+      
+      <a href="/articles/2026-07-02-法律人学-AI-最缺的不是工具/" class="sidebar-link">法律人学 AI，最缺的不是工具</a>
+      
+      <a href="/articles/2026-07-02-你的-AI-应用可能在偷偷-偷工减料/" class="sidebar-link">你的 AI 应用可能在偷偷"偷工减料"</a>
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-骗你做两次作业-你就自己跑了-一个百分之百成功率的-AI-教学法/" class="sidebar-link">"骗你做两次作业，你就自己跑了"——一个百分之百成功率的 AI 教学法</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-07-08">2026年7月8日</time>
+            <span class="dotsep"></span>
+            <span>3 分钟阅读</span>
+          </div>
+          <h1 class="article-title">AI时代律师的第一角色转变：不是干活，是把关</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>有个问题被问了很多遍："AI这么强，律师会不会被替代？"</p>
+<p>我的答案：不会替代，但会分层。</p>
+<p>分层的结果是：10%的律师效率提升百倍，90%的律师发现自己的可替代性在快速上升。</p>
+<p>不看学历，不看资历，看的是一件事——<strong>你会不会设规则，会不会把关。</strong></p>
+<hr>
+<h2 id="从我来做到我来判断AI做得对不对">从"我来做"到"我来判断AI做得对不对"</h2>
+<p>律师工作的本质就三件事：<strong>理解需求、做出判断、输出结论</strong>。</p>
+<p>过去这三件事都由律师本人完成。AI来了以后，变化不是"律师被取代"，而是"判断这个环节被留给了人，重复性生产环节被AI接管"。</p>
+<p>从"我来做"→"我来判断AI做得对不对"。</p>
+<p>听起来简单，做起来难。</p>
+<p>因为判断AI做得对不对，前提是你得知道AI是怎么做的、会在哪里出错、能出多大的错。这需要的不是法律知识本身，而是<strong>对AI边界的真实理解</strong>——不是"AI很厉害"或"AI不靠谱"这种笼统感觉，而是能说出"在什么类型的任务上AI的错误率可以接受，在什么类型上不能接受"。</p>
+<p>只有知道边界在哪，才知道自己的判断力该放在哪里。</p>
+<hr>
+<h2 id="未来最贵的律师是那个会调AI的人">未来最贵的律师，是那个"会调AI"的人</h2>
+<p>有人问：律师最核心的竞争力是什么？</p>
+<p>我的答案这几年变了好几次。从"关系资源"到"专业知识"到"行业经验"，每一次我都觉得不够本质。</p>
+<p>现在我认为最本质的是：<strong>知道什么值得人做，什么可以交给机器。</strong></p>
+<p>这不是虚无缥缈的"判断力"。这是一个可以训练、可以积累、可以变现的实际能力。</p>
+<p>合同审核。传统方式是一个律师从头看到尾，平均一份合同两小时。AI来了以后，常规合同AI可以做到七十分钟完成初审，剩下的问题留给律师判断。</p>
+<p>但这里有一个前提：律师必须知道AI漏掉了什么。</p>
+<p>AI最擅长的是条款检索、格式核查、法规引用；AI最不擅长的是商业意图还原、对手方谈判风格判断、极端情形下的风险分配。</p>
+<p>如果律师只知道"让AI审合同"，不知道AI的边界在哪里，结局就是：<strong>AI审完了，你敢直接用吗？</strong></p>
+<p>真正会用的律师，是那些知道AI在哪些地方会出错、会在哪个环节"自信地编一个法条"的人。这些人用AI，是真正的放大器；不知道边界的人用AI，是把风险放大了还不知道。</p>
+<hr>
+<h2 id="规则制定者律师职业的新身份">规则制定者：律师职业的新身份</h2>
+<p>未来三到五年，最稀缺的法律人才，可能不是诉讼经验最丰富的律师，而是<strong>能设计法律AI工作流的人</strong>。</p>
+<p>这不是说技术有多难，而是这个工作需要两个领域的交叉能力：既懂法律实务的每一个细节，又理解AI能做什么、不能做什么。</p>
+<p>一个成熟的建工律师，可能需要花三年才能把自己的专业判断全部"教会"一个AI Agent。但一旦教会，这个Agent加上这个律师，就是一个产出质量极高、成本极低的服务单元。</p>
+<p>能完成这个"教学"过程的律师，就是那个最贵的人——因为他是<strong>把经验变成可复制生产力的那个人</strong>。</p>
+<p>一个团队里，最有价值的律师，是那个能把团队的办案经验、工作流程、风控标准结构化地"喂给AI"的人。他不一定自己产出最多，但他的输出让整个团队的产出翻倍。</p>
+<hr>
+<h2 id="一个不适用的忠告">一个不适用的忠告</h2>
+<p>如果你现在还在用Chatbot的方式用AI——每次问一个问题，等一个答案，答案还是要自己改——这篇文章对你来说是噪音。</p>
+<p>但如果已经用AI Agent做过一些真实工作，你会发现我说的东西是真的：</p>
+<p>同一个工具，同样的模型，用三个月以后，人和人的差距可以大到离谱。</p>
+<p>这不是工具的问题。</p>
+<p><strong>是你的规则变厚了，还是你的规则还是一张白纸？</strong></p>
+<hr>
+<h2 id="结语">结语</h2>
+<p>AI时代律师的角色，不是从"人"变成"机器"，是从"全部自己干"变成"主要靠判断"。</p>
+<p>会判断的人，AI是放大器；不会判断的人，AI是加速淘汰的工具。</p>
+<p>规则制定能力、判断AI边界的能力、把经验结构化地喂给AI的能力——这些才是律师在AI时代真正的护城河。</p>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会常务理事、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://cslawyer1985.github.io/xinchun-ai-prework/" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

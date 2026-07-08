@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>规模化之后：AI时代重新理解律所 — 陈石 · 法与AI</title>
+  <meta name="description" content="中国律所二十年的主旋律三个字做大做强更多的律师更多的办公室更高的创收总额排名论坛战略规划核心就一件事怎么建一个更大的所但是等一下如果让一个人拥有了一个团队的产出能力那规模化把更多人装进同一个品牌下这个方向还成立吗这不是理论问题是正在发生的结构性问题回答它的前提是重新理解一个被忽视的事实中国律所从来就">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（118）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（94）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（18）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-08-你和AI聊了三天的案件-重新打开它-不认识你了/" class="sidebar-link">你和AI聊了三天的案件，重新打开它：不认识你了</a>
+      
+      <a href="/articles/2026-07-08-你用过的法律AI产品-为什么总是不够好用-一个办公室里没人能回答的问题/" class="sidebar-link">你用过的法律AI产品，为什么总是不够好用？一个办公室里没人能回答的问题</a>
+      
+      <a href="/articles/2026-07-08-律师注意-有人在你的文件里藏了看不见的指令/" class="sidebar-link">律师注意！有人在你的文件里藏了看不见的指令</a>
+      
+      <a href="/articles/2026-07-08-AI时代律师的第一角色转变-不是干活-是把关/" class="sidebar-link">AI时代律师的第一角色转变：不是干活，是把关</a>
+      
+      <a href="/articles/2026-07-08-讲完课-我在视频号刷到了-WorkBuddy-创始人/" class="sidebar-link">讲完课，我在视频号刷到了 WorkBuddy 创始人</a>
+      
+      <a href="/articles/2026-07-08-Agent时代律师的第一道分水岭-会不会-养-规则/" class="sidebar-link">Agent时代律师的第一道分水岭：会不会"养"规则</a>
+      
+      <a href="/articles/2026-07-02-高权限-Agent-上线前-先写三张清单/" class="sidebar-link">高权限 Agent 上线前，先写三张清单</a>
+      
+      <a href="/articles/2026-07-02-越贵模型反而越便宜-那个被忽略的-重试税/" class="sidebar-link">越贵模型反而越便宜：那个被忽略的"重试税"</a>
+      
+      <a href="/articles/2026-07-02-法律资料别急着进知识库-先给它一本留痕账/" class="sidebar-link">法律资料别急着进知识库，先给它一本留痕账</a>
+      
+      <a href="/articles/2026-07-02-中国-AI-模型为什么能便宜几十倍/" class="sidebar-link">中国 AI 模型为什么能便宜几十倍</a>
+      
+      <a href="/articles/2026-07-02-把-AI-额度分成五层-算力时代的-峰谷电价/" class="sidebar-link">把 AI 额度分成五层：算力时代的"峰谷电价"</a>
+      
+      <a href="/articles/2026-07-02-Token-会被当成石油交易/" class="sidebar-link">Token 会被当成石油交易</a>
+      
+      <a href="/articles/2026-07-02-你-AI-账单里有三种价格在同时跑/" class="sidebar-link">你 AI 账单里有三种价格在同时跑</a>
+      
+      <a href="/articles/2026-07-02-AI-时代最值钱的不是模型-是-水电煤-层/" class="sidebar-link">AI 时代最值钱的不是模型，是"水电煤"层</a>
+      
+      <a href="/articles/2026-07-02-法律人学-AI-最缺的不是工具/" class="sidebar-link">法律人学 AI，最缺的不是工具</a>
+      
+      <a href="/articles/2026-07-02-你的-AI-应用可能在偷偷-偷工减料/" class="sidebar-link">你的 AI 应用可能在偷偷"偷工减料"</a>
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-骗你做两次作业-你就自己跑了-一个百分之百成功率的-AI-教学法/" class="sidebar-link">"骗你做两次作业，你就自己跑了"——一个百分之百成功率的 AI 教学法</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-05-15">2026年5月15日</time>
+            <span class="dotsep"></span>
+            <span>5 分钟阅读</span>
+          </div>
+          <h1 class="article-title">规模化之后：AI时代重新理解律所</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>中国律所二十年的主旋律，三个字：做大做强。</p>
+<p>更多的律师，更多的办公室，更高的创收总额。排名、论坛、战略规划，核心就一件事：怎么建一个更大的所。</p>
+<p>但是等一下。如果AI让"一个人"拥有了"一个团队"的产出能力，那"规模化"——把更多人装进同一个品牌下——这个方向，还成立吗？</p>
+<p>这不是理论问题。是正在发生的结构性问题。回答它的前提，是重新理解一个被忽视的事实。</p>
+<h2 id="中国律所从来就是平台">中国律所从来就是平台</h2>
+<p>说一句不太好听的话：中国律所从来就不是"雇主"，从来就是"平台"。</p>
+<p>雇主的核心逻辑：我雇你，你为我工作，产出减薪酬归我，我承担经营风险。平台的核心逻辑：我搭基础设施，你在上面执业，你付费用或以分成共享收益。</p>
+<p>中国律所的合伙制和提成制，恰恰是平台逻辑。律师在律所旗下执业——律所提供品牌、场地、行政、财务。律师交管理费或按比例分成。客户跟律师走，不跟律所走。</p>
+<p>这个结构二十年被反复批判——松散、不现代、让律所没法真正规模化。批评都对。但我想说的是另一件事：既然它从来就是平台，那"我们要把律所从雇主变成平台"这个说法，本身就是一个误诊。</p>
+<p>真正的问题不是"律所还不是平台"。是"律所这个平台太薄了"。</p>
+<h2 id="一个薄平台上叠了二十年工业梦">一个薄平台上，叠了二十年工业梦</h2>
+<p>律所作为平台，提供什么赋能？品牌（在某个名号下执业）、场地（工位或办公室）、行政财务（开票、报税、发工资）。没了。</p>
+<p>在这个薄平台上，律所管理者试图叠上"工厂"——标准化产品线、公司化管理、统一质控、集体品牌建设。二十年的努力，一直是这个方向。</p>
+<p>问题在哪？工厂逻辑和平台逻辑互相矛盾。工厂要标准化——产品的标准化、流程的标准化、人的标准化。但平台的律师是个体执业者，每个人有自己的客户、自己的风格、自己的判断。要标准化，就是在对抗平台的天性。</p>
+<p>这就是为什么二十年规模化，成果有（所确实变大了），但天花板也很明显——律所越大，管理成本越高，合伙人矛盾越多，平台和律师之间的张力越大。到了一定规模，增长不再带来效率提升，只带来协调成本的指数级上升。</p>
+<h2 id="AI改变了什么">AI改变了什么</h2>
+<p>AI在三个方向上改变这个局面。</p>
+<p><strong>生产端。</strong> 一个人加AI，产出接近过去一个团队。规模化对产能的意义在削弱。过去大项目需要大团队——人多才能接大活。现在一个会驾驭AI的律师，可以独立完成过去需要初级律师、实习律师、法务助理配合才能完成的工作。规模，在产能维度上的权重在下降。</p>
+<p><strong>协同端。</strong> AI降低内部协作成本。大所相比小所的传统优势之一是内部协同——不同专业的律师联合服务一个客户。但AI让信息检索、知识共享、初步分析的协作成本大幅降低。小所和个体律师借助AI工具，可以在一定程度上复现多专业协同的效果。大所的协同优势在受侵蚀。</p>
+<p><strong>客户端。</strong> 客户在打电话给你之前，已经先问过AI了。以前律师的核心价值之一是信息差——我知道你不知道的法条、案例、交易惯例。AI在消灭这种信息差。律师的价值被迫从"我知道你不知道"迁移到"我的判断你能信任"。</p>
+<p>三个变化叠在一起，结论很简单：规模化没有错，但规模化的意义在被重写。</p>
+<h2 id="从做大到做密">从"做大"到"做密"</h2>
+<p>旧的规模化，比的是数量：多少律师、多少办公室、多少总创收。</p>
+<p>新的规模化，比的应该是密度：知识密度、协同密度、个体战斗力密度。</p>
+<p><strong>知识密度。</strong> 一个大所二十年积累了多少历史案件、合同模板、裁判规律？这些东西如果沉睡在档案柜和硬盘里，就是成本。如果结构化——变成AI能读取、检索、比对的知识库——就是资产。这个知识库是平台价值的核心，也是别的所复制不了的壁垒。大所最大的优势不是"人多"，是"数据多"。但数据只有被结构化之后才是资产，在那之前只是存储成本。</p>
+<p><strong>协同密度。</strong> 大所有不同专业的律师。房屋买卖的律师和建设工程的律师，私募基金的律师和并购的律师——各自手里的知识，有没有一个机制把它们连起来？AI可以做到：当建设工程律师审一份施工合同时，AI自动调用并购团队积累的对该交易对手方的尽调信息。协同密度的提升，不靠更多会议，靠知识库的互相联通。</p>
+<p><strong>个体战斗力密度。</strong> 这点最关键。大所的终极竞争优势，不是"我有多少律师"，是"我的每个律师战斗力有多强"。一个用AI武装的律师，战斗力可能是未武装律师的五倍。一个所有二十个这样的律师，战斗力相当于一百个传统律师。未来竞争不是比人数，是比人均战斗力。提升人均战斗力最直接的方式，就是让更多律师拥有自己的AI harness。</p>
+<h2 id="四条具体的事">四条具体的事</h2>
+<p>这条路具体怎么走？四件事。</p>
+<p><strong>把律所的数据变成可用的资产。</strong> 历史案件、合同模板、裁判规律，转成AI可读取的格式，建成律所的专属知识库。不需要自建服务器，不需要养技术团队——用现成的大模型平台，接入自己的数据就能起步。关键是开始做，不是完美做。</p>
+<p><strong>统一算力入口。</strong> 不用每个律师自己去注册各种AI账号、比较模型。律所统一提供工具，降低技术门槛。既保数据安全，也降低启动成本——打开就能用。</p>
+<p><strong>建内部分享机制。</strong> 每月让一个用AI做出实际效果的律师花二十分钟讲一件事：用了什么工具、做了什么、效果怎样。不是讲"AI有多好"，是讲"我是怎么用的"。创新来自一线，管理层的任务是让一线的创新能被传播和复用。这不是培训——培训是上面的人讲给下面听。分享是旁边的人讲给旁边听，动力学完全不同。</p>
+<p><strong>调整绩效考核。</strong> 不只是创收。把AI应用深度、知识贡献（往知识库里投了多少东西）、内部分享纳入评价体系。制度往哪指，人往哪走。嘴上说"AI很重要"，考核表上只有创收——人不会听你说什么，人会看你考核什么。</p>
+<h2 id="方向不变尺子变了">方向不变，尺子变了</h2>
+<p>规模化这个方向没有错。但衡量的尺子要换。</p>
+<p>过去：多少人、多少办公室、多少创收总额。</p>
+<p>未来：知识库里有多少结构化资产、律师协同的密度有多高、每个人被AI武装到什么程度。</p>
+<p>大所的未来不是"律师最多的所"，是"密度最高的所"。这场转型不需要轰轰烈烈的战略发布会，不需要昂贵的咨询顾问。需要把四件事一件一件做到：让数据可用，让工具在手边，让好做法被看见，让制度跟上方向。</p>
+<p>听起来简单。但简单的事，做三年，就是壁垒。</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://cslawyer1985.github.io/xinchun-ai-prework/" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

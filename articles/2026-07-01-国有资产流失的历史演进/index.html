@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>国有资产流失的历史演进 — 陈石 · 法与AI</title>
+  <meta name="description" content="本文研究方法这篇文章研究的是国资监管制度的演变逻辑不是某一部法规的条文注释研究范围覆盖年到年将近半个世纪材料来源包括公开发布的法律行政法规国务院文件国资委规章官方政策解读和相关报道文中引用均标注文件名和发布年份关键文件可以在公开渠道检索核实限于研究条件部分文件的实施效果和司法适用情况未做穷尽验证分析">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（118）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（94）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（18）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">法律实务</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-国有资产流失的历史演进/" class="sidebar-link">国有资产流失的历史演进</a>
+      
+      <a href="/articles/2026-07-01-从防止国有资产流失到国有资本经营判断规则-国资监管制度演进的反向后果/" class="sidebar-link">从防止国有资产流失到国有资本经营判断规则：国资监管制度演进的反向后果</a>
+      
+      <a href="/articles/2026-07-01-国资监管不能只设红线-还要给方法/" class="sidebar-link">国资监管不能只设红线，还要给方法</a>
+      
+      <a href="/articles/2026-07-01-国资监管的悖论-红线越硬-经营越软/" class="sidebar-link">国资监管的悖论：红线越硬，经营越软</a>
+      
+      <a href="/articles/2026-06-30-六类建工争议的答案被改写-最高法建工司法解释二施行首日实务解读/" class="sidebar-link">六类建工争议的答案被改写——最高法建工司法解释二施行首日实务解读</a>
+      
+      <a href="/articles/2026-06-30-政府项目审计-财政评审的最长期限限制-建工解释二第13条对-久审不决-的终结/" class="sidebar-link">政府项目审计/财政评审的最长期限限制——建工解释二第13条对"久审不决"的终结</a>
+      
+      <a href="/articles/2026-06-30-实际施工人概念退出历史舞台-建工解释二最重大变革的规则演进与实务影响/" class="sidebar-link">实际施工人概念退出历史舞台——建工解释二最重大变革的规则演进与实务影响</a>
+      
+      <a href="/articles/2026-06-21-一家律所最被低估的知识资产-内部裁判文书库/" class="sidebar-link">一家律所最被低估的知识资产——内部裁判文书库</a>
+      
+      <a href="/articles/2026-06-21-公众号是你的隐形法律数据库-没有一家法律数据商收录了它们/" class="sidebar-link">公众号是你的隐形法律数据库——没有一家法律数据商收录了它们</a>
+      
+      <a href="/articles/2026-06-14-公证到底能做什么-不能做什么-从一次咨询说起/" class="sidebar-link">公证到底能做什么、不能做什么——从一次咨询说起</a>
+      
+      <a href="/articles/2026-06-04-上了会-就不用担责了吗/" class="sidebar-link">上了会，就不用担责了吗？</a>
+      
+      <a href="/articles/2026-06-04-甲方这个位置-正在悄悄吃掉你的真本事/" class="sidebar-link">甲方这个位置，正在悄悄吃掉你的真本事</a>
+      
+      <a href="/articles/2026-05-27-投资茅台-四个字-骗了全国多少人/" class="sidebar-link">"投资茅台"四个字，骗了全国多少人？</a>
+      
+      <a href="/articles/2026-05-27-吹牛税/" class="sidebar-link">吹牛税</a>
+      
+      <a href="/articles/2026-05-23-宁波建工纠纷败诉密码-从500份判决看当事人栽在哪儿/" class="sidebar-link">宁波建工纠纷败诉密码——从500份判决看当事人栽在哪儿</a>
+      
+      <a href="/articles/2026-05-23-宁波建设工程法官的裁判密码/" class="sidebar-link">宁波建设工程法官的裁判密码</a>
+      
+      <a href="/articles/2026-05-22-青年律师不是在-卷-是在-空转/" class="sidebar-link">青年律师不是在"卷"，是在"空转"</a>
+      
+      <a href="/articles/2026-05-20-别让我拿破裤衩给你补一条裤子/" class="sidebar-link">别让我拿破裤衩给你补一条裤子</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">法律实务</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-07-01">2026年7月1日</time>
+            <span class="dotsep"></span>
+            <span>18 分钟阅读</span>
+          </div>
+          <h1 class="article-title">国有资产流失的历史演进</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <h2 id="本文研究方法">本文研究方法</h2>
+<p>这篇文章研究的是国资监管制度的演变逻辑，不是某一部法规的条文注释。研究范围覆盖 1978 年到 2026 年，将近半个世纪。材料来源包括公开发布的法律、行政法规、国务院文件、国资委规章、官方政策解读和相关报道。文中引用均标注文件名和发布年份，关键文件可以在公开渠道检索核实。限于研究条件，部分文件的实施效果和司法适用情况未做穷尽验证，分析框架的结论边界在文末说明。</p>
+<p>核心问题只有一个：<strong>为什么每一轮"防止国有资产流失"的制度建设，都在解决上一轮问题的同时，制造了下一轮要面对的新问题？</strong></p>
+<h2 id="核心发现">核心发现</h2>
+<p>研究得出的发现是反直觉的。</p>
+<p>通常人们以为，国资监管是一条越来越严、越来越密的渐进线。但实际上，它更像一套"漏洞—补丁—新漏洞"的循环：每一轮制度都不是凭空产生的，而是对上一轮制度后果的反应；每一轮制度又都会改变经营者的行为策略，催生新的规避方式、新的表面合规技术和新的责任转嫁机制。</p>
+<p>从 1978 年放权让利到 2026 年尽职免责——将近半个世纪里，这条红线从无到有、从软到硬、从行政规章到法律制度、从结果追责到过程监管、从严查到容错。但每一次强化，都伴随着行为人的策略调整。制度不断从"防流失"走向"防规避"，再从"防规避"走向"防不作为"。</p>
+<p>下面按六个阶段展开。</p>
+<h2 id="第一阶段19781992放权让利与两权分离">第一阶段：1978—1992，放权让利与两权分离</h2>
+<p>这个阶段的主线不是"防止国有资产流失"，而是"搞活国企"。</p>
+<p>改革之前，国营企业是计划经济的执行单元——生产计划由国家下达、产品由国家调拨、利润上缴财政、亏损由财政弥补。企业没有定价权、没有投资权、没有用工权、没有留利权。这套体制的问题是：企业不是市场主体，没有改善经营的激励。</p>
+<p>1978 年以后，改革沿着"扩大企业自主权"的方向推进。1979 年开始扩大国营企业经营自主权试点，1980 年后逐步全面推开。1984 年《中共中央关于经济体制改革的决定》明确提出所有权与经营权可以适当分离，企业应成为相对独立的经济实体。随后，承包经营责任制、租赁制、厂长经理负责制陆续推开。</p>
+<p><strong>这个阶段的制度逻辑是：把经营权给企业，企业就会自己搞好。</strong></p>
+<p>基于这个逻辑，国家向企业下放了多项权利：生产计划权、产品购销权、定价权、资金使用权、工资奖金分配权、劳动人事权。利润留成制度让企业有了自有资金；承包经营责任制让经营者有了完成承包指标后的剩余收益。</p>
+<p>这些改革释放了巨大的生产力。国企从"死气沉沉"变成了"有活力的市场主体"。</p>
+<p>但也同时产生了三个问题。</p>
+<p>第一个问题：所有者缺位开始显现。国家仍然是所有者，但经营权下放以后，日常经营决策由企业和经营者说了算。"谁代表国家看住资产"这个问题，当时没人回答。</p>
+<p>第二个问题：短期化经营倾向出现。承包经营强化了经营者在承包期内的收益目标。但是设备维护、技术改造、资产保值这类长期事项，在承包指标里很难准确衡量。经营者有激励把利润做上去，但未必有激励把资产保护好。</p>
+<p>第三个问题："搞活"与"掏空"的边界开始模糊。放权让利、允许企业留利和自主支配资金，在产权关系、财务边界和责任机制不清晰的情况下，也为后续的内部人控制、低价处置、利益转移埋下了结构性伏笔。</p>
+<p><strong>这一轮被后来消化掉的问题是：资产底数不清。</strong> 不知道国有资产有多少、在哪里、值多少钱，何谈防止流失？后续的产权界定、资产评估、清产核资、产权登记，正是为回答这个问题而建立的基础设施。</p>
+<p><strong>这一轮没有解决的核心矛盾是：经营自主权与所有者监督之间的张力。</strong> 直到今天，国企仍然面对这个双重身份：既要像企业一样经营，又要像公共资产受托人一样被监督。</p>
+<h2 id="第二阶段19932002现代企业制度与改制流失">第二阶段：1993—2002，现代企业制度与改制流失</h2>
+<p>如果第一阶段的问题是国企缺乏活力，第二阶段的问题就是国企缺乏效率。</p>
+<p>1993 年，十四届三中全会提出建立现代企业制度，"产权清晰、权责明确、政企分开、管理科学"十六字方针成为国企改革的核心目标。1997 年以后，又进入"抓大放小"——大型国企建立现代企业制度，中小型国企通过兼并、破产、出售、股份合作制等方式改制退出。同时，"下岗分流、减员增效"在全国推开。</p>
+<p><strong>这个阶段的制度逻辑是：国企不是搞活的问题，是制度重构的问题。</strong></p>
+<p>但制度重构意味着资产要重新定价、产权要重新界定、企业要进入交易市场。正是这个过程，让"国有资产流失"第一次成为全国性舆论焦点。</p>
+<p>改制中涉及兼并、出售、破产、股份制改造、职工持股、管理层收购、资产剥离——每一项操作都有可能产生低估资产、暗箱交易、内部人控制、优质资产与债务包袱不对称剥离等问题。评估机构被交易目的绑架、地方政府为完成改制任务压低价格、管理层利用信息优势"自己买自己的企业"——这些现象在 1990 年代广泛出现。</p>
+<p>1991 年国务院发布《国有资产评估管理办法》，已经把"资产拍卖、转让、企业兼并、出售、联营、股份经营、与外商设立合资企业、清算"等情形列为必须评估的节点。这说明监管已经开始认识到：资产一旦进入交易和重新定价，流失风险就急剧上升。</p>
+<p><strong>这一轮建立的制度工具有重要的历史价值：</strong> 资产评估、产权界定、清产核资、产权登记、改制审批、交易审查。国有资产从"一本说不清的账"变成了"有底数、有登记、有评估规则"的资产池。</p>
+<p>但这一轮也制造了三个新问题。</p>
+<p>第一，评估依赖症。资产评估本来是定价工具，但在实践中容易异化为责任工具——只要有一份评估报告，交易就获得了形式安全；评估是否真实反映市场价值、是否被交易方案倒推，反而变成了次级问题。这是后来制度反复打补丁的起点。</p>
+<p>第二，低价改制争议形成社会记忆。"管理层收购等于国资流失"的焦虑深深刻入公众认知。这种社会心理后来深刻影响了监管尺度——任何涉及价格折让、债务重组、资产处置的方案，都会被放在"是不是流失"的放大镜下审视。</p>
+<p>第三，"改革就是流失"的舆论风险产生。改制过程中只要出现价格低、职工安置争议、资产出售给私人主体，就容易被定性为国资流失。这种压力让后来的监管者倾向于"宁可保守也不冒险"。</p>
+<p><strong>这一轮被后来消化掉的问题：</strong> 2003 年国资委成立，用专门出资人监管机构来终结"九龙治水"——国资监管不再分散在财政、行业主管、地方政府、企业主管等多个系统中。</p>
+<p><strong>这一轮遗留的核心问题是：</strong> 资产评估、审计、审批这些技术工具，本身不能保证实质公允。它们解决了"有没有程序"的问题，但没有彻底解决"程序是否被交易目的操控"的问题。直到今天，这个矛盾还是国资交易领域最核心的制度张力。</p>
+<h2 id="第三阶段20032008国资委成立与保值增值考核">第三阶段：2003—2008，国资委成立与保值增值考核</h2>
+<p>2003 年是国资监管史上的关键节点。</p>
+<p>此前国资监管分散在多个系统中，所有者代表不清、监管职责分散。2002 年十六大提出改革国有资产管理体制，建立"权利、义务和责任相统一，管资产和管人、管事相结合"的体制。2003 年国务院机构改革决定成立国务院国资委，代表国家履行出资人职责。</p>
+<p>2003 年《企业国有资产监督管理暂行条例》进一步确立出资人监管体制，要求所出资企业承担国有资产保值增值责任，建立企业负责人经营业绩考核制度。2004 年国资委发布《企业国有资本保值增值结果确认暂行办法》，把保值增值量化、指标化、考核化。</p>
+<p><strong>这个阶段的制度逻辑是：把监管从"管交易"升级为"管全过程经营"。</strong></p>
+<p>国资委成立以后，国资监管不仅关注改制交易中的流失，更关注企业经营全过程：重大投资是否失败、盲目扩张是否可控、担保是否有风险、关联交易是否公允、产权转让是否规范、负责人是否因为经营不善导致资产缩水。</p>
+<p>工具升级很快：出资人职责明确了"谁来管"；业绩考核建立了"管什么"的指标体系；财务监督和产权管理让"怎么管"有了抓手；负责人任免与考核让"管人"和"管资产"真正关联。</p>
+<p>但这次升级带来了三个新问题。</p>
+<p>第一，保值增值指标从方向变成了结果。国资保值增值原本是整体目标，但考核化以后容易被简单理解成：账面不能亏、资产不能减、价格不能低。经营风险、周期波动、战略投入、长期价值创造，这些难以纳入短期指标的东西，在企业决策中的权重自然下降。</p>
+<p>第二，经营者开始形成"显性亏损恐惧"。做投资可能亏损，不做至少账面安全；主动处置资产可能被追问价格，不处置则损失隐藏在时间里。经营性判断的复杂程度远超监管指标的简单程度。</p>
+<p>第三，上级监管与企业治理的边界模糊。国资委既要履行出资人职责，又不能过度干预企业经营。这个边界在实践中极难划清。结果是"重大事项层层请示"的路径依赖开始形成——企业不愿意独立判断，倾向于把事项报给上级。决策链条越来越长，信息与责任的错位越来越大。</p>
+<p><strong>这一轮被后来消化掉的问题：</strong> 2008 年《企业国有资产法》把国资监管体制、保值增值考核和责任追究制度上升为法律制度——从行政法规层面进入到了法律层面。</p>
+<p><strong>这一轮遗留的核心问题是：</strong> 企业经营责任与干部管理责任、纪律责任开始交织。国资监管从"管资产"走向"管人、管事、管资产结合"以后，经营者的任何决策失误都可能产生三重后果：经营指标扣分、职务调整风险、纪律审查可能。这为后来责任追究制度的强化和经营者的保守化埋下了伏笔。</p>
+<h2 id="第四阶段20082014企业国有资产法与交易程序化">第四阶段：2008—2014，企业国有资产法与交易程序化</h2>
+<p>2008 年《企业国有资产法》的通过是一个法律化标志。</p>
+<p>该法第八条明确，国家建立健全与社会主义市场经济发展要求相适应的国有资产管理与监督体制，建立健全国有资产保值增值考核和责任追究制度，落实国有资产保值增值责任。第十条规定"国有资产受法律保护，任何单位和个人不得侵害"。</p>
+<p><strong>这个阶段的制度逻辑是：把之前靠行政规章和政策文件建立的监管体系，上升到法律层面。</strong></p>
+<p>法律化带来的后果是：产权交易程序越来越细、审批节点越来越多、信息披露要求越来越高、进场交易成为强制。企业国有资产交易必须经过评估、备案、进场挂牌、信息披露、资格审查、竞价或协议成交——每个环节都要留痕，每一笔交易都要可追溯。</p>
+<p>但法律化和程序化也带来了新的问题。</p>
+<p>第一个问题：程序合规开始压倒商业判断。国企在考虑交易方案时，第一个问题不再是"这个方案对国资整体利益最有利吗"，而是"这个方案的程序经得起审计检查吗"。两者有时候是冲突的——商业上最优的方案，可能因为程序复杂、时间窗口紧张、交易对手不接受而被放弃。</p>
+<p>第二个问题：外部专业机构的意见从"判断工具"变成"防火墙"。律师、审计师、评估师、券商——这些专业机构本应帮助决策者做出实质判断。但在实践中，它们的意见越来越多地被用来分散责任。"有评估报告、有审计意见、有律师出函"成了交易安全的标配，但报告的内容质量未必经得起追问。</p>
+<p>第三个问题：进场交易与交易效率形成张力。进场交易解决了暗箱操作问题，提升了公开性。但不是所有交易都适合标准化挂牌。复杂交易、战略合作、资产盘活、债务重组、困境企业退出——这些事项需要更灵活的交易安排。程序公开不等于商业有效。</p>
+<p><strong>这一轮被后来消化掉的问题：</strong> 2015 年以后，"以管资本为主"被提出，试图从"管企业、管事项"转向"管资本流向、布局、效率和安全"。</p>
+<p><strong>这一轮遗留的核心问题是：</strong> "进场、评估、审批、留痕"形成了强大的形式合规体系，但对于战略性亏损、周期性亏损、创新失败、止损退出等复杂经营问题，仍然缺少稳定的免责规则。</p>
+<h2 id="第五阶段20152020深化改革混改与责任追究高压化">第五阶段：2015—2020，深化改革、混改与责任追究高压化</h2>
+<p>2015 年是第二个大节点。</p>
+<p>中共中央、国务院发布《关于深化国有企业改革的指导意见》，从分类改革、现代企业制度、国资管理体制、混合所有制、强化监督防止流失等维度全面展开新一轮改革。同年，国务院发布《关于改革和完善国有资产管理体制的若干意见》提出以管资本为主加强国有资产监管。</p>
+<p>两项配套文件尤其值得关注：2015 年国务院办公厅《关于加强和改进企业国有资产监督防止国有资产流失的意见》，把强化监督、防止流失定位为深化国企改革的前提和保障。2016 年国务院办公厅《关于建立国有企业违规经营投资责任追究制度的意见》，要求对国企经营管理人员违反法律法规和内部规定、未履行或未正确履行职责、造成国有资产损失或其他严重不良后果的情形追究责任。</p>
+<p>2016 年国资委、财政部联合发布的《企业国有资产交易监督管理办法》（俗称"32 号令"），将企业产权转让、企业增资、企业资产转让全部纳入交易监管体系。</p>
+<p><strong>这个阶段的制度逻辑是：改革越深入、交易越复杂、资本运作越活跃，监管就得越严。</strong></p>
+<p>混改、增资扩股、产业基金、境外投资、金融业务、PPP、平台公司、融资担保——国有资本与民营资本、社会资本、多层次资本市场之间的交易越来越复杂。监管担心在这些复杂交易中会出现低价引入投资人、稀释国有权益、资产评估失真、场外交易规避进场、基金嵌套规避监管等问题。</p>
+<p>这一轮制度建设的力度是空前的，但催生的负面行为也格外突出。</p>
+<p>第一，"不敢混、不敢投、不敢退"成为普遍心态。混改和资本运作需要商业灵活性——估值可以谈、条款可以博弈、风险需要承担。但责任追究体系强化以后，经营者的理性选择是选择最保守的方案。不该混的不混（本来应该混的也不混了），不该投的不投（本来应该投的也观望了），不该退的不退（宁可让资产烂在手里）。</p>
+<p>第二，重大事项决策链条加速上移。企业不愿意独立判断，把事项报给上级、报给国资、报给政府协调会议。结果是决策权上移，但经营信息仍然在企业——谁掌握信息不决策，谁决策不掌握信息。信息与责任的错位进一步加深。</p>
+<p>第三，集体决策异化为集体避责。集体决策本来是为了防止个人专断。但在高压责任体系下，"大家都签字"不等于"大家真的在判断"。集体决策变成分散个人责任的工具——决策质量下降，但程序上无懈可击。</p>
+<p>第四，交易结构复杂化以规避监管。监管要求进场、评估、审批——每个环节都有成本、都有时间、都有不确定性。对复杂商业交易来说，这些成本和不确定性可能直接导致交易失败。实践中的应对方式是设计更复杂的交易结构：基金嵌套、资产包拆分、先增资后转让、先合作后确权、关联方安排。监管设计刚性约束，交易设计柔性规避——这是一场持续的攻防。</p>
+<p>第五，形式合规产业化。法律意见、审计报告、评估报告、可研报告、专家论证、会议纪要——这些文件大量增加，但文件厚度不等于判断质量。一份一百页的尽调报告可以写得滴水不漏，但对核心交易风险的判断可能是错误的。</p>
+<p><strong>这一轮被后来消化掉的问题：</strong> 2018 年以后责任追究体系更加标准化、清单化；同时"三个区分开来"、尽职合规免责、容错纠错等机制也开始萌芽——试图纠正过度追责对企业家精神和创新投资的抑制。</p>
+<p><strong>这一轮遗留的核心问题是：</strong> 责任追究制度建立得比免责制度更早、更硬、更可执行。在实践中，"追责预期"远强于"免责预期"。</p>
+<h2 id="第六阶段20212026从严追责到尽职免责红线开始补另一半制度">第六阶段：2021—2026，从严追责到尽职免责——红线开始补"另一半制度"</h2>
+<p>第六阶段的核心特征是：制度开始反思自身的副作用。</p>
+<p>持续多年的严监管、严追责，解决了一部分违规投资、交易失范、内控薄弱的问题，但也带来了不敢经营、不敢创新、不敢投资、不敢处置的后果。尤其在科技创新、战略性新兴产业、产业基金、低效无效资产退出等领域，如果没有尽职免责，国企很难承担合理商业风险。</p>
+<p>制度开始补"另一半"。</p>
+<p>2024 年《求是》文章提到，省一级国资委集中统一监管平均比例已超 99%，同时强调要依法理清政府公共管理部门与国资监管机构职责边界，"该管的科学管理、不该管的依法放权"。政企分开、政资分开，在四十年后仍在推进。</p>
+<p>2025 年国资委发布新《中央企业违规经营投资责任追究实施办法》（2026 年 1 月 1 日起施行）。官方说这个办法将责任追究情形扩展到 13 个方面、98 种情形——覆盖面前所未有。但更值得关注的变化是配套的"经营投资尽职合规免责条款"——这是制度第一次在"追责"的同一部文件里正式确认"免责"框架。</p>
+<p>同一年，国资委还发布了新《企业国有资产交易操作规则》，在 32 号令的框架下更新交易操作规范，目的是"规范交易、有效防范国有资产流失，同时提高资源流转配置效率"——"防范流失"和"提高效率"被放在同一句话里。这个表述本身就是一个重要的制度信号。</p>
+<p><strong>这个阶段的制度逻辑是：红线还需要，但光有红线不够——还得告诉经营者怎么走才安全。</strong></p>
+<p>但第六阶段也面临新的挑战。</p>
+<p>第一，免责规则可能形式化。如果"尽职免责"也变成"材料齐全即可免责"，那它不过是又一套形式合规。免责要真正有效，必须回答更深入的问题：什么程度的调查算"充分"、什么程序的判断算"合理"、谁来确定免责标准、免责结论对后续审计巡视纪检有没有约束力。</p>
+<p>第二，穿透监管与在线监管带来的数据化压力在上升。数字化工具让监管机构能实时监控企业交易、投资、资金流动、产权变动——发现问题能力大幅提高。但同时，也意味着经营者的每一个动作都可能被事后追溯。"所有动作都可被倒查"的心理负担，可能进一步压制经营判断。</p>
+<p>第三，创新投资仍然缺少商业判断安全港。战略性新兴产业和科技创新天然高风险——大概率失败、小概率成功。如果事后仍以传统资产保值增值口径评价这些投资，就会导致国企在创新领域看似积极、实则保守。</p>
+<p>第四，不作为责任的制度供给仍然不足。制度越来越能追"做错了"，但仍然不容易追"该做不做、该退不退、该止损不止损"。这继续在制度层面奖励拖延和回避。</p>
+<h2 id="政策演化总表">政策演化总表</h2>
+<p>| 阶段 | 制度主线 | 当时要防的"流失" | 催生的负面行为 | 制度回应 | 遗留问题 |</p>
+<p>|------|---------|----------------|--------------|---------|---------|</p>
+<p>| 1978—1992 | 放权让利、两权分离 | 经营权下放后的资产失控 | 所有者缺位、短期经营 | 产权界定、评估、清产核资 | 自主经营与监督张力 |</p>
+<p>| 1993—2002 | 现代企业制度、改制 | 低价改制、内部人控制 | 评估依赖、低价改制焦虑 | 国资委成立、出资人监管 | 评估可能被交易目的操控 |</p>
+<p>| 2003—2008 | 国资委、出资人、保值增值考核 | 经营失控、重大投资损失 | 保值增值结果化、亏损恐惧 | 企业国有资产法 | 经营风险与个人责任绑定 |</p>
+<p>| 2008—2014 | 企业国有资产法、交易程序化 | 产权交易、关联交易流失 | 程序压倒判断、意见防火墙化 | 以管资本为主 | 复杂交易缺少弹性机制 |</p>
+<p>| 2015—2020 | 深化改革、混改、严追责 | 混改、增资、投资中的利益输送 | 不敢混投退、集体避责、结构绕行 | 责任追究清单化、容错免责 | 追责强、免责弱 |</p>
+<p>| 2021—2026 | 集中统一监管、尽职免责 | 新型资本运作中的隐性流失 | 免责形式化、倒查压力、创新保守 | 尽职合规免责、穿透监管 | 不作为责任、安全港不足 |</p>
+<h2 id="三个核心判断">三个核心判断</h2>
+<p><strong>第一，国资监管不是线性进步，而是"漏洞—补丁—新漏洞"的制度演化。</strong></p>
+<p>资产评估是为了解决改制交易低估，产权登记是为了解决资产归属不清，进场交易是为了解决暗箱操作，出资人监管是为了解决所有者缺位，责任追究是为了解决违规经营投资，尽职免责是为了解决过度追责导致的不作为。</p>
+<p>每个补丁都是对上一阶段问题的精准回应，但每个补丁都会改变行为人的策略。经营者不是制度实验中的被动受体——他们会学习、会适应、会规避。于是制度不断从"防流失"走向"防规避"，再从"防规避"走向"防不作为"。</p>
+<p><strong>第二，国资流失的形态已经发生了结构性变化。</strong></p>
+<p>早期国资流失主要表现为低价卖资产、改制中侵占国资、产权不清导致资产被拿走、评估失真、内部人控制——这些是资产端的显性流失。</p>
+<p>现在的国资流失更加隐蔽：不及时退出导致持续亏损、不敢决策导致机会损失、过度合规导致交易失败、为规避程序设计复杂结构、借行政指令获得责任庇护、通过解释权和批复权形成寻租。流失已经从资产端扩展到效率端、机会端、治理端和责任解释权端。</p>
+<p>旧的监管工具针对的是旧的流失形态。新形态的流失，需要新的判断框架。</p>
+<p><strong>第三，真正的制度短板不是"红线不够硬"，而是"红线之后没有道路"。</strong></p>
+<p>过去的制度建设已经建立了非常强的红线系统：不能低价转让、不能违规投资、不能暗箱交易、不能利益输送、不能造成国资损失。</p>
+<p>但国企经营者真正需要的是：什么情况下可以折价退出、什么情况下可以债务重组、什么情况下可以让利盘活、什么情况下可以投资失败、什么情况下可以战略性亏损、什么情况下亏损属于正常商业风险、什么程序完成后可以形成免责、什么证据足以证明勤勉尽责。</p>
+<p>没有这些"道路"，红线画得再硬，最终结果只是：守规矩的人不敢做事，有资源的人绕过规则。前者造成内耗，后者滋生腐败。</p>
+<h2 id="下一阶段的命题">下一阶段的命题</h2>
+<p>"防止国有资产流失"不是一个可以靠反复强调解决的问题。它本身是国企改革不断深入的过程中产生的制度副产品：放权会带来失控，监管会带来僵化，追责会带来避责，容错又可能带来滥用。</p>
+<p>真正成熟的国资监管，不是红线越来越硬，而是判断越来越精细。</p>
+<p>下一阶段的关键，不是继续问"有没有国有资产流失"，而是要问：这是侵吞国资和利益输送、重大过失和程序违法、正常商业风险和能力不足，还是不作为造成的隐性损失？</p>
+<p>只有把这些类型区分开，并且在制度上分别配置不同的追责标准、容错边界和免责条件，国资监管才可能从"防流失"真正走向"促发展"。</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://cslawyer1985.github.io/xinchun-ai-prework/" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

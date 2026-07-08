@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>你和AI聊了三天的案件，重新打开它：不认识你了 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（118）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（94）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（18）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-08-你和AI聊了三天的案件-重新打开它-不认识你了/" class="sidebar-link">你和AI聊了三天的案件，重新打开它：不认识你了</a>
+      
+      <a href="/articles/2026-07-08-你用过的法律AI产品-为什么总是不够好用-一个办公室里没人能回答的问题/" class="sidebar-link">你用过的法律AI产品，为什么总是不够好用？一个办公室里没人能回答的问题</a>
+      
+      <a href="/articles/2026-07-08-律师注意-有人在你的文件里藏了看不见的指令/" class="sidebar-link">律师注意！有人在你的文件里藏了看不见的指令</a>
+      
+      <a href="/articles/2026-07-08-AI时代律师的第一角色转变-不是干活-是把关/" class="sidebar-link">AI时代律师的第一角色转变：不是干活，是把关</a>
+      
+      <a href="/articles/2026-07-08-讲完课-我在视频号刷到了-WorkBuddy-创始人/" class="sidebar-link">讲完课，我在视频号刷到了 WorkBuddy 创始人</a>
+      
+      <a href="/articles/2026-07-08-Agent时代律师的第一道分水岭-会不会-养-规则/" class="sidebar-link">Agent时代律师的第一道分水岭：会不会"养"规则</a>
+      
+      <a href="/articles/2026-07-02-高权限-Agent-上线前-先写三张清单/" class="sidebar-link">高权限 Agent 上线前，先写三张清单</a>
+      
+      <a href="/articles/2026-07-02-越贵模型反而越便宜-那个被忽略的-重试税/" class="sidebar-link">越贵模型反而越便宜：那个被忽略的"重试税"</a>
+      
+      <a href="/articles/2026-07-02-法律资料别急着进知识库-先给它一本留痕账/" class="sidebar-link">法律资料别急着进知识库，先给它一本留痕账</a>
+      
+      <a href="/articles/2026-07-02-中国-AI-模型为什么能便宜几十倍/" class="sidebar-link">中国 AI 模型为什么能便宜几十倍</a>
+      
+      <a href="/articles/2026-07-02-把-AI-额度分成五层-算力时代的-峰谷电价/" class="sidebar-link">把 AI 额度分成五层：算力时代的"峰谷电价"</a>
+      
+      <a href="/articles/2026-07-02-Token-会被当成石油交易/" class="sidebar-link">Token 会被当成石油交易</a>
+      
+      <a href="/articles/2026-07-02-你-AI-账单里有三种价格在同时跑/" class="sidebar-link">你 AI 账单里有三种价格在同时跑</a>
+      
+      <a href="/articles/2026-07-02-AI-时代最值钱的不是模型-是-水电煤-层/" class="sidebar-link">AI 时代最值钱的不是模型，是"水电煤"层</a>
+      
+      <a href="/articles/2026-07-02-法律人学-AI-最缺的不是工具/" class="sidebar-link">法律人学 AI，最缺的不是工具</a>
+      
+      <a href="/articles/2026-07-02-你的-AI-应用可能在偷偷-偷工减料/" class="sidebar-link">你的 AI 应用可能在偷偷"偷工减料"</a>
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-骗你做两次作业-你就自己跑了-一个百分之百成功率的-AI-教学法/" class="sidebar-link">"骗你做两次作业，你就自己跑了"——一个百分之百成功率的 AI 教学法</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-07-08">2026年7月8日</time>
+            <span class="dotsep"></span>
+            <span>2 分钟阅读</span>
+          </div>
+          <h1 class="article-title">你和AI聊了三天的案件，重新打开它：不认识你了</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>你和AI聊一个建设工程施工合同纠纷，聊到第三天，案情已经梳理清楚了——合同效力、工期延误、价款结算，三个争议焦点都有初步结论。</p>
+<p>第四天打开同一段对话，想继续往下推进。</p>
+<p>AI的反应是：<strong>它不知道你们聊到哪了。</strong></p>
+<p>你以为它还记得。它不知道。它只知道你们在聊这个项目，但具体聊了哪些内容、形成了哪些判断、以哪个时间点的证据为基础——它没有时间概念，它不知道哪个是"今天"。</p>
+<p>这不是AI的缺陷，这是大模型底层架构决定的：它们处理的是Token序列，不是时间序列。</p>
+<p>这个问题在法律场景里比在任何场景都严重，因为<strong>法律工作天然是长周期的</strong>。</p>
+<hr>
+<h2 id="为什么法律工作对时间感要求最高">为什么法律工作对"时间感"要求最高</h2>
+<p>一个建设工程纠纷案件，从立案到结案，三年很正常。在这三年里：</p>
+<ul>
+<li>证据不断补充</li>
+<li>事实认定可能因为新证据发生变化</li>
+<li>法官的审理思路在庭审后可能有调整</li>
+<li>对方可能提出了新的抗辩</li>
+</ul>
+<p>你作为主办律师，对这些变化是持续追踪的。你有一份自己的案件笔记，你的大脑随时在调取最新状态。</p>
+<p>但如果你把AI也纳入协作——</p>
+<p>第一次对话，你把证据材料给AI，让它分析合同效力。</p>
+<p>第二次对话，你告诉AI，对方提交了一份新证据，是一份签证单，上面有工期顺延的签字。</p>
+<p>第三次对话，你让AI基于新的事实重新做一遍法律分析。</p>
+<p>听起来很合理。</p>
+<p>问题是：<strong>第四次打开对话时，AI没有记忆。</strong> 它不知道第三次对话里你更新了什么，它只知道你在"这个项目"的对话里聊过很多内容，哪个是最新的，哪个已经作废了，它无法自动判断。</p>
+<p>你关了对话，第二天再打开，<strong>你面对的是一个"失忆"的AI</strong>。</p>
+<hr>
+<h2 id="两个工程方法解决这个问题">两个工程方法解决这个问题</h2>
+<p>好消息是，这不是AI本身的问题，是工作方式的问题。有两种方法可以解决：</p>
+<p><strong>方法一：日志接续法</strong></p>
+<p>每次和AI完成一轮工作后，让AI自动生成一份简短的"工作日志"，格式如下：</p>
+<pre class="code-block"><code>## 当前时间：[日期]
+## 本轮完成：……
+## 最新事实状态：……
+## 待确认事项：……
+## 下一步：……</code></pre>
+<p>规则约定：每次打开对话，先读取日志。如果日志内容和对话历史有冲突，以日志为准。</p>
+<p>这样，每次重新打开，AI第一件事就是读日志，知道自己在哪里、哪个结论是最新版的。</p>
+<p><strong>方法二：状态文件夹法</strong></p>
+<p>为每个案件建立一个"状态文件夹"，包含以下文件：</p>
+<pre class="code-block"><code>案件状态/
+├── 最新事实.md
+├── 争议焦点.md
+├── 证据清单.md
+└── 工作日志.md</code></pre>
+<p>每次对话结束，更新对应文件。规则约定：每次打开对话，先读一遍状态文件夹，确认当前最新状态，再开始工作。</p>
+<p>这个方法比日志接续更结构化，适合案件信息维度多、更新频繁的大型项目。</p>
+<hr>
+<h2 id="这个方法为什么有效">这个方法为什么有效</h2>
+<p>本质上，这是把<strong>工程领域的交接制度引入了法律工作</strong>。</p>
+<p>工程项目上，人员变动时靠交接文档确保工作连续性——"这项工作做到哪里了、谁负责、接下来的风险点是什么"，全部写下来，新人来了就能接上。</p>
+<p>法律工作也一样。AI作为协作工具，没有自动的时间感和状态感知能力，就需要人为建立一套<strong>信息接续机制</strong>。</p>
+<p>不是AI的问题，是协作方式的问题。</p>
+<hr>
+<h2 id="操作门槛">操作门槛</h2>
+<p>你不需要会写代码，不需要任何技术背景。</p>
+<p>你只需要：</p>
+<ol>
+<li>每次对话结束后，花两分钟让AI写一份工作日志</li>
+<li>在项目文件夹里建一个"案件状态"的子文件夹</li>
+<li>在AI的工作区规则里加一条：每次打开先读状态文件夹</li>
+</ol>
+<p>第一次做会觉得麻烦。第三次、第四次以后，你会回来感谢这套机制——因为当你手上有五个同时推进的案件时，<strong>每个案件的"今天在哪"五分钟就能接上</strong>，而不是花半小时重新读对话历史。</p>
+<p>长周期案件的管理，本来就是律师工作的核心痛点。现在你有一个工具，可以把这个痛点系统性地解决掉。</p>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会常务理事、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://cslawyer1985.github.io/xinchun-ai-prework/" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

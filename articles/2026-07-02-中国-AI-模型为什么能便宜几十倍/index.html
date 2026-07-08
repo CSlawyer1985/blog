@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>中国 AI 模型为什么能便宜几十倍 — 陈石 · 法与AI</title>
+  <meta name="description" content="同一类问题同一种答案但中美模型的报价可以差到几十倍这件事的真正原因跟你想的不一样">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（118）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（94）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（18）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-08-你和AI聊了三天的案件-重新打开它-不认识你了/" class="sidebar-link">你和AI聊了三天的案件，重新打开它：不认识你了</a>
+      
+      <a href="/articles/2026-07-08-你用过的法律AI产品-为什么总是不够好用-一个办公室里没人能回答的问题/" class="sidebar-link">你用过的法律AI产品，为什么总是不够好用？一个办公室里没人能回答的问题</a>
+      
+      <a href="/articles/2026-07-08-律师注意-有人在你的文件里藏了看不见的指令/" class="sidebar-link">律师注意！有人在你的文件里藏了看不见的指令</a>
+      
+      <a href="/articles/2026-07-08-AI时代律师的第一角色转变-不是干活-是把关/" class="sidebar-link">AI时代律师的第一角色转变：不是干活，是把关</a>
+      
+      <a href="/articles/2026-07-08-讲完课-我在视频号刷到了-WorkBuddy-创始人/" class="sidebar-link">讲完课，我在视频号刷到了 WorkBuddy 创始人</a>
+      
+      <a href="/articles/2026-07-08-Agent时代律师的第一道分水岭-会不会-养-规则/" class="sidebar-link">Agent时代律师的第一道分水岭：会不会"养"规则</a>
+      
+      <a href="/articles/2026-07-02-高权限-Agent-上线前-先写三张清单/" class="sidebar-link">高权限 Agent 上线前，先写三张清单</a>
+      
+      <a href="/articles/2026-07-02-越贵模型反而越便宜-那个被忽略的-重试税/" class="sidebar-link">越贵模型反而越便宜：那个被忽略的"重试税"</a>
+      
+      <a href="/articles/2026-07-02-法律资料别急着进知识库-先给它一本留痕账/" class="sidebar-link">法律资料别急着进知识库，先给它一本留痕账</a>
+      
+      <a href="/articles/2026-07-02-中国-AI-模型为什么能便宜几十倍/" class="sidebar-link">中国 AI 模型为什么能便宜几十倍</a>
+      
+      <a href="/articles/2026-07-02-把-AI-额度分成五层-算力时代的-峰谷电价/" class="sidebar-link">把 AI 额度分成五层：算力时代的"峰谷电价"</a>
+      
+      <a href="/articles/2026-07-02-Token-会被当成石油交易/" class="sidebar-link">Token 会被当成石油交易</a>
+      
+      <a href="/articles/2026-07-02-你-AI-账单里有三种价格在同时跑/" class="sidebar-link">你 AI 账单里有三种价格在同时跑</a>
+      
+      <a href="/articles/2026-07-02-AI-时代最值钱的不是模型-是-水电煤-层/" class="sidebar-link">AI 时代最值钱的不是模型，是"水电煤"层</a>
+      
+      <a href="/articles/2026-07-02-法律人学-AI-最缺的不是工具/" class="sidebar-link">法律人学 AI，最缺的不是工具</a>
+      
+      <a href="/articles/2026-07-02-你的-AI-应用可能在偷偷-偷工减料/" class="sidebar-link">你的 AI 应用可能在偷偷"偷工减料"</a>
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-骗你做两次作业-你就自己跑了-一个百分之百成功率的-AI-教学法/" class="sidebar-link">"骗你做两次作业，你就自己跑了"——一个百分之百成功率的 AI 教学法</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-07-02">2026年7月2日</time>
+            <span class="dotsep"></span>
+            <span>4 分钟阅读</span>
+          </div>
+          <h1 class="article-title">中国 AI 模型为什么能便宜几十倍</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <blockquote>
+<p>同一类问题、同一种答案，但中美模型的报价可以差到几十倍。这件事的真正原因，跟你想的不一样。</p>
+</blockquote>
+<p>!<a href="cover.png">封面</a></p>
+<h2 id="一件听起来反常识的事">一件听起来反常识的事</h2>
+<p>最近两年关注 AI 模型价格的人会注意到一件事：同类能力的人工智能产品，中国厂商给出的报价常常只有美国厂商的十分之一甚至几十分之一。</p>
+<p>这种巨大价差不是因为中国公司愿意贴钱补贴——补贴能解释一半，但解释不了另一半。</p>
+<h2 id="电价不是主因这点要破除直觉">电价不是主因——这点要破除直觉</h2>
+<p>很多人第一反应是：中国制造业便宜，电费便宜，所以中国模型也便宜。</p>
+<p>这件事其实不成立。中国的工业用电大约是每度 0.4–0.6 元人民币，美国大约是 0.8–1.2 元人民币——差距大约 2 倍。但中美的模型价差常常是几十倍。</p>
+<p>电费这个因素被算出来过，结论是：<strong>电价只解释了中美模型价差的不到 10%。</strong></p>
+<p>那剩下的 90% 的差距从哪里来？</p>
+<h2 id="三个真正的原因">三个真正的原因</h2>
+<p>第一个原因是<strong>架构选择</strong>。</p>
+<p>主流的美国模型走的是"密集型"——每次回答问题激活全部参数。中国新一代模型大量走的是"混合专家"架构——把模型拆成几十个、上百个专家模块，每次只激活其中的一小部分。</p>
+<p>这个差别听起来技术，但商业意义巨大：</p>
+<ul>
+<li>同样训练出来的"能力面"，混合专家可以用 1/8 的算力达成</li>
+<li>同样的"用户问题"，混合专家方案可以便宜 4–10 倍</li>
+</ul>
+<p>这不是哪家公司聪明，是技术路线选择。但这条路线是 2024 年之后才稳定下来的，恰好是中国新一代模型的标志性特征。</p>
+<p>第二个原因是<strong>生态补贴</strong>。</p>
+<p>中国几家头部 AI 公司同时也是大型云服务商——它们的"模型业务"和"云业务"在内部是分不开的。</p>
+<p>一个云厂商可以用云服务的其他利润来补贴模型价格，从而把同样的钱拉低到一个让对手难受的位置。</p>
+<p>这件事在美国不成立——美国云厂商不主做模型，AI 公司不主做云，双方之间是商业对手，对手之间不容易交叉补贴。</p>
+<p>第三个原因是<strong>战略选择</strong>。</p>
+<p>中国这一代 AI 公司在出海上规模比美国早。出海需要价格优势，价格优势就来自前两个原因——但还来自一种主动选择："先规模化、后盈利"。</p>
+<p>美国 AI 公司今天优先考虑的是估值和盈利，所以价格不轻易降。中国 AI 公司今天是先把份额抢下来，价格战就来得更早、更猛。</p>
+<h2 id="这件事的现实含义">这件事的现实含义</h2>
+<p>中国模型便宜这件事，对全球用户是好事。这意味着：</p>
+<p><strong>含义一</strong>：用户对 AI 模型有真正"挑挑拣拣"的能力，不是只能用一家。</p>
+<p><strong>含义二</strong>：模型公司之间的"性能同质化"会被加速——能力上的差距越来越小，价格就成了决定因素。</p>
+<p><strong>含义三</strong>：中国 AI 公司海外业务会持续增长——同等能力下，开发者天然会转向更便宜的一方。</p>
+<h2 id="但便宜不等于永远便宜">但"便宜"不等于"永远便宜"</h2>
+<p>需要认清一件事：便宜不是永久的状态。</p>
+<p>模型公司要活下去，最终都要找到能收费的形态：要么对个人用户收费更高，要么对开发者收费更高，要么对政府和大企业收更高——最终羊毛出在羊身上。</p>
+<p>中国模型今天的便宜，对应的是商业化早期阶段。等到一家公司真的做到 70% 海外收入、估值几十亿美元时，它会被市场逼着提价。</p>
+<p>也就是说，今天看到的"几十倍价差"，到了 2027 年可能会收敛到 5–10 倍——但仍然存在。</p>
+<h2 id="中国便宜这件事对全球用户意味着">中国便宜这件事对全球用户意味着</h2>
+<p>这件事现在正在重构全球开发者的使用习惯。</p>
+<p>一个印度开发者、一个非洲开发者、一个欧洲的小公司——他们选模型的第一指标已经变成了"价格"而不是"品牌"。</p>
+<p>这件事对美国头部模型公司是一个挑战——它们的客户正在用脚投票，悄悄离开。</p>
+<p>对中国 AI 公司是机会——它们的产品每天被全球开发者试用，每天都有新人变成付费客户。</p>
+<h2 id="这件事对未来2年的预测">这件事对未来 2 年的预测</h2>
+<p>按目前的趋势看：</p>
+<ul>
+<li>2026 年下半年：中国头部模型在某些任务上超过美国头部；价格差维持在 5–10 倍。</li>
+<li>2027 年：中美模型价格差收敛到 3–5 倍；中国模型全球用户占比超过 50%。</li>
+<li>2028 年：价差可能继续收敛到 2–3 倍；但中国模型依然占据全球开发者 AI 工具使用量的过半。</li>
+</ul>
+<p>这个趋势的"催化剂"不是某项技术突破，而是<strong>美国把 AI 算力出口限制当作长期战略</strong>——这迫使全球用户（尤其是第三世界）转向中国 AI。</p>
+<h2 id="一句话总结">一句话总结</h2>
+<p>中国 AI 模型便宜到几十倍的价差，不是因为补贴，而是因为：</p>
+<p><strong>技术路线选择</strong> + <strong>生态结构</strong> + <strong>商业化阶段</strong> 三件事叠加的产物。</p>
+<p>这件事不是单纯的"价格战"，而是 AI 时代的全球产业结构重构。理解这件事的人，会用 1/10 的成本用上同样能力的 AI。</p>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://cslawyer1985.github.io/xinchun-ai-prework/" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>国资监管不能只设红线，还要给方法 — 陈石 · 法与AI</title>
+  <meta name="description" content="国资减损不是一种东西是四种追责的前提是先分清属于哪一种类别特征与处置正常商业风险依法决策结果亏损程序完整信息充分无利益输送但结果亏损属于经营风险不追责能力不足判断失误无故意决策质量不高但无故意无重大过失无个人利益管理能力问题不宜轻易上升为流失责任程序违法重大过失程序缺失未评估未审批偏离市价未披露需区">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（118）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（94）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（18）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">法律实务</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-国有资产流失的历史演进/" class="sidebar-link">国有资产流失的历史演进</a>
+      
+      <a href="/articles/2026-07-01-从防止国有资产流失到国有资本经营判断规则-国资监管制度演进的反向后果/" class="sidebar-link">从防止国有资产流失到国有资本经营判断规则：国资监管制度演进的反向后果</a>
+      
+      <a href="/articles/2026-07-01-国资监管不能只设红线-还要给方法/" class="sidebar-link">国资监管不能只设红线，还要给方法</a>
+      
+      <a href="/articles/2026-07-01-国资监管的悖论-红线越硬-经营越软/" class="sidebar-link">国资监管的悖论：红线越硬，经营越软</a>
+      
+      <a href="/articles/2026-06-30-六类建工争议的答案被改写-最高法建工司法解释二施行首日实务解读/" class="sidebar-link">六类建工争议的答案被改写——最高法建工司法解释二施行首日实务解读</a>
+      
+      <a href="/articles/2026-06-30-政府项目审计-财政评审的最长期限限制-建工解释二第13条对-久审不决-的终结/" class="sidebar-link">政府项目审计/财政评审的最长期限限制——建工解释二第13条对"久审不决"的终结</a>
+      
+      <a href="/articles/2026-06-30-实际施工人概念退出历史舞台-建工解释二最重大变革的规则演进与实务影响/" class="sidebar-link">实际施工人概念退出历史舞台——建工解释二最重大变革的规则演进与实务影响</a>
+      
+      <a href="/articles/2026-06-21-一家律所最被低估的知识资产-内部裁判文书库/" class="sidebar-link">一家律所最被低估的知识资产——内部裁判文书库</a>
+      
+      <a href="/articles/2026-06-21-公众号是你的隐形法律数据库-没有一家法律数据商收录了它们/" class="sidebar-link">公众号是你的隐形法律数据库——没有一家法律数据商收录了它们</a>
+      
+      <a href="/articles/2026-06-14-公证到底能做什么-不能做什么-从一次咨询说起/" class="sidebar-link">公证到底能做什么、不能做什么——从一次咨询说起</a>
+      
+      <a href="/articles/2026-06-04-上了会-就不用担责了吗/" class="sidebar-link">上了会，就不用担责了吗？</a>
+      
+      <a href="/articles/2026-06-04-甲方这个位置-正在悄悄吃掉你的真本事/" class="sidebar-link">甲方这个位置，正在悄悄吃掉你的真本事</a>
+      
+      <a href="/articles/2026-05-27-投资茅台-四个字-骗了全国多少人/" class="sidebar-link">"投资茅台"四个字，骗了全国多少人？</a>
+      
+      <a href="/articles/2026-05-27-吹牛税/" class="sidebar-link">吹牛税</a>
+      
+      <a href="/articles/2026-05-23-宁波建工纠纷败诉密码-从500份判决看当事人栽在哪儿/" class="sidebar-link">宁波建工纠纷败诉密码——从500份判决看当事人栽在哪儿</a>
+      
+      <a href="/articles/2026-05-23-宁波建设工程法官的裁判密码/" class="sidebar-link">宁波建设工程法官的裁判密码</a>
+      
+      <a href="/articles/2026-05-22-青年律师不是在-卷-是在-空转/" class="sidebar-link">青年律师不是在"卷"，是在"空转"</a>
+      
+      <a href="/articles/2026-05-20-别让我拿破裤衩给你补一条裤子/" class="sidebar-link">别让我拿破裤衩给你补一条裤子</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">法律实务</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-07-01">2026年7月1日</time>
+            <span class="dotsep"></span>
+            <span>7 分钟阅读</span>
+          </div>
+          <h1 class="article-title">国资监管不能只设红线，还要给方法</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif"&gt;
+  &lt;rect width="600" height="420" fill="#ffffff"/&gt;
+  &lt;text x="300" y="28" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a1a"&gt;国资减损不是一种东西，是四种&lt;/text&gt;
+  &lt;text x="300" y="46" text-anchor="middle" font-size="10.5" fill="#888"&gt;追责的前提，是先分清属于哪一种&lt;/text&gt;
+  &lt;rect x="40" y="62" width="140" height="30" fill="#1a1a1a"/&gt;
+  &lt;text x="110" y="81" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff"&gt;类别&lt;/text&gt;
+  &lt;rect x="180" y="62" width="380" height="30" fill="#1a1a1a"/&gt;
+  &lt;text x="370" y="81" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff"&gt;特征与处置&lt;/text&gt;
+  &lt;rect x="40" y="92" width="140" height="68" fill="#f7f7f7" stroke="#ddd" stroke-width="0.5"/&gt;
+  &lt;text x="110" y="121" text-anchor="middle" font-size="11" font-weight="600" fill="#333"&gt;① 正常商业风险&lt;/text&gt;
+  &lt;text x="110" y="140" text-anchor="middle" font-size="9.5" fill="#888"&gt;依法决策 · 结果亏损&lt;/text&gt;
+  &lt;rect x="180" y="92" width="380" height="68" fill="#ffffff" stroke="#ddd" stroke-width="0.5"/&gt;
+  &lt;text x="195" y="114" font-size="10.5" fill="#444"&gt;程序完整、信息充分、无利益输送&lt;/text&gt;
+  &lt;text x="195" y="131" font-size="10.5" fill="#444"&gt;但结果亏损 → 属于经营风险&lt;/text&gt;
+  &lt;text x="195" y="149" font-size="10.5" font-weight="600" fill="#2a7a2a"&gt;→ 不追责&lt;/text&gt;
+  &lt;rect x="40" y="160" width="140" height="68" fill="#f7f7f7" stroke="#ddd" stroke-width="0.5"/&gt;
+  &lt;text x="110" y="189" text-anchor="middle" font-size="11" font-weight="600" fill="#333"&gt;② 能力不足&lt;/text&gt;
+  &lt;text x="110" y="208" text-anchor="middle" font-size="9.5" fill="#888"&gt;判断失误 · 无故意&lt;/text&gt;
+  &lt;rect x="180" y="160" width="380" height="68" fill="#ffffff" stroke="#ddd" stroke-width="0.5"/&gt;
+  &lt;text x="195" y="182" font-size="10.5" fill="#444"&gt;决策质量不高，但无故意、无重大过失&lt;/text&gt;
+  &lt;text x="195" y="199" font-size="10.5" fill="#444"&gt;无个人利益 → 管理能力问题&lt;/text&gt;
+  &lt;text x="195" y="217" font-size="10.5" font-weight="600" fill="#7a6a1a"&gt;→ 不宜轻易上升为流失责任&lt;/text&gt;
+  &lt;rect x="40" y="228" width="140" height="68" fill="#f7f7f7" stroke="#ddd" stroke-width="0.5"/&gt;
+  &lt;text x="110" y="257" text-anchor="middle" font-size="11" font-weight="600" fill="#333"&gt;③ 程序违法&lt;/text&gt;
+  &lt;text x="110" y="276" text-anchor="middle" font-size="9.5" fill="#888"&gt;重大过失 · 程序缺失&lt;/text&gt;
+  &lt;rect x="180" y="228" width="380" height="68" fill="#ffffff" stroke="#ddd" stroke-width="0.5"/&gt;
+  &lt;text x="195" y="250" font-size="10.5" fill="#444"&gt;未评估、未审批、偏离市价、未披露&lt;/text&gt;
+  &lt;text x="195" y="267" font-size="10.5" fill="#444"&gt;需区分损害程度和主观状态&lt;/text&gt;
+  &lt;text x="195" y="285" font-size="10.5" font-weight="600" fill="#c47a1a"&gt;→ 需要追责&lt;/text&gt;
+  &lt;rect x="40" y="296" width="140" height="68" fill="#c41e3a"/&gt;
+  &lt;text x="110" y="325" text-anchor="middle" font-size="11" font-weight="600" fill="#ffffff"&gt;④ 利益输送&lt;/text&gt;
+  &lt;text x="110" y="344" text-anchor="middle" font-size="9.5" fill="#fbb"&gt;侵吞 · 串通 · 虚假&lt;/text&gt;
+  &lt;rect x="180" y="296" width="380" height="68" fill="#fff5f5" stroke="#c41e3a" stroke-width="0.8"/&gt;
+  &lt;text x="195" y="318" font-size="10.5" fill="#444"&gt;侵吞、串通、虚假交易、恶意转移&lt;/text&gt;
+  &lt;text x="195" y="335" font-size="10.5" fill="#444"&gt;这才是真正的国资流失&lt;/text&gt;
+  &lt;text x="195" y="353" font-size="10.5" font-weight="600" fill="#c41e3a"&gt;→ 严厉打击&lt;/text&gt;
+  &lt;text x="300" y="402" text-anchor="middle" font-size="10" fill="#888"&gt;现在的问题：结果亏损一出现，前三类被第四类的阴影覆盖&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>上一篇说到，国资监管的刚性红线如果只有责任威慑、没有方法供给，就会从"保护制度"异化为"避责制度"：不作为、形式合规、责任转嫁，甚至催生可解释的腐败。</p>
+<p>这一篇接着说：怎么办。</p>
+<p>我的核心判断是，国资监管真正缺的不是红线，是方法。所谓"方法监管"，不是放松监管，是把追责标准前置、明确、类型化，让决策者事先就知道什么情况下安全、什么情况下要担责。</p>
+<h2 id="一破局第一步把国资减损拆成四种">一、破局第一步：把"国资减损"拆成四种</h2>
+<p>现在国资监管最大的问题，是把所有国资减损都装进"国有资产流失"这一个筐里。</p>
+<p>结果就是：正常商业风险被当成失职，管理能力问题被当成渎职，真正利益输送的人反而藏在"大家都在违规"的迷雾里。</p>
+<p>破局第一步，是做区分。至少要拆成四类。</p>
+<p><strong>第一类是正常商业风险。</strong> 依法决策、程序完整、信息充分、没有利益输送，但结果亏损。经营就是面对不确定，没有谁能保证每一笔都赚。这一类应当属于经营风险，不追责。</p>
+<p><strong>第二类是能力不足或判断失误。</strong> 决策质量不高，判断错误，但没有故意、没有重大过失、没有个人利益。这可以评价为管理能力问题，但不宜轻易上升为流失责任。能力和品德是两件事，不能因为结果不好，就把能力问题硬拔成道德问题。</p>
+<p><strong>第三类是程序违法或重大过失。</strong> 未评估、未审批、未集体决策，明显偏离市场价格，重大风险未披露。这一类需要追责，但仍应区分损害程度和主观状态。</p>
+<p><strong>第四类才是真正的国资流失——利益输送、侵吞、串通、虚假交易。</strong> 这才是制度必须严厉打击的对象。</p>
+<p>现在实践里真正的问题是：结果亏损一出现，前三类就被第四类的阴影覆盖。这极大压缩了国企经营者的正常决策空间。</p>
+<p>其实中央反复强调过"三个区分开来"：把推进改革中因缺乏经验、先行先试出现的失误，同明知故犯的违纪违法区分开来；把上级尚无明确限制的探索性试验失误，同上级明令禁止后依然我行我素的违纪违法区分开来；把为推动发展的无意过失，同为谋取私利的违纪违法区分开来。这其实就是"方法监管"的思路。可惜的是，这套思路到了国资监管的具体操作层面，还没真正落地。</p>
+<h2 id="二五个具体机制">二、五个具体机制</h2>
+<p>拆完类，还要给路径。我想到了五个机制。</p>
+<h3 id="机制一建立商业判断规则的国资版本">机制一：建立"商业判断规则"的国资版本</h3>
+<p>"商业判断规则"是美国公司法里非常成熟的规则：公司高管只要在信息充分、无利益冲突、理性判断的情况下做了决策，即使结果亏损，法院也不事后追责。理由很简单：经营面对的是不确定，事后诸葛亮只会让高管不敢做事。</p>
+<p>国资监管需要自己的版本。国企负责人只要能证明以下几点，就不应仅因结果不利而追究国资流失责任：</p>
+<ul>
+<li>决策前进行了充分调查</li>
+<li>聘请了必要的专业机构</li>
+<li>履行了集体决策程序</li>
+<li>不存在个人利益冲突</li>
+<li>交易条件具有合理商业依据</li>
+<li>决策过程有完整留痕</li>
+<li>结果亏损不是因故意或重大过失导致</li>
+</ul>
+<p>这相当于给国企经营者一个"安全港"。</p>
+<p>没有安全港，经营者就只能找保护伞。前者是制度公开的免责条件，后者是私下运作的关系网。一个制度如果不提供前者，就等于在奖励后者。</p>
+<h3 id="机制二建立分类容错机制">机制二：建立分类容错机制</h3>
+<p>不能笼统说"容错"。笼统的容错一定会被滥用。要按项目类型分类：</p>
+<p>| 项目类型 | 审查重点 |</p>
+<p>|---------|---------|</p>
+<p>| 战略探索类 | 容错空间可以大一些 |</p>
+<p>| 市场化投资 | 重点审查决策过程 |</p>
+<p>| 资产处置 | 重点审查定价依据和竞争程序 |</p>
+<p>| 债务重组 | 重点审查替代方案比较 |</p>
+<p>| 关联交易 | 重点审查利益冲突和公允性 |</p>
+<p>| 亏损退出 | 重点审查继续持有与退出的损失比较 |</p>
+<p>容错不是纵容，是把追责标准前置、明确、类型化。让经营者在做决策之前就知道，自己这个项目将来会被怎么审。</p>
+<h3 id="机制三把不作为造成损失纳入评价体系">机制三：把"不作为造成损失"纳入评价体系</h3>
+<p>现在制度最容易追的是"做错了"，但很少追"该做不做"。</p>
+<ul>
+<li>资产明知持续贬值却不处置</li>
+<li>项目明知继续投入会扩大亏损却不退出</li>
+<li>债权明知诉讼回收率极低却拒绝重组</li>
+<li>企业明知错过窗口期会导致更大损失却层层拖延</li>
+</ul>
+<p>这些"没做的事"造成的损失，往往比"做错的事"大得多。但因为它是隐性的、不留痕迹的、可以推给"集体决策"的，反而最难被追责。</p>
+<p>这些也应当被评价为国资损害。否则制度就天然奖励不作为。</p>
+<p>国资监管不能只问"你为什么做错了"，也要问"你为什么什么都不做"。</p>
+<h3 id="机制四从单点价格审查转向整体利益审查">机制四：从单点价格审查转向整体利益审查</h3>
+<p>国资流失认定，最容易陷入的陷阱是"只看某一个交易价格"。</p>
+<p>这笔资产卖便宜了，是不是流失？这笔债权让步了，是不是流失？</p>
+<p>但经营从来不是单点事件。有些资产低价处置，是为了止损；有些债权折价回收，比长期诉讼更有利；有些投资短期亏损，换来了长期战略资源；有些让利安排，是项目盘活的必要条件。</p>
+<p>应当从"单点价格是否吃亏"转向"整体方案是否实现国资利益最大化"。真正要比较的是：</p>
+<p>继续持有的成本、退出处置的收益、时间成本、诉讼成本、资金占用成本、机会成本、风险暴露成本、替代方案收益。</p>
+<p>没有比较，就没有真正的判断。只盯一个价格点来认定流失，本身就是一种判断方法上的偷懒。</p>
+<h3 id="机制五把外部专业意见从背锅工具变成判断工具">机制五：把外部专业意见从"背锅工具"变成"判断工具"</h3>
+<p>律师、评估师、审计师、券商的意见，在现在的国资交易里，经常被用来分散责任。"你看，我都请了专业机构，我也没办法。"</p>
+<p>但真正好的制度设计，应当让这些意见服务于实质判断。</p>
+<p>比如律师意见就不应只写"程序合法、风险提示"这种万能模板，而应当进一步帮助识别：交易性质是什么、审批路径走哪条、责任边界在哪里、风险分级如何、容错依据是什么、哪些证据需要留存、有哪些替代方案、后续争议怎么应对。</p>
+<p>专业机构不能替代决策，但可以提高决策质量。这一条，也是我们做律师的，必须把自己从"签字背锅"升级到"实质判断"的原因。</p>
+<h2 id="三监管转向从禁止到方法">三、监管转向：从"禁止"到"方法"</h2>
+<p>把这五个机制合起来看，国资监管需要完成一次转向。</p>
+<p>从<strong>禁止性监管</strong>转向<strong>程序性监管</strong>；从<strong>追责性监管</strong>转向<strong>方法性监管</strong>；从<strong>结果性监管</strong>转向<strong>容错性监管</strong>和<strong>经营性监管</strong>。</p>
+<p>"不能流失"这种话，谁都会喊。但"什么情况下可以交易、什么情况下可以让步、什么情况下亏损不追责、什么程序走完可以免责"——这才是制度真正要回答的问题。</p>
+<p>前者只需要决心，后者需要功夫。</p>
+<h2 id="四三个容易踩的坑">四、三个容易踩的坑</h2>
+<p>需要说清几个容易被误解的点。</p>
+<p><strong>第一，方法监管不等于放松监管。</strong> 对真正的利益输送、侵吞、串通，方法监管要比现在更严，不是更松。它放松的是"正常经营风险"的过度追责，收紧的是"灰区寻租"的可解释空间。一松一严，才是完整的方法监管。</p>
+<p><strong>第二，容错不等于纵容。</strong> 容错的前提是"决策过程合规、留痕完整、无利益冲突"。没有这个前提，容错就变成保护伞。容错是给"敢做事且做事规矩"的人兜底，不是给"乱做事或假做事"的人打掩护。</p>
+<p><strong>第三，有了方法不等于不用红线。</strong> 红线是底线，方法是道路。两者不是替代关系，是配套关系。红线画清楚什么不能碰，方法画清楚怎么走才安全。</p>
+<h2 id="五适用边界">五、适用边界</h2>
+<p>这套思路主要适用于市场化程度较高的国企经营决策。以下场景需要特别谨慎，甚至不适用：</p>
+<ul>
+<li>关系国家安全的战略领域，决策标准要更严，容错空间更小</li>
+<li>涉及公共利益的民生领域，程序合规权重更高</li>
+<li>关联交易、内部人控制场景，必须从严审查，不适用宽泛容错</li>
+</ul>
+<p>换句话说，方法监管不是无差别的放松，而是"该严的更严、该宽的更宽、该明确的更明确"。</p>
+<h2 id="六红线之外还得有路">六、红线之外，还得有路</h2>
+<p>回到最初的问题。</p>
+<p>国资监管真正需要的，不是更响亮地重复"防止国有资产流失"，而是建立一套可操作、可预期、可追溯、可免责、可问责的经营判断体系。</p>
+<p>红线当然要有。但红线之外，还得有路。</p>
+<p>只告诉人不能做什么，却不告诉人怎么做、什么时候可以免责、什么情况下属于正常经营判断——这样的制度，看起来很严，实际上只会奖励不作为、惩罚敢做事的人。</p>
+<p>真正的治理，不是让红线更红，而是让方法更清楚。</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://cslawyer1985.github.io/xinchun-ai-prework/" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

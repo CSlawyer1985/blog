@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>讲完课，我在视频号刷到了 WorkBuddy 创始人 — 陈石 · 法与AI</title>
+  <meta name="description" content="年月日下午两点我在宁波银行总行讲了一堂法律场景实践课时长三小时讲完打开视频号刷到腾讯创始人汪晟杰的访谈看了几分钟我就愣了他在访谈里说的几乎每一个核心判断和我刚在课上讲的完全吻合不是英雄所见略同那种模糊的重合而是概念命名底层逻辑甚至比喻方式都一一对应这不是巧合下午的课我从的底层结构讲起开场就问了一个问">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（118）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（94）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（18）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-08-你和AI聊了三天的案件-重新打开它-不认识你了/" class="sidebar-link">你和AI聊了三天的案件，重新打开它：不认识你了</a>
+      
+      <a href="/articles/2026-07-08-你用过的法律AI产品-为什么总是不够好用-一个办公室里没人能回答的问题/" class="sidebar-link">你用过的法律AI产品，为什么总是不够好用？一个办公室里没人能回答的问题</a>
+      
+      <a href="/articles/2026-07-08-律师注意-有人在你的文件里藏了看不见的指令/" class="sidebar-link">律师注意！有人在你的文件里藏了看不见的指令</a>
+      
+      <a href="/articles/2026-07-08-AI时代律师的第一角色转变-不是干活-是把关/" class="sidebar-link">AI时代律师的第一角色转变：不是干活，是把关</a>
+      
+      <a href="/articles/2026-07-08-讲完课-我在视频号刷到了-WorkBuddy-创始人/" class="sidebar-link">讲完课，我在视频号刷到了 WorkBuddy 创始人</a>
+      
+      <a href="/articles/2026-07-08-Agent时代律师的第一道分水岭-会不会-养-规则/" class="sidebar-link">Agent时代律师的第一道分水岭：会不会"养"规则</a>
+      
+      <a href="/articles/2026-07-02-高权限-Agent-上线前-先写三张清单/" class="sidebar-link">高权限 Agent 上线前，先写三张清单</a>
+      
+      <a href="/articles/2026-07-02-越贵模型反而越便宜-那个被忽略的-重试税/" class="sidebar-link">越贵模型反而越便宜：那个被忽略的"重试税"</a>
+      
+      <a href="/articles/2026-07-02-法律资料别急着进知识库-先给它一本留痕账/" class="sidebar-link">法律资料别急着进知识库，先给它一本留痕账</a>
+      
+      <a href="/articles/2026-07-02-中国-AI-模型为什么能便宜几十倍/" class="sidebar-link">中国 AI 模型为什么能便宜几十倍</a>
+      
+      <a href="/articles/2026-07-02-把-AI-额度分成五层-算力时代的-峰谷电价/" class="sidebar-link">把 AI 额度分成五层：算力时代的"峰谷电价"</a>
+      
+      <a href="/articles/2026-07-02-Token-会被当成石油交易/" class="sidebar-link">Token 会被当成石油交易</a>
+      
+      <a href="/articles/2026-07-02-你-AI-账单里有三种价格在同时跑/" class="sidebar-link">你 AI 账单里有三种价格在同时跑</a>
+      
+      <a href="/articles/2026-07-02-AI-时代最值钱的不是模型-是-水电煤-层/" class="sidebar-link">AI 时代最值钱的不是模型，是"水电煤"层</a>
+      
+      <a href="/articles/2026-07-02-法律人学-AI-最缺的不是工具/" class="sidebar-link">法律人学 AI，最缺的不是工具</a>
+      
+      <a href="/articles/2026-07-02-你的-AI-应用可能在偷偷-偷工减料/" class="sidebar-link">你的 AI 应用可能在偷偷"偷工减料"</a>
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-骗你做两次作业-你就自己跑了-一个百分之百成功率的-AI-教学法/" class="sidebar-link">"骗你做两次作业，你就自己跑了"——一个百分之百成功率的 AI 教学法</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-07-08">2026年7月8日</time>
+            <span class="dotsep"></span>
+            <span>7 分钟阅读</span>
+          </div>
+          <h1 class="article-title">讲完课，我在视频号刷到了 WorkBuddy 创始人</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <blockquote>
+<p>2026 年 7 月 8 日下午两点，我在宁波银行总行讲了一堂 AI Agent 法律场景实践课，时长三小时。讲完打开视频号，刷到腾讯 WorkBuddy 创始人汪晟杰的访谈。看了几分钟我就愣了——他在访谈里说的几乎每一个核心判断，和我刚在课上讲的完全吻合。不是"英雄所见略同"那种模糊的重合，而是概念命名、底层逻辑、甚至比喻方式都一一对应。这不是巧合。</p>
+</blockquote>
+<hr>
+<p>下午的课，我从 Agent 的底层结构讲起。开场就问了一个问题：Chatbot 和 Agent 到底差在哪？</p>
+<p>我的回答是：Chatbot 只有嘴，Agent 有手。Chatbot 能回答你，但落不了地——你得自己把答案复制粘贴到文件里。Agent 能直接在你电脑上建文件夹、写文件、改文件、调外部工具，按你设定的规则从头跑到尾。</p>
+<p>晚上看汪晟杰的访谈，他的表述是：WorkBuddy 不是聊天工具，是"AI 打工人"。</p>
+<p>同一句话，两种说法。</p>
+<hr>
+<h2 id="Agent模型Harness这是我下午课程的核心公式也是汪晟杰的产品哲学">Agent = 模型 + Harness。这是我下午课程的核心公式，也是汪晟杰的产品哲学。</h2>
+<p>下午我在白板上写了这个等式：<strong>Agent = 模型 + Harness。</strong> 模型是大脑，Harness 是控制框架——原意是马具，烈马需要缰绳和嚼子，大模型也一样。大模型天生不确定，同样的输入大概率产出不同的输出。这在闲聊场景下没什么，在工作场景下是致命的。Harness 的作用就是控制这种不确定性，让输出稳定、可预期、贴合你的工作场景。</p>
+<p>汪晟杰的访谈里，几乎是同一个判断。他说：同一个模型，用不同的控制框架，效果天差地别。WorkBuddy 的底层来自 CodeBuddy——腾讯做了三年的 AI 编程工具——把 AI Coding 的任务执行范式、工具调用能力、上下文管理迁移到办公场景。</p>
+<p>一个是从使用者端讲"为什么 Harness 比模型重要"，一个是从产品端讲"为什么我们要把 AI Coding 的基建复用到办公场景"。同一个逻辑的两面。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 280"&gt;
+  &lt;rect width="600" height="280" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#333"&gt;两个视角，同一个结论：Harness 比模型更重要&lt;/text&gt;
+
+  &lt;rect x="20" y="55" width="260" height="30" rx="3" fill="#333"/&gt;
+  &lt;text x="150" y="75" text-anchor="middle" font-size="12" fill="#fff" font-weight="600"&gt;陈石（使用者视角）&lt;/text&gt;
+
+  &lt;rect x="20" y="95" width="260" height="35" rx="3" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="150" y="111" text-anchor="middle" font-size="11" fill="#555"&gt;Agent = 模型 + Harness（马具）&lt;/text&gt;
+  &lt;text x="150" y="124" text-anchor="middle" font-size="9" fill="#999"&gt;烈马需要缰绳控制方向&lt;/text&gt;
+
+  &lt;rect x="20" y="137" width="260" height="35" rx="3" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="150" y="153" text-anchor="middle" font-size="11" fill="#555"&gt;当前模型能力已经够用&lt;/text&gt;
+  &lt;text x="150" y="166" text-anchor="middle" font-size="9" fill="#999"&gt;纠结哪个模型更好意义不大&lt;/text&gt;
+
+  &lt;rect x="20" y="180" width="260" height="35" rx="3" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="150" y="196" text-anchor="middle" font-size="11" fill="#555"&gt;规则是一步一步生长出来的&lt;/text&gt;
+  &lt;text x="150" y="209" text-anchor="middle" font-size="9" fill="#999"&gt;每次纠正沉淀一条规则&lt;/text&gt;
+
+  &lt;rect x="20" y="223" width="260" height="35" rx="3" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="150" y="239" text-anchor="middle" font-size="11" fill="#555"&gt;Agent 是工作伙伴，不是工具&lt;/text&gt;
+  &lt;text x="150" y="252" text-anchor="middle" font-size="9" fill="#999"&gt;像带实习生一样教它&lt;/text&gt;
+
+  &lt;text x="300" y="80" text-anchor="middle" font-size="22" fill="#999"&gt;⟷&lt;/text&gt;
+  &lt;text x="300" y="118" text-anchor="middle" font-size="22" fill="#999"&gt;⟷&lt;/text&gt;
+  &lt;text x="300" y="162" text-anchor="middle" font-size="22" fill="#999"&gt;⟷&lt;/text&gt;
+  &lt;text x="300" y="205" text-anchor="middle" font-size="22" fill="#999"&gt;⟷&lt;/text&gt;
+  &lt;text x="300" y="243" text-anchor="middle" font-size="22" fill="#999"&gt;⟷&lt;/text&gt;
+
+  &lt;rect x="320" y="55" width="260" height="30" rx="3" fill="#333"/&gt;
+  &lt;text x="450" y="75" text-anchor="middle" font-size="12" fill="#fff" font-weight="600"&gt;汪晟杰（产品端视角）&lt;/text&gt;
+
+  &lt;rect x="320" y="95" width="260" height="35" rx="3" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="450" y="111" text-anchor="middle" font-size="11" fill="#555"&gt;同一个模型，不同控制框架，效果天差地别&lt;/text&gt;
+  &lt;text x="450" y="124" text-anchor="middle" font-size="9" fill="#999"&gt;WorkBuddy 底座是 CodeBuddy 的基建&lt;/text&gt;
+
+  &lt;rect x="320" y="137" width="260" height="35" rx="3" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="450" y="153" text-anchor="middle" font-size="11" fill="#555"&gt;模型一定不会拉齐&lt;/text&gt;
+  &lt;text x="450" y="166" text-anchor="middle" font-size="9" fill="#999"&gt;训练数据、反馈、场景共同塑造模型&lt;/text&gt;
+
+  &lt;rect x="320" y="180" width="260" height="35" rx="3" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="450" y="196" text-anchor="middle" font-size="11" fill="#555"&gt;工作区记忆是核心护城河&lt;/text&gt;
+  &lt;text x="450" y="209" text-anchor="middle" font-size="9" fill="#999"&gt;换台电脑就不懂了&lt;/text&gt;
+
+  &lt;rect x="320" y="223" width="260" height="35" rx="3" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="450" y="239" text-anchor="middle" font-size="11" fill="#555"&gt;AI 是徒弟，不是主人&lt;/text&gt;
+  &lt;text x="450" y="252" text-anchor="middle" font-size="9" fill="#999"&gt;人设目标、定边界、做监督、验结果&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<hr>
+<h2 id="关于模型不会拉齐我们给出了同一个判断用了同一个比喻">关于"模型不会拉齐"——我们给出了同一个判断，用了同一个比喻。</h2>
+<p>下午课上有人问：现在模型这么多，该选哪个？</p>
+<p>我的回答是：头部模型在法律场景里都够用了。95 分和 100 分的差距，远没有"你怎么用"的差距大。我更建议你把精力放在建规则上，而不是追模型。</p>
+<p>汪晟杰的访谈里有一个更彻底的表述：模型一定不会拉齐。他的理由是——大模型不是静态参数，而是训练数据、用户反馈、应用场景、后训练体系共同塑造的动态系统。他用了一个比喻：训练一只小狗听话，需要持续反馈和奖励，但把这智商迁移到另一只狗身上，很难。</p>
+<p>他甚至点出了一个我课上没展开讲的逻辑：国内大模型厂商都在做 CLI 和 Agent 产品——Claude Code、Codex、CodeBuddy、WorkBuddy、Trae——因为这些产品不只是用户工具，更是模型进化的数据入口。谁拥有更高频、更真实的用户任务场景，谁就拥有更好的模型进化土壤。</p>
+<p>这个判断比我课上的更锋利。但我课上的结论和他殊途同归：<strong>不要追模型，要建自己的 harness。</strong></p>
+<hr>
+<h2 id="工作区规则不是写出来的是长出来的这是下午课的核心方法论也是WorkBuddy的产品设计前提">工作区规则不是写出来的，是长出来的。这是下午课的核心方法论，也是 WorkBuddy 的产品设计前提。</h2>
+<p>下午课上我花了最长的时间讲一件事：怎么从零构建一个工作区。</p>
+<p>我在现场演示了一个完整流程——新建"法律咨询"文件夹，用 WorkBuddy 打开，在对话框里描述需求：</p>
+<blockquote>
+<p>"每次法律咨询用时间+关键词新建子文件夹。先理解问题，拆解，检索本地知识库，按权威等级规则做研究。然后调用北大法宝 MCP 核验所有法条的准确性。所有来源标注标签。默认输出 markdown 文件。"</p>
+</blockquote>
+<p>三分钟，WorkBuddy 自动生成了完整的规则文件。</p>
+<p>然后我现场测试了一个问题——"担保保证期间的法律规定"。Agent 按规则新建了文件夹，拆分了子问题，检索了本地知识库，调用了北大法宝，输出了结构化解答。全程不需要我写一行代码。</p>
+<p>但重点不在"三分钟建工作区"。重点在接下来的步骤：<strong>发现问题，迭代规则。</strong></p>
+<p>第一次测试跑完，我发现两个问题：原始问题没有存档，"结论先行"的表述不对我的口味。就在对话框里说了一句——"原始问题必须存档。'结论先行'改成'结论'。"下一次测试，全改过来了。</p>
+<p>我在课上反复说：<strong>规则不是一蹴而就的，是一步一步生长出来的。每次纠正一次，规则就厚一层。一个月后，你就会有一个完全适配你工作习惯的规则体系。</strong> 这就是把隐性知识变成显性规则的过程——你大脑里的专业判断，通过一次次纠错，蒸馏成了 Agent 的行为规则。</p>
+<p>汪晟杰的访谈里没有讲这么细的操作，但他产品设计的底层假设和我的方法论完全一致。他说 WorkBuddy 做 PPT 做得好，不是因为模型会做 PPT，而是因为它在用户的电脑里积累了资料、风格、偏好——"我的电脑换到别人那边去，它就不懂了。"这就是工作区记忆。他说 Vibe Coding 的核心是"创意为导向，你的想法能跟 AI 说明白，就能不断对话、记录过程、形成产物"。这不就是"每次纠正一次，规则就厚一层"？</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220"&gt;
+  &lt;rect width="600" height="220" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#333"&gt;规则生长的循环&lt;/text&gt;
+
+  &lt;rect x="40" y="55" width="120" height="45" rx="6" fill="#333"/&gt;
+  &lt;text x="100" y="73" text-anchor="middle" font-size="12" fill="#fff" font-weight="600"&gt;描述需求&lt;/text&gt;
+  &lt;text x="100" y="89" text-anchor="middle" font-size="9" fill="#ccc"&gt;自然语言即可&lt;/text&gt;
+
+  &lt;text x="175" y="82" text-anchor="middle" font-size="16" fill="#999"&gt;→&lt;/text&gt;
+
+  &lt;rect x="195" y="55" width="120" height="45" rx="6" fill="#f0f0f0" stroke="#bbb" stroke-width="1"/&gt;
+  &lt;text x="255" y="73" text-anchor="middle" font-size="12" fill="#444"&gt;自动生成规则&lt;/text&gt;
+  &lt;text x="255" y="89" text-anchor="middle" font-size="9" fill="#999"&gt;.workbody 文件夹&lt;/text&gt;
+
+  &lt;text x="330" y="82" text-anchor="middle" font-size="16" fill="#999"&gt;→&lt;/text&gt;
+
+  &lt;rect x="350" y="55" width="120" height="45" rx="6" fill="#f0f0f0" stroke="#bbb" stroke-width="1"/&gt;
+  &lt;text x="410" y="73" text-anchor="middle" font-size="12" fill="#444"&gt;测试验证&lt;/text&gt;
+  &lt;text x="410" y="89" text-anchor="middle" font-size="9" fill="#999"&gt;跑真实任务&lt;/text&gt;
+
+  &lt;text x="485" y="82" text-anchor="middle" font-size="16" fill="#999"&gt;→&lt;/text&gt;
+
+  &lt;rect x="40" y="120" width="120" height="45" rx="6" fill="#f0f0f0" stroke="#bbb" stroke-width="1"/&gt;
+  &lt;text x="100" y="138" text-anchor="middle" font-size="12" fill="#444"&gt;发现问题&lt;/text&gt;
+  &lt;text x="100" y="154" text-anchor="middle" font-size="9" fill="#999"&gt;漏步骤/表述不对&lt;/text&gt;
+
+  &lt;text x="175" y="147" text-anchor="middle" font-size="16" fill="#999"&gt;→&lt;/text&gt;
+
+  &lt;rect x="195" y="120" width="120" height="45" rx="6" fill="#333"/&gt;
+  &lt;text x="255" y="138" text-anchor="middle" font-size="12" fill="#fff" font-weight="600"&gt;一句话纠正&lt;/text&gt;
+  &lt;text x="255" y="154" text-anchor="middle" font-size="9" fill="#ccc"&gt;自然语言即可&lt;/text&gt;
+
+  &lt;text x="330" y="147" text-anchor="middle" font-size="16" fill="#999"&gt;→&lt;/text&gt;
+
+  &lt;rect x="350" y="120" width="120" height="45" rx="6" fill="#f0f0f0" stroke="#bbb" stroke-width="1"/&gt;
+  &lt;text x="410" y="138" text-anchor="middle" font-size="12" fill="#444"&gt;规则自动更新&lt;/text&gt;
+  &lt;text x="410" y="154" text-anchor="middle" font-size="9" fill="#999"&gt;下次生效&lt;/text&gt;
+
+  &lt;text x="485" y="147" text-anchor="middle" font-size="16" fill="#999"&gt;↺&lt;/text&gt;
+
+  &lt;rect x="40" y="180" width="550" height="28" rx="4" fill="#fafafa" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="315" y="199" text-anchor="middle" font-size="11" fill="#666"&gt;每一次纠正 = 一条隐性知识被显性化 = 一条规则被沉淀 = Agent 越来越像你&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<hr>
+<h2 id="一个观点两个独立来源同日发表">一个观点，两个独立来源，同日发表。</h2>
+<p>这件事最有意思的地方，不是汪晟杰的观点和我一致——而是<strong>我们是从完全不同的起点，走到了完全相同的结论。</strong></p>
+<p>我从一个律师的角度出发。两年前开始用 Claude Code，从命令行学起，踩了无数坑。慢慢摸索出一套方法论：按场景建工作区，写 CLAUDE.md，拆 Skill，积累 memory，每次纠错就沉淀一条规则。这套方法不是看论文看出来的，是用了两年 Agent、做了几百次法律咨询、审了无数合同之后，自然形成的。</p>
+<p>汪晟杰从一个产品副总裁的角度出发。他在腾讯做了三年 CodeBuddy，看着 AI Coding 的基建越来越厚，然后决定把这套能力外溢到办公场景。他的方法论不是写文章写出来的，是产品迭代、用户反馈、工程实践逼出来的。</p>
+<p><strong>一个法律人，一个产品人。一个从使用者端往上拱，一个从产品端往下探。在同一天，说了同一套话。</strong> 这意味着什么？意味着这不是某个人的偏好或运气，而是 Agent 产品的底层规律——不管你是谁、从哪个方向进入，只要你深入到这个层面，你都会得出同样的结论。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200"&gt;
+  &lt;rect width="600" height="200" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#333"&gt;独立到达相同结论的两条路径&lt;/text&gt;
+
+  &lt;rect x="20" y="55" width="260" height="28" rx="3" fill="#333"/&gt;
+  &lt;text x="150" y="74" text-anchor="middle" font-size="12" fill="#fff" font-weight="600"&gt;陈石（法律人 / 使用者）&lt;/text&gt;
+
+  &lt;rect x="20" y="92" width="260" height="28" rx="3" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="150" y="110" text-anchor="middle" font-size="10" fill="#555"&gt;用了两年 Agent → 从命令行学起 → 踩坑摸索&lt;/text&gt;
+
+  &lt;rect x="20" y="128" width="260" height="28" rx="3" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="150" y="146" text-anchor="middle" font-size="10" fill="#555"&gt;按场景建工作区 → 写规则 → 每次纠错就迭代&lt;/text&gt;
+
+  &lt;rect x="20" y="164" width="260" height="28" rx="3" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="150" y="182" text-anchor="middle" font-size="10" fill="#555"&gt;结论：Harness &gt; 模型，隐性知识显性化是核心路径&lt;/text&gt;
+
+  &lt;text x="290" y="105" text-anchor="middle" font-size="14" fill="#999"&gt;→ 相同的底层规律 ←&lt;/text&gt;
+  &lt;text x="290" y="140" text-anchor="middle" font-size="14" fill="#999"&gt;→ 相同的核心结论 ←&lt;/text&gt;
+
+  &lt;rect x="320" y="55" width="260" height="28" rx="3" fill="#333"/&gt;
+  &lt;text x="450" y="74" text-anchor="middle" font-size="12" fill="#fff" font-weight="600"&gt;汪晟杰（腾讯 / 产品人）&lt;/text&gt;
+
+  &lt;rect x="320" y="92" width="260" height="28" rx="3" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="450" y="110" text-anchor="middle" font-size="10" fill="#555"&gt;做了三年 CodeBuddy → AI Coding 基建积累&lt;/text&gt;
+
+  &lt;rect x="320" y="128" width="260" height="28" rx="3" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="450" y="146" text-anchor="middle" font-size="10" fill="#555"&gt;把基建外溢到办公场景 → 包装为普通人可用的产品&lt;/text&gt;
+
+  &lt;rect x="320" y="164" width="260" height="28" rx="3" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
+  &lt;text x="450" y="182" text-anchor="middle" font-size="10" fill="#555"&gt;结论：工作区记忆是护城河，模型不会拉齐&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<hr>
+<h2 id="对法律行业意味着什么">对法律行业意味着什么</h2>
+<p>下午的课，宁波银行的同事们提了很多实务问题：长周期案件怎么保持状态？幻觉怎么控制？保密怎么处理？Agent 权限太大怎么办？</p>
+<p>我的回答归结起来是一个方向：<strong>法律人要从"亲手做每一步"转向"设计流程、把关依据、承担判断"。</strong></p>
+<p>汪晟杰的访谈给了一个产品端的佐证。他说 WorkBuddy 的高频场景之一是"把复杂文字变成 HTML 报告和交互小应用"。他说未来的 Agent 不是聊天框，而是一个持续运行的工作体——电脑上执行任务，手机上查看进度，云端保存状态。</p>
+<p>对法律行业来说，这意味着：真正有价值的法律 AI 产品，不是"法律 ChatGPT"，而是一组能持续理解案件背景、客户偏好、律师风格和交付标准的 Agent 系统。它们的关键不是模型能力，而是是否接入了资料库、是否理解个人风格、是否能长期记忆、是否能嵌入真实办案流程。</p>
+<p>这也是我在课上反复讲的最后一句话：<strong>你的规则，就是你的核心竞争力。</strong> 工具可以换，模型可以换，但你沉淀的规则和数据是你的个人资产。汪晟杰的产品可以做得很漂亮，但它只能给你通用预设。只有你自己，在使用中发现问题、纠错、迭代，才能养出一个真正贴合你工作场景的 Agent。</p>
+<p><strong>模型不是终局，Harness 才是。</strong></p>
+<p><strong>工具不是终局，规则才是。</strong></p>
+<p><strong>一次生成不是终局，长期记忆和反馈闭环才是护城河。</strong></p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，第十届宁波市律师协会常务理事、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://cslawyer1985.github.io/xinchun-ai-prework/" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent时代律师的第一道分水岭：会不会"养"规则 — 陈石 · 法与AI</title>
+  <meta name="description" content="">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（118）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（94）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（18）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-08-你和AI聊了三天的案件-重新打开它-不认识你了/" class="sidebar-link">你和AI聊了三天的案件，重新打开它：不认识你了</a>
+      
+      <a href="/articles/2026-07-08-你用过的法律AI产品-为什么总是不够好用-一个办公室里没人能回答的问题/" class="sidebar-link">你用过的法律AI产品，为什么总是不够好用？一个办公室里没人能回答的问题</a>
+      
+      <a href="/articles/2026-07-08-律师注意-有人在你的文件里藏了看不见的指令/" class="sidebar-link">律师注意！有人在你的文件里藏了看不见的指令</a>
+      
+      <a href="/articles/2026-07-08-AI时代律师的第一角色转变-不是干活-是把关/" class="sidebar-link">AI时代律师的第一角色转变：不是干活，是把关</a>
+      
+      <a href="/articles/2026-07-08-讲完课-我在视频号刷到了-WorkBuddy-创始人/" class="sidebar-link">讲完课，我在视频号刷到了 WorkBuddy 创始人</a>
+      
+      <a href="/articles/2026-07-08-Agent时代律师的第一道分水岭-会不会-养-规则/" class="sidebar-link">Agent时代律师的第一道分水岭：会不会"养"规则</a>
+      
+      <a href="/articles/2026-07-02-高权限-Agent-上线前-先写三张清单/" class="sidebar-link">高权限 Agent 上线前，先写三张清单</a>
+      
+      <a href="/articles/2026-07-02-越贵模型反而越便宜-那个被忽略的-重试税/" class="sidebar-link">越贵模型反而越便宜：那个被忽略的"重试税"</a>
+      
+      <a href="/articles/2026-07-02-法律资料别急着进知识库-先给它一本留痕账/" class="sidebar-link">法律资料别急着进知识库，先给它一本留痕账</a>
+      
+      <a href="/articles/2026-07-02-中国-AI-模型为什么能便宜几十倍/" class="sidebar-link">中国 AI 模型为什么能便宜几十倍</a>
+      
+      <a href="/articles/2026-07-02-把-AI-额度分成五层-算力时代的-峰谷电价/" class="sidebar-link">把 AI 额度分成五层：算力时代的"峰谷电价"</a>
+      
+      <a href="/articles/2026-07-02-Token-会被当成石油交易/" class="sidebar-link">Token 会被当成石油交易</a>
+      
+      <a href="/articles/2026-07-02-你-AI-账单里有三种价格在同时跑/" class="sidebar-link">你 AI 账单里有三种价格在同时跑</a>
+      
+      <a href="/articles/2026-07-02-AI-时代最值钱的不是模型-是-水电煤-层/" class="sidebar-link">AI 时代最值钱的不是模型，是"水电煤"层</a>
+      
+      <a href="/articles/2026-07-02-法律人学-AI-最缺的不是工具/" class="sidebar-link">法律人学 AI，最缺的不是工具</a>
+      
+      <a href="/articles/2026-07-02-你的-AI-应用可能在偷偷-偷工减料/" class="sidebar-link">你的 AI 应用可能在偷偷"偷工减料"</a>
+      
+      <a href="/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/" class="sidebar-link">读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文</a>
+      
+      <a href="/articles/2026-07-01-月入百万的AI中转站-钱到底从哪来/" class="sidebar-link">月入百万的AI中转站，钱到底从哪来？</a>
+      
+      <a href="/articles/2026-06-25-骗你做两次作业-你就自己跑了-一个百分之百成功率的-AI-教学法/" class="sidebar-link">"骗你做两次作业，你就自己跑了"——一个百分之百成功率的 AI 教学法</a>
+      
+      <a href="/articles/2026-06-25-文科生面对那个黑窗口-门槛比你想象的低得多/" class="sidebar-link">文科生面对那个黑窗口：门槛比你想象的低得多</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-07-08">2026年7月8日</time>
+            <span class="dotsep"></span>
+            <span>8 分钟阅读</span>
+          </div>
+          <h1 class="article-title">Agent时代律师的第一道分水岭：会不会"养"规则</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>!<a href="cover.png">封面</a></p>
+<p>有个现象正在拉开律师之间的差距，但它不是你想的那样。</p>
+<p>不是谁用的模型更贵，不是谁充的Token更多，而是——<strong>三个月后，同样用WorkBody或Claude Code，有人得到的是一个能自动审核合同、分析案件、追踪监管动态的专属Agent；有人得到的还是一台贵一点儿的搜索引擎。</strong></p>
+<p>这个差距来自什么？不是天赋，不是学历，是你会不会"养"规则。</p>
+<hr>
+<h2 id="一一个问题检测你是否需要这篇文章">一、一个问题检测你是否需要这篇文章</h2>
+<p>先做个小测试：</p>
+<p>你在用Agent类产品（比如WorkBody、Claude Code、Codex）处理法律工作吗？</p>
+<p>如果答案是"用了，但每次都是一次性问答，答案还是要自己改"，那这篇文章正是写给你的。</p>
+<p>如果你已经能说出"Harness"、"工作区规则"、"MCP"这些词，说明你已经在路上了，后面的内容可以帮你校准方向。</p>
+<p>如果你正在带团队用Agent，但发现"不同人用出来的效果完全不一样"，那这篇文章同样值得你转给团队成员。</p>
+<hr>
+<h2 id="二Chatbot和Agent的本质差异不在于模型">二、Chatbot和Agent的本质差异，不在于模型</h2>
+<p>讲清楚这个分水岭，要先回到一个最基础的问题：Chatbot和Agent到底有什么区别？</p>
+<p>两者底层都是大语言模型，核心差异只有一个：<strong>Agent有"手"，Chatbot没有。</strong></p>
+<p><strong>Chatbot的工作模式</strong>：你问一个问题，它返回一个答案，你把答案复制到Word文档里，再改一改。</p>
+<p><strong>Agent的工作模式</strong>：你描述一个任务，它直接在本地文件夹里生成文件、调用工具、自动完成全流程，最后给你一个可以直接用的成果。</p>
+<p>这两种模式产出的差异，在三个月后会变得非常明显。</p>
+<p>实现这个差异的底层结构，叫做<strong>Harness</strong>——你可以理解成"控制框架"。大模型是"大脑"，Harness是围绕大脑的一整套"神经系统"，负责让输出更稳定、更符合你的工作场景。</p>
+<p>为什么Harness重要？因为大模型天生有高度不确定性——同样的输入，大概率不会得到同样的输出。在发散性场景（聊天、头脑风暴）里，这没问题；但在法律工作里，这恰恰是最大的短板。Harness的作用，就是控制这个不确定性，让输出从"大概能用"变成"稳定可用"。</p>
+<p>这是理解后面一切的前提：<strong>你选什么模型，意义已经不大。当前主流大模型在法律场景里基础能力都够用。真正的差距，来自你会不会用Harness搭建一套属于自己的规则。</strong></p>
+<hr>
+<h2 id="三律师的真正分水岭会不会养规则">三、律师的真正分水岭：会不会"养"规则</h2>
+<h3 id="1养规则不是写提示词">1. "养"规则不是写提示词</h3>
+<p>很多人以为"用好AI"就是学会写提示词（Prompt）。这是一个常见的误解。</p>
+<p>提示词是临时性的指令，每次对话都要重来。但<strong>规则是沉淀下来的工作流程</strong>，存在工作区文件夹里，每次打开Agent都会自动加载，输出自然就带着你的习惯和标准。</p>
+<p>"养"规则的完整含义是：</p>
+<blockquote>
+<p>你在工作过程中，每次发现Agent哪里做得不对，就告诉它怎么改。Agent把这次纠正写进工作区规则里。下一次，它就会按照新的规则运行。随着时间推移，这个Agent越来越像你，越来越贴合你的工作场景。</p>
+</blockquote>
+<p>这个过程有一个非常形象的名字：<strong>默会知识蒸馏</strong>。</p>
+<p>我们做律师的，脑子里有很多"凭感觉"的判断——审核合同时看到某个条款就觉得不对劲、遇到某类案件马上能想到风险点在哪里。这些东西，你自己都说不清楚是怎么来的，但它在工作里就是有效。</p>
+<p>默会知识，就是这种"说不清楚但很管用"的经验。</p>
+<p>以前，这些东西只能靠"传帮带"慢慢带新人。现在，<strong>Agent提供了一个绝佳的工具：你在纠正它的过程中，实际上是在把你的默会知识一点点逼出来、写成规则、变成可传承的资产。</strong></p>
+<p>这不是在教AI，这是在<strong>用AI教自己把经验显性化</strong>。</p>
+<h3 id="2规则从四步开始不需要完美">2. 规则从四步开始，不需要完美</h3>
+<p>有些律师看到"养规则"三个字就退缩了，觉得"我又不是程序员，从零开始太难了"。</p>
+<p>实际上，<strong>规则不需要从完美开始，从四步就够</strong>：</p>
+<blockquote>
+<p>第一步：接收问题</p>
+<p>第二步：查法规</p>
+<p>第三步：做分析</p>
+<p>第四步：出解答</p>
+</blockquote>
+<p>这就是一个法律咨询工作区的最小起点。后面每次用的时候，发现哪里不对，就在对话里告诉Agent哪里要改。它会自动把这次纠正写进规则。</p>
+<p>一个月后回头看，你会发现自己已经拥有了一套完整的、贴着你工作习惯的法律咨询规则——别人拿过去用，效果完全不一样，因为那是你的经验凝结出来的。</p>
+<p><strong>这就是为什么同一个Agent产品，不同人用一段时间后产出质量差距极大的原因。</strong> 不是模型不同，不是工具不同，是使用者沉淀的规则不同。</p>
+<h3 id="3幻觉率累加为什么工作流不是越长越好">3. 幻觉率累加：为什么工作流不是越长越好</h3>
+<p>大模型的幻觉率（输出错误信息的概率）是会累加的。</p>
+<p>一个工作流里，如果每个环节都有大模型参与，每经过一个环节，幻觉率就在上一个环节的基础上继续累积。链路越长，最终结果的错误概率越高。</p>
+<p><strong>这个知识点对律师特别重要。</strong></p>
+<p>律师的工作流程天然比较长：接收任务→检索法规→分析案例→撰写文书→审核修改。每一个环节如果都让大模型独立完成，幻觉率就会在最终成果里体现为"法条引用错误"、"案例张冠李戴"这类问题。</p>
+<p>控制幻觉率有两个有效方法：</p>
+<p><strong>方法一：减少不必要的大模型节点。</strong> 能用工具（如北大法宝MCP查法条、企查查MCP查企业信息）解决的，就不要让大模型自己生成。</p>
+<p><strong>方法二：在关键节点强制人工确认。</strong> 在工作流里，某个环节的结果必须经过你确认，才能进入下一步。这看起来降低了"自动化"程度，但实际效果是把每一步的准确率重新拉回到100%，整体输出质量反而更高。</p>
+<p>在四明山法师AI夜校的课程里，我们反复强调这一点：Agent的价值不是让你省力，<strong>是让你把精力放在机器做不好、你最有价值的环节上</strong>——识别风险、把握商业需求、做出最终决策。</p>
+<h3 id="4一个真实场景规则是怎么长出来的">4. 一个真实场景：规则是怎么长出来的</h3>
+<p>举一个课程里演示过的真实过程。</p>
+<p>一个律师想搭一个"法律咨询工作区"。他的起点描述是：</p>
+<blockquote>
+<p>"每次收到法律问题，新建文件夹，存入原始问题，查阅本地知识库，做法律研究，调用北大法宝核验法条，最后输出解答。所有解答里涉及法条的内容，都要标注来源。"</p>
+</blockquote>
+<p>Agent基于这段描述，自动生成了一套工作流规则，包含文件夹命名规则、执行步骤、法条标注要求。这就是<strong>起点</strong>。</p>
+<p>第一次测试，问题收到了，但Agent没有把原始问题存档。</p>
+<p>律师在对话里直接说："规则需要升级：每次咨询，无论是否提供了附件，都必须将原始问题存入原始材料文件夹。"</p>
+<p>第二次测试，原始问题存档了，但输出的解答用了"结论先行"四个字，律师不喜欢这四个字。</p>
+<p>继续在对话里说："把'结论先行'全部换成'结论'。"</p>
+<p>第三次测试，输出格式完全符合要求了。同时，Agent顺手把上一轮遗漏的原始问题也补上了。</p>
+<p><strong>三次对话，三次纠正，一套越来越贴合个人习惯的工作区规则就长成了。</strong></p>
+<p>这个过程像什么？<strong>就像带实习生——犯一次错，说一次，下一次就不会再犯。区别是，Agent不会忘记，而且会把这个纠正固化成规则。</strong></p>
+<p>在四明山法师AI夜校，我们把这种工作方法叫做"规则迭代法"。核心不是技术，是习惯：每次用Agent都要打开过程窗口，检查它有没有跳过关键步骤，发现问题当时就纠正。这才是让Agent真正好用的方法，而不是等出了问题再抱怨"AI不靠谱"。</p>
+<hr>
+<h2 id="四为什么这是资产而不是成本">四、为什么这是资产，而不是成本</h2>
+<p>有人问：花时间养规则，值得吗？</p>
+<p>这里有一个反直觉但经得起验证的判断：<strong>规则是资产，模型是基础设施，谁都能用，但你的规则是你自己的。</strong></p>
+<p>首先，<strong>规则可以跨工具迁移。</strong></p>
+<p>你用WorkBody养出来的规则，换到Claude Code上，只需要在该文件夹里新建一个文件，写一句话让Claude Code读取WorkBody的规则文件，两套工具就能共用同一套规则。工具会迭代、会过时，但规则是你自己的，迁到哪个工具都能用。</p>
+<p>其次，<strong>规则会越来越厚实，成为真正的竞争力。</strong></p>
+<p>一年后，同样是法律咨询，你的工作区规则可能已经有几百条细节——怎么核验法条、怎么判断风险大小、什么情况下要提示客户做额外尽职调查。这些规则凝结了你处理过的所有类型案件的经验，新来的助理或者实习生，只要加载这套规则，就能得到一个"有你判断影子"的初稿。</p>
+<p><strong>你不是在被AI替代，你是在用AI把你的经验复制、放大、传承下去。</strong></p>
+<p>第三，数据端是机构可以做的，规则端是个人必须自己做的。</p>
+<p>大模型厂商能提供通用工具，能提供模型能力，但<strong>他们没办法替你沉淀你脑子里的默会经验</strong>——只有你自己在每天的使用、纠正、迭代里，才能把这些东西逼出来。</p>
+<p>所以我们在四明山法师AI夜校坚持用"实战驱动"的方式：不是先听课学理论，是先搭工作区先用起来，在使用过程中遇到问题，带着问题来交流，纠正方法现场就能改。这就是规则生长的正确路径。</p>
+<hr>
+<h2 id="五操作门槛你不需要会写代码">五、操作门槛：你不需要会写代码</h2>
+<p>写到这里，可能还有律师觉得"这听起来很复杂，我不懂技术"。</p>
+<p><strong>实际上，你只需要会描述你的工作流程。</strong></p>
+<p>搭一个法律咨询工作区，一共四步：</p>
+<p><strong>第一步</strong>：在本地建一个文件夹，命名为"法律咨询"。</p>
+<p><strong>第二步</strong>：在Agent产品（WorkBody或Claude Code）里新建任务，选择这个文件夹作为工作空间。</p>
+<p><strong>第三步</strong>：用自然语言描述你的需求——你要怎么干，Agent自动生成工作区规则文件。</p>
+<p><strong>第四步</strong>：测试，发现问题，在对话里告诉Agent哪里要改，它自动更新规则。</p>
+<p>不会写代码？不需要。你只需要能说清楚"我平时是怎么干这件事的"。</p>
+<p>四明山法师AI夜校的学员里，有相当比例是没有任何技术背景的资深律师，他们用这套方法都上手了。真正的门槛不是技术，是<strong>意识到"规则需要养"这个认知</strong>。</p>
+<hr>
+<h2 id="六边界什么情况下这个方法不适用">六、边界：什么情况下这个方法不适用</h2>
+<p>任何方法都有边界，规则沉淀法也不例外。</p>
+<p><strong>第一，不值得为一次性任务建工作区。</strong></p>
+<p>如果一个任务这辈子只会遇到一次，专门建工作区投入产出不划算。判断标准是：<strong>同一个类型的活，连续干了三次，值得建工作区。</strong></p>
+<p><strong>第二，保密要求极高的场景要单独评估。</strong></p>
+<p>涉及重大交易、敏感案件的文件，规则里需要调用的数据源、上传方式都要单独设计，不能直接套用通用工作区。这不是否定规则沉淀的价值，而是提醒：规则设计本身也要有安全意识。</p>
+<p><strong>第三，短期看不到回报是正常的。</strong></p>
+<p>规则沉淀不是立竿见影的事。前面两周可能觉得"怎么还没比直接问答好用"——这是正常的。真正的变化发生在两三个月后，当你发现"同样的法律咨询，新人用三十分钟，你用三分钟，结果还更全面"的时候，你就会理解前面投入的时间都去了哪里。</p>
+<hr>
+<h2 id="结语">结语</h2>
+<p>AI时代律师的分水岭，不是"会不会用AI"，而是<strong>"会不会养规则"</strong>。</p>
+<p>会养规则的律师，Agent是智能放大器，把自己的经验放大十倍、百倍；不会养的，Agent就是一台贵一点的搜索引擎，每次问答都要从头开始。</p>
+<p>四明山法师AI夜校从创办至今，一直在推广这个理念：AI工具用得多不等于用得好，用得好的标志，是你的工作区规则越来越厚、越来越像你。</p>
+<p>规则是一步一步生长出来的，不是一蹴而就的。</p>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会常务理事、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://cslawyer1985.github.io/xinchun-ai-prework/" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

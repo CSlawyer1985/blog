@@ -117,6 +117,10 @@ def process_article(md_path: str, dirname: str) -> dict:
             cover_path = candidate
             break
 
+    # has_cover 综合判定：md 正文引用了封面图，或 output 目录存在 cover 文件
+    # 后者覆盖正文未引用图片但实际有封面文件的情况（如 WorkBuddy 文章正文以摘要引用开头）
+    has_cover = has_cover or cover_path is not None
+
     return {
         'id': slug,
         'title': title,

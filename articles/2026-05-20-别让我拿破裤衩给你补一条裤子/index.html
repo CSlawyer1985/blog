@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>别让我拿破裤衩给你补一条裤子 — 陈石 · 法与AI</title>
+  <meta name="description" content="前几天收到一份交易方案打开一看三句话没有结构没有附件核心商业条款全部空缺大意是公司和公司要合作你们把文件出了邮件末尾写着请于本周五前出具完整交易文件我盯着屏幕看了很久不是因为难这个活本身不难是我突然意识到这根本不是一份草稿这是一条破裤衩不是所有原始材料都能叫草稿草稿的前提是它至少覆盖了该覆盖的部位给">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（118）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（94）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（18）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">法律实务</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-国有资产流失的历史演进/" class="sidebar-link">国有资产流失的历史演进</a>
+      
+      <a href="/articles/2026-07-01-从防止国有资产流失到国有资本经营判断规则-国资监管制度演进的反向后果/" class="sidebar-link">从防止国有资产流失到国有资本经营判断规则：国资监管制度演进的反向后果</a>
+      
+      <a href="/articles/2026-07-01-国资监管不能只设红线-还要给方法/" class="sidebar-link">国资监管不能只设红线，还要给方法</a>
+      
+      <a href="/articles/2026-07-01-国资监管的悖论-红线越硬-经营越软/" class="sidebar-link">国资监管的悖论：红线越硬，经营越软</a>
+      
+      <a href="/articles/2026-06-30-六类建工争议的答案被改写-最高法建工司法解释二施行首日实务解读/" class="sidebar-link">六类建工争议的答案被改写——最高法建工司法解释二施行首日实务解读</a>
+      
+      <a href="/articles/2026-06-30-政府项目审计-财政评审的最长期限限制-建工解释二第13条对-久审不决-的终结/" class="sidebar-link">政府项目审计/财政评审的最长期限限制——建工解释二第13条对"久审不决"的终结</a>
+      
+      <a href="/articles/2026-06-30-实际施工人概念退出历史舞台-建工解释二最重大变革的规则演进与实务影响/" class="sidebar-link">实际施工人概念退出历史舞台——建工解释二最重大变革的规则演进与实务影响</a>
+      
+      <a href="/articles/2026-06-21-一家律所最被低估的知识资产-内部裁判文书库/" class="sidebar-link">一家律所最被低估的知识资产——内部裁判文书库</a>
+      
+      <a href="/articles/2026-06-21-公众号是你的隐形法律数据库-没有一家法律数据商收录了它们/" class="sidebar-link">公众号是你的隐形法律数据库——没有一家法律数据商收录了它们</a>
+      
+      <a href="/articles/2026-06-14-公证到底能做什么-不能做什么-从一次咨询说起/" class="sidebar-link">公证到底能做什么、不能做什么——从一次咨询说起</a>
+      
+      <a href="/articles/2026-06-04-上了会-就不用担责了吗/" class="sidebar-link">上了会，就不用担责了吗？</a>
+      
+      <a href="/articles/2026-06-04-甲方这个位置-正在悄悄吃掉你的真本事/" class="sidebar-link">甲方这个位置，正在悄悄吃掉你的真本事</a>
+      
+      <a href="/articles/2026-05-27-投资茅台-四个字-骗了全国多少人/" class="sidebar-link">"投资茅台"四个字，骗了全国多少人？</a>
+      
+      <a href="/articles/2026-05-27-吹牛税/" class="sidebar-link">吹牛税</a>
+      
+      <a href="/articles/2026-05-23-宁波建工纠纷败诉密码-从500份判决看当事人栽在哪儿/" class="sidebar-link">宁波建工纠纷败诉密码——从500份判决看当事人栽在哪儿</a>
+      
+      <a href="/articles/2026-05-23-宁波建设工程法官的裁判密码/" class="sidebar-link">宁波建设工程法官的裁判密码</a>
+      
+      <a href="/articles/2026-05-22-青年律师不是在-卷-是在-空转/" class="sidebar-link">青年律师不是在"卷"，是在"空转"</a>
+      
+      <a href="/articles/2026-05-20-别让我拿破裤衩给你补一条裤子/" class="sidebar-link">别让我拿破裤衩给你补一条裤子</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">法律实务</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-05-20">2026年5月20日</time>
+            <span class="dotsep"></span>
+            <span>6 分钟阅读</span>
+          </div>
+          <h1 class="article-title">别让我拿破裤衩给你补一条裤子</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>前几天收到一份"交易方案"。</p>
+<p>打开一看，三句话。没有结构，没有附件，核心商业条款全部空缺。大意是：A公司和B公司要合作，你们把文件出了。</p>
+<p>邮件末尾写着："请于本周五前出具完整交易文件。"</p>
+<p>我盯着屏幕看了很久。不是因为难，这个活本身不难。是我突然意识到：这根本不是一份草稿。这是一条破裤衩。</p>
+<p>不是所有原始材料都能叫草稿。草稿的前提是，它至少覆盖了该覆盖的部位。给你一条破裤衩让你补成一条裤子，还要求周五前交货——这不是法律服务，这是魔法。</p>
+<p>而且这种情况不是第一次，也不会是最后一次。</p>
+<hr>
+<h2 id="谁在递破裤衩">谁在递破裤衩</h2>
+<p>干了这些年，我发现爱递破裤衩的客户，大致分三种。</p>
+<p><strong>第一种，甩锅型。</strong> 不是不会写，是不想写。写了就要对内容负责，不写就可以审。他给你三句话，你写出三十页合同，然后他拿着你的合同去跟领导汇报、去跟对方谈判。出了任何问题，"这是律师出的。"</p>
+<p>这类人多数是企业中层，职业经理人。他们的KPI结构决定了一件事：想清楚再写下来，这个动作本身就构成了责任。而"我把需求提给了律师"安全得多。你写得越详细，他越安全，出事之后可以说"律师没有提示这个风险"。</p>
+<p>他不是在买法律服务。他是在买一个甩锅的支点。</p>
+<p><strong>第二种，真菜型。</strong> 和前一种不同，他是真的不懂。没有常识，没有框架，连这个交易大概涉及哪些问题都没有概念。但他又必须产出，他坐在那个位置上，老板问他要东西。</p>
+<p>他的策略很简单：把一团浆糊丢给律师，让律师通过提问和产出反过来帮他理清思路。但他不会说出来。他说的是"我们已经有初步方案了"，实际上那三句话是他花了五分钟在微信里打的。</p>
+<p>他不是在委托你。他是在让你替他完成他本该完成的那部分工作，而且不付这部分钱。</p>
+<p><strong>第三种，压榨型。</strong> 周期压到最短，费用压到最低，验收标准高得离谱。他的逻辑简单到令人发指："我付了钱，你就得搞定。"他把法律服务当成标准零件采购——我给你规格，你给我产品，别跟我说什么前期调研、需求梳理、商业谈判支持。</p>
+<p>三种人有一个共同点：你永远无法跟他同频对话。同频对话的前提是双方对"这个问题的基本盘"有大致共识，而他给出的基础本身就是错漏百出的。你从第一句话就得开始纠偏，对话根本建立不起来。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320"&gt;
+  &lt;rect width="600" height="320" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="38" text-anchor="middle" font-size="17" font-weight="700" fill="#222" font-family="sans-serif"&gt;三类"破裤衩"客户：动机不同，结果相同&lt;/text&gt;
+
+  &lt;!-- Col 1: 甩锅型 --&gt;
+  &lt;rect x="18" y="60" width="180" height="26" rx="3" fill="#333"/&gt;
+  &lt;text x="108" y="78" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" font-family="sans-serif"&gt;甩锅型&lt;/text&gt;
+  &lt;text x="108" y="118" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;核心动机&lt;/text&gt;
+  &lt;text x="108" y="138" text-anchor="middle" font-size="12" fill="#111" font-family="sans-serif"&gt;转移责任&lt;/text&gt;
+  &lt;line x1="40" y1="150" x2="176" y2="150" stroke="#ddd" stroke-width="0.5"/&gt;
+  &lt;text x="108" y="170" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;典型行为&lt;/text&gt;
+  &lt;text x="108" y="190" text-anchor="middle" font-size="11" fill="#333" font-family="sans-serif"&gt;写模糊→律师展开&lt;/text&gt;
+  &lt;text x="108" y="208" text-anchor="middle" font-size="11" fill="#333" font-family="sans-serif"&gt;→出事律师扛&lt;/text&gt;
+
+  &lt;!-- Col 2: 真菜型 --&gt;
+  &lt;rect x="210" y="60" width="180" height="26" rx="3" fill="#333"/&gt;
+  &lt;text x="300" y="78" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" font-family="sans-serif"&gt;真菜型&lt;/text&gt;
+  &lt;text x="300" y="118" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;核心动机&lt;/text&gt;
+  &lt;text x="300" y="138" text-anchor="middle" font-size="12" fill="#111" font-family="sans-serif"&gt;掩盖无知&lt;/text&gt;
+  &lt;line x1="232" y1="150" x2="368" y2="150" stroke="#ddd" stroke-width="0.5"/&gt;
+  &lt;text x="300" y="170" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;典型行为&lt;/text&gt;
+  &lt;text x="300" y="190" text-anchor="middle" font-size="11" fill="#333" font-family="sans-serif"&gt;丢一团浆糊给律师&lt;/text&gt;
+  &lt;text x="300" y="208" text-anchor="middle" font-size="11" fill="#333" font-family="sans-serif"&gt;→让律师替他理思路&lt;/text&gt;
+
+  &lt;!-- Col 3: 压榨型 --&gt;
+  &lt;rect x="402" y="60" width="180" height="26" rx="3" fill="#333"/&gt;
+  &lt;text x="492" y="78" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" font-family="sans-serif"&gt;压榨型&lt;/text&gt;
+  &lt;text x="492" y="118" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;核心动机&lt;/text&gt;
+  &lt;text x="492" y="138" text-anchor="middle" font-size="12" fill="#111" font-family="sans-serif"&gt;压缩成本=KPI&lt;/text&gt;
+  &lt;line x1="424" y1="150" x2="560" y2="150" stroke="#ddd" stroke-width="0.5"/&gt;
+  &lt;text x="492" y="170" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;典型行为&lt;/text&gt;
+  &lt;text x="492" y="190" text-anchor="middle" font-size="11" fill="#333" font-family="sans-serif"&gt;压周期+压费用&lt;/text&gt;
+  &lt;text x="492" y="208" text-anchor="middle" font-size="11" fill="#333" font-family="sans-serif"&gt;→要求还高得离谱&lt;/text&gt;
+
+  &lt;!-- Bottom commonality --&gt;
+  &lt;rect x="60" y="240" width="480" height="50" rx="4" fill="#f5f5f5" stroke="#999" stroke-width="1"/&gt;
+  &lt;text x="300" y="262" text-anchor="middle" font-size="13" font-weight="700" fill="#333" font-family="sans-serif"&gt;共同结果&lt;/text&gt;
+  &lt;text x="300" y="280" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;你永远无法跟他同频对话——基础本身就是错漏百出的&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<hr>
+<h2 id="不是能力问题是算术题">不是能力问题，是算术题</h2>
+<p>你可能会说，这些人也不容易，经理人有经理人的难处，内部压力大、资源少、时间紧。</p>
+<p>我同意。而且我遇到的绝大多数递破裤衩的客户，都不是坏人。</p>
+<p>问题在于，这不是能力问题，是一道算术题。</p>
+<p>甩锅型算的是：我写清楚，出了问题我扛，不划算。我写模糊，律师展开，出了问题律师扛，划算。</p>
+<p>真菜型算的是：自己摸索会暴露无知，丢脸。把问题丢给律师，律师帮我理，我看起来在推进工作，划算。</p>
+<p>压榨型算的是：压缩成本和时间，我的KPI好看，质量不是我首要关心的，划算。</p>
+<p>每个人都在自己的激励结构里做出了理性选择。递破裤衩不是偶然失误，是这个激励结构下最理性的行为。</p>
+<p>而法律服务有一个反常识的特点。一般商品，你花多少钱就拿多少东西。但在法律服务里，客户提供的基础越差，律师要花的时间越多，你付的钱不但没有更多，往往被压得更少。"给多少钱办多少事"这句话，在我们这个行当里有时候是反过来的：给的钱越少，律师要补的窟窿越多。</p>
+<p>双重挤压。这也是为什么这些项目做完之后，律师的体感不是"完成了一个挑战"，而是"被扒了一层皮"。</p>
+<hr>
+<h2 id="四样东西凑齐了才叫破裤衩">四样东西凑齐了才叫破裤衩</h2>
+<p>这里得认真说一句：我不是说所有客户给的材料都必须完善。律师替客户梳理事实、补充条款、完善方案，这本来就是工作的一部分。客户不懂法律是正常的，懂才不正常。</p>
+<p>基础的缺失本身不是问题。</p>
+<p>问题是四样东西同时出现：基础错漏百出，要求高得离谱，沟通完全不对频，费用和周期被压到不合理。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 280"&gt;
+  &lt;rect width="600" height="280" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#222" font-family="sans-serif"&gt;凑齐四样，才叫"破裤衩"&lt;/text&gt;
+
+  &lt;!-- Four boxes --&gt;
+  &lt;rect x="30" y="58" width="252" height="40" rx="3" fill="#f5f5f5" stroke="#bbb" stroke-width="1"/&gt;
+  &lt;text x="156" y="83" text-anchor="middle" font-size="13" fill="#333" font-family="sans-serif"&gt;基础错漏百出&lt;/text&gt;
+
+  &lt;rect x="318" y="58" width="252" height="40" rx="3" fill="#f5f5f5" stroke="#bbb" stroke-width="1"/&gt;
+  &lt;text x="444" y="83" text-anchor="middle" font-size="13" fill="#333" font-family="sans-serif"&gt;要求高得离谱&lt;/text&gt;
+
+  &lt;rect x="30" y="118" width="252" height="40" rx="3" fill="#f5f5f5" stroke="#bbb" stroke-width="1"/&gt;
+  &lt;text x="156" y="143" text-anchor="middle" font-size="13" fill="#333" font-family="sans-serif"&gt;沟通完全不对频&lt;/text&gt;
+
+  &lt;rect x="318" y="118" width="252" height="40" rx="3" fill="#f5f5f5" stroke="#bbb" stroke-width="1"/&gt;
+  &lt;text x="444" y="143" text-anchor="middle" font-size="13" fill="#333" font-family="sans-serif"&gt;费用和周期被压到不合理&lt;/text&gt;
+
+  &lt;!-- Arrows converging --&gt;
+  &lt;line x1="156" y1="98" x2="300" y2="190" stroke="#999" stroke-width="1"/&gt;
+  &lt;line x1="444" y1="98" x2="300" y2="190" stroke="#999" stroke-width="1"/&gt;
+  &lt;line x1="156" y1="158" x2="300" y2="190" stroke="#999" stroke-width="1"/&gt;
+  &lt;line x1="444" y1="158" x2="300" y2="190" stroke="#999" stroke-width="1"/&gt;
+
+  &lt;!-- Center: 破裤衩 --&gt;
+  &lt;rect x="210" y="192" width="180" height="40" rx="3" fill="#222"/&gt;
+  &lt;text x="300" y="218" text-anchor="middle" font-size="15" font-weight="700" fill="#fff" font-family="sans-serif"&gt;= 破裤衩&lt;/text&gt;
+
+  &lt;!-- Caption --&gt;
+  &lt;text x="300" y="262" text-anchor="middle" font-size="11" fill="#888" font-family="sans-serif"&gt;单独拎出一样都能忍，四样凑齐才崩溃&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>单独拎出一样，都能忍。四样凑齐了，才叫你盯着屏幕问自己"我到底在干什么"。</p>
+<p>有些同行可能会说：这就是市场啊，你有本事别接。</p>
+<p>说得对。这就要说到最关键的问题了。</p>
+<hr>
+<h2 id="比接活更重要的能力">比接活更重要的能力</h2>
+<p>我以前也接。会觉得先接下来，办法总比困难多；客户要求高说明有追求；费用低可以当交个朋友。</p>
+<p>后来发现全是幻觉。</p>
+<p>接了一个破裤衩项目，你花的时间是正常项目的两三倍，做出来的东西自己都不满意。客户不会觉得你"帮我解决了难题"，他觉得这是他应得的。下次他还会这样。因为他从这个模式里尝到了甜头。</p>
+<p>所以我后来定了三条自己的规矩。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200"&gt;
+  &lt;rect width="600" height="200" fill="#fff" rx="6"/&gt;
+
+  &lt;!-- Gate 1 --&gt;
+  &lt;rect x="20" y="50" width="160" height="60" rx="3" fill="#222"/&gt;
+  &lt;text x="100" y="74" text-anchor="middle" font-size="14" font-weight="700" fill="#fff" font-family="sans-serif"&gt;第一关：识别&lt;/text&gt;
+  &lt;text x="100" y="96" text-anchor="middle" font-size="11" fill="#ccc" font-family="sans-serif"&gt;报价前先看材料&lt;/text&gt;
+
+  &lt;!-- Arrow 1 --&gt;
+  &lt;line x1="180" y1="80" x2="220" y2="80" stroke="#999" stroke-width="1.5"/&gt;
+  &lt;polygon points="218,74 228,80 218,86" fill="#999"/&gt;
+
+  &lt;!-- Gate 2 --&gt;
+  &lt;rect x="230" y="50" width="160" height="60" rx="3" fill="#444"/&gt;
+  &lt;text x="310" y="74" text-anchor="middle" font-size="14" font-weight="700" fill="#fff" font-family="sans-serif"&gt;第二关：拒绝/谈判&lt;/text&gt;
+  &lt;text x="310" y="96" text-anchor="middle" font-size="11" fill="#ccc" font-family="sans-serif"&gt;基础不行就提条件&lt;/text&gt;
+
+  &lt;!-- Arrow 2 --&gt;
+  &lt;line x1="390" y1="80" x2="430" y2="80" stroke="#999" stroke-width="1.5"/&gt;
+  &lt;polygon points="428,74 438,80 428,86" fill="#999"/&gt;
+
+  &lt;!-- Gate 3 --&gt;
+  &lt;rect x="440" y="50" width="140" height="60" rx="3" fill="#666"/&gt;
+  &lt;text x="510" y="74" text-anchor="middle" font-size="14" font-weight="700" fill="#fff" font-family="sans-serif"&gt;第三关：止损&lt;/text&gt;
+  &lt;text x="510" y="96" text-anchor="middle" font-size="11" fill="#ddd" font-family="sans-serif"&gt;接了也别默默补&lt;/text&gt;
+
+  &lt;!-- Caption --&gt;
+  &lt;text x="300" y="148" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;识别→谈判→止损，缺一关就进无底洞&lt;/text&gt;
+  &lt;text x="300" y="172" text-anchor="middle" font-size="12" fill="#888" font-family="sans-serif"&gt;拒绝一个坏项目，比做好一个坏项目，更需要专业判断力&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p><strong>第一，报价前先看材料。</strong> 不是看有没有材料，是看材料的质量。三句话的"方案"、没有任何商业条款的"协议草案"、明显是网上下载后删了几行的模板，这些不是材料，是信号。信号告诉我：这个项目的基础工作量不是从"写合同"开始，是从"帮客户想清楚他要干什么"开始。报价要反映这个。</p>
+<p><strong>第二，学会拒绝。</strong> 不是每单生意都要做。"这个基础做不了你们要的东西，要么放宽时间，要么我们先收一笔前期费用做需求梳理。"这句话说出来，大概有一半的人就走了。走的人不值得留。留下来的人，已经完成了一轮自我筛选，他知道这事没那么简单。</p>
+<p>拒绝一个坏项目，比做好一个坏项目，更需要专业判断力。</p>
+<p><strong>第三，接了之后不要默默补。</strong> 很多时候律师的困境是自己制造的：客户给了破裤衩，你不吭声，自己熬夜补成了裤子，交出去，客户觉得"这不挺顺利的吗"。</p>
+<p>不要这样。收到材料的第一时间，用专业语言把缺口列清楚：缺少哪些商业条件，哪些前提事实未确认，哪些部分无法在法律上成立。让客户看到，这不是律师在挑毛病，这是客观的结构性缺失。</p>
+<p>把压力传导回去。这不只是保护自己，也是在告诉他：律师的工作不是魔法。你给什么基础，决定了能出什么结果。</p>
+<hr>
+<h2 id="下次收到破裤衩">下次收到破裤衩</h2>
+<p>法律服务不是一个"只要努力就能搞定"的行业。有些东西你补不了，有些客户你救不了，有些项目注定是多输的局。</p>
+<p>你唯一能控制的，是在第一眼看到那三句话的时候，手里的动作。</p>
+<p>别第一个动作就去找针线。</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://cslawyer1985.github.io/xinchun-ai-prework/" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>

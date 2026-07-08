@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>上了会，就不用担责了吗？ — 陈石 · 法与AI</title>
+  <meta name="description" content="求是年第期有一篇署名文章批评了当前在个别单位和干部中存在的会议依赖症本该个人决断的偏要上会研究职责清晰的工作硬要集体决策遇到矛盾难题首先想到提交讨论文章点出病根怕担责想用集体决策分散个人责任这篇文章从党建和作风角度做了批评但它引出一个法律上值得认真对待的问题集体决策真的能免责吗答案是明确的不能中国现">
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html,body{overflow-x:hidden}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（118）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（94）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（18）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">法律实务</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-07-01-国有资产流失的历史演进/" class="sidebar-link">国有资产流失的历史演进</a>
+      
+      <a href="/articles/2026-07-01-从防止国有资产流失到国有资本经营判断规则-国资监管制度演进的反向后果/" class="sidebar-link">从防止国有资产流失到国有资本经营判断规则：国资监管制度演进的反向后果</a>
+      
+      <a href="/articles/2026-07-01-国资监管不能只设红线-还要给方法/" class="sidebar-link">国资监管不能只设红线，还要给方法</a>
+      
+      <a href="/articles/2026-07-01-国资监管的悖论-红线越硬-经营越软/" class="sidebar-link">国资监管的悖论：红线越硬，经营越软</a>
+      
+      <a href="/articles/2026-06-30-六类建工争议的答案被改写-最高法建工司法解释二施行首日实务解读/" class="sidebar-link">六类建工争议的答案被改写——最高法建工司法解释二施行首日实务解读</a>
+      
+      <a href="/articles/2026-06-30-政府项目审计-财政评审的最长期限限制-建工解释二第13条对-久审不决-的终结/" class="sidebar-link">政府项目审计/财政评审的最长期限限制——建工解释二第13条对"久审不决"的终结</a>
+      
+      <a href="/articles/2026-06-30-实际施工人概念退出历史舞台-建工解释二最重大变革的规则演进与实务影响/" class="sidebar-link">实际施工人概念退出历史舞台——建工解释二最重大变革的规则演进与实务影响</a>
+      
+      <a href="/articles/2026-06-21-一家律所最被低估的知识资产-内部裁判文书库/" class="sidebar-link">一家律所最被低估的知识资产——内部裁判文书库</a>
+      
+      <a href="/articles/2026-06-21-公众号是你的隐形法律数据库-没有一家法律数据商收录了它们/" class="sidebar-link">公众号是你的隐形法律数据库——没有一家法律数据商收录了它们</a>
+      
+      <a href="/articles/2026-06-14-公证到底能做什么-不能做什么-从一次咨询说起/" class="sidebar-link">公证到底能做什么、不能做什么——从一次咨询说起</a>
+      
+      <a href="/articles/2026-06-04-上了会-就不用担责了吗/" class="sidebar-link">上了会，就不用担责了吗？</a>
+      
+      <a href="/articles/2026-06-04-甲方这个位置-正在悄悄吃掉你的真本事/" class="sidebar-link">甲方这个位置，正在悄悄吃掉你的真本事</a>
+      
+      <a href="/articles/2026-05-27-投资茅台-四个字-骗了全国多少人/" class="sidebar-link">"投资茅台"四个字，骗了全国多少人？</a>
+      
+      <a href="/articles/2026-05-27-吹牛税/" class="sidebar-link">吹牛税</a>
+      
+      <a href="/articles/2026-05-23-宁波建工纠纷败诉密码-从500份判决看当事人栽在哪儿/" class="sidebar-link">宁波建工纠纷败诉密码——从500份判决看当事人栽在哪儿</a>
+      
+      <a href="/articles/2026-05-23-宁波建设工程法官的裁判密码/" class="sidebar-link">宁波建设工程法官的裁判密码</a>
+      
+      <a href="/articles/2026-05-22-青年律师不是在-卷-是在-空转/" class="sidebar-link">青年律师不是在"卷"，是在"空转"</a>
+      
+      <a href="/articles/2026-05-20-别让我拿破裤衩给你补一条裤子/" class="sidebar-link">别让我拿破裤衩给你补一条裤子</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">法律实务</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-06-04">2026年6月4日</time>
+            <span class="dotsep"></span>
+            <span>6 分钟阅读</span>
+          </div>
+          <h1 class="article-title">上了会，就不用担责了吗？</h1>
+        </header>
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>《求是》2026年第10期有一篇署名文章，批评了当前在个别单位和干部中存在的"会议依赖症"——本该个人决断的，偏要"上会研究"；职责清晰的工作，硬要"集体决策"；遇到矛盾难题，首先想到"提交讨论"。文章点出病根：怕担责，想用"集体决策"分散个人责任。</p>
+<p>这篇文章从党建和作风角度做了批评，但它引出一个法律上值得认真对待的问题：<strong>"集体决策"真的能免责吗？</strong></p>
+<p>答案是明确的：<strong>不能。</strong> 中国现行法律体系从未承认"集体决策 = 免责"。而且，法律不仅不认这层等式，还建了一套精细的责任区分机制——比很多人想象的更严格，也更讲道理。</p>
+<hr>
+<h2 id="一谁决策谁负责不是谁开会谁免责">一、"谁决策、谁负责"，不是"谁开会、谁免责"</h2>
+<p>在政务处分领域，核心法源是《中华人民共和国公职人员政务处分法》和《行政机关公务员处分条例》。各地各部门在制定"三重一大"（重大决策、重要人事任免、重大项目安排、大额资金使用）集体决策制度时，无一例外地在末尾附加了责任追究条款。这些条款的写法高度一致，已经形成了稳定的规范共识。</p>
+<p>以平阳县气象局2025年修订的"三重一大"实施办法为例，其第十条明确："按照'谁决策、谁负责'的原则，实现决策权力和决策责任的统一……集体决策失误造成重大损失的，应依据《中国共产党纪律处分条例》《行政机关公务员处分条例》等规定追究责任。"</p>
+<p>注意措辞——"集体决策失误造成重大损失"本身就是一个追责事由。"集体"二字不是免责的理由，而是追责的前提条件。</p>
+<p>张家口市政务公开责任追究办法中，对责任区分做了更精细的规定："经过领导班子集体讨论决定作出违反政务公开规定的行政行为，由主要领导承担主要责任，其他领导成员和承办人员承担次要责任。"这意味着：</p>
+<ul>
+<li>上了会 ≠ 不担责</li>
+<li>集体决定 ≠ 法不责众</li>
+<li>领导不仅跑不掉，反而承担<strong>主要</strong>责任</li>
+</ul>
+<p>程序是否合规（走了集体讨论程序），和实体上要不要承担责任（为自己的判断负责），是两个独立的评价维度。前者不能替代后者。</p>
+<hr>
+<h2 id="二党纪问责终身追责不论岗位如何变动">二、党纪问责：终身追责，不论岗位如何变动</h2>
+<p>党纪层面同样没有给"集体决策"留免责通道。《中国共产党纪律处分条例》和《关于实行党政领导干部问责的暂行规定》构成了问责的主要依据。</p>
+<p>呼和浩特市贯彻落实问责暂行规定的实施办法中有一段值得细读：纪检监察机关在提出问责建议时，必须"对由领导班子集体决策产生的应予问责的事项，就领导成员在集体决策中所起的作用和应负的责任进行说明。"</p>
+<p>问责机关不是问"这件事是不是集体决定的"——而是问"在这个集体决定中，<strong>你</strong>起了什么作用、<strong>你</strong>应负什么责任"。问责的颗粒度不是以"会议"为单位，是以"个人在会议中的角色和行为"为单位。</p>
+<p>更有意思的是终身追责原则。沭阳县政府和朔州市政府的文件都明确："凡领导干部在任期内发生应当追究责任的行为，不论职务和岗位发生何种变化，都应进行相应的责任追究。"</p>
+<p>今天在会上点了头，十年后换了岗位，只要决策失误被认定，责任仍然追得到你。集体决策是程序，不是护身符。</p>
+<hr>
+<h2 id="三一个反直觉的法律规则沉默服从不能免责">三、一个反直觉的法律规则：沉默服从不能免责</h2>
+<p>前两部分讲的是"集体决策不免责"。接下来这条规则更值得注意——它不仅不免责，而且把责任区分得相当精确。</p>
+<p>湖南省工业和信息化厅《重大行政决策制度》第十八条规定："集体讨论决定决策事项时，有关人员对严重失误决策明确持不赞成态度或者保留意见的，应当免除或者减轻责任。"云南省民政厅重大行政决策程序规定第四十四条有同款表述。</p>
+<p>这条规则的逻辑是：</p>
+<ul>
+<li><strong>默认状态</strong>：参与集体决策的人，要对决策后果承担相应责任</li>
+<li><strong>免责例外</strong>：只有在会上<strong>明确反对</strong>或<strong>保留意见</strong>，且意见被记录在案，才能免除或减轻责任</li>
+<li><strong>沉默 = 同意 = 担责</strong>：不表态、随大流、口头说"我有点担心"但没有正式记录——都不构成免责事由</li>
+</ul>
+<p>这个规则设计得相当精巧。它实际上把集体讨论还原成了它本来的功能：不是责任的分散机制，而是<strong>风险的暴露机制</strong>。集体讨论的价值在于不同观点碰撞，从而发现个人思考中的盲区。如果你在讨论中明确指出了风险，尽到了个体的判断义务，法律给你免责保护；如果你什么都没说、或者说了但没留痕，法律视为你同意了这个决策——你要负责。</p>
+<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300"&gt;
+  &lt;rect width="600" height="300" fill="#fff" rx="6"/&gt;
+  &lt;text x="300" y="36" text-anchor="middle" font-size="16" font-weight="700" fill="#333" font-family="sans-serif"&gt;集体决策中的责任区分逻辑&lt;/text&gt;
+
+  &lt;!-- 三个分支 --&gt;
+  &lt;!-- 分支1：明确反对 --&gt;
+  &lt;rect x="30" y="60" width="170" height="200" rx="4" fill="#f0f9eb" stroke="#67c23a" stroke-width="1.5"/&gt;
+  &lt;text x="115" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#67c23a" font-family="sans-serif"&gt;明确反对&lt;/text&gt;
+  &lt;text x="115" y="115" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;正式表达异议&lt;/text&gt;
+  &lt;text x="115" y="135" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;要求记录在案&lt;/text&gt;
+  &lt;line x1="60" y1="150" x2="170" y2="150" stroke="#ddd" stroke-width="0.5"/&gt;
+  &lt;text x="115" y="175" text-anchor="middle" font-size="13" font-weight="700" fill="#67c23a" font-family="sans-serif"&gt;免除或减轻责任&lt;/text&gt;
+  &lt;text x="115" y="200" text-anchor="middle" font-size="11" fill="#999" font-family="sans-serif"&gt;法律明确保护异议者&lt;/text&gt;
+
+  &lt;!-- 分支2：沉默/随大流 --&gt;
+  &lt;rect x="215" y="60" width="170" height="200" rx="4" fill="#fef0f0" stroke="#f56c6c" stroke-width="1.5"/&gt;
+  &lt;text x="300" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#f56c6c" font-family="sans-serif"&gt;沉默随大流&lt;/text&gt;
+  &lt;text x="300" y="115" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;不表态/口头担心&lt;/text&gt;
+  &lt;text x="300" y="135" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;未正式记录异议&lt;/text&gt;
+  &lt;line x1="245" y1="150" x2="355" y2="150" stroke="#ddd" stroke-width="0.5"/&gt;
+  &lt;text x="300" y="175" text-anchor="middle" font-size="13" font-weight="700" fill="#f56c6c" font-family="sans-serif"&gt;承担相应责任&lt;/text&gt;
+  &lt;text x="300" y="200" text-anchor="middle" font-size="11" fill="#999" font-family="sans-serif"&gt;沉默=同意，不免责&lt;/text&gt;
+
+  &lt;!-- 分支3：主动推动 --&gt;
+  &lt;rect x="400" y="60" width="170" height="200" rx="4" fill="#fdf6ec" stroke="#e6a23c" stroke-width="1.5"/&gt;
+  &lt;text x="485" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#e6a23c" font-family="sans-serif"&gt;主动推动&lt;/text&gt;
+  &lt;text x="485" y="115" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;提出方案/主导讨论&lt;/text&gt;
+  &lt;text x="485" y="135" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;提供关键信息/数据&lt;/text&gt;
+  &lt;line x1="430" y1="150" x2="540" y2="150" stroke="#ddd" stroke-width="0.5"/&gt;
+  &lt;text x="485" y="175" text-anchor="middle" font-size="13" font-weight="700" fill="#e6a23c" font-family="sans-serif"&gt;承担主要责任&lt;/text&gt;
+  &lt;text x="485" y="200" text-anchor="middle" font-size="11" fill="#999" font-family="sans-serif"&gt;主要领导/直接责任人&lt;/text&gt;
+
+  &lt;!-- 底部标注 --&gt;
+  &lt;text x="300" y="285" text-anchor="middle" font-size="11" fill="#aaa" font-family="sans-serif"&gt;依据：《湖南省工信厅重大行政决策制度》第18条、张家口市政务公开责任追究办法等&lt;/text&gt;
+&lt;/svg&gt;</code></pre>
+<p>从另一个角度看，这条规则也给了"敢担当"的人一个法律出口。不是说每个集体决策都必须有人反对，而是说，如果你确实认为某个决策有问题，你有明确的、能被法律认可的自我保护方式——在会上正式表达异议，并要求记录在案。</p>
+<hr>
+<h2 id="四公私法的同构刑法与公司法的呼应">四、公私法的同构：刑法与公司法的呼应</h2>
+<p>"程序合规不豁免实体责任"这个逻辑，不只在政务处分和党纪领域成立，在刑法和公司法中同样存在。</p>
+<p>刑法层面。《刑法》第三十一条确立了单位犯罪的双罚制：单位犯罪的，对单位判处罚金，并对其直接负责的主管人员和其他直接责任人员判处刑罚。"经单位集体研究决定"是认定单位犯罪意志的要件之一，但恰恰不因此免除直接负责的主管人员和其他直接责任人员的个人刑事责任。在司法实践中，"这是班子集体讨论决定的"从未成为有效的刑事免责抗辩。</p>
+<p>公司法层面。2023年修订的《公司法》第一百八十八条规定，董事、监事、高级管理人员执行职务违反法律、行政法规或者公司章程的规定，给公司造成损失的，应当承担赔偿责任。第一百八十九条进一步规定了股东代表诉讼制度。投赞成票的董事，不会因为"这是董事会决议"而免于被追究个人赔偿责任。</p>
+<p>公法和私法在这个问题上的底层逻辑完全一致：形式上的程序合规，不能替代实质上的判断责任。你是决策参与者，你就要为你的判断负责——不管这个决策是一个人在办公室里作出的，还是十个人在会议室里作出的。</p>
+<hr>
+<h2 id="五回到求是文章法律早已给出了答案">五、回到《求是》文章：法律早已给出了答案</h2>
+<p>《求是》文章批评"凡事上会"是懒政思维、是"怕担责、不敢为的软骨病"——这个判断准确，但它描述的还只是现象层面。从法律角度看，"凡事上会"的问题不止于作风：<strong>它同时是一个无效的法律策略。</strong></p>
+<p>那些想用"上会"来分散责任的人，在法律上做了一件毫无意义的事。他们以为会议记录是一份责任保险，但法律把它看作一份责任清单。会上每个人的发言、表态、投票，恰恰是事后追责的最直接证据。</p>
+<p>真正应该做的不是"不上会"，而是：</p>
+<ul>
+<li><strong>权责清单清晰</strong>——该个人决策的，不推给集体。不是所有事都需要上会，集体决策的适用范围本身就应该有边界</li>
+<li><strong>会上明确表态</strong>——有不同意见就说出来，要求记录在案。这不是"不合群"，是法律给你的保护机制</li>
+<li><strong>程序与实体并重</strong>——走了程序不代表尽到了判断义务，会议的真正价值是讨论质量，不是出席人数</li>
+</ul>
+<p>法律给"敢担当"的人留了出路——明确反对可以免责。法律也给"假担当"划了红线——沉默服从不能免责。程序的铠甲不是用来躲避责任的，是用来确保判断质量的。</p>
+<hr>
+<p>会议记录不是免责声明，集体决策不是责任保险。法律尊重的是判断，不是形式。</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+        </div>
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://cslawyer1985.github.io/xinchun-ai-prework/" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar only */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+  </script>
+</body>
+</html>
