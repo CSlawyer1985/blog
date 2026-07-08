@@ -111,7 +111,7 @@ CATEGORIES = [
         "label": "AI+法律",
         "keywords": ["AI", "LLM", "Agent", "Claude", "模型", "MCP", "AIGC",
                       "智能体", "RAG", "人工智能", "GPT", "大模型", "提示词",
-                      "Skill", "工作区", "Token", "embedding", "向量"]
+                      "Skill", "工作区", "Token", "embedding", "向量", "画像"]
     },
     {
         "id": "legal-practice",
