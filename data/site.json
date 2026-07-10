@@ -2,7 +2,11 @@
   "site": {
     "name": "陈石 · 法与AI",
     "description": "建设工程/房地产律师 × AI+法律先行者 — 个人博客",
-    "url": "https://CSlawyer1985.github.io",
+    "url": "https://legalagi.cn",
+    "base_url": "https://legalagi.cn",
+    "default_og_image": "/assets/portrait.png",
+    "locale": "zh_CN",
+    "rss_path": "/atom.xml",
     "author": "陈石",
     "github": "https://github.com/CSlawyer1985"
   },
@@ -117,6 +121,6 @@
         "count": 2
       }
     ],
-    "updated": "2026-07-08T23:35:48.803534"
+    "updated": "2026-07-10T13:01:29.910453"
   }
 }

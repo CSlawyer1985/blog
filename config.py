@@ -6,7 +6,11 @@
 SITE = {
     "name": "陈石 · 法与AI",
     "description": "建设工程/房地产律师 × AI+法律先行者 — 个人博客",
-    "url": "https://CSlawyer1985.github.io",
+    "url": "https://legalagi.cn",
+    "base_url": "https://legalagi.cn",          # canonical 域名（CNAME 指向 legalagi.cn）
+    "default_og_image": "/assets/portrait.png",  # 文章无封面时的兜底分享图
+    "locale": "zh_CN",
+    "rss_path": "/atom.xml",
     "author": "陈石",
     "github": "https://github.com/CSlawyer1985",
 }

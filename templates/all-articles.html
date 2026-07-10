@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>全部文章 — {{ site.name }}</title>
   <meta name="description" content="{{ site.author }} 全部文章 — 共 {{ stats.total_articles }} 篇">
+  {{ all_articles_meta|safe }}
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     img{display:block;max-width:100%}

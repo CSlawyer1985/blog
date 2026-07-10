@@ -41,7 +41,7 @@ def build():
     print("=" * 60)
 
     # Phase 1: 扫描文章
-    print("\n[1/4] 扫描文章工作区...")
+    print("\n[1/5] 扫描文章工作区...")
     articles = scan_articles()
     print(f"  共发现 {len(articles)} 篇文章")
 
@@ -68,7 +68,7 @@ def build():
             print(f"    [{a['date']}] {a['title'][:50]}")
 
     # Phase 2: 生成索引
-    print("\n[2/4] 生成数据索引...")
+    print("\n[2/5] 生成数据索引...")
     data_dir = os.path.join(os.path.dirname(__file__), 'data')
     os.makedirs(data_dir, exist_ok=True)
 
@@ -79,13 +79,20 @@ def build():
     write_json(site_data, os.path.join(data_dir, 'site.json'))
 
     # Phase 3: 生成页面
-    print("\n[3/4] 渲染 HTML 页面...")
+    print("\n[3/5] 渲染 HTML 页面...")
     generate_all(articles, site_data, articles_index)
 
     # Phase 4: 复制文章封面图
-    print("\n[4/4] 复制文章封面图...")
+    print("\n[4/5] 复制文章封面图...")
     cover_count = copy_cover_images(articles)
     print(f"  已复制 {cover_count} 张封面图")
+
+    # Phase 5: 生成 SEO/GEO 文件 + 注入首页 SEO head
+    print("\n[5/5] 生成 SEO/GEO 文件...")
+    from scripts.generate_seo import generate_all as generate_seo_files, inject_index_meta
+    project_root = os.path.dirname(os.path.abspath(__file__))
+    generate_seo_files(articles, site_data, project_root)
+    inject_index_meta(site_data, os.path.join(project_root, 'index.html'))
 
     print("\n" + "=" * 60)
     print(f"  ✅ 构建完成！共生成 {len(articles)} 个文章页面")

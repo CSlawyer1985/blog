@@ -1,0 +1,54 @@
+# robots.txt — 陈石 · 法与AI (legalagi.cn)
+# 全站允许抓取，包括主流 AI 训练/检索爬虫（GEO 前提：明确放行，避免被默认规则误伤）
+
+User-agent: *
+Allow: /
+
+# ── 主流搜索引擎 ──
+User-agent: Googlebot
+Allow: /
+User-agent: Bingbot
+Allow: /
+User-agent: Baiduspider
+Allow: /
+User-agent: Sogou web spider
+Allow: /
+User-agent: 360Spider
+Allow: /
+User-agent: YandexBot
+Allow: /
+
+# ── AI 训练 / 检索爬虫（显式放行，便于站点内容被 AI 引擎收录引用）──
+User-agent: GPTBot          # OpenAI / ChatGPT
+Allow: /
+User-agent: OAI-SearchBot   # OpenAI 搜索
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: Google-Extended # Google AI / Gemini 训练
+Allow: /
+User-agent: PerplexityBot   # Perplexity
+Allow: /
+User-agent: Perplexity-User
+Allow: /
+User-agent: ClaudeBot       # Anthropic / Claude
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+User-agent: Bytespider      # 字节 / 豆包
+Allow: /
+User-agent: Amazonbot       # Amazon / Rufus
+Allow: /
+User-agent: Applebot-Extended  # Apple AI 训练
+Allow: /
+User-agent: CCBot           # Common Crawl（多个 AI 训练数据来源）
+Allow: /
+User-agent: cohere-ai
+Allow: /
+User-agent: Meta-ExternalAgent  # Meta AI
+Allow: /
+
+# ── 站点地图与订阅 ──
+Sitemap: https://legalagi.cn/sitemap.xml

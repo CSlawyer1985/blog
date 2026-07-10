@@ -143,6 +143,7 @@ def generate_all(articles: list, site_data: dict, articles_index: dict):
     # 文章详情页
     print(f"生成 {len(articles)} 个文章详情页...")
     from scripts.utils import md_to_html
+    from scripts.generate_seo import article_meta_head, category_meta_head, all_articles_meta_head
 
     for i, a in enumerate(articles):
         # 读取原始 Markdown 并转换为 HTML
@@ -173,6 +174,7 @@ def generate_all(articles: list, site_data: dict, articles_index: dict):
             'sidebar_articles': same_cat,
             'sidebar_articles_title': a['category_label'],
             'current_slug': a['slug'],
+            'article_meta': article_meta_head(a, site_data),
         }
         try:
             html = tpl.render('article.html', ctx)
@@ -195,6 +197,7 @@ def generate_all(articles: list, site_data: dict, articles_index: dict):
         'sidebar_articles': None,
         'sidebar_articles_title': '',
         'current_slug': '',
+        'all_articles_meta': all_articles_meta_head(site_data),
     })
     out_dir = os.path.join(project_root, 'articles')
     write_html(all_articles_html, os.path.join(out_dir, 'index.html'))
@@ -216,6 +219,7 @@ def generate_all(articles: list, site_data: dict, articles_index: dict):
             'sidebar_articles': None,
             'sidebar_articles_title': '',
             'current_slug': '',
+            'category_meta': category_meta_head(cat, site_data),
         }
         html = tpl.render('category.html', ctx)
         out_dir = os.path.join(project_root, 'categories', cat['id'])
