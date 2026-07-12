@@ -467,6 +467,7 @@
     .mandate-row--star .mandate-name{color:var(--ink);font-weight:700;}
     .mandate-row--star .mandate-name::before{content:"\2605";color:var(--accent);font-size:9px;margin-right:3px;}
     .mandate-svcs{flex:1;display:flex;flex-wrap:wrap;gap:3px;justify-content:flex-end;align-items:center;}
+    .lit-badge{font-style:normal;font-size:8.5px;font-weight:700;color:var(--accent);border:1px solid var(--accent);padding:0 3px;margin-right:5px;line-height:1.5;border-radius:2px;white-space:nowrap;letter-spacing:.02em;}
     .type-badge{font-style:normal;font-size:9px;font-weight:600;letter-spacing:.03em;color:var(--muted);border:1px solid var(--line);padding:1px 4px;line-height:1.4;white-space:nowrap;}
     .svc-badge{font-style:normal;font-size:9px;font-weight:700;letter-spacing:.03em;color:var(--accent);border:1px solid var(--accent);padding:1px 4px;line-height:1.4;white-space:nowrap;}
     @media (max-width:860px){.mandate-name{font-size:11.5px;}.svc-badge{font-size:8.5px;padding:0 3px;}}
@@ -611,49 +612,64 @@
         <div class="p-block">
           <div class="p-block__label"><span lang="zh">代表性项目 · 以项目为轴</span><span lang="en">Signature Mandates</span></div>
           <div class="mandate-list">
+            <div class="mandate-row mandate-row--star"><span class="mandate-name">大卫世纪城 · 破产重组</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">重组</em><em class="svc-badge">城市更新</em></span></div>
+            <div class="mandate-row mandate-row--star"><span class="mandate-name">宝龙文创甬江城 · 纾困</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">交易结构设计</em><em class="svc-badge">股权投资</em><em class="svc-badge">纾困</em></span></div>
+            <div class="mandate-row mandate-row--star"><span class="mandate-name">海口海航国际广场 · 海口第一高楼</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">交易结构设计</em><em class="svc-badge">资产收购</em><em class="type-badge">商办</em></span></div>
+            <div class="mandate-row mandate-row--star"><span class="mandate-name">长春海航荣御 · 长春第一高楼</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">交易结构设计</em><em class="svc-badge">资产收购</em></span></div>
             <div class="mandate-row mandate-row--star"><span class="mandate-name">台州刚泰中心 · 台州第一高楼</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">股权投资</em><em class="type-badge">商办</em></span></div>
-            <div class="mandate-row mandate-row--star"><span class="mandate-name">海口海航国际广场 · 海口第一高楼</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">资产收购</em><em class="type-badge">商办</em></span></div>
-            <div class="mandate-row mandate-row--star"><span class="mandate-name">大卫世纪城</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">城市更新</em></span></div>
-            <div class="mandate-row mandate-row--star"><span class="mandate-name">宝龙文创甬江城</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row mandate-row--star"><span class="mandate-name">长春海航荣御 · 长春第一高楼</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">资产收购</em></span></div>
+            <div class="mandate-row mandate-row--star"><span class="mandate-name">西安草二村 · 实质性重组</span><span class="mandate-svcs"><em class="svc-badge">重组</em><em class="svc-badge">城市更新</em></span></div>
+            <div class="mandate-row mandate-row--star"><span class="mandate-name">首宗百亿地王</span><span class="mandate-svcs"><em class="svc-badge">交易结构设计</em><em class="svc-badge">股权投资</em></span></div>
             <div class="mandate-row mandate-row--star"><span class="mandate-name">绍兴871LOOP · 文旅综合体</span><span class="mandate-svcs"><em class="svc-badge">城市更新</em><em class="type-badge">综合体</em></span></div>
-            <div class="mandate-row mandate-row--star"><span class="mandate-name">西安草二村 · 实质性重组</span><span class="mandate-svcs"><em class="svc-badge">城市更新</em></span></div>
-            <div class="mandate-row mandate-row--star"><span class="mandate-name">首宗百亿地王</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">泛迪中心项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">股权投资</em><em class="svc-badge">合作开发</em><em class="type-badge">商办</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">东钱湖07-7地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">依云郡项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">股权投资</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">泛迪中心项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">交易结构设计</em><em class="svc-badge">股权投资</em><em class="svc-badge">合作开发</em><em class="type-badge">商办</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">永嘉县瓯北街道浦西村48.119亩城中村改造地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">交易结构设计</em><em class="svc-badge">股权投资</em><em class="type-badge">保障房</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">温州苍南县城新区某地块商住项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">交易结构设计</em><em class="svc-badge">股权投资</em><em class="type-badge">住宅</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">台土告字[2017]069号的地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">交易结构设计</em><em class="svc-badge">股权投资</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">台州铂某府项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">交易结构设计</em><em class="svc-badge">股权投资</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">温州市核心片区开发区西单元D-03a、D-03b、D-05地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">交易结构设计</em><em class="svc-badge">股权投资</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">龙港世纪新城片区控规3-21地块、3-16地块、3-04地块及泰源路地下空间项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">交易结构设计</em><em class="svc-badge">股权投资</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">奉化区方桥街道横里埭村同山 213 平方米厂区土地使用权及地上建筑物</span><span class="mandate-svcs"><em class="svc-badge">交易结构设计</em><em class="svc-badge">资产收购</em><em class="type-badge">园区</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">宁波-仇毕城中村改造项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">城市更新</em><em class="type-badge">保障房</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">宁波市海曙区望春工业园区春华路867号厂区土地使用权及地上建筑物</span><span class="mandate-svcs"><em class="svc-badge">交易结构设计</em><em class="svc-badge">资产收购</em><em class="type-badge">园区</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">对外转让宁波万某置业有限公司股权、出售印乐集项目商品房事宜</span><span class="mandate-svcs"><em class="svc-badge">交易结构设计</em><em class="svc-badge">股权投资</em><em class="type-badge">住宅</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">石浦镇军民路与凤栖路交叉口西南角地块的棚户区改造项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em><em class="svc-badge">城市更新</em><em class="type-badge">保障房</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">东钱湖07-7地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">交易结构设计</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">云南•泰业地产信托投资项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">投融资</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">依云郡项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">交易结构设计</em></span></div>
             <div class="mandate-row"><span class="mandate-name">华鸿瑞安下埠村C地块项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">台土告字[2017]069号的地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">台州铂某府项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">嘉兴市秀洲2021-14号地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">宁波-仇毕城中村改造项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">城市更新</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">永嘉县瓯北街道浦西村48.119亩城中村改造地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">温州市核心片区开发区西单元D-03a、D-03b、D-05地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">温州苍南县城新区某地块商住项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">石浦镇军民路与凤栖路交叉口西南角地块的棚户区改造项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em><em class="svc-badge">城市更新</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">龙港世纪新城片区控规3-21地块、3-16地块、3-04地块及泰源路地下空间项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">万科酒店</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em><em class="type-badge">酒店康养</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">嘉兴市秀洲2021-14号地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">交易结构设计</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">嘉兴经开 2022-17 号地块项目</span><span class="mandate-svcs"><em class="svc-badge">交易结构设计</em><em class="svc-badge">股权投资</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">嘉兴臻和债权增信项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">投融资</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">嘉兴融远债权增信项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">投融资</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">宁波凯拓债权增信项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">投融资</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">海曙区后孙地段五江口区块地块项目</span><span class="mandate-svcs"><em class="svc-badge">交易结构设计</em><em class="svc-badge">合作开发</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">温州隆悦债权增信项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">投融资</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">温州隆瑞债权增信项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="svc-badge">投融资</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">股权投资台州某建材股份有限公司</span><span class="mandate-svcs"><em class="svc-badge">交易结构设计</em><em class="svc-badge">股权投资</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">蓝光地产救助项目（宁波项目）</span><span class="mandate-svcs"><em class="svc-badge">交易结构设计</em><em class="svc-badge">纾困</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">鄞州区长丰片区YZ13-06-J1地块项目</span><span class="mandate-svcs"><em class="svc-badge">交易结构设计</em><em class="svc-badge">合作开发</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">金华玉泉院项目</span><span class="mandate-svcs"><em class="svc-badge">交易结构设计</em><em class="svc-badge">合作开发</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">嘉兴市秀洲区新塍镇火炬花苑二期安置房建设项目全过程咨询管理联合体投标</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em><em class="type-badge">住宅</em><em class="type-badge">保障房</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">水岸天宸花园及水岸天宸健康中心</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="type-badge">商办</em><em class="type-badge">住宅</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">万科酒店</span><span class="mandate-svcs"><em class="svc-badge">交易结构设计</em><em class="type-badge">酒店康养</em></span></div>
             <div class="mandate-row"><span class="mandate-name">台州世贸中心项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="type-badge">商办</em></span></div>
             <div class="mandate-row"><span class="mandate-name">台州心海社区项目（未来社区）</span><span class="mandate-svcs"><em class="svc-badge">城市更新</em><em class="type-badge">综合体</em></span></div>
             <div class="mandate-row"><span class="mandate-name">台州某房地产开发有限公司及黄岩某公寓酒店项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="type-badge">酒店康养</em></span></div>
             <div class="mandate-row"><span class="mandate-name">奉化区宁南贸易物流区二十六号地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="type-badge">园区</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">奉化区方桥街道横里埭村同山 213 平方米厂区土地使用权及地上建筑物</span><span class="mandate-svcs"><em class="svc-badge">资产收购</em><em class="type-badge">园区</em></span></div>
             <div class="mandate-row"><span class="mandate-name">宁南贸易物流区二十六号地块项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em><em class="type-badge">园区</em></span></div>
             <div class="mandate-row"><span class="mandate-name">宁波世界贸易中心项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em><em class="type-badge">商办</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">宁波市海曙区望春工业园区春华路867号厂区土地使用权及地上建筑物</span><span class="mandate-svcs"><em class="svc-badge">资产收购</em><em class="type-badge">园区</em></span></div>
             <div class="mandate-row"><span class="mandate-name">宁波市鄞州区东篱养老地产项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em><em class="type-badge">酒店康养</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">康城阳光酒店项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em><em class="type-badge">酒店康养</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">对外转让宁波万某置业有限公司股权、出售某集项目商品房事宜</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em><em class="type-badge">住宅</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">康城阳光酒店项目</span><span class="mandate-svcs"><em class="svc-badge">交易结构设计</em><em class="type-badge">酒店康养</em></span></div>
             <div class="mandate-row"><span class="mandate-name">报业集团大厦教育营地运营项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em><em class="type-badge">商办</em></span></div>
             <div class="mandate-row"><span class="mandate-name">某控股集团有限公司及黄岩某创业园项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="type-badge">园区</em></span></div>
             <div class="mandate-row"><span class="mandate-name">柯桥北-羊山-老集镇南部区域范围内绍兴旅游及文化综合体项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="type-badge">综合体</em></span></div>
             <div class="mandate-row"><span class="mandate-name">正大慈溪现代农业生态园400亩房地产项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="type-badge">园区</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">水岸天宸花园及水岸天宸健康中心</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="type-badge">商办</em></span></div>
             <div class="mandate-row"><span class="mandate-name">沧海兴业大厦项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="type-badge">商办</em></span></div>
             <div class="mandate-row"><span class="mandate-name">泰禾中央广场项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="type-badge">商办</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">鄞州区邱隘镇南部居住地区1号A、B、C地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="type-badge">住宅</em></span></div>
             <div class="mandate-row"><span class="mandate-name">黄岩某小微企业园项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em><em class="type-badge">园区</em></span></div>
             <div class="mandate-row"><span class="mandate-name">东腾璟庭项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">中国贵谷项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">云南•泰业地产信托投资项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">余姚江南电影院地块项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
             <div class="mandate-row"><span class="mandate-name">公元世家项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">利时九龙湖项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
@@ -661,40 +677,28 @@
             <div class="mandate-row"><span class="mandate-name">厦门中科易工</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">台土告字[2017]032号</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">台州高速泰和房地产项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">嘉兴.兰庭项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">嘉兴.兰庭项目</span><span class="mandate-svcs"><em class="svc-badge">交易结构设计</em></span></div>
             <div class="mandate-row"><span class="mandate-name">嘉兴四季星城项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">嘉兴市世合项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">嘉兴市秀洲区新塍镇火炬花苑二期安置房建设项目全过程咨询管理联合体投标</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">嘉兴经开 2022-17 号地块项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">嘉兴臻和债权增信项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">嘉兴融远债权增信项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">土地证号为金市(两区)国 用(2007)第 5-575 号、金市(两区)国用(2007)第 5-577 号和金市国用(2013) 第 305-41165 号工业用地项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">土地证号为金市(两区)国 用(2007)第 5-575 号、金市(两区)国用(2007)第 5-577 号和金市国用(2013) 第 305-41165 号工业用地项目</span><span class="mandate-svcs"><em class="svc-badge">交易结构设计</em></span></div>
             <div class="mandate-row"><span class="mandate-name">大连海歌天</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">奉化珠江投资项目</span><span class="mandate-svcs"><em class="svc-badge">城市更新</em></span></div>
             <div class="mandate-row"><span class="mandate-name">委羽某文化遗址修复工程委羽某征收工作</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
             <div class="mandate-row"><span class="mandate-name">宁波中某置业有限公司与宁波某住房租赁有限公司不动产及相关资产转让</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">宁波凯拓债权增信项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">宁海颐园西地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">安吉博康置业项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
             <div class="mandate-row"><span class="mandate-name">官山河TOD地块</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">对外转让宁波万某置业有限公司股权、出售印乐集项目商品房事宜</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">对外转让宁波万某置业有限公司股权、出售某集项目商品房事宜</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
             <div class="mandate-row"><span class="mandate-name">康城阳光项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">慈古塘I202101#地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">戚隘桥2#3#商业地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">杭州京深（转塘）项目项目</span><span class="mandate-svcs"><em class="svc-badge">城市更新</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">椒江区霞沚街道开发大道南侧、学院路东侧地块项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">椒江区霞沚街道开发大道南侧、学院路东侧地块项目</span><span class="mandate-svcs"><em class="svc-badge">交易结构设计</em></span></div>
             <div class="mandate-row"><span class="mandate-name">欢乐海岸</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">永康众泰小镇项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">海曙区后孙地段五江口区块地块项目</span><span class="mandate-svcs"><em class="svc-badge">合作开发</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">温州隆悦债权增信项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">温州隆瑞债权增信项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">澜湖郡</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">环洋化工</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">红联芦家1#、2#地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">股权投资台州某建材股份有限公司</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
             <div class="mandate-row"><span class="mandate-name">萧山浦阳桃北地块项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">蓝光地产救助项目（宁波项目）</span><span class="mandate-svcs"><em class="svc-badge">纾困破产</em></span></div>
             <div class="mandate-row"><span class="mandate-name">蓝光月映华章府项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">蓝光月映澜堂小区项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">西安万景城市更新项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
@@ -702,15 +706,12 @@
             <div class="mandate-row"><span class="mandate-name">诸暨金水湾项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
             <div class="mandate-row"><span class="mandate-name">鄞州区YZ02-02-d4(投创地段)地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">鄞州区YZ09-09-d4地块（宁波陈婆渡项目）</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">鄞州区邱隘镇南部居住地区1号A、B、C地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">鄞州区长丰片区YZ13-06-J1地块项目</span><span class="mandate-svcs"><em class="svc-badge">合作开发</em></span></div>
             <div class="mandate-row"><span class="mandate-name">金华云悦臻境项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
             <div class="mandate-row"><span class="mandate-name">金华多湖商务区宾虹东路南侧地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">金华玉泉院项目</span><span class="mandate-svcs"><em class="svc-badge">合作开发</em></span></div>
             <div class="mandate-row"><span class="mandate-name">金市（两区）国用（2007）第5-575号、金市（两区）国用（2007）第5-577号、金市国用（2013）第305-41165号地块项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
             <div class="mandate-row"><span class="mandate-name">金水湾项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
             <div class="mandate-row"><span class="mandate-name">镇海区 ZH07-03-56 地块项目</span><span class="mandate-svcs"><em class="svc-badge">尽调</em></span></div>
-            <div class="mandate-row"><span class="mandate-name">镇海区ZH09-03-02-03-a地块项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
+            <div class="mandate-row"><span class="mandate-name">镇海区ZH09-03-02-03-a地块项目</span><span class="mandate-svcs"><em class="svc-badge">交易结构设计</em></span></div>
             <div class="mandate-row"><span class="mandate-name">高桥镇CX02-01-01a、CX02-01-09a、CX02-01-10a地块项目</span><span class="mandate-svcs"><em class="svc-badge">股权投资</em></span></div>
           </div>
         </div>
@@ -718,41 +719,41 @@
         <div class="p-block">
           <div class="p-block__label"><span lang="zh">争议解决</span><span lang="en">Dispute Resolution</span></div>
           <div class="case-row"><div class="case-mode">案件</div><div class="case-chips">
-          <span class="case-chip">依云郡小区13户业主 · 商品房买卖合同纠纷（胜诉金额合计约3000万元）</span>
+          <span class="case-chip"><em class="lit-badge">商品房</em>依云郡小区13户业主 · 商品房买卖合同纠纷（胜诉金额合计约3000万元）</span>
           <span class="case-chip">宁波东海兴业投资管理有… · 合同纠纷（标的额5.9亿元）</span>
-          <span class="case-chip">14户业主 · 商品房预售合同纠纷（标的额近900余万元）</span>
-          <span class="case-chip">宁波鄞州区中河街道蔡家… · 合资、合作开发房地产合同纠纷（标的额1.5亿余元）</span>
-          <span class="case-chip">代理中梁地产、信达地产… · 纠纷（胜诉）</span>
-          <span class="case-chip">胡修利 · 建设工程施工合同纠纷（标的额约400万）</span>
-          <span class="case-chip">宁波胜余钢铁有限公司 · 民间借贷纠纷（收回借款500万元）</span>
-          <span class="case-chip">宁波润景房地产开发有限… · 商品房预售合同纠纷（胜诉）</span>
-          <span class="case-chip">宁波镇海食匠餐饮有限公司 · 租赁合同纠纷（标的额138万元）</span>
+          <span class="case-chip"><em class="lit-badge">商品房</em>14户业主 · 商品房预售合同纠纷（标的额近900余万元）</span>
+          <span class="case-chip"><em class="lit-badge">合作开发</em>宁波鄞州区中河街道蔡家… · 合资、合作开发房地产合同纠纷（标的额1.5亿余元）</span>
+          <span class="case-chip">中梁地产、信达地产等多… · 纠纷（胜诉）</span>
+          <span class="case-chip"><em class="lit-badge">建工</em>胡修利 · 建设工程施工合同纠纷（标的额约400万）</span>
+          <span class="case-chip"><em class="lit-badge">借贷</em>宁波胜余钢铁有限公司 · 民间借贷纠纷（收回借款500万元）</span>
+          <span class="case-chip"><em class="lit-badge">商品房</em>宁波润景房地产开发有限… · 商品房预售合同纠纷（胜诉）</span>
+          <span class="case-chip"><em class="lit-badge">租赁</em>宁波镇海食匠餐饮有限公司 · 租赁合同纠纷（标的额138万元）</span>
           <span class="case-chip">宁波华星房产咨询有限公司 · 商品房委托代理销售合同纠纷（胜诉）</span>
-          <span class="case-chip">宁波鄞州盛旺元物资有限… · 买卖合同纠纷（胜诉）</span>
-          <span class="case-chip">宁波江东佳音英语培训学校 · 房屋拆迁安置补偿合同纠纷（胜诉）</span>
-          <span class="case-chip">华润新鸿基房地产（杭州… · 租赁合同纠纷（胜诉）</span>
-          <span class="case-chip">昆山奕优品贸易有限公司 · 租赁合同纠纷</span>
-          <span class="case-chip">李艳波、李国桃等5原告 · 装饰装修合同纠纷</span>
-          <span class="case-chip">黄友平 · 著作权纠纷</span>
-          <span class="case-chip">邱汪洋 · 商品房销售合同纠纷（胜诉）</span>
-          <span class="case-chip">沈婷、何光 · 房屋买卖合同纠纷（胜诉）</span>
-          <span class="case-chip">舟山市中梁宏置业有限公司 · 财产损害赔偿纠纷</span>
-          <span class="case-chip">华润置地（宁波）实业有… · 租赁合同纠纷</span>
-          <span class="case-chip">中国银行股份有限公司北… · 金融借款合同纠纷</span>
-          <span class="case-chip">宁波江北华银金属回收加… · 侵权责任纠纷</span>
-          <span class="case-chip">浙江文华建设项目管理有… · 建设工程监理合同纠纷</span>
-          <span class="case-chip">李金波 · 商品房买卖合同纠纷</span>
-          <span class="case-chip">宁波广恒混凝土有限公司 · 买卖合同纠纷</span>
-          <span class="case-chip">蒋雪娜、倪佩蝶等8户业主 · 商品房预售合同纠纷（胜诉）</span>
-          <span class="case-chip">代理北京兴邦物业管理有… · 物业服务合同纠纷</span>
+          <span class="case-chip"><em class="lit-badge">买卖</em>宁波鄞州盛旺元物资有限… · 买卖合同纠纷（胜诉）</span>
+          <span class="case-chip"><em class="lit-badge">房屋</em>宁波江东佳音英语培训学校 · 房屋拆迁安置补偿合同纠纷（胜诉）</span>
+          <span class="case-chip"><em class="lit-badge">租赁</em>华润新鸿基房地产（杭州… · 租赁合同纠纷（胜诉）</span>
+          <span class="case-chip"><em class="lit-badge">租赁</em>昆山奕优品贸易有限公司 · 租赁合同纠纷</span>
+          <span class="case-chip"><em class="lit-badge">装修</em>李艳波、李国桃等5原告 · 装饰装修合同纠纷</span>
+          <span class="case-chip"><em class="lit-badge">知产</em>黄友平 · 著作权纠纷</span>
+          <span class="case-chip"><em class="lit-badge">商品房</em>邱汪洋 · 商品房销售合同纠纷（胜诉）</span>
+          <span class="case-chip"><em class="lit-badge">买卖</em>沈婷、何光 · 房屋买卖合同纠纷（胜诉）</span>
+          <span class="case-chip"><em class="lit-badge">财产</em>舟山市中梁宏置业有限公司 · 财产损害赔偿纠纷</span>
+          <span class="case-chip"><em class="lit-badge">租赁</em>华润置地（宁波）实业有… · 租赁合同纠纷</span>
+          <span class="case-chip"><em class="lit-badge">金融</em>中国银行股份有限公司北… · 金融借款合同纠纷</span>
+          <span class="case-chip"><em class="lit-badge">侵权</em>宁波江北华银金属回收加… · 侵权责任纠纷</span>
+          <span class="case-chip"><em class="lit-badge">建工</em>浙江文华建设项目管理有… · 建设工程监理合同纠纷</span>
+          <span class="case-chip"><em class="lit-badge">商品房</em>李金波 · 商品房买卖合同纠纷</span>
+          <span class="case-chip"><em class="lit-badge">买卖</em>宁波广恒混凝土有限公司 · 买卖合同纠纷</span>
+          <span class="case-chip"><em class="lit-badge">商品房</em>蒋雪娜、倪佩蝶等8户业主 · 商品房预售合同纠纷（胜诉）</span>
+          <span class="case-chip"><em class="lit-badge">物业</em>北京兴邦物业管理有限责… · 物业服务合同纠纷</span>
           <span class="case-chip">上海小桁网络科技有限公司 · 商品房委托代理销售合同纠纷（胜诉）</span>
-          <span class="case-chip">宁波万年基业旅游投资有… · 商品房预售合同纠纷（胜诉）</span>
-          <span class="case-chip">陈志辉等3户业主 · 商品房销售合同纠纷（胜诉）</span>
-          <span class="case-chip">浙江兆鼎建设有限公司 · 建设工程施工合同纠纷</span>
-          <span class="case-chip">杭州华宇业瑞房地产开发… · 建设工程施工合同纠纷</span>
-          <span class="case-chip">宁波鸿辉置业有限公司 · 建设工程施工合同纠纷</span>
-          <span class="case-chip">中交第三航务工程勘察设… · 建设工程仲裁纠纷</span>
-          <span class="case-chip">宁波建设集团股份有限公司 · 建设工程施工合同纠纷</span>
+          <span class="case-chip"><em class="lit-badge">商品房</em>宁波万年基业旅游投资有… · 商品房预售合同纠纷（胜诉）</span>
+          <span class="case-chip"><em class="lit-badge">商品房</em>陈志辉等3户业主 · 商品房销售合同纠纷（胜诉）</span>
+          <span class="case-chip"><em class="lit-badge">建工</em>浙江兆鼎建设有限公司 · 建设工程施工合同纠纷</span>
+          <span class="case-chip"><em class="lit-badge">建工</em>杭州华宇业瑞房地产开发… · 建设工程施工合同纠纷</span>
+          <span class="case-chip"><em class="lit-badge">建工</em>宁波鸿辉置业有限公司 · 建设工程施工合同纠纷</span>
+          <span class="case-chip"><em class="lit-badge">建工</em>中交第三航务工程勘察设… · 建设工程仲裁纠纷</span>
+          <span class="case-chip"><em class="lit-badge">建工</em>宁波建设集团股份有限公司 · 建设工程施工合同纠纷</span>
           </div></div>
         </div>
 
