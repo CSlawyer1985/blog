@@ -467,6 +467,10 @@
     .mandate-row--star .mandate-name{color:var(--ink);font-weight:700;}
     .mandate-row--star .mandate-name::before{content:"\2605";color:var(--accent);font-size:9px;margin-right:3px;}
     .mandate-svcs{flex:1;display:flex;flex-wrap:wrap;gap:3px;justify-content:flex-end;align-items:center;}
+    .lit-list{margin-top:4px;}
+    .lit-row{padding:4px 0;border-bottom:1px solid rgba(201,192,178,.18);font-size:11px;line-height:1.5;color:var(--ink-soft);}
+    .lit-row:first-child{padding-top:0;}
+    .lit-row:last-child{border-bottom:none;padding-bottom:0;}
     .lit-badge{font-style:normal;font-size:8.5px;font-weight:700;color:var(--accent);border:1px solid var(--accent);padding:0 3px;margin-right:5px;line-height:1.5;border-radius:2px;white-space:nowrap;letter-spacing:.02em;}
     .type-badge{font-style:normal;font-size:9px;font-weight:600;letter-spacing:.03em;color:var(--muted);border:1px solid var(--line);padding:1px 4px;line-height:1.4;white-space:nowrap;}
     .svc-badge{font-style:normal;font-size:9px;font-weight:700;letter-spacing:.03em;color:var(--accent);border:1px solid var(--accent);padding:1px 4px;line-height:1.4;white-space:nowrap;}
@@ -718,43 +722,43 @@
 
         <div class="p-block">
           <div class="p-block__label"><span lang="zh">争议解决</span><span lang="en">Dispute Resolution</span></div>
-          <div class="case-row"><div class="case-mode">案件</div><div class="case-chips">
-          <span class="case-chip"><em class="lit-badge">商品房</em>依云郡小区13户业主 · 商品房买卖合同纠纷（胜诉金额合计约3000万元）</span>
-          <span class="case-chip">宁波东海兴业投资管理有… · 合同纠纷（标的额5.9亿元）</span>
-          <span class="case-chip"><em class="lit-badge">商品房</em>14户业主 · 商品房预售合同纠纷（标的额近900余万元）</span>
-          <span class="case-chip"><em class="lit-badge">合作开发</em>宁波鄞州区中河街道蔡家… · 合资、合作开发房地产合同纠纷（标的额1.5亿余元）</span>
-          <span class="case-chip">中梁地产、信达地产等多… · 纠纷（胜诉）</span>
-          <span class="case-chip"><em class="lit-badge">建工</em>胡修利 · 建设工程施工合同纠纷（标的额约400万）</span>
-          <span class="case-chip"><em class="lit-badge">借贷</em>宁波胜余钢铁有限公司 · 民间借贷纠纷（收回借款500万元）</span>
-          <span class="case-chip"><em class="lit-badge">商品房</em>宁波润景房地产开发有限… · 商品房预售合同纠纷（胜诉）</span>
-          <span class="case-chip"><em class="lit-badge">租赁</em>宁波镇海食匠餐饮有限公司 · 租赁合同纠纷（标的额138万元）</span>
-          <span class="case-chip">宁波华星房产咨询有限公司 · 商品房委托代理销售合同纠纷（胜诉）</span>
-          <span class="case-chip"><em class="lit-badge">买卖</em>宁波鄞州盛旺元物资有限… · 买卖合同纠纷（胜诉）</span>
-          <span class="case-chip"><em class="lit-badge">房屋</em>宁波江东佳音英语培训学校 · 房屋拆迁安置补偿合同纠纷（胜诉）</span>
-          <span class="case-chip"><em class="lit-badge">租赁</em>华润新鸿基房地产（杭州… · 租赁合同纠纷（胜诉）</span>
-          <span class="case-chip"><em class="lit-badge">租赁</em>昆山奕优品贸易有限公司 · 租赁合同纠纷</span>
-          <span class="case-chip"><em class="lit-badge">装修</em>李艳波、李国桃等5原告 · 装饰装修合同纠纷</span>
-          <span class="case-chip"><em class="lit-badge">知产</em>黄友平 · 著作权纠纷</span>
-          <span class="case-chip"><em class="lit-badge">商品房</em>邱汪洋 · 商品房销售合同纠纷（胜诉）</span>
-          <span class="case-chip"><em class="lit-badge">买卖</em>沈婷、何光 · 房屋买卖合同纠纷（胜诉）</span>
-          <span class="case-chip"><em class="lit-badge">财产</em>舟山市中梁宏置业有限公司 · 财产损害赔偿纠纷</span>
-          <span class="case-chip"><em class="lit-badge">租赁</em>华润置地（宁波）实业有… · 租赁合同纠纷</span>
-          <span class="case-chip"><em class="lit-badge">金融</em>中国银行股份有限公司北… · 金融借款合同纠纷</span>
-          <span class="case-chip"><em class="lit-badge">侵权</em>宁波江北华银金属回收加… · 侵权责任纠纷</span>
-          <span class="case-chip"><em class="lit-badge">建工</em>浙江文华建设项目管理有… · 建设工程监理合同纠纷</span>
-          <span class="case-chip"><em class="lit-badge">商品房</em>李金波 · 商品房买卖合同纠纷</span>
-          <span class="case-chip"><em class="lit-badge">买卖</em>宁波广恒混凝土有限公司 · 买卖合同纠纷</span>
-          <span class="case-chip"><em class="lit-badge">商品房</em>蒋雪娜、倪佩蝶等8户业主 · 商品房预售合同纠纷（胜诉）</span>
-          <span class="case-chip"><em class="lit-badge">物业</em>北京兴邦物业管理有限责… · 物业服务合同纠纷</span>
-          <span class="case-chip">上海小桁网络科技有限公司 · 商品房委托代理销售合同纠纷（胜诉）</span>
-          <span class="case-chip"><em class="lit-badge">商品房</em>宁波万年基业旅游投资有… · 商品房预售合同纠纷（胜诉）</span>
-          <span class="case-chip"><em class="lit-badge">商品房</em>陈志辉等3户业主 · 商品房销售合同纠纷（胜诉）</span>
-          <span class="case-chip"><em class="lit-badge">建工</em>浙江兆鼎建设有限公司 · 建设工程施工合同纠纷</span>
-          <span class="case-chip"><em class="lit-badge">建工</em>杭州华宇业瑞房地产开发… · 建设工程施工合同纠纷</span>
-          <span class="case-chip"><em class="lit-badge">建工</em>宁波鸿辉置业有限公司 · 建设工程施工合同纠纷</span>
-          <span class="case-chip"><em class="lit-badge">建工</em>中交第三航务工程勘察设… · 建设工程仲裁纠纷</span>
-          <span class="case-chip"><em class="lit-badge">建工</em>宁波建设集团股份有限公司 · 建设工程施工合同纠纷</span>
-          </div></div>
+          <div class="lit-list">
+          <div class="lit-row"><em class="lit-badge">商品房</em>依云郡小区13户业主 · 商品房买卖合同纠纷（胜诉金额合计约3000万元）</div>
+          <div class="lit-row">宁波东海兴业投资管理有… · 合同纠纷（标的额5.9亿元）</div>
+          <div class="lit-row"><em class="lit-badge">商品房</em>14户业主 · 商品房预售合同纠纷（标的额近900余万元）</div>
+          <div class="lit-row"><em class="lit-badge">合作开发</em>宁波鄞州区中河街道蔡家… · 合资、合作开发房地产合同纠纷（标的额1.5亿余元）</div>
+          <div class="lit-row">中梁地产、信达地产等多… · 纠纷（胜诉）</div>
+          <div class="lit-row"><em class="lit-badge">建工</em>胡修利 · 建设工程施工合同纠纷（标的额约400万）</div>
+          <div class="lit-row"><em class="lit-badge">借贷</em>宁波胜余钢铁有限公司 · 民间借贷纠纷（收回借款500万元）</div>
+          <div class="lit-row"><em class="lit-badge">商品房</em>宁波润景房地产开发有限… · 商品房预售合同纠纷（胜诉）</div>
+          <div class="lit-row"><em class="lit-badge">租赁</em>宁波镇海食匠餐饮有限公司 · 租赁合同纠纷（标的额138万元）</div>
+          <div class="lit-row">宁波华星房产咨询有限公司 · 商品房委托代理销售合同纠纷（胜诉）</div>
+          <div class="lit-row"><em class="lit-badge">买卖</em>宁波鄞州盛旺元物资有限… · 买卖合同纠纷（胜诉）</div>
+          <div class="lit-row"><em class="lit-badge">房屋</em>宁波江东佳音英语培训学校 · 房屋拆迁安置补偿合同纠纷（胜诉）</div>
+          <div class="lit-row"><em class="lit-badge">租赁</em>华润新鸿基房地产（杭州… · 租赁合同纠纷（胜诉）</div>
+          <div class="lit-row"><em class="lit-badge">租赁</em>昆山奕优品贸易有限公司 · 租赁合同纠纷</div>
+          <div class="lit-row"><em class="lit-badge">装修</em>李艳波、李国桃等5原告 · 装饰装修合同纠纷</div>
+          <div class="lit-row"><em class="lit-badge">知产</em>黄友平 · 著作权纠纷</div>
+          <div class="lit-row"><em class="lit-badge">商品房</em>邱汪洋 · 商品房销售合同纠纷（胜诉）</div>
+          <div class="lit-row"><em class="lit-badge">买卖</em>沈婷、何光 · 房屋买卖合同纠纷（胜诉）</div>
+          <div class="lit-row"><em class="lit-badge">财产</em>舟山市中梁宏置业有限公司 · 财产损害赔偿纠纷</div>
+          <div class="lit-row"><em class="lit-badge">租赁</em>华润置地（宁波）实业有… · 租赁合同纠纷</div>
+          <div class="lit-row"><em class="lit-badge">金融</em>中国银行股份有限公司北… · 金融借款合同纠纷</div>
+          <div class="lit-row"><em class="lit-badge">侵权</em>宁波江北华银金属回收加… · 侵权责任纠纷</div>
+          <div class="lit-row"><em class="lit-badge">建工</em>浙江文华建设项目管理有… · 建设工程监理合同纠纷</div>
+          <div class="lit-row"><em class="lit-badge">商品房</em>李金波 · 商品房买卖合同纠纷</div>
+          <div class="lit-row"><em class="lit-badge">买卖</em>宁波广恒混凝土有限公司 · 买卖合同纠纷</div>
+          <div class="lit-row"><em class="lit-badge">商品房</em>蒋雪娜、倪佩蝶等8户业主 · 商品房预售合同纠纷（胜诉）</div>
+          <div class="lit-row"><em class="lit-badge">物业</em>北京兴邦物业管理有限责… · 物业服务合同纠纷</div>
+          <div class="lit-row">上海小桁网络科技有限公司 · 商品房委托代理销售合同纠纷（胜诉）</div>
+          <div class="lit-row"><em class="lit-badge">商品房</em>宁波万年基业旅游投资有… · 商品房预售合同纠纷（胜诉）</div>
+          <div class="lit-row"><em class="lit-badge">商品房</em>陈志辉等3户业主 · 商品房销售合同纠纷（胜诉）</div>
+          <div class="lit-row"><em class="lit-badge">建工</em>浙江兆鼎建设有限公司 · 建设工程施工合同纠纷</div>
+          <div class="lit-row"><em class="lit-badge">建工</em>杭州华宇业瑞房地产开发… · 建设工程施工合同纠纷</div>
+          <div class="lit-row"><em class="lit-badge">建工</em>宁波鸿辉置业有限公司 · 建设工程施工合同纠纷</div>
+          <div class="lit-row"><em class="lit-badge">建工</em>中交第三航务工程勘察设… · 建设工程仲裁纠纷</div>
+          <div class="lit-row"><em class="lit-badge">建工</em>宁波建设集团股份有限公司 · 建设工程施工合同纠纷</div>
+          </div>
         </div>
 
         <div class="p-block">
