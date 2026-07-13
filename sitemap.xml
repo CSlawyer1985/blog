@@ -2,51 +2,81 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://legalagi.cn/</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://legalagi.cn/articles/</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://legalagi.cn/about.html</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://legalagi.cn/categories/ai-law/</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://legalagi.cn/categories/legal-practice/</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://legalagi.cn/categories/industry/</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://legalagi.cn/categories/methodology/</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://legalagi.cn/categories/data-analysis/</loc>
-    <lastmod>2026-07-10</lastmod>
+    <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://legalagi.cn/articles/2026-07-13-智能体该叫代理-一个翻译-决定了你怎么用-AI/</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://legalagi.cn/articles/2026-07-13-别让法律咨询规则-跑进你的旅游攻略-Agent-的第一条纪律/</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://legalagi.cn/articles/2026-07-13-故事大会上的-AI-警惕之后-我们还能做什么/</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://legalagi.cn/articles/2026-07-13-docx-是压缩包-法律人理解-AI-的最短路径/</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://legalagi.cn/articles/2026-07-13-所谓-精英律师技能-就是一个-md-文件-Skill-祛魅/</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://legalagi.cn/articles/2026-07-08-你和AI聊了三天的案件-重新打开它-不认识你了/</loc>

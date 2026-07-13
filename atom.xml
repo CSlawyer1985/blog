@@ -4,9 +4,54 @@
   <link rel="alternate" type="text/html" hreflang="zh" href="https://legalagi.cn/"/>
   <link rel="self" type="application/atom+xml" href="https://legalagi.cn/atom.xml"/>
   <id>https://legalagi.cn/</id>
-  <updated>2026-07-10T13:02:57+08:00</updated>
+  <updated>2026-07-13T11:35:56+08:00</updated>
   <author><name>陈石</name></author>
   <subtitle>建设工程/房地产律师 × AI+法律先行者 — 个人博客</subtitle>
+  <entry>
+    <title>智能体该叫代理——一个翻译，决定了你怎么用 AI</title>
+    <link rel="alternate" type="text/html" href="https://legalagi.cn/articles/2026-07-13-智能体该叫代理-一个翻译-决定了你怎么用-AI/"/>
+    <id>https://legalagi.cn/articles/2026-07-13-智能体该叫代理-一个翻译-决定了你怎么用-AI/</id>
+    <published>2026-07-13T00:00:00+08:00</published>
+    <updated>2026-07-13T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary></summary>
+  </entry>
+  <entry>
+    <title>别让法律咨询规则，跑进你的旅游攻略——Agent 的第一条纪律</title>
+    <link rel="alternate" type="text/html" href="https://legalagi.cn/articles/2026-07-13-别让法律咨询规则-跑进你的旅游攻略-Agent-的第一条纪律/"/>
+    <id>https://legalagi.cn/articles/2026-07-13-别让法律咨询规则-跑进你的旅游攻略-Agent-的第一条纪律/</id>
+    <published>2026-07-13T00:00:00+08:00</published>
+    <updated>2026-07-13T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary></summary>
+  </entry>
+  <entry>
+    <title>故事大会上的 AI：警惕之后，我们还能做什么</title>
+    <link rel="alternate" type="text/html" href="https://legalagi.cn/articles/2026-07-13-故事大会上的-AI-警惕之后-我们还能做什么/"/>
+    <id>https://legalagi.cn/articles/2026-07-13-故事大会上的-AI-警惕之后-我们还能做什么/</id>
+    <published>2026-07-13T00:00:00+08:00</published>
+    <updated>2026-07-13T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary></summary>
+  </entry>
+  <entry>
+    <title>docx 是压缩包——法律人理解 AI 的最短路径</title>
+    <link rel="alternate" type="text/html" href="https://legalagi.cn/articles/2026-07-13-docx-是压缩包-法律人理解-AI-的最短路径/"/>
+    <id>https://legalagi.cn/articles/2026-07-13-docx-是压缩包-法律人理解-AI-的最短路径/</id>
+    <published>2026-07-13T00:00:00+08:00</published>
+    <updated>2026-07-13T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary></summary>
+  </entry>
+  <entry>
+    <title>所谓"精英律师技能"，就是一个 .md 文件——Skill 祛魅</title>
+    <link rel="alternate" type="text/html" href="https://legalagi.cn/articles/2026-07-13-所谓-精英律师技能-就是一个-md-文件-Skill-祛魅/"/>
+    <id>https://legalagi.cn/articles/2026-07-13-所谓-精英律师技能-就是一个-md-文件-Skill-祛魅/</id>
+    <published>2026-07-13T00:00:00+08:00</published>
+    <updated>2026-07-13T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary></summary>
+  </entry>
   <entry>
     <title>你和AI聊了三天的案件，重新打开它：不认识你了</title>
     <link rel="alternate" type="text/html" href="https://legalagi.cn/articles/2026-07-08-你和AI聊了三天的案件-重新打开它-不认识你了/"/>
@@ -140,51 +185,6 @@
     <published>2026-07-02T00:00:00+08:00</published>
     <updated>2026-07-02T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary></summary>
-  </entry>
-  <entry>
-    <title>你的 AI 应用可能在偷偷"偷工减料"</title>
-    <link rel="alternate" type="text/html" href="https://legalagi.cn/articles/2026-07-02-你的-AI-应用可能在偷偷-偷工减料/"/>
-    <id>https://legalagi.cn/articles/2026-07-02-你的-AI-应用可能在偷偷-偷工减料/</id>
-    <published>2026-07-02T00:00:00+08:00</published>
-    <updated>2026-07-02T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>表面上你用的是最强大脑背后负责给你的可能是另一个模型而且不是你以为的那个这件事正在变得普遍</summary>
-  </entry>
-  <entry>
-    <title>国有资产流失的历史演进</title>
-    <link rel="alternate" type="text/html" href="https://legalagi.cn/articles/2026-07-01-国有资产流失的历史演进/"/>
-    <id>https://legalagi.cn/articles/2026-07-01-国有资产流失的历史演进/</id>
-    <published>2026-07-01T00:00:00+08:00</published>
-    <updated>2026-07-01T00:00:00+08:00</updated>
-    <category term="法律实务"/>
-    <summary>本文研究方法这篇文章研究的是国资监管制度的演变逻辑不是某一部法规的条文注释研究范围覆盖年到年将近半个世纪材料来源包括公开发布的法律行政法规国务院文件国资委规章官方政策解读和相关报道文中引用均标注文件名和发布年份关键文件可以在公开渠道检索核实限于研究条件部分文件的实施效果和司法适用情况未做穷尽验证分析</summary>
-  </entry>
-  <entry>
-    <title>从防止国有资产流失到国有资本经营判断规则：国资监管制度演进的反向后果</title>
-    <link rel="alternate" type="text/html" href="https://legalagi.cn/articles/2026-07-01-从防止国有资产流失到国有资本经营判断规则-国资监管制度演进的反向后果/"/>
-    <id>https://legalagi.cn/articles/2026-07-01-从防止国有资产流失到国有资本经营判断规则-国资监管制度演进的反向后果/</id>
-    <published>2026-07-01T00:00:00+08:00</published>
-    <updated>2026-07-01T00:00:00+08:00</updated>
-    <category term="法律实务"/>
-    <summary>本文研究方法这篇文章研究的是国资监管制度的演变逻辑不是某一部法规的条文注释研究范围覆盖年到年将近半个世纪材料来源包括公开发布的法律行政法规国务院文件国资委规章官方政策解读和相关报道文中引用均标注文件名和发布年份关键文件可以在公开渠道检索核实限于研究条件部分文件的实施效果和司法适用情况未做穷尽验证分析</summary>
-  </entry>
-  <entry>
-    <title>国资监管不能只设红线，还要给方法</title>
-    <link rel="alternate" type="text/html" href="https://legalagi.cn/articles/2026-07-01-国资监管不能只设红线-还要给方法/"/>
-    <id>https://legalagi.cn/articles/2026-07-01-国资监管不能只设红线-还要给方法/</id>
-    <published>2026-07-01T00:00:00+08:00</published>
-    <updated>2026-07-01T00:00:00+08:00</updated>
-    <category term="法律实务"/>
-    <summary>国资减损不是一种东西是四种追责的前提是先分清属于哪一种类别特征与处置正常商业风险依法决策结果亏损程序完整信息充分无利益输送但结果亏损属于经营风险不追责能力不足判断失误无故意决策质量不高但无故意无重大过失无个人利益管理能力问题不宜轻易上升为流失责任程序违法重大过失程序缺失未评估未审批偏离市价未披露需区</summary>
-  </entry>
-  <entry>
-    <title>国资监管的悖论：红线越硬，经营越软</title>
-    <link rel="alternate" type="text/html" href="https://legalagi.cn/articles/2026-07-01-国资监管的悖论-红线越硬-经营越软/"/>
-    <id>https://legalagi.cn/articles/2026-07-01-国资监管的悖论-红线越硬-经营越软/</id>
-    <published>2026-07-01T00:00:00+08:00</published>
-    <updated>2026-07-01T00:00:00+08:00</updated>
-    <category term="法律实务"/>
     <summary></summary>
   </entry>
 </feed>

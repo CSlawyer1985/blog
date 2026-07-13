@@ -62,8 +62,12 @@ function initLanguageToggle() {
   const buttons = document.querySelectorAll('.nav__lang[data-lang]');
   const html = document.documentElement;
 
-  // Restore saved language
-  const saved = localStorage.getItem('blog-lang') || 'zh';
+  // Restore saved language; first visit auto-detects from system language
+  let saved = localStorage.getItem('blog-lang');
+  if (!saved) {
+    const sys = (navigator.language || '').toLowerCase();
+    saved = sys.startsWith('en') ? 'en' : 'zh';
+  }
   setLanguage(saved);
 
   buttons.forEach(btn => {
