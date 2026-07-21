@@ -132,7 +132,8 @@
     a{color:inherit;text-decoration:none}
 
     /* Body */
-    html,body{overflow-x:hidden}
+    html{scroll-behavior:smooth}
+    html,body{overflow-x:hidden;overflow-x:clip}
     body{
       background:#F3EDE3;
       background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
@@ -168,7 +169,7 @@
     .nav__links .sep{color:#C9C0B2;font-weight:300}
 
     /* Progress bar */
-    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:3px;z-index:50}
     .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
 
     /* Layout */
@@ -180,6 +181,10 @@
       padding:110px clamp(20px,5vw,72px) 80px;
       max-width:1160px;
       margin:0 auto;
+    }
+    /* ≥1200px 扩展为三栏（右栏 TOC） */
+    @media (min-width:1200px){
+      .article-layout{grid-template-columns:240px minmax(0,720px) minmax(0,200px);max-width:1296px}
     }
 
     /* Sidebar */
@@ -252,6 +257,93 @@
     .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
     .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
 
+    /* Anchor offset for fixed nav */
+    .article-body h2,.article-body h3{scroll-margin-top:96px}
+
+    /* SVG figures (```svg blocks rendered inline) */
+    .article-svg{
+      margin:28px 0;padding:20px;
+      border:1px solid #C9C0B2;background:#fff;
+      overflow-x:auto;text-align:center;
+    }
+    .article-svg svg{max-width:100%;height:auto;display:inline-block}
+
+    /* Right-rail TOC (desktop ≥1200px) */
+    .article-toc{display:none;position:relative}
+    .toc-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto}
+    .toc-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .toc-link{
+      display:block;padding:5px 0 5px 12px;
+      font-size:12.5px;line-height:1.45;color:#7d756a;
+      border-left:2px solid transparent;transition:color .2s,border-color .2s
+    }
+    .toc-link:hover{color:#1A1714}
+    .toc-link.toc-l3{padding-left:26px;font-size:12px}
+    .toc-link.is-active{color:#C0392B;border-left-color:#C0392B;font-weight:600}
+    @media (min-width:1200px){.article-toc{display:block}}
+
+    /* Mobile TOC (<1200px, collapsible) */
+    .toc-mobile{
+      margin:0 0 32px;padding:16px 20px;
+      border:1px solid #C9C0B2;background:rgba(243,237,227,.5)
+    }
+    .toc-mobile summary{
+      cursor:pointer;font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.1em;color:#C0392B;text-transform:uppercase;user-select:none
+    }
+    .toc-mobile .toc-link{margin-top:8px}
+    @media (min-width:1200px){.toc-mobile{display:none}}
+
+    /* Code copy button */
+    pre.code-block{position:relative}
+    .code-copy{
+      position:absolute;top:8px;right:8px;
+      padding:4px 10px;border:1px solid rgba(232,227,216,.25);border-radius:3px;
+      background:rgba(232,227,216,.08);color:#e8e3d8;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.04em;
+      cursor:pointer;opacity:0;transition:opacity .2s,background .2s
+    }
+    pre.code-block:hover .code-copy{opacity:1}
+    .code-copy:hover{background:rgba(232,227,216,.18)}
+    .code-copy.is-done{color:#7ac28a;border-color:rgba(122,194,138,.4)}
+    @media (hover:none){.code-copy{opacity:1}}
+
+    /* Prev / Next navigation */
+    .article-prevnext{
+      display:grid;grid-template-columns:1fr 1fr;gap:20px;
+      margin-top:56px;padding-top:28px;border-top:1px solid #C9C0B2
+    }
+    .prevnext-link{display:flex;flex-direction:column;gap:6px;min-width:0}
+    .prevnext-link.next{text-align:right;align-items:flex-end}
+    .prevnext-link.next:only-child{grid-column:2}
+    .prevnext-label{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.06em;color:#7d756a
+    }
+    .prevnext-title{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-size:16px;font-weight:600;color:#1A1714;line-height:1.4;
+      transition:color .25s
+    }
+    .prevnext-link:hover .prevnext-title{color:#C0392B}
+
+    /* Related articles (mobile only — sidebar hidden below 860px) */
+    .related-mobile{display:none;margin-top:32px}
+    .related-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:12px;padding-bottom:10px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .related-link{
+      display:block;padding:8px 0;font-size:14px;color:#3a342d;
+      border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .related-link:hover{color:#C0392B}
+
     /* Footer */
     .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
     .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
@@ -279,11 +371,14 @@
       .article-sidebar{display:none}
       .article-title{font-size:clamp(24px,5vw,32px)}
       .article-body{font-size:15px;line-height:1.8}
+      .related-mobile{display:block}
     }
     @media (max-width:600px){
       .article-layout{padding:80px 20px 48px}
       .article-meta-top{font-size:10px;gap:8px}
       .article-cover{margin-bottom:28px}
+      .article-prevnext{grid-template-columns:1fr;gap:16px}
+      .prevnext-link.next{text-align:left;align-items:flex-start}
     }
     @media (prefers-reduced-motion:reduce){
       *{animation:none!important;transition:none!important}
@@ -315,9 +410,9 @@
 
     <h4 class="sidebar-title">分类</h4>
     <nav class="sidebar-nav">
-      <a href="/articles/" class="sidebar-link">全部（123）</a>
+      <a href="/articles/" class="sidebar-link">全部（126）</a>
       
-      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（100）</a>
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（103）</a>
       
       <a href="/categories/legal-practice/" class="sidebar-link">法律实务（18）</a>
       
@@ -333,9 +428,15 @@
     <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
     <nav class="sidebar-nav">
       
+      <a href="/articles/2026-07-18-人口红利吃完了-下一种红利刚开局/" class="sidebar-link">人口红利吃完了？下一种红利刚开局</a>
+      
+      <a href="/articles/2026-07-18-著作权三百年-它消化了六次技术冲击-为什么AI是例外/" class="sidebar-link">著作权三百年：它消化了六次技术冲击，为什么AI是例外</a>
+      
       <a href="/articles/2026-07-13-智能体该叫代理-一个翻译-决定了你怎么用-AI/" class="sidebar-link">智能体该叫代理——一个翻译，决定了你怎么用 AI</a>
       
       <a href="/articles/2026-07-13-别让法律咨询规则-跑进你的旅游攻略-Agent-的第一条纪律/" class="sidebar-link">别让法律咨询规则，跑进你的旅游攻略——Agent 的第一条纪律</a>
+      
+      <a href="/articles/2026-07-13-法律人-该把你的东西拿出来了/" class="sidebar-link">法律人，该把你的东西拿出来了</a>
       
       <a href="/articles/2026-07-13-故事大会上的-AI-警惕之后-我们还能做什么/" class="sidebar-link">故事大会上的 AI：警惕之后，我们还能做什么</a>
       
@@ -367,12 +468,6 @@
       
       <a href="/articles/2026-07-02-Token-会被当成石油交易/" class="sidebar-link">Token 会被当成石油交易</a>
       
-      <a href="/articles/2026-07-02-你-AI-账单里有三种价格在同时跑/" class="sidebar-link">你 AI 账单里有三种价格在同时跑</a>
-      
-      <a href="/articles/2026-07-02-AI-时代最值钱的不是模型-是-水电煤-层/" class="sidebar-link">AI 时代最值钱的不是模型，是"水电煤"层</a>
-      
-      <a href="/articles/2026-07-02-法律人学-AI-最缺的不是工具/" class="sidebar-link">法律人学 AI，最缺的不是工具</a>
-      
     </nav>
     
   </div>
@@ -392,13 +487,42 @@
         </header>
 
         
+        <details class="toc-mobile">
+          <summary>本文目录</summary>
+          
+          <a href="#不是更好的Prompt是规则系统" class="toc-link toc-l2">不是更好的 Prompt，是规则系统</a>
+          
+          <a href="#五层规则架构" class="toc-link toc-l2">五层规则架构</a>
+          
+          <a href="#七类文章七套风格文件" class="toc-link toc-l2">七类文章，七套风格文件</a>
+          
+          <a href="#配图零成本SVG嵌入本地转换" class="toc-link toc-l2">配图零成本：SVG 嵌入 + 本地转换</a>
+          
+          <a href="#封面生成CodexCLI替代付费API" class="toc-link toc-l2">封面生成：Codex CLI 替代付费 API</a>
+          
+          <a href="#去AI痕迹改的是节奏不是词" class="toc-link toc-l2">去 AI 痕迹：改的是节奏，不是词</a>
+          
+          <a href="#发布管线一条命令到草稿箱" class="toc-link toc-l2">发布管线：一条命令到草稿箱</a>
+          
+          <a href="#顺便建了一个文章知识库" class="toc-link toc-l2">顺便建了一个文章知识库</a>
+          
+          <a href="#法律类文章的专属防线" class="toc-link toc-l2">法律类文章的专属防线</a>
+          
+          <a href="#构建工作区规则的五个坑" class="toc-link toc-l2">构建工作区规则的五个坑</a>
+          
+          <a href="#适用边界" class="toc-link toc-l2">适用边界</a>
+          
+        </details>
+        
+
+        
         <figure class="article-cover">
           <img src="cover.png" alt="用规则代替软件：一个 Agent 完成从构思到发布的完整写作链路封面图" loading="lazy">
         </figure>
         
 
         <div class="article-body">
-          <p>!<a href="cover.png">封面</a></p>
+          <p><img src="cover.png" alt="封面" loading="lazy"></p>
 <p>写一篇能发布的公众号文章，需要在几个软件之间切换？</p>
 <p>我以前的答案是五个：Obsidian 写稿、Figma 画流程图、某生图工具做封面、微信编辑器排版、公众号后台发布。每一步切一次工具，每切一次就丢一次上下文。更麻烦的是，AI 辅助写作的质量忽高忽低——同样的 Prompt，有时候给的是结构清晰的分析，有时候是一篇"在当今时代……值得注意的是……综上所述"的教科书。</p>
 <p>半年前我开始系统性地用 Claude Code 的工作区规则机制重构整个写作流程。现在，一个 Agent 会话覆盖从选题到发布的完整链路。这篇文章拆解这个规则系统的构建方法，以及每个设计决策背后的价值判断。</p>
@@ -409,63 +533,63 @@
 <p>工作区规则的本质，是把写作全流程的决策树、质量闸门和工具路由固化为可执行的指令。不是"写一个更好的 Prompt"，而是"造一套不需要 Prompt 的机制"。</p>
 <h2 id="五层规则架构">五层规则架构</h2>
 <p>工作区规则不是一个大文件，而是一个分层加载的系统。每一层只加载当前任务需要的规则。</p>
-<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420"&gt;
-  &lt;rect width="600" height="420" fill="#fff" rx="4"/&gt;
-  &lt;text x="300" y="28" text-anchor="middle" font-size="17" font-weight="700" fill="#222"&gt;工作区规则五层架构&lt;/text&gt;
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420">
+  <rect width="600" height="420" fill="#fff" rx="4"/>
+  <text x="300" y="28" text-anchor="middle" font-size="17" font-weight="700" fill="#222">工作区规则五层架构</text>
 
-  &lt;!-- L1 --&gt;
-  &lt;rect x="30" y="48" width="540" height="52" fill="#f5f5f5" stroke="#333" stroke-width="1.5" rx="2"/&gt;
-  &lt;text x="45" y="70" font-size="12" font-weight="700" fill="#c41e3a"&gt;L1 全局基础层&lt;/text&gt;
-  &lt;text x="45" y="88" font-size="10.5" fill="#555"&gt;CLAUDE.md + rules/ — 角色定位、法律分析框架、检索规范、工具边界（所有项目共享）&lt;/text&gt;
+  <!-- L1 -->
+  <rect x="30" y="48" width="540" height="52" fill="#f5f5f5" stroke="#333" stroke-width="1.5" rx="2"/>
+  <text x="45" y="70" font-size="12" font-weight="700" fill="#c41e3a">L1 全局基础层</text>
+  <text x="45" y="88" font-size="10.5" fill="#555">CLAUDE.md + rules/ — 角色定位、法律分析框架、检索规范、工具边界（所有项目共享）</text>
 
-  &lt;!-- L2 --&gt;
-  &lt;rect x="30" y="108" width="540" height="52" fill="#fff" stroke="#666" stroke-width="1" rx="2"/&gt;
-  &lt;text x="45" y="130" font-size="12" font-weight="700" fill="#c41e3a"&gt;L2 工作区主规则&lt;/text&gt;
-  &lt;text x="45" y="148" font-size="10.5" fill="#555"&gt;.claude/CLAUDE.md — 撰写模式、选题锚点、类别路由、输出流程、文件结构&lt;/text&gt;
+  <!-- L2 -->
+  <rect x="30" y="108" width="540" height="52" fill="#fff" stroke="#666" stroke-width="1" rx="2"/>
+  <text x="45" y="130" font-size="12" font-weight="700" fill="#c41e3a">L2 工作区主规则</text>
+  <text x="45" y="148" font-size="10.5" fill="#555">.claude/CLAUDE.md — 撰写模式、选题锚点、类别路由、输出流程、文件结构</text>
 
-  &lt;!-- L3 --&gt;
-  &lt;rect x="30" y="168" width="260" height="56" fill="#fff" stroke="#999" stroke-width="0.8" rx="2"/&gt;
-  &lt;text x="45" y="190" font-size="11" font-weight="700" fill="#333"&gt;L3a 风格库（7套）&lt;/text&gt;
-  &lt;text x="45" y="206" font-size="9.5" fill="#777"&gt;语气区间、结构模板、金句密度&lt;/text&gt;
-  &lt;text x="45" y="219" font-size="9.5" fill="#777"&gt;AI痕迹控制策略&lt;/text&gt;
+  <!-- L3 -->
+  <rect x="30" y="168" width="260" height="56" fill="#fff" stroke="#999" stroke-width="0.8" rx="2"/>
+  <text x="45" y="190" font-size="11" font-weight="700" fill="#333">L3a 风格库（7套）</text>
+  <text x="45" y="206" font-size="9.5" fill="#777">语气区间、结构模板、金句密度</text>
+  <text x="45" y="219" font-size="9.5" fill="#777">AI痕迹控制策略</text>
 
-  &lt;rect x="310" y="168" width="260" height="56" fill="#fff" stroke="#999" stroke-width="0.8" rx="2"/&gt;
-  &lt;text x="325" y="190" font-size="11" font-weight="700" fill="#333"&gt;L3b 排版主题库（9套）&lt;/text&gt;
-  &lt;text x="325" y="206" font-size="9.5" fill="#777"&gt;微信HTML渲染、H1-H3层级&lt;/text&gt;
-  &lt;text x="325" y="219" font-size="9.5" fill="#777"&gt;间距系统、色彩方案&lt;/text&gt;
+  <rect x="310" y="168" width="260" height="56" fill="#fff" stroke="#999" stroke-width="0.8" rx="2"/>
+  <text x="325" y="190" font-size="11" font-weight="700" fill="#333">L3b 排版主题库（9套）</text>
+  <text x="325" y="206" font-size="9.5" fill="#777">微信HTML渲染、H1-H3层级</text>
+  <text x="325" y="219" font-size="9.5" fill="#777">间距系统、色彩方案</text>
 
-  &lt;!-- L4 --&gt;
-  &lt;rect x="30" y="232" width="260" height="56" fill="#fff" stroke="#999" stroke-width="0.8" rx="2"/&gt;
-  &lt;text x="45" y="254" font-size="11" font-weight="700" fill="#333"&gt;L4a 案例库&lt;/text&gt;
-  &lt;text x="45" y="270" font-size="9.5" fill="#777"&gt;判决书/裁决书全文检索&lt;/text&gt;
-  &lt;text x="45" y="283" font-size="9.5" fill="#777"&gt;脱敏规则 + 有机嵌入&lt;/text&gt;
+  <!-- L4 -->
+  <rect x="30" y="232" width="260" height="56" fill="#fff" stroke="#999" stroke-width="0.8" rx="2"/>
+  <text x="45" y="254" font-size="11" font-weight="700" fill="#333">L4a 案例库</text>
+  <text x="45" y="270" font-size="9.5" fill="#777">判决书/裁决书全文检索</text>
+  <text x="45" y="283" font-size="9.5" fill="#777">脱敏规则 + 有机嵌入</text>
 
-  &lt;rect x="310" y="232" width="260" height="56" fill="#fff" stroke="#999" stroke-width="0.8" rx="2"/&gt;
-  &lt;text x="325" y="254" font-size="11" font-weight="700" fill="#333"&gt;L4b 发布脚本（6个）&lt;/text&gt;
-  &lt;text x="325" y="270" font-size="9.5" fill="#777"&gt;封面生成 → 图片处理&lt;/text&gt;
-  &lt;text x="325" y="283" font-size="9.5" fill="#777"&gt;HTML排版 → 草稿箱&lt;/text&gt;
+  <rect x="310" y="232" width="260" height="56" fill="#fff" stroke="#999" stroke-width="0.8" rx="2"/>
+  <text x="325" y="254" font-size="11" font-weight="700" fill="#333">L4b 发布脚本（6个）</text>
+  <text x="325" y="270" font-size="9.5" fill="#777">封面生成 → 图片处理</text>
+  <text x="325" y="283" font-size="9.5" fill="#777">HTML排版 → 草稿箱</text>
 
-  &lt;!-- L5 --&gt;
-  &lt;rect x="30" y="296" width="540" height="52" fill="#f9f9f9" stroke="#333" stroke-width="1.5" rx="2"/&gt;
-  &lt;text x="45" y="318" font-size="12" font-weight="700" fill="#c41e3a"&gt;L5 外部 Skill 层&lt;/text&gt;
-  &lt;text x="45" y="336" font-size="10.5" fill="#555"&gt;humanizer-zh（去AI痕迹）/ 知识库路由 / 法律检索MCP — 跨工作区共享&lt;/text&gt;
+  <!-- L5 -->
+  <rect x="30" y="296" width="540" height="52" fill="#f9f9f9" stroke="#333" stroke-width="1.5" rx="2"/>
+  <text x="45" y="318" font-size="12" font-weight="700" fill="#c41e3a">L5 外部 Skill 层</text>
+  <text x="45" y="336" font-size="10.5" fill="#555">humanizer-zh（去AI痕迹）/ 知识库路由 / 法律检索MCP — 跨工作区共享</text>
 
-  &lt;!-- Right labels --&gt;
-  &lt;text x="582" y="78" font-size="8.5" fill="#999"&gt;常驻&lt;/text&gt;
-  &lt;text x="582" y="138" font-size="8.5" fill="#999"&gt;项目&lt;/text&gt;
-  &lt;text x="582" y="198" font-size="8.5" fill="#999"&gt;按类型&lt;/text&gt;
-  &lt;text x="582" y="262" font-size="8.5" fill="#999"&gt;按需&lt;/text&gt;
-  &lt;text x="582" y="326" font-size="8.5" fill="#999"&gt;共享&lt;/text&gt;
+  <!-- Right labels -->
+  <text x="582" y="78" font-size="8.5" fill="#999">常驻</text>
+  <text x="582" y="138" font-size="8.5" fill="#999">项目</text>
+  <text x="582" y="198" font-size="8.5" fill="#999">按类型</text>
+  <text x="582" y="262" font-size="8.5" fill="#999">按需</text>
+  <text x="582" y="326" font-size="8.5" fill="#999">共享</text>
 
-  &lt;!-- Connector arrows --&gt;
-  &lt;line x1="576" y1="100" x2="576" y2="108" stroke="#ccc" stroke-width="0.8"/&gt;
-  &lt;line x1="576" y1="160" x2="576" y2="168" stroke="#ccc" stroke-width="0.8"/&gt;
-  &lt;line x1="576" y1="224" x2="576" y2="232" stroke="#ccc" stroke-width="0.8"/&gt;
-  &lt;line x1="576" y1="288" x2="576" y2="296" stroke="#ccc" stroke-width="0.8"/&gt;
+  <!-- Connector arrows -->
+  <line x1="576" y1="100" x2="576" y2="108" stroke="#ccc" stroke-width="0.8"/>
+  <line x1="576" y1="160" x2="576" y2="168" stroke="#ccc" stroke-width="0.8"/>
+  <line x1="576" y1="224" x2="576" y2="232" stroke="#ccc" stroke-width="0.8"/>
+  <line x1="576" y1="288" x2="576" y2="296" stroke="#ccc" stroke-width="0.8"/>
 
-  &lt;!-- Design principle note --&gt;
-  &lt;text x="300" y="398" font-size="10" fill="#aaa" text-anchor="middle"&gt;按需加载 · 上下文不浪费 · 通用能力跨项目复用&lt;/text&gt;
-&lt;/svg&gt;</code></pre>
+  <!-- Design principle note -->
+  <text x="300" y="398" font-size="10" fill="#aaa" text-anchor="middle">按需加载 · 上下文不浪费 · 通用能力跨项目复用</text>
+</svg></figure>
 <p>这个分层结构背后有三个设计决策。</p>
 <p><strong>按需加载，不浪费上下文</strong>。全局基础层（L1）包含所有项目共享的规则——角色定位、法律分析框架、检索规范。每次会话自动加载。工作区主规则（L2）只在进入文章撰写目录时加载。风格库和排版主题（L3）只在实际写作时才读取具体文件。上下文是有限资源，不能把不参与当前决策的规则塞进去。</p>
 <p><strong>关注点分离</strong>。写作质量控制（L3a 风格库）和视觉呈现（L3b 排版主题）是两个独立维度。一篇法律实务文章可以用"精致蓝调"主题排版，也可以改用"黑白简约"——风格库定义了文章该怎么写，主题库定义了文章该怎么展示。两者解耦后可以自由组合。</p>
@@ -474,63 +598,67 @@
 <p>AI 写作最常见的失败模式是语气错位——用写论文的方式写公众号，用写微博的方式写法律意见书。</p>
 <p>每次 Prompt 里写"请用专业但通俗的语气"解决不了这个问题——太模糊了。我做了七套风格文件，每套精确到：</p>
 <ul>
-<li><strong>语气区间</strong>：方法论型是"清晰、有体系、不卖弄"，观点型是"有立场、第一人称、金句密度高"</li>
-<li><strong>结构模板</strong>：方法论型是"一句话定义 → 痛点 → 核心框架 → 逐要素展开 → 常见错误 → 适用边界"，法律实务型是"结论 → 依据 → 边界 → 行动"</li>
-<li><strong>论证密度</strong>：数据报告型"数据先行，反直觉发现驱动"，法律评论型"以法律为锚点评事件，控制结论边界"</li>
-<li><strong>AI 痕迹控制策略</strong>：每套风格文件都列出了该类文章最常见的 AI 痕迹和破解方法。观点型禁止"在当今时代"式宏大开头，方法论型禁止"综上所述"教科书收尾</li>
+<li><strong>语气区间</strong>：方法论型是"清晰、有体系、不卖弄"，观点型是"有立场、第一人称、金句密度高"
+</li>
+<li><strong>结构模板</strong>：方法论型是"一句话定义 → 痛点 → 核心框架 → 逐要素展开 → 常见错误 → 适用边界"，法律实务型是"结论 → 依据 → 边界 → 行动"
+</li>
+<li><strong>论证密度</strong>：数据报告型"数据先行，反直觉发现驱动"，法律评论型"以法律为锚点评事件，控制结论边界"
+</li>
+<li><strong>AI 痕迹控制策略</strong>：每套风格文件都列出了该类文章最常见的 AI 痕迹和破解方法。观点型禁止"在当今时代"式宏大开头，方法论型禁止"综上所述"教科书收尾
+</li>
 </ul>
-<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 260"&gt;
-  &lt;rect width="600" height="260" fill="#fff" rx="4"/&gt;
-  &lt;text x="300" y="25" text-anchor="middle" font-size="16" font-weight="700" fill="#222"&gt;类别路由决策树&lt;/text&gt;
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 260">
+  <rect width="600" height="260" fill="#fff" rx="4"/>
+  <text x="300" y="25" text-anchor="middle" font-size="16" font-weight="700" fill="#222">类别路由决策树</text>
 
-  &lt;!-- Root --&gt;
-  &lt;rect x="220" y="42" width="160" height="32" fill="#333" rx="3"/&gt;
-  &lt;text x="300" y="63" text-anchor="middle" font-size="11" fill="#fff" font-weight="700"&gt;文章主题&lt;/text&gt;
+  <!-- Root -->
+  <rect x="220" y="42" width="160" height="32" fill="#333" rx="3"/>
+  <text x="300" y="63" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">文章主题</text>
 
-  &lt;!-- Branches --&gt;
-  &lt;line x1="250" y1="74" x2="100" y2="100" stroke="#999" stroke-width="0.8"/&gt;
-  &lt;line x1="300" y1="74" x2="300" y2="100" stroke="#999" stroke-width="0.8"/&gt;
-  &lt;line x1="350" y1="74" x2="500" y2="100" stroke="#999" stroke-width="0.8"/&gt;
+  <!-- Branches -->
+  <line x1="250" y1="74" x2="100" y2="100" stroke="#999" stroke-width="0.8"/>
+  <line x1="300" y1="74" x2="300" y2="100" stroke="#999" stroke-width="0.8"/>
+  <line x1="350" y1="74" x2="500" y2="100" stroke="#999" stroke-width="0.8"/>
 
-  &lt;!-- Q1 --&gt;
-  &lt;rect x="30" y="102" width="140" height="36" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="2"/&gt;
-  &lt;text x="100" y="118" text-anchor="middle" font-size="10" font-weight="700" fill="#333"&gt;涉及法条/案例？&lt;/text&gt;
-  &lt;text x="100" y="132" text-anchor="middle" font-size="9" fill="#666"&gt;→ 法律实务 / 法律评论&lt;/text&gt;
+  <!-- Q1 -->
+  <rect x="30" y="102" width="140" height="36" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="2"/>
+  <text x="100" y="118" text-anchor="middle" font-size="10" font-weight="700" fill="#333">涉及法条/案例？</text>
+  <text x="100" y="132" text-anchor="middle" font-size="9" fill="#666">→ 法律实务 / 法律评论</text>
 
-  &lt;rect x="230" y="102" width="140" height="36" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="2"/&gt;
-  &lt;text x="300" y="118" text-anchor="middle" font-size="10" font-weight="700" fill="#333"&gt;AI/方法论/框架？&lt;/text&gt;
-  &lt;text x="300" y="132" text-anchor="middle" font-size="9" fill="#666"&gt;→ 方法论/思维型&lt;/text&gt;
+  <rect x="230" y="102" width="140" height="36" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="2"/>
+  <text x="300" y="118" text-anchor="middle" font-size="10" font-weight="700" fill="#333">AI/方法论/框架？</text>
+  <text x="300" y="132" text-anchor="middle" font-size="9" fill="#666">→ 方法论/思维型</text>
 
-  &lt;rect x="430" y="102" width="140" height="36" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="2"/&gt;
-  &lt;text x="500" y="118" text-anchor="middle" font-size="10" font-weight="700" fill="#333"&gt;工具/教程/评测？&lt;/text&gt;
-  &lt;text x="500" y="132" text-anchor="middle" font-size="9" fill="#666"&gt;→ 技术实战型&lt;/text&gt;
+  <rect x="430" y="102" width="140" height="36" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="2"/>
+  <text x="500" y="118" text-anchor="middle" font-size="10" font-weight="700" fill="#333">工具/教程/评测？</text>
+  <text x="500" y="132" text-anchor="middle" font-size="9" fill="#666">→ 技术实战型</text>
 
-  &lt;!-- Q2 level --&gt;
-  &lt;line x1="100" y1="138" x2="70" y2="162" stroke="#ccc" stroke-width="0.6"/&gt;
-  &lt;line x1="100" y1="138" x2="130" y2="162" stroke="#ccc" stroke-width="0.6"/&gt;
-  &lt;line x1="300" y1="138" x2="300" y2="162" stroke="#ccc" stroke-width="0.6"/&gt;
-  &lt;line x1="500" y1="138" x2="470" y2="162" stroke="#ccc" stroke-width="0.6"/&gt;
-  &lt;line x1="500" y1="138" x2="530" y2="162" stroke="#ccc" stroke-width="0.6"/&gt;
+  <!-- Q2 level -->
+  <line x1="100" y1="138" x2="70" y2="162" stroke="#ccc" stroke-width="0.6"/>
+  <line x1="100" y1="138" x2="130" y2="162" stroke="#ccc" stroke-width="0.6"/>
+  <line x1="300" y1="138" x2="300" y2="162" stroke="#ccc" stroke-width="0.6"/>
+  <line x1="500" y1="138" x2="470" y2="162" stroke="#ccc" stroke-width="0.6"/>
+  <line x1="500" y1="138" x2="530" y2="162" stroke="#ccc" stroke-width="0.6"/>
 
-  &lt;rect x="15" y="164" width="110" height="30" fill="#fff" stroke="#ccc" stroke-width="0.6" rx="2"/&gt;
-  &lt;text x="70" y="183" text-anchor="middle" font-size="9" fill="#555"&gt;评事件 → 法律评论&lt;/text&gt;
+  <rect x="15" y="164" width="110" height="30" fill="#fff" stroke="#ccc" stroke-width="0.6" rx="2"/>
+  <text x="70" y="183" text-anchor="middle" font-size="9" fill="#555">评事件 → 法律评论</text>
 
-  &lt;rect x="130" y="164" width="110" height="30" fill="#fff" stroke="#ccc" stroke-width="0.6" rx="2"/&gt;
-  &lt;text x="185" y="183" text-anchor="middle" font-size="9" fill="#555"&gt;实务操作 → 法律实务&lt;/text&gt;
+  <rect x="130" y="164" width="110" height="30" fill="#fff" stroke="#ccc" stroke-width="0.6" rx="2"/>
+  <text x="185" y="183" text-anchor="middle" font-size="9" fill="#555">实务操作 → 法律实务</text>
 
-  &lt;rect x="245" y="164" width="110" height="30" fill="#fff" stroke="#ccc" stroke-width="0.6" rx="2"/&gt;
-  &lt;text x="300" y="183" text-anchor="middle" font-size="9" fill="#555"&gt;思想/趋势 → 观点型&lt;/text&gt;
+  <rect x="245" y="164" width="110" height="30" fill="#fff" stroke="#ccc" stroke-width="0.6" rx="2"/>
+  <text x="300" y="183" text-anchor="middle" font-size="9" fill="#555">思想/趋势 → 观点型</text>
 
-  &lt;rect x="415" y="164" width="110" height="30" fill="#fff" stroke="#ccc" stroke-width="0.6" rx="2"/&gt;
-  &lt;text x="470" y="183" text-anchor="middle" font-size="9" fill="#555"&gt;数据报告 → 数据报告型&lt;/text&gt;
+  <rect x="415" y="164" width="110" height="30" fill="#fff" stroke="#ccc" stroke-width="0.6" rx="2"/>
+  <text x="470" y="183" text-anchor="middle" font-size="9" fill="#555">数据报告 → 数据报告型</text>
 
-  &lt;rect x="530" y="164" width="55" height="30" fill="#fff" stroke="#ccc" stroke-width="0.6" rx="2"/&gt;
-  &lt;text x="557" y="183" text-anchor="middle" font-size="9" fill="#555"&gt;学术&lt;/text&gt;
+  <rect x="530" y="164" width="55" height="30" fill="#fff" stroke="#ccc" stroke-width="0.6" rx="2"/>
+  <text x="557" y="183" text-anchor="middle" font-size="9" fill="#555">学术</text>
 
-  &lt;!-- Result --&gt;
-  &lt;text x="300" y="225" font-size="10" fill="#999" text-anchor="middle"&gt;路由结果 → 自动加载对应风格文件（语气 + 结构 + 金句密度 + AI痕迹控制）&lt;/text&gt;
-  &lt;text x="300" y="248" font-size="10" fill="#999" text-anchor="middle"&gt;跨类别时以主导内容决定主风格，局部吸收其他风格要素&lt;/text&gt;
-&lt;/svg&gt;</code></pre>
+  <!-- Result -->
+  <text x="300" y="225" font-size="10" fill="#999" text-anchor="middle">路由结果 → 自动加载对应风格文件（语气 + 结构 + 金句密度 + AI痕迹控制）</text>
+  <text x="300" y="248" font-size="10" fill="#999" text-anchor="middle">跨类别时以主导内容决定主风格，局部吸收其他风格要素</text>
+</svg></figure>
 <p>这七套风格文件的核心价值不是"写得比别人好"，而是<strong>质量基准线</strong>。同一类文章，每次调用同一套风格文件，出来的语气、结构、深度是一致的——不需要每次重新调试 Prompt。</p>
 <h2 id="配图零成本SVG嵌入本地转换">配图零成本：SVG 嵌入 + 本地转换</h2>
 <p>公众号文章的配图通常有三个来源：自己做、找人做、网上找。三条路都有摩擦——Figma 要单独打开，设计师要沟通需求，网图有版权风险。</p>
@@ -545,61 +673,65 @@
 <h2 id="去AI痕迹改的是节奏不是词">去 AI 痕迹：改的是节奏，不是词</h2>
 <p>AI 写作的痕迹不在用词上，在节奏上。一段文字读起来"像 AI 写的"，通常是因为几个特征叠加在一起：</p>
 <ul>
-<li>每段都是"主题句 + 展开 + 小结"的等长结构</li>
-<li>连接词高度集中在"首先…其次…再次…最后""值得注意的是""在当今时代"</li>
-<li>段落首句总是概括性声明（"XX 是一个重要的议题"）</li>
-<li>结尾一定是"综上所述"或"总而言之"加一段复读</li>
+<li>每段都是"主题句 + 展开 + 小结"的等长结构
+</li>
+<li>连接词高度集中在"首先…其次…再次…最后""值得注意的是""在当今时代"
+</li>
+<li>段落首句总是概括性声明（"XX 是一个重要的议题"）
+</li>
+<li>结尾一定是"综上所述"或"总而言之"加一段复读
+</li>
 </ul>
 <p>humanizer-zh 这个 Skill 做的事不是替换同义词。它打破的是节奏——把等长段落变成长短交替，把"第一…第二…第三"改成更自然的过渡方式，砍掉每个段落首句的概括声明，直接进入内容，结尾自然收束而不是教科书式总结。</p>
 <p>它的执行时机在正文完成之后，与封面生成并行。两个任务互相独立，等封面那 1-2 分钟里 humanizer-zh 已经在改稿了。</p>
 <h2 id="发布管线一条命令到草稿箱">发布管线：一条命令到草稿箱</h2>
 <p>写完稿、配完图、生成封面之后，最后一步是推到微信公众号草稿箱。</p>
-<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200"&gt;
-  &lt;rect width="600" height="200" fill="#fff" rx="4"/&gt;
-  &lt;text x="300" y="24" text-anchor="middle" font-size="15" font-weight="700" fill="#222"&gt;发布管线（一条命令完成）&lt;/text&gt;
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200">
+  <rect width="600" height="200" fill="#fff" rx="4"/>
+  <text x="300" y="24" text-anchor="middle" font-size="15" font-weight="700" fill="#222">发布管线（一条命令完成）</text>
 
-  &lt;!-- Steps --&gt;
-  &lt;rect x="18" y="46" width="78" height="50" fill="#333" rx="3"/&gt;
-  &lt;text x="57" y="68" text-anchor="middle" font-size="10" fill="#fff" font-weight="700"&gt;Markdown&lt;/text&gt;
-  &lt;text x="57" y="84" text-anchor="middle" font-size="9" fill="#ddd"&gt;终稿&lt;/text&gt;
+  <!-- Steps -->
+  <rect x="18" y="46" width="78" height="50" fill="#333" rx="3"/>
+  <text x="57" y="68" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">Markdown</text>
+  <text x="57" y="84" text-anchor="middle" font-size="9" fill="#ddd">终稿</text>
 
-  &lt;text x="110" y="76" font-size="16" fill="#999"&gt;→&lt;/text&gt;
+  <text x="110" y="76" font-size="16" fill="#999">→</text>
 
-  &lt;rect x="125" y="46" width="78" height="50" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="3"/&gt;
-  &lt;text x="164" y="68" text-anchor="middle" font-size="10" fill="#333" font-weight="700"&gt;SVG→PNG&lt;/text&gt;
-  &lt;text x="164" y="84" text-anchor="middle" font-size="9" fill="#777"&gt;cairosvg&lt;/text&gt;
+  <rect x="125" y="46" width="78" height="50" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="3"/>
+  <text x="164" y="68" text-anchor="middle" font-size="10" fill="#333" font-weight="700">SVG→PNG</text>
+  <text x="164" y="84" text-anchor="middle" font-size="9" fill="#777">cairosvg</text>
 
-  &lt;text x="217" y="76" font-size="16" fill="#999"&gt;→&lt;/text&gt;
+  <text x="217" y="76" font-size="16" fill="#999">→</text>
 
-  &lt;rect x="232" y="46" width="78" height="50" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="3"/&gt;
-  &lt;text x="271" y="68" text-anchor="middle" font-size="10" fill="#333" font-weight="700"&gt;图片上传&lt;/text&gt;
-  &lt;text x="271" y="84" text-anchor="middle" font-size="9" fill="#777"&gt;微信CDN&lt;/text&gt;
+  <rect x="232" y="46" width="78" height="50" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="3"/>
+  <text x="271" y="68" text-anchor="middle" font-size="10" fill="#333" font-weight="700">图片上传</text>
+  <text x="271" y="84" text-anchor="middle" font-size="9" fill="#777">微信CDN</text>
 
-  &lt;text x="324" y="76" font-size="16" fill="#999"&gt;→&lt;/text&gt;
+  <text x="324" y="76" font-size="16" fill="#999">→</text>
 
-  &lt;rect x="339" y="46" width="78" height="50" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="3"/&gt;
-  &lt;text x="378" y="68" text-anchor="middle" font-size="10" fill="#333" font-weight="700"&gt;HTML排版&lt;/text&gt;
-  &lt;text x="378" y="84" text-anchor="middle" font-size="9" fill="#777"&gt;9套主题&lt;/text&gt;
+  <rect x="339" y="46" width="78" height="50" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="3"/>
+  <text x="378" y="68" text-anchor="middle" font-size="10" fill="#333" font-weight="700">HTML排版</text>
+  <text x="378" y="84" text-anchor="middle" font-size="9" fill="#777">9套主题</text>
 
-  &lt;text x="431" y="76" font-size="16" fill="#999"&gt;→&lt;/text&gt;
+  <text x="431" y="76" font-size="16" fill="#999">→</text>
 
-  &lt;rect x="446" y="46" width="78" height="50" fill="#c41e3a" rx="3"/&gt;
-  &lt;text x="485" y="68" text-anchor="middle" font-size="10" fill="#fff" font-weight="700"&gt;草稿箱&lt;/text&gt;
-  &lt;text x="485" y="84" text-anchor="middle" font-size="9" fill="#fdd"&gt;Finder标记&lt;/text&gt;
+  <rect x="446" y="46" width="78" height="50" fill="#c41e3a" rx="3"/>
+  <text x="485" y="68" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">草稿箱</text>
+  <text x="485" y="84" text-anchor="middle" font-size="9" fill="#fdd">Finder标记</text>
 
-  &lt;text x="538" y="76" font-size="16" fill="#999"&gt;→&lt;/text&gt;
+  <text x="538" y="76" font-size="16" fill="#999">→</text>
 
-  &lt;rect x="553" y="46" width="32" height="50" fill="#fff" stroke="#ccc" stroke-width="0.6" rx="3"/&gt;
-  &lt;text x="569" y="76" text-anchor="middle" font-size="10" fill="#555"&gt;审核&lt;/text&gt;
+  <rect x="553" y="46" width="32" height="50" fill="#fff" stroke="#ccc" stroke-width="0.6" rx="3"/>
+  <text x="569" y="76" text-anchor="middle" font-size="10" fill="#555">审核</text>
 
-  &lt;!-- Details below --&gt;
-  &lt;text x="300" y="120" font-size="9.5" fill="#777" text-anchor="middle"&gt;封面图自动插入正文首部 | MD5去重避免重复上传 | 仅发布到草稿箱，不自动群发&lt;/text&gt;
+  <!-- Details below -->
+  <text x="300" y="120" font-size="9.5" fill="#777" text-anchor="middle">封面图自动插入正文首部 | MD5去重避免重复上传 | 仅发布到草稿箱，不自动群发</text>
 
-  &lt;!-- Command line --&gt;
-  &lt;rect x="60" y="140" width="480" height="42" fill="#2d2d2d" rx="4"/&gt;
-  &lt;text x="300" y="158" text-anchor="middle" font-size="10" fill="#6f6" font-family="monospace"&gt;python .claude/scripts/wechat_publish.py publish article.md --gen-cover --theme minimal-bw&lt;/text&gt;
-  &lt;text x="300" y="174" text-anchor="middle" font-size="9" fill="#aaa"&gt;一条命令 = 图片处理 + 封面生成 + HTML排版 + 草稿箱 + Finder标记"已推送"&lt;/text&gt;
-&lt;/svg&gt;</code></pre>
+  <!-- Command line -->
+  <rect x="60" y="140" width="480" height="42" fill="#2d2d2d" rx="4"/>
+  <text x="300" y="158" text-anchor="middle" font-size="10" fill="#6f6" font-family="monospace">python .claude/scripts/wechat_publish.py publish article.md --gen-cover --theme minimal-bw</text>
+  <text x="300" y="174" text-anchor="middle" font-size="9" fill="#aaa">一条命令 = 图片处理 + 封面生成 + HTML排版 + 草稿箱 + Finder标记"已推送"</text>
+</svg></figure>
 <p>六个 Python 脚本支撑这条管线：<code>wechat_publish.py</code>（总入口）、<code>wechat_cover.py</code>（封面生成）、<code>wechat_images.py</code>（图片下载/上传/MD5 去重）、<code>wechat_html.py</code>（Markdown → 微信 HTML，支持 9 套排版主题）、<code>wechat_api.py</code>（微信 API 客户端，token 管理和草稿创建）。全部在本地运行，图片上传到微信 CDN（不占永久素材配额）。</p>
 <p>发布到草稿箱后，脚本自动用 macOS Finder 注释给项目文件夹标记"已推送"。在 Finder 列表视图里一眼就能看出哪些文章已经发过。</p>
 <h2 id="顺便建了一个文章知识库">顺便建了一个文章知识库</h2>
@@ -615,9 +747,12 @@
     └── 20260518_用规则代替软件…….md  ← 终稿</code></pre>
 <p>这本质上是一个<strong>自动化的个人知识管理系统</strong>。三层目录对应了知识生产的三个阶段：</p>
 <ul>
-<li><code>input/</code> 保存了"为什么写这篇文章"的初始语境。三个月后回头翻，你不会只看到一篇成稿——你会看到当时的原始材料、触发问题、想表达的核心思想。知识复用从这里开始。</li>
-<li><code>scratch/</code> 保留了"怎么写的"决策过程。大纲的结构选择、为什么放弃了某个角度——这些中间产物往往比终稿包含更多思考。下次写同类文章，不是从零开始，而是从上次的决策经验开始。</li>
-<li><code>output/</code> 是可交付的成果。按日期和主题命名，时间线就是目录树。</li>
+<li><code>input/</code> 保存了"为什么写这篇文章"的初始语境。三个月后回头翻，你不会只看到一篇成稿——你会看到当时的原始材料、触发问题、想表达的核心思想。知识复用从这里开始。
+</li>
+<li><code>scratch/</code> 保留了"怎么写的"决策过程。大纲的结构选择、为什么放弃了某个角度——这些中间产物往往比终稿包含更多思考。下次写同类文章，不是从零开始，而是从上次的决策经验开始。
+</li>
+<li><code>output/</code> 是可交付的成果。按日期和主题命名，时间线就是目录树。
+</li>
 </ul>
 <p>所有操作都是规则自动驱动的——不需要手动建目录、不需要记得把材料放进对应文件夹、不需要写完后整理归档。规则的每一步（input 存档、scratch 输出大纲、output 输出终稿）在执行时就完成了归档。增量成本为零。</p>
 <p>再加上 Finder 注释标记的"已推送"状态，整个目录就是一个可浏览、可检索的文章馆。按时间排序就是作品年表，按主题搜索就是领域知识库。这个知识库的维护没有增加任何人力工作——它是写作流程的自然副产品。</p>
@@ -649,6 +784,34 @@
 </blockquote>
         </div>
 
+        <nav class="article-prevnext" aria-label="上一篇/下一篇">
+          
+          <a class="prevnext-link prev" href="/articles/2026-05-18-法律AI的竞争焦点不在Skill-在Harness/">
+            <span class="prevnext-label">&larr; 上一篇</span>
+            <span class="prevnext-title">法律AI的竞争焦点不在Skill，在Harness</span>
+          </a>
+          
+          
+          <a class="prevnext-link next" href="/articles/2026-05-18-从写合同到编排-Agent-律师角色的根本性位移/">
+            <span class="prevnext-label">下一篇 &rarr;</span>
+            <span class="prevnext-title">从写合同到编排 Agent：律师角色的根本性位移</span>
+          </a>
+          
+        </nav>
+
+        
+        <div class="related-mobile">
+          <h4 class="related-title">同类文章</h4>
+          
+          <a class="related-link" href="/articles/2026-07-18-人口红利吃完了-下一种红利刚开局/">人口红利吃完了？下一种红利刚开局</a>
+          
+          <a class="related-link" href="/articles/2026-07-18-著作权三百年-它消化了六次技术冲击-为什么AI是例外/">著作权三百年：它消化了六次技术冲击，为什么AI是例外</a>
+          
+          <a class="related-link" href="/articles/2026-07-13-智能体该叫代理-一个翻译-决定了你怎么用-AI/">智能体该叫代理——一个翻译，决定了你怎么用 AI</a>
+          
+        </div>
+        
+
         <footer class="article-footer">
           <div class="article-bio-card">
             <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
@@ -660,14 +823,98 @@
           </div>
         </footer>
       </article>
+
+      
+      <nav class="article-toc" aria-label="目录">
+        <div class="toc-sticky">
+          <h4 class="toc-title">目录</h4>
+          
+          <a href="#不是更好的Prompt是规则系统" class="toc-link toc-l2" data-target="不是更好的Prompt是规则系统">不是更好的 Prompt，是规则系统</a>
+          
+          <a href="#五层规则架构" class="toc-link toc-l2" data-target="五层规则架构">五层规则架构</a>
+          
+          <a href="#七类文章七套风格文件" class="toc-link toc-l2" data-target="七类文章七套风格文件">七类文章，七套风格文件</a>
+          
+          <a href="#配图零成本SVG嵌入本地转换" class="toc-link toc-l2" data-target="配图零成本SVG嵌入本地转换">配图零成本：SVG 嵌入 + 本地转换</a>
+          
+          <a href="#封面生成CodexCLI替代付费API" class="toc-link toc-l2" data-target="封面生成CodexCLI替代付费API">封面生成：Codex CLI 替代付费 API</a>
+          
+          <a href="#去AI痕迹改的是节奏不是词" class="toc-link toc-l2" data-target="去AI痕迹改的是节奏不是词">去 AI 痕迹：改的是节奏，不是词</a>
+          
+          <a href="#发布管线一条命令到草稿箱" class="toc-link toc-l2" data-target="发布管线一条命令到草稿箱">发布管线：一条命令到草稿箱</a>
+          
+          <a href="#顺便建了一个文章知识库" class="toc-link toc-l2" data-target="顺便建了一个文章知识库">顺便建了一个文章知识库</a>
+          
+          <a href="#法律类文章的专属防线" class="toc-link toc-l2" data-target="法律类文章的专属防线">法律类文章的专属防线</a>
+          
+          <a href="#构建工作区规则的五个坑" class="toc-link toc-l2" data-target="构建工作区规则的五个坑">构建工作区规则的五个坑</a>
+          
+          <a href="#适用边界" class="toc-link toc-l2" data-target="适用边界">适用边界</a>
+          
+        </div>
+      </nav>
+      
     </div>
   </main>
 
   <script>
-    /* Progress bar only */
+    /* Progress bar */
     (function(){
       var bar=document.querySelector('.progress-bar-fill');
       if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+
+    /* TOC scrollspy — 当前阅读章节在目录中高亮 */
+    (function(){
+      var links=document.querySelectorAll('.article-toc .toc-link');
+      if(!links.length||!('IntersectionObserver' in window)){return}
+      var map={};
+      links.forEach(function(l){map[l.getAttribute('data-target')]=l});
+      var headings=document.querySelectorAll('.article-body h2[id],.article-body h3[id]');
+      if(!headings.length){return}
+      var visible={};
+      var observer=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){visible[e.target.id]=e.isIntersecting});
+        var current=null;
+        for(var i=0;i<headings.length;i++){
+          if(visible[headings[i].id]){current=headings[i].id;break}
+        }
+        if(!current){
+          for(var j=headings.length-1;j>=0;j--){
+            if(headings[j].getBoundingClientRect().top<100){current=headings[j].id;break}
+          }
+        }
+        links.forEach(function(l){l.classList.remove('is-active')});
+        if(current&&map[current]){map[current].classList.add('is-active')}
+      },{rootMargin:'-80px 0px -70% 0px',threshold:0});
+      headings.forEach(function(h){observer.observe(h)});
+    })();
+
+    /* Code block copy button */
+    (function(){
+      function copyText(text,done){
+        if(navigator.clipboard&&window.isSecureContext){
+          navigator.clipboard.writeText(text).then(done,done);
+        }else{
+          var ta=document.createElement('textarea');
+          ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+          document.body.appendChild(ta);ta.select();
+          try{document.execCommand('copy')}catch(e){}
+          document.body.removeChild(ta);done();
+        }
+      }
+      document.querySelectorAll('pre.code-block').forEach(function(pre){
+        var btn=document.createElement('button');
+        btn.type='button';btn.className='code-copy';btn.textContent='复制';
+        btn.addEventListener('click',function(){
+          var code=pre.querySelector('code');
+          copyText(code?code.innerText:pre.innerText,function(){
+            btn.textContent='已复制';btn.classList.add('is-done');
+            setTimeout(function(){btn.textContent='复制';btn.classList.remove('is-done')},1500);
+          });
+        });
+        pre.appendChild(btn);
+      });
     })();
   </script>
 </body>

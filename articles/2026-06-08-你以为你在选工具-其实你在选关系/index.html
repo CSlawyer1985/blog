@@ -132,7 +132,8 @@
     a{color:inherit;text-decoration:none}
 
     /* Body */
-    html,body{overflow-x:hidden}
+    html{scroll-behavior:smooth}
+    html,body{overflow-x:hidden;overflow-x:clip}
     body{
       background:#F3EDE3;
       background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
@@ -168,7 +169,7 @@
     .nav__links .sep{color:#C9C0B2;font-weight:300}
 
     /* Progress bar */
-    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:3px;z-index:50}
     .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
 
     /* Layout */
@@ -180,6 +181,10 @@
       padding:110px clamp(20px,5vw,72px) 80px;
       max-width:1160px;
       margin:0 auto;
+    }
+    /* ≥1200px 扩展为三栏（右栏 TOC） */
+    @media (min-width:1200px){
+      .article-layout{grid-template-columns:240px minmax(0,720px) minmax(0,200px);max-width:1296px}
     }
 
     /* Sidebar */
@@ -252,6 +257,93 @@
     .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
     .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
 
+    /* Anchor offset for fixed nav */
+    .article-body h2,.article-body h3{scroll-margin-top:96px}
+
+    /* SVG figures (```svg blocks rendered inline) */
+    .article-svg{
+      margin:28px 0;padding:20px;
+      border:1px solid #C9C0B2;background:#fff;
+      overflow-x:auto;text-align:center;
+    }
+    .article-svg svg{max-width:100%;height:auto;display:inline-block}
+
+    /* Right-rail TOC (desktop ≥1200px) */
+    .article-toc{display:none;position:relative}
+    .toc-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto}
+    .toc-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .toc-link{
+      display:block;padding:5px 0 5px 12px;
+      font-size:12.5px;line-height:1.45;color:#7d756a;
+      border-left:2px solid transparent;transition:color .2s,border-color .2s
+    }
+    .toc-link:hover{color:#1A1714}
+    .toc-link.toc-l3{padding-left:26px;font-size:12px}
+    .toc-link.is-active{color:#C0392B;border-left-color:#C0392B;font-weight:600}
+    @media (min-width:1200px){.article-toc{display:block}}
+
+    /* Mobile TOC (<1200px, collapsible) */
+    .toc-mobile{
+      margin:0 0 32px;padding:16px 20px;
+      border:1px solid #C9C0B2;background:rgba(243,237,227,.5)
+    }
+    .toc-mobile summary{
+      cursor:pointer;font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.1em;color:#C0392B;text-transform:uppercase;user-select:none
+    }
+    .toc-mobile .toc-link{margin-top:8px}
+    @media (min-width:1200px){.toc-mobile{display:none}}
+
+    /* Code copy button */
+    pre.code-block{position:relative}
+    .code-copy{
+      position:absolute;top:8px;right:8px;
+      padding:4px 10px;border:1px solid rgba(232,227,216,.25);border-radius:3px;
+      background:rgba(232,227,216,.08);color:#e8e3d8;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.04em;
+      cursor:pointer;opacity:0;transition:opacity .2s,background .2s
+    }
+    pre.code-block:hover .code-copy{opacity:1}
+    .code-copy:hover{background:rgba(232,227,216,.18)}
+    .code-copy.is-done{color:#7ac28a;border-color:rgba(122,194,138,.4)}
+    @media (hover:none){.code-copy{opacity:1}}
+
+    /* Prev / Next navigation */
+    .article-prevnext{
+      display:grid;grid-template-columns:1fr 1fr;gap:20px;
+      margin-top:56px;padding-top:28px;border-top:1px solid #C9C0B2
+    }
+    .prevnext-link{display:flex;flex-direction:column;gap:6px;min-width:0}
+    .prevnext-link.next{text-align:right;align-items:flex-end}
+    .prevnext-link.next:only-child{grid-column:2}
+    .prevnext-label{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.06em;color:#7d756a
+    }
+    .prevnext-title{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-size:16px;font-weight:600;color:#1A1714;line-height:1.4;
+      transition:color .25s
+    }
+    .prevnext-link:hover .prevnext-title{color:#C0392B}
+
+    /* Related articles (mobile only — sidebar hidden below 860px) */
+    .related-mobile{display:none;margin-top:32px}
+    .related-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:12px;padding-bottom:10px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .related-link{
+      display:block;padding:8px 0;font-size:14px;color:#3a342d;
+      border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .related-link:hover{color:#C0392B}
+
     /* Footer */
     .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
     .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
@@ -279,11 +371,14 @@
       .article-sidebar{display:none}
       .article-title{font-size:clamp(24px,5vw,32px)}
       .article-body{font-size:15px;line-height:1.8}
+      .related-mobile{display:block}
     }
     @media (max-width:600px){
       .article-layout{padding:80px 20px 48px}
       .article-meta-top{font-size:10px;gap:8px}
       .article-cover{margin-bottom:28px}
+      .article-prevnext{grid-template-columns:1fr;gap:16px}
+      .prevnext-link.next{text-align:left;align-items:flex-start}
     }
     @media (prefers-reduced-motion:reduce){
       *{animation:none!important;transition:none!important}
@@ -315,9 +410,9 @@
 
     <h4 class="sidebar-title">分类</h4>
     <nav class="sidebar-nav">
-      <a href="/articles/" class="sidebar-link">全部（123）</a>
+      <a href="/articles/" class="sidebar-link">全部（126）</a>
       
-      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（100）</a>
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（103）</a>
       
       <a href="/categories/legal-practice/" class="sidebar-link">法律实务（18）</a>
       
@@ -333,9 +428,15 @@
     <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
     <nav class="sidebar-nav">
       
+      <a href="/articles/2026-07-18-人口红利吃完了-下一种红利刚开局/" class="sidebar-link">人口红利吃完了？下一种红利刚开局</a>
+      
+      <a href="/articles/2026-07-18-著作权三百年-它消化了六次技术冲击-为什么AI是例外/" class="sidebar-link">著作权三百年：它消化了六次技术冲击，为什么AI是例外</a>
+      
       <a href="/articles/2026-07-13-智能体该叫代理-一个翻译-决定了你怎么用-AI/" class="sidebar-link">智能体该叫代理——一个翻译，决定了你怎么用 AI</a>
       
       <a href="/articles/2026-07-13-别让法律咨询规则-跑进你的旅游攻略-Agent-的第一条纪律/" class="sidebar-link">别让法律咨询规则，跑进你的旅游攻略——Agent 的第一条纪律</a>
+      
+      <a href="/articles/2026-07-13-法律人-该把你的东西拿出来了/" class="sidebar-link">法律人，该把你的东西拿出来了</a>
       
       <a href="/articles/2026-07-13-故事大会上的-AI-警惕之后-我们还能做什么/" class="sidebar-link">故事大会上的 AI：警惕之后，我们还能做什么</a>
       
@@ -367,12 +468,6 @@
       
       <a href="/articles/2026-07-02-Token-会被当成石油交易/" class="sidebar-link">Token 会被当成石油交易</a>
       
-      <a href="/articles/2026-07-02-你-AI-账单里有三种价格在同时跑/" class="sidebar-link">你 AI 账单里有三种价格在同时跑</a>
-      
-      <a href="/articles/2026-07-02-AI-时代最值钱的不是模型-是-水电煤-层/" class="sidebar-link">AI 时代最值钱的不是模型，是"水电煤"层</a>
-      
-      <a href="/articles/2026-07-02-法律人学-AI-最缺的不是工具/" class="sidebar-link">法律人学 AI，最缺的不是工具</a>
-      
     </nav>
     
   </div>
@@ -392,14 +487,29 @@
         </header>
 
         
+        <details class="toc-mobile">
+          <summary>本文目录</summary>
+          
+          <a href="#你把它当什么决定了你愿意花多少力气" class="toc-link toc-l2">你把它当什么，决定了你愿意花多少力气</a>
+          
+          <a href="#控制系统的意义" class="toc-link toc-l2">控制系统的意义</a>
+          
+          <a href="#我是律师不是程序员" class="toc-link toc-l2">"我是律师，不是程序员"</a>
+          
+          <a href="#你选的关系决定你能走多远" class="toc-link toc-l2">你选的关系，决定你能走多远</a>
+          
+        </details>
+        
+
+        
         <figure class="article-cover">
           <img src="cover.png" alt="你以为你在选工具，其实你在选关系封面图" loading="lazy">
         </figure>
         
 
         <div class="article-body">
-          <p>!<a href="cover.png">封面</a></p>
-<p>!<a href="cover.png">封面</a></p>
+          <p><img src="cover.png" alt="封面" loading="lazy"></p>
+<p><img src="cover.png" alt="封面" loading="lazy"></p>
 <p>前阵子 Anthropic 发了一篇文章，讲 Claude 模型演进的五个阶段。前四个阶段——对话、推理、编程辅助、长程任务规划——都还好理解。第五个阶段他们用的词是"递归自我改进"：AI 开始分析自己、修改自己，进入了一个可以自我改造的阶段。</p>
 <p>这不是未来学。是他们已经实现的事。</p>
 <p>我把这篇文章转给几个律师朋友看。多数人的反应是"好的，等出了好产品告诉我"。这个反应本身没有问题。但它暴露了一个底层假设——而这个假设，决定了你未来三年能从 AI 那里拿到什么。</p>
@@ -418,30 +528,30 @@
 <p>伙伴心态：你在教一个实习生理解你的工作方式。你说"以后每次收到合同，先查客户清单确认我方身份，再按审查清单逐条过，最后输出三份文件"。这就是工作区规则。实习生需要这个，AI 也需要。</p>
 <p>工具心态：写脚本是多此一举，AI 直接干不就行了。</p>
 <p>伙伴心态：有些事是确定性的。PDF 转 Markdown、视频下载、批量提取案号——你教会它一次，它就永远会了，而且不消耗 token。这跟实习生一样：格式转换这种事，教一遍就够了，不用每次都解释。</p>
-<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340"&gt;
-  &lt;rect width="600" height="340" fill="#fff" rx="4"/&gt;
-  &lt;!-- Left column: 工具心态 --&gt;
-  &lt;rect x="30" y="50" width="255" height="260" fill="#f5f5f5" rx="4"/&gt;
-  &lt;text x="157" y="80" text-anchor="middle" font-size="16" font-weight="700" fill="#555"&gt;工具心态&lt;/text&gt;
-  &lt;line x1="60" y1="95" x2="255" y2="95" stroke="#ddd" stroke-width="1"/&gt;
-  &lt;text x="50" y="125" font-size="14" fill="#333"&gt;AI = 更好的 Westlaw&lt;/text&gt;
-  &lt;text x="50" y="155" font-size="14" fill="#333"&gt;等着供应商出好产品&lt;/text&gt;
-  &lt;text x="50" y="185" font-size="14" fill="#333"&gt;"我是律师，不学程序员工具"&lt;/text&gt;
-  &lt;text x="50" y="215" font-size="14" fill="#333"&gt;学 git/写规则 = 额外负担&lt;/text&gt;
-  &lt;text x="50" y="245" font-size="14" fill="#333"&gt;用就行了，不用理解&lt;/text&gt;
-  &lt;text x="157" y="285" text-anchor="middle" font-size="13" fill="#999"&gt;→ 天花板 = 供应商的版本号&lt;/text&gt;
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340">
+  <rect width="600" height="340" fill="#fff" rx="4"/>
+  <!-- Left column: 工具心态 -->
+  <rect x="30" y="50" width="255" height="260" fill="#f5f5f5" rx="4"/>
+  <text x="157" y="80" text-anchor="middle" font-size="16" font-weight="700" fill="#555">工具心态</text>
+  <line x1="60" y1="95" x2="255" y2="95" stroke="#ddd" stroke-width="1"/>
+  <text x="50" y="125" font-size="14" fill="#333">AI = 更好的 Westlaw</text>
+  <text x="50" y="155" font-size="14" fill="#333">等着供应商出好产品</text>
+  <text x="50" y="185" font-size="14" fill="#333">"我是律师，不学程序员工具"</text>
+  <text x="50" y="215" font-size="14" fill="#333">学 git/写规则 = 额外负担</text>
+  <text x="50" y="245" font-size="14" fill="#333">用就行了，不用理解</text>
+  <text x="157" y="285" text-anchor="middle" font-size="13" fill="#999">→ 天花板 = 供应商的版本号</text>
 
-  &lt;!-- Right column: 伙伴心态 --&gt;
-  &lt;rect x="315" y="50" width="255" height="260" fill="#f0f0f0" rx="4"/&gt;
-  &lt;text x="442" y="80" text-anchor="middle" font-size="16" font-weight="700" fill="#222"&gt;伙伴心态&lt;/text&gt;
-  &lt;line x1="345" y1="95" x2="540" y2="95" stroke="#ccc" stroke-width="1"/&gt;
-  &lt;text x="335" y="125" font-size="14" fill="#111"&gt;AI = 可以教的实习生&lt;/text&gt;
-  &lt;text x="335" y="155" font-size="14" fill="#111"&gt;自己养出适配你的版本&lt;/text&gt;
-  &lt;text x="335" y="185" font-size="14" fill="#111"&gt;"我在教它理解我的判断标准"&lt;/text&gt;
-  &lt;text x="335" y="215" font-size="14" fill="#111"&gt;git/规则/脚本 = 对齐工具&lt;/text&gt;
-  &lt;text x="335" y="245" font-size="14" fill="#111"&gt;每次交互都在进化&lt;/text&gt;
-  &lt;text x="442" y="285" text-anchor="middle" font-size="13" fill="#222"&gt;→ 天花板 = 你的迭代速度&lt;/text&gt;
-&lt;/svg&gt;</code></pre>
+  <!-- Right column: 伙伴心态 -->
+  <rect x="315" y="50" width="255" height="260" fill="#f0f0f0" rx="4"/>
+  <text x="442" y="80" text-anchor="middle" font-size="16" font-weight="700" fill="#222">伙伴心态</text>
+  <line x1="345" y1="95" x2="540" y2="95" stroke="#ccc" stroke-width="1"/>
+  <text x="335" y="125" font-size="14" fill="#111">AI = 可以教的实习生</text>
+  <text x="335" y="155" font-size="14" fill="#111">自己养出适配你的版本</text>
+  <text x="335" y="185" font-size="14" fill="#111">"我在教它理解我的判断标准"</text>
+  <text x="335" y="215" font-size="14" fill="#111">git/规则/脚本 = 对齐工具</text>
+  <text x="335" y="245" font-size="14" fill="#111">每次交互都在进化</text>
+  <text x="442" y="285" text-anchor="middle" font-size="13" fill="#222">→ 天花板 = 你的迭代速度</text>
+</svg></figure>
 <hr>
 <h2 id="控制系统的意义">控制系统的意义</h2>
 <p>在 Claude Code 的架构里，AI 被分成两部分：模型（model）和控制系统（harness）。模型负责理解和生成，控制系统负责管它——什么时候调什么工具、遵循什么规则、输出什么格式、存档到哪里。</p>
@@ -451,43 +561,43 @@
 <p><strong>脚本</strong>。确定性的工作——格式转换、视频下载、批量信息提取——不需要 AI 每次都"理解"一遍。写一个脚本，固定输入、固定流程、固定输出，零 token 消耗，永远可复用。脚本是你在告诉 AI："这种事以后不用问我，直接做。"</p>
 <p><strong>规则</strong>。这是 harness 里最核心的东西。规则是你把判断标准写下来：收到法律咨询先建文件夹、先查知识库再查商用数据库、输出必须附法条原文、碰到 PDF 先调转换脚本。规则越细，AI 越像你。</p>
 <p><strong>工作区</strong>。把上面这些东西按照一个特定工作场景组织起来，就是一个工作区。法律咨询是一个工作区，合同审核是另一个，案件分析是第三个。它们各有各的规则、各有各的知识库引用路径、各有各的输出模板。</p>
-<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 260"&gt;
-  &lt;rect width="600" height="260" fill="#fff" rx="4"/&gt;
-  &lt;text x="300" y="32" text-anchor="middle" font-size="16" font-weight="700" fill="#333"&gt;Harness = 你与 AI 的对齐层&lt;/text&gt;
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 260">
+  <rect width="600" height="260" fill="#fff" rx="4"/>
+  <text x="300" y="32" text-anchor="middle" font-size="16" font-weight="700" fill="#333">Harness = 你与 AI 的对齐层</text>
   
-  &lt;!-- Center: Harness box --&gt;
-  &lt;rect x="180" y="55" width="240" height="40" fill="#333" rx="4"/&gt;
-  &lt;text x="300" y="80" text-anchor="middle" font-size="15" font-weight="700" fill="#fff"&gt;Harness（控制系统）&lt;/text&gt;
+  <!-- Center: Harness box -->
+  <rect x="180" y="55" width="240" height="40" fill="#333" rx="4"/>
+  <text x="300" y="80" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">Harness（控制系统）</text>
   
-  &lt;!-- Four components --&gt;
-  &lt;rect x="30" y="125" width="110" height="50" fill="#f5f5f5" rx="3" stroke="#ccc" stroke-width="1"/&gt;
-  &lt;text x="85" y="148" text-anchor="middle" font-size="13" font-weight="600" fill="#333"&gt;Git&lt;/text&gt;
-  &lt;text x="85" y="165" text-anchor="middle" font-size="11" fill="#888"&gt;版本管理&lt;/text&gt;
+  <!-- Four components -->
+  <rect x="30" y="125" width="110" height="50" fill="#f5f5f5" rx="3" stroke="#ccc" stroke-width="1"/>
+  <text x="85" y="148" text-anchor="middle" font-size="13" font-weight="600" fill="#333">Git</text>
+  <text x="85" y="165" text-anchor="middle" font-size="11" fill="#888">版本管理</text>
   
-  &lt;rect x="155" y="125" width="110" height="50" fill="#f5f5f5" rx="3" stroke="#ccc" stroke-width="1"/&gt;
-  &lt;text x="210" y="148" text-anchor="middle" font-size="13" font-weight="600" fill="#333"&gt;脚本&lt;/text&gt;
-  &lt;text x="210" y="165" text-anchor="middle" font-size="11" fill="#888"&gt;确定性自动化&lt;/text&gt;
+  <rect x="155" y="125" width="110" height="50" fill="#f5f5f5" rx="3" stroke="#ccc" stroke-width="1"/>
+  <text x="210" y="148" text-anchor="middle" font-size="13" font-weight="600" fill="#333">脚本</text>
+  <text x="210" y="165" text-anchor="middle" font-size="11" fill="#888">确定性自动化</text>
   
-  &lt;rect x="280" y="125" width="110" height="50" fill="#f5f5f5" rx="3" stroke="#ccc" stroke-width="1"/&gt;
-  &lt;text x="335" y="148" text-anchor="middle" font-size="13" font-weight="600" fill="#333"&gt;规则&lt;/text&gt;
-  &lt;text x="335" y="165" text-anchor="middle" font-size="11" fill="#888"&gt;判断标准&lt;/text&gt;
+  <rect x="280" y="125" width="110" height="50" fill="#f5f5f5" rx="3" stroke="#ccc" stroke-width="1"/>
+  <text x="335" y="148" text-anchor="middle" font-size="13" font-weight="600" fill="#333">规则</text>
+  <text x="335" y="165" text-anchor="middle" font-size="11" fill="#888">判断标准</text>
   
-  &lt;rect x="405" y="125" width="110" height="50" fill="#f5f5f5" rx="3" stroke="#ccc" stroke-width="1"/&gt;
-  &lt;text x="460" y="148" text-anchor="middle" font-size="13" font-weight="600" fill="#333"&gt;工作区&lt;/text&gt;
-  &lt;text x="460" y="165" text-anchor="middle" font-size="11" fill="#888"&gt;场景化组织&lt;/text&gt;
+  <rect x="405" y="125" width="110" height="50" fill="#f5f5f5" rx="3" stroke="#ccc" stroke-width="1"/>
+  <text x="460" y="148" text-anchor="middle" font-size="13" font-weight="600" fill="#333">工作区</text>
+  <text x="460" y="165" text-anchor="middle" font-size="11" fill="#888">场景化组织</text>
   
-  &lt;!-- Arrows from components to bottom --&gt;
-  &lt;line x1="85" y1="175" x2="85" y2="195" stroke="#999" stroke-width="1"/&gt;
-  &lt;line x1="210" y1="175" x2="210" y2="195" stroke="#999" stroke-width="1"/&gt;
-  &lt;line x1="335" y1="175" x2="335" y2="195" stroke="#999" stroke-width="1"/&gt;
-  &lt;line x1="460" y1="175" x2="460" y2="195" stroke="#999" stroke-width="1"/&gt;
-  &lt;line x1="85" y1="195" x2="460" y2="195" stroke="#999" stroke-width="1"/&gt;
-  &lt;line x1="270" y1="195" x2="270" y2="220" stroke="#999" stroke-width="1"/&gt;
+  <!-- Arrows from components to bottom -->
+  <line x1="85" y1="175" x2="85" y2="195" stroke="#999" stroke-width="1"/>
+  <line x1="210" y1="175" x2="210" y2="195" stroke="#999" stroke-width="1"/>
+  <line x1="335" y1="175" x2="335" y2="195" stroke="#999" stroke-width="1"/>
+  <line x1="460" y1="175" x2="460" y2="195" stroke="#999" stroke-width="1"/>
+  <line x1="85" y1="195" x2="460" y2="195" stroke="#999" stroke-width="1"/>
+  <line x1="270" y1="195" x2="270" y2="220" stroke="#999" stroke-width="1"/>
   
-  &lt;!-- Result --&gt;
-  &lt;rect x="170" y="220" width="260" height="28" fill="#eee" rx="3"/&gt;
-  &lt;text x="300" y="239" text-anchor="middle" font-size="13" fill="#333"&gt;让 AI 越来越像你，而非越来越像所有人&lt;/text&gt;
-&lt;/svg&gt;</code></pre>
+  <!-- Result -->
+  <rect x="170" y="220" width="260" height="28" fill="#eee" rx="3"/>
+  <text x="300" y="239" text-anchor="middle" font-size="13" fill="#333">让 AI 越来越像你，而非越来越像所有人</text>
+</svg></figure>
 <p>工具心态下，你会问："为什么 Cloud Code 不能直接给我一个做好的工作区？"</p>
 <p>伙伴心态下，你会发现这个问题本身就问错了。不是"为什么没有现成的"，而是"现成的怎么可能适配你"。你的知识库跟别人不一样，你的客户习惯跟别人不一样，你对"好"的判断标准跟别人不一样。你不把标准写进规则里，AI 就只会给你一个平均水平的答案。</p>
 <hr>
@@ -522,6 +632,34 @@
 </blockquote>
         </div>
 
+        <nav class="article-prevnext" aria-label="上一篇/下一篇">
+          
+          <a class="prevnext-link prev" href="/articles/2026-06-08-法律人的-AI-控制论-从-Prompt-到-Harness/">
+            <span class="prevnext-label">&larr; 上一篇</span>
+            <span class="prevnext-title">法律人的 AI 控制论：从 Prompt 到 Harness</span>
+          </a>
+          
+          
+          <a class="prevnext-link next" href="/articles/2026-06-06-培养继承者/">
+            <span class="prevnext-label">下一篇 &rarr;</span>
+            <span class="prevnext-title">培养继承者</span>
+          </a>
+          
+        </nav>
+
+        
+        <div class="related-mobile">
+          <h4 class="related-title">同类文章</h4>
+          
+          <a class="related-link" href="/articles/2026-07-18-人口红利吃完了-下一种红利刚开局/">人口红利吃完了？下一种红利刚开局</a>
+          
+          <a class="related-link" href="/articles/2026-07-18-著作权三百年-它消化了六次技术冲击-为什么AI是例外/">著作权三百年：它消化了六次技术冲击，为什么AI是例外</a>
+          
+          <a class="related-link" href="/articles/2026-07-13-智能体该叫代理-一个翻译-决定了你怎么用-AI/">智能体该叫代理——一个翻译，决定了你怎么用 AI</a>
+          
+        </div>
+        
+
         <footer class="article-footer">
           <div class="article-bio-card">
             <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
@@ -533,14 +671,84 @@
           </div>
         </footer>
       </article>
+
+      
+      <nav class="article-toc" aria-label="目录">
+        <div class="toc-sticky">
+          <h4 class="toc-title">目录</h4>
+          
+          <a href="#你把它当什么决定了你愿意花多少力气" class="toc-link toc-l2" data-target="你把它当什么决定了你愿意花多少力气">你把它当什么，决定了你愿意花多少力气</a>
+          
+          <a href="#控制系统的意义" class="toc-link toc-l2" data-target="控制系统的意义">控制系统的意义</a>
+          
+          <a href="#我是律师不是程序员" class="toc-link toc-l2" data-target="我是律师不是程序员">"我是律师，不是程序员"</a>
+          
+          <a href="#你选的关系决定你能走多远" class="toc-link toc-l2" data-target="你选的关系决定你能走多远">你选的关系，决定你能走多远</a>
+          
+        </div>
+      </nav>
+      
     </div>
   </main>
 
   <script>
-    /* Progress bar only */
+    /* Progress bar */
     (function(){
       var bar=document.querySelector('.progress-bar-fill');
       if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+
+    /* TOC scrollspy — 当前阅读章节在目录中高亮 */
+    (function(){
+      var links=document.querySelectorAll('.article-toc .toc-link');
+      if(!links.length||!('IntersectionObserver' in window)){return}
+      var map={};
+      links.forEach(function(l){map[l.getAttribute('data-target')]=l});
+      var headings=document.querySelectorAll('.article-body h2[id],.article-body h3[id]');
+      if(!headings.length){return}
+      var visible={};
+      var observer=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){visible[e.target.id]=e.isIntersecting});
+        var current=null;
+        for(var i=0;i<headings.length;i++){
+          if(visible[headings[i].id]){current=headings[i].id;break}
+        }
+        if(!current){
+          for(var j=headings.length-1;j>=0;j--){
+            if(headings[j].getBoundingClientRect().top<100){current=headings[j].id;break}
+          }
+        }
+        links.forEach(function(l){l.classList.remove('is-active')});
+        if(current&&map[current]){map[current].classList.add('is-active')}
+      },{rootMargin:'-80px 0px -70% 0px',threshold:0});
+      headings.forEach(function(h){observer.observe(h)});
+    })();
+
+    /* Code block copy button */
+    (function(){
+      function copyText(text,done){
+        if(navigator.clipboard&&window.isSecureContext){
+          navigator.clipboard.writeText(text).then(done,done);
+        }else{
+          var ta=document.createElement('textarea');
+          ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+          document.body.appendChild(ta);ta.select();
+          try{document.execCommand('copy')}catch(e){}
+          document.body.removeChild(ta);done();
+        }
+      }
+      document.querySelectorAll('pre.code-block').forEach(function(pre){
+        var btn=document.createElement('button');
+        btn.type='button';btn.className='code-copy';btn.textContent='复制';
+        btn.addEventListener('click',function(){
+          var code=pre.querySelector('code');
+          copyText(code?code.innerText:pre.innerText,function(){
+            btn.textContent='已复制';btn.classList.add('is-done');
+            setTimeout(function(){btn.textContent='复制';btn.classList.remove('is-done')},1500);
+          });
+        });
+        pre.appendChild(btn);
+      });
     })();
   </script>
 </body>

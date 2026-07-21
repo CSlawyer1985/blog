@@ -132,7 +132,8 @@
     a{color:inherit;text-decoration:none}
 
     /* Body */
-    html,body{overflow-x:hidden}
+    html{scroll-behavior:smooth}
+    html,body{overflow-x:hidden;overflow-x:clip}
     body{
       background:#F3EDE3;
       background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
@@ -168,7 +169,7 @@
     .nav__links .sep{color:#C9C0B2;font-weight:300}
 
     /* Progress bar */
-    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:3px;z-index:50}
     .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
 
     /* Layout */
@@ -180,6 +181,10 @@
       padding:110px clamp(20px,5vw,72px) 80px;
       max-width:1160px;
       margin:0 auto;
+    }
+    /* ≥1200px 扩展为三栏（右栏 TOC） */
+    @media (min-width:1200px){
+      .article-layout{grid-template-columns:240px minmax(0,720px) minmax(0,200px);max-width:1296px}
     }
 
     /* Sidebar */
@@ -252,6 +257,93 @@
     .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
     .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
 
+    /* Anchor offset for fixed nav */
+    .article-body h2,.article-body h3{scroll-margin-top:96px}
+
+    /* SVG figures (```svg blocks rendered inline) */
+    .article-svg{
+      margin:28px 0;padding:20px;
+      border:1px solid #C9C0B2;background:#fff;
+      overflow-x:auto;text-align:center;
+    }
+    .article-svg svg{max-width:100%;height:auto;display:inline-block}
+
+    /* Right-rail TOC (desktop ≥1200px) */
+    .article-toc{display:none;position:relative}
+    .toc-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto}
+    .toc-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .toc-link{
+      display:block;padding:5px 0 5px 12px;
+      font-size:12.5px;line-height:1.45;color:#7d756a;
+      border-left:2px solid transparent;transition:color .2s,border-color .2s
+    }
+    .toc-link:hover{color:#1A1714}
+    .toc-link.toc-l3{padding-left:26px;font-size:12px}
+    .toc-link.is-active{color:#C0392B;border-left-color:#C0392B;font-weight:600}
+    @media (min-width:1200px){.article-toc{display:block}}
+
+    /* Mobile TOC (<1200px, collapsible) */
+    .toc-mobile{
+      margin:0 0 32px;padding:16px 20px;
+      border:1px solid #C9C0B2;background:rgba(243,237,227,.5)
+    }
+    .toc-mobile summary{
+      cursor:pointer;font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.1em;color:#C0392B;text-transform:uppercase;user-select:none
+    }
+    .toc-mobile .toc-link{margin-top:8px}
+    @media (min-width:1200px){.toc-mobile{display:none}}
+
+    /* Code copy button */
+    pre.code-block{position:relative}
+    .code-copy{
+      position:absolute;top:8px;right:8px;
+      padding:4px 10px;border:1px solid rgba(232,227,216,.25);border-radius:3px;
+      background:rgba(232,227,216,.08);color:#e8e3d8;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.04em;
+      cursor:pointer;opacity:0;transition:opacity .2s,background .2s
+    }
+    pre.code-block:hover .code-copy{opacity:1}
+    .code-copy:hover{background:rgba(232,227,216,.18)}
+    .code-copy.is-done{color:#7ac28a;border-color:rgba(122,194,138,.4)}
+    @media (hover:none){.code-copy{opacity:1}}
+
+    /* Prev / Next navigation */
+    .article-prevnext{
+      display:grid;grid-template-columns:1fr 1fr;gap:20px;
+      margin-top:56px;padding-top:28px;border-top:1px solid #C9C0B2
+    }
+    .prevnext-link{display:flex;flex-direction:column;gap:6px;min-width:0}
+    .prevnext-link.next{text-align:right;align-items:flex-end}
+    .prevnext-link.next:only-child{grid-column:2}
+    .prevnext-label{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.06em;color:#7d756a
+    }
+    .prevnext-title{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-size:16px;font-weight:600;color:#1A1714;line-height:1.4;
+      transition:color .25s
+    }
+    .prevnext-link:hover .prevnext-title{color:#C0392B}
+
+    /* Related articles (mobile only — sidebar hidden below 860px) */
+    .related-mobile{display:none;margin-top:32px}
+    .related-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:12px;padding-bottom:10px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .related-link{
+      display:block;padding:8px 0;font-size:14px;color:#3a342d;
+      border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .related-link:hover{color:#C0392B}
+
     /* Footer */
     .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
     .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
@@ -279,11 +371,14 @@
       .article-sidebar{display:none}
       .article-title{font-size:clamp(24px,5vw,32px)}
       .article-body{font-size:15px;line-height:1.8}
+      .related-mobile{display:block}
     }
     @media (max-width:600px){
       .article-layout{padding:80px 20px 48px}
       .article-meta-top{font-size:10px;gap:8px}
       .article-cover{margin-bottom:28px}
+      .article-prevnext{grid-template-columns:1fr;gap:16px}
+      .prevnext-link.next{text-align:left;align-items:flex-start}
     }
     @media (prefers-reduced-motion:reduce){
       *{animation:none!important;transition:none!important}
@@ -315,9 +410,9 @@
 
     <h4 class="sidebar-title">分类</h4>
     <nav class="sidebar-nav">
-      <a href="/articles/" class="sidebar-link">全部（123）</a>
+      <a href="/articles/" class="sidebar-link">全部（126）</a>
       
-      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（100）</a>
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（103）</a>
       
       <a href="/categories/legal-practice/" class="sidebar-link">法律实务（18）</a>
       
@@ -388,13 +483,64 @@
         </header>
 
         
+        <details class="toc-mobile">
+          <summary>本文目录</summary>
+          
+          <a href="#一数据背景" class="toc-link toc-l2">一、数据背景</a>
+          
+          <a href="#二最常见的死法证据没了" class="toc-link toc-l2">二、最常见的死法：证据没了</a>
+          
+          <a href="#未提供证据什么都没交" class="toc-link toc-l3">"未提供证据"：什么都没交</a>
+          
+          <a href="#不足以证明交了但差一口气" class="toc-link toc-l3">"不足以证明"：交了但差一口气</a>
+          
+          <a href="#建工案件不可省的五类证据" class="toc-link toc-l3">建工案件不可省的五类证据</a>
+          
+          <a href="#三上诉为什么失败" class="toc-link toc-l2">三、上诉为什么失败</a>
+          
+          <a href="#二审法官不重新认定事实" class="toc-link toc-l3">二审法官不重新认定事实</a>
+          
+          <a href="#哪些上诉理由注定被驳回" class="toc-link toc-l3">哪些上诉理由注定被驳回</a>
+          
+          <a href="#上诉前三个问题" class="toc-link toc-l3">上诉前三个问题</a>
+          
+          <a href="#四合同写漏了什么" class="toc-link toc-l2">四、合同写漏了什么</a>
+          
+          <a href="#付款条款发票能不能对抗付款" class="toc-link toc-l3">付款条款：发票能不能对抗付款？</a>
+          
+          <a href="#主体条款你和谁签的合同" class="toc-link toc-l3">主体条款：你和谁签的合同？</a>
+          
+          <a href="#变更条款口头变更等于没有变更" class="toc-link toc-l3">变更条款：口头变更等于没有变更</a>
+          
+          <a href="#结算条款付款时间的默认规则不一定对你有利" class="toc-link toc-l3">结算条款：付款时间的默认规则不一定对你有利</a>
+          
+          <a href="#五权利主张为什么被驳回" class="toc-link toc-l2">五、权利主张为什么被驳回</a>
+          
+          <a href="#优先受偿权三个最常见的失误" class="toc-link toc-l3">优先受偿权：三个最常见的失误</a>
+          
+          <a href="#合同无效抗辩想逃但逃不掉" class="toc-link toc-l3">合同无效抗辩：想逃但逃不掉</a>
+          
+          <a href="#质量异议说了不算得证明" class="toc-link toc-l3">质量异议：说了不算，得证明</a>
+          
+          <a href="#六那些不该发生的失误" class="toc-link toc-l2">六、那些不该发生的失误</a>
+          
+          <a href="#缺席判决" class="toc-link toc-l3">缺席判决</a>
+          
+          <a href="#法院释明后不申请鉴定" class="toc-link toc-l3">法院释明后不申请鉴定</a>
+          
+          <a href="#七结语" class="toc-link toc-l2">七、结语</a>
+          
+        </details>
+        
+
+        
         <figure class="article-cover">
           <img src="cover.png" alt="宁波建工纠纷败诉密码——从500份判决看当事人栽在哪儿封面图" loading="lazy">
         </figure>
         
 
         <div class="article-body">
-          <p>!<a href="cover.png">封面</a></p>
+          <p><img src="cover.png" alt="封面" loading="lazy"></p>
 <blockquote>
 <p>法律实务型 × 裁判数据分析型 | 约 6500 字</p>
 </blockquote>
@@ -412,44 +558,69 @@
 <p>406 条"本院认为"里，"不予支持"出现了 103 次。</p>
 <p>这不是一个修辞。是法官在告诉你：你的主张，过不了。</p>
 <p>而在所有被驳回的主张背后，有一个更底层的失败模式——证据缺失。我把法官的措辞按严重程度排了个序：</p>
-<p>| 法官写的 | 真实含义 | 件数 |</p>
-<p>|---------|---------|------|</p>
-<p>| "未提供证据证明" | 什么都没交 | 33 |</p>
-<p>| "不足以证明/认定" | 交了，但不够 | 15 |</p>
-<p>| "无充分证据" | 差一点 | 14 |</p>
-<p>| "举证不能" | 举证责任在你，你搞砸了 | 8 |</p>
+<table>
+<thead>
+<tr>
+<th>法官写的</th>
+<th>真实含义</th>
+<th>件数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"未提供证据证明"</td>
+<td>什么都没交</td>
+<td>33</td>
+</tr>
+<tr>
+<td>"不足以证明/认定"</td>
+<td>交了，但不够</td>
+<td>15</td>
+</tr>
+<tr>
+<td>"无充分证据"</td>
+<td>差一点</td>
+<td>14</td>
+</tr>
+<tr>
+<td>"举证不能"</td>
+<td>举证责任在你，你搞砸了</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
 <p>四种表述，加起来覆盖了 70 件案件。这不是边缘现象——是建工诉讼中最主流的败诉方式。</p>
-<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320"&gt;
-  &lt;rect width="600" height="320" fill="#fff" rx="6"/&gt;
-  &lt;text x="300" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#333"&gt;证据失败的四级梯度&lt;/text&gt;
-  &lt;text x="300" y="58" text-anchor="middle" font-size="13" fill="#999"&gt;法官措辞从轻到重，对应证据从有到无&lt;/text&gt;
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320">
+  <rect width="600" height="320" fill="#fff" rx="6"/>
+  <text x="300" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#333">证据失败的四级梯度</text>
+  <text x="300" y="58" text-anchor="middle" font-size="13" fill="#999">法官措辞从轻到重，对应证据从有到无</text>
 
-  &lt;!-- 四级梯形块 --&gt;
-  &lt;rect x="30" y="82" width="540" height="42" rx="4" fill="#f0f0f0" stroke="#ddd" stroke-width="1"/&gt;
-  &lt;text x="50" y="108" font-size="15" font-weight="700" fill="#555"&gt;"未提供证据证明"&lt;/text&gt;
-  &lt;text x="240" y="108" font-size="13" fill="#888"&gt;什么都没交&lt;/text&gt;
-  &lt;text x="510" y="108" font-size="15" font-weight="700" fill="#c41e3a" text-anchor="end"&gt;33 件&lt;/text&gt;
+  <!-- 四级梯形块 -->
+  <rect x="30" y="82" width="540" height="42" rx="4" fill="#f0f0f0" stroke="#ddd" stroke-width="1"/>
+  <text x="50" y="108" font-size="15" font-weight="700" fill="#555">"未提供证据证明"</text>
+  <text x="240" y="108" font-size="13" fill="#888">什么都没交</text>
+  <text x="510" y="108" font-size="15" font-weight="700" fill="#c41e3a" text-anchor="end">33 件</text>
 
-  &lt;rect x="60" y="130" width="480" height="42" rx="4" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/&gt;
-  &lt;text x="80" y="156" font-size="15" font-weight="700" fill="#555"&gt;"不足以证明/认定"&lt;/text&gt;
-  &lt;text x="260" y="156" font-size="13" fill="#888"&gt;交了，但不够&lt;/text&gt;
-  &lt;text x="510" y="156" font-size="15" font-weight="700" fill="#d4740e" text-anchor="end"&gt;15 件&lt;/text&gt;
+  <rect x="60" y="130" width="480" height="42" rx="4" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/>
+  <text x="80" y="156" font-size="15" font-weight="700" fill="#555">"不足以证明/认定"</text>
+  <text x="260" y="156" font-size="13" fill="#888">交了，但不够</text>
+  <text x="510" y="156" font-size="15" font-weight="700" fill="#d4740e" text-anchor="end">15 件</text>
 
-  &lt;rect x="90" y="178" width="420" height="42" rx="4" fill="#f8f8f8" stroke="#ddd" stroke-width="1"/&gt;
-  &lt;text x="110" y="204" font-size="15" font-weight="700" fill="#555"&gt;"无充分证据"&lt;/text&gt;
-  &lt;text x="245" y="204" font-size="13" fill="#888"&gt;差一点&lt;/text&gt;
-  &lt;text x="510" y="204" font-size="15" font-weight="700" fill="#d4a00e" text-anchor="end"&gt;14 件&lt;/text&gt;
+  <rect x="90" y="178" width="420" height="42" rx="4" fill="#f8f8f8" stroke="#ddd" stroke-width="1"/>
+  <text x="110" y="204" font-size="15" font-weight="700" fill="#555">"无充分证据"</text>
+  <text x="245" y="204" font-size="13" fill="#888">差一点</text>
+  <text x="510" y="204" font-size="15" font-weight="700" fill="#d4a00e" text-anchor="end">14 件</text>
 
-  &lt;rect x="120" y="226" width="360" height="42" rx="4" fill="#fafafa" stroke="#ddd" stroke-width="1"/&gt;
-  &lt;text x="140" y="252" font-size="15" font-weight="700" fill="#555"&gt;"举证不能"&lt;/text&gt;
-  &lt;text x="225" y="252" font-size="13" fill="#888"&gt;举证责任在你，搞砸了&lt;/text&gt;
-  &lt;text x="510" y="252" font-size="15" font-weight="700" fill="#888" text-anchor="end"&gt;8 件&lt;/text&gt;
+  <rect x="120" y="226" width="360" height="42" rx="4" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
+  <text x="140" y="252" font-size="15" font-weight="700" fill="#555">"举证不能"</text>
+  <text x="225" y="252" font-size="13" fill="#888">举证责任在你，搞砸了</text>
+  <text x="510" y="252" font-size="15" font-weight="700" fill="#888" text-anchor="end">8 件</text>
 
-  &lt;!-- 左侧标注 --&gt;
-  &lt;text x="18" y="108" font-size="12" fill="#aaa" text-anchor="end"&gt;最轻&lt;/text&gt;
-  &lt;text x="18" y="252" font-size="12" fill="#aaa" text-anchor="end"&gt;最重&lt;/text&gt;
-  &lt;line x1="22" y1="98" x2="22" y2="260" stroke="#ddd" stroke-width="1"/&gt;
-&lt;/svg&gt;</code></pre>
+  <!-- 左侧标注 -->
+  <text x="18" y="108" font-size="12" fill="#aaa" text-anchor="end">最轻</text>
+  <text x="18" y="252" font-size="12" fill="#aaa" text-anchor="end">最重</text>
+  <line x1="22" y1="98" x2="22" y2="260" stroke="#ddd" stroke-width="1"/>
+</svg></figure>
 <h3 id="未提供证据什么都没交">"未提供证据"：什么都没交</h3>
 <p>最典型的场景：被告提出抗辩——"工程质量有问题""工期延误了""已经付过了"——但一份证据都不交。</p>
 <p>(2025)浙0206民初14980号，被告辩称装修存在质量问题。法官的回应只有一句话："某公司辩称案涉装修存在质量问题，但未提供证据予以证明，其辩言本院不予采信。"一句话，抗辩全部作废。</p>
@@ -463,52 +634,60 @@
 <h3 id="建工案件不可省的五类证据">建工案件不可省的五类证据</h3>
 <p>从这些案件中反向归纳，以下五类证据缺了任何一类，都可能在某些类型的争议中直接败诉：</p>
 <ol>
-<li><strong>书面合同及全部补充协议</strong>——没有这个，连合同相对方都证明不了</li>
-<li><strong>付款凭证</strong>（银行流水、收据、对账单）——现金交易在法庭上等于没交易</li>
-<li><strong>竣工验收资料</strong>——质量争议中，没有验收记录就没有抗辩基础</li>
-<li><strong>往来函件和微信记录</strong>——催告、确认、变更、沟通，全在这里</li>
-<li><strong>结算文件</strong>（送审资料、审核意见、双方签章）——金额争议中，这是唯一的锚</li>
+<li><strong>书面合同及全部补充协议</strong>——没有这个，连合同相对方都证明不了
+</li>
+<li><strong>付款凭证</strong>（银行流水、收据、对账单）——现金交易在法庭上等于没交易
+</li>
+<li><strong>竣工验收资料</strong>——质量争议中，没有验收记录就没有抗辩基础
+</li>
+<li><strong>往来函件和微信记录</strong>——催告、确认、变更、沟通，全在这里
+</li>
+<li><strong>结算文件</strong>（送审资料、审核意见、双方签章）——金额争议中，这是唯一的锚
+</li>
 </ol>
 <hr>
 <h2 id="三上诉为什么失败">三、上诉为什么失败</h2>
 <p>58 件上诉案件，数据很残酷：</p>
 <ul>
-<li>40 件撤诉（69%）</li>
-<li>18 件实质性审理，全部维持原判</li>
-<li>实体改判：0 件</li>
+<li>40 件撤诉（69%）
+</li>
+<li>18 件实质性审理，全部维持原判
+</li>
+<li>实体改判：0 件
+</li>
 </ul>
-<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 280"&gt;
-  &lt;rect width="600" height="280" fill="#fff" rx="6"/&gt;
-  &lt;text x="300" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#333"&gt;58 件上诉的命运分流&lt;/text&gt;
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 280">
+  <rect width="600" height="280" fill="#fff" rx="6"/>
+  <text x="300" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#333">58 件上诉的命运分流</text>
 
-  &lt;!-- 总池子 --&gt;
-  &lt;rect x="215" y="52" width="170" height="44" rx="6" fill="#333"/&gt;
-  &lt;text x="300" y="80" text-anchor="middle" font-size="16" font-weight="700" fill="#fff"&gt;58 件上诉&lt;/text&gt;
+  <!-- 总池子 -->
+  <rect x="215" y="52" width="170" height="44" rx="6" fill="#333"/>
+  <text x="300" y="80" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">58 件上诉</text>
 
-  &lt;!-- 分流线 --&gt;
-  &lt;line x1="250" y1="96" x2="140" y2="138" stroke="#666" stroke-width="1.5"/&gt;
-  &lt;line x1="350" y1="96" x2="460" y2="138" stroke="#666" stroke-width="1.5"/&gt;
-  &lt;polygon points="136,134 140,124 144,134" fill="#666"/&gt;
+  <!-- 分流线 -->
+  <line x1="250" y1="96" x2="140" y2="138" stroke="#666" stroke-width="1.5"/>
+  <line x1="350" y1="96" x2="460" y2="138" stroke="#666" stroke-width="1.5"/>
+  <polygon points="136,134 140,124 144,134" fill="#666"/>
 
-  &lt;!-- 左分支：撤回 --&gt;
-  &lt;rect x="50" y="142" width="180" height="48" rx="6" fill="#f5f5f5" stroke="#ccc" stroke-width="1"/&gt;
-  &lt;text x="140" y="162" text-anchor="middle" font-size="14" fill="#888"&gt;撤回上诉&lt;/text&gt;
-  &lt;text x="140" y="182" text-anchor="middle" font-size="22" font-weight="700" fill="#c41e3a"&gt;40 件&lt;/text&gt;
+  <!-- 左分支：撤回 -->
+  <rect x="50" y="142" width="180" height="48" rx="6" fill="#f5f5f5" stroke="#ccc" stroke-width="1"/>
+  <text x="140" y="162" text-anchor="middle" font-size="14" fill="#888">撤回上诉</text>
+  <text x="140" y="182" text-anchor="middle" font-size="22" font-weight="700" fill="#c41e3a">40 件</text>
 
-  &lt;!-- 右分支：维持 --&gt;
-  &lt;rect x="370" y="142" width="180" height="48" rx="6" fill="#f5f5f5" stroke="#ccc" stroke-width="1"/&gt;
-  &lt;text x="460" y="162" text-anchor="middle" font-size="14" fill="#888"&gt;实质性审理&lt;/text&gt;
-  &lt;text x="460" y="182" text-anchor="middle" font-size="22" font-weight="700" fill="#333"&gt;18 件&lt;/text&gt;
+  <!-- 右分支：维持 -->
+  <rect x="370" y="142" width="180" height="48" rx="6" fill="#f5f5f5" stroke="#ccc" stroke-width="1"/>
+  <text x="460" y="162" text-anchor="middle" font-size="14" fill="#888">实质性审理</text>
+  <text x="460" y="182" text-anchor="middle" font-size="22" font-weight="700" fill="#333">18 件</text>
 
-  &lt;!-- 维持的后续 --&gt;
-  &lt;line x1="460" y1="190" x2="460" y2="220" stroke="#666" stroke-width="1.5"/&gt;
-  &lt;rect x="370" y="222" width="180" height="36" rx="6" fill="#333"/&gt;
-  &lt;text x="460" y="245" text-anchor="middle" font-size="13" font-weight="700" fill="#fff"&gt;全部维持原判&lt;/text&gt;
+  <!-- 维持的后续 -->
+  <line x1="460" y1="190" x2="460" y2="220" stroke="#666" stroke-width="1.5"/>
+  <rect x="370" y="222" width="180" height="36" rx="6" fill="#333"/>
+  <text x="460" y="245" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">全部维持原判</text>
 
-  &lt;!-- 下方标注 --&gt;
-  &lt;text x="140" y="210" text-anchor="middle" font-size="12" fill="#aaa"&gt;69%&lt;/text&gt;
-  &lt;text x="460" y="275" text-anchor="middle" font-size="13" fill="#c41e3a" font-weight="700"&gt;实体改判：0 件&lt;/text&gt;
-&lt;/svg&gt;</code></pre>
+  <!-- 下方标注 -->
+  <text x="140" y="210" text-anchor="middle" font-size="12" fill="#aaa">69%</text>
+  <text x="460" y="275" text-anchor="middle" font-size="13" fill="#c41e3a" font-weight="700">实体改判：0 件</text>
+</svg></figure>
 <p>69% 的撤回率意味着什么？意味着超过三分之二的上诉人，在交了上诉费、请了律师、启动了二审程序之后，自己放弃了。撤回的原因没有写在裁定书里，但观察那 18 件被驳回的判决书，答案浮在水面上。</p>
 <h3 id="二审法官不重新认定事实">二审法官不重新认定事实</h3>
 <p>18 件维持判决的"本院认为"几乎全部使用同一模板：</p>
@@ -524,15 +703,21 @@
 <p>(2026)浙02民终45号，上诉人主张谢某共同承担还款责任，理由是谢某与郑某是恋爱关系且谢某的微信由郑某使用——法官的回应："难以依此认定胡某与谢某之间存在合同关系，故胡某之上述主张依据不足，应不予支持。"</p>
 <p>以下三种上诉理由，几乎注定失败：</p>
 <ul>
-<li>"一审判得不对"——没有新证据，二审不重新认定事实</li>
-<li>"鉴定结论不合理"——除非程序违法，二审不推翻鉴定</li>
-<li>"对方应该承担更多责任"——除非你能证明一审事实认定有明显错误</li>
+<li>"一审判得不对"——没有新证据，二审不重新认定事实
+</li>
+<li>"鉴定结论不合理"——除非程序违法，二审不推翻鉴定
+</li>
+<li>"对方应该承担更多责任"——除非你能证明一审事实认定有明显错误
+</li>
 </ul>
 <h3 id="上诉前三个问题">上诉前三个问题</h3>
 <ol>
-<li>一审程序有没有错误？</li>
-<li>有没有一审没交过的新证据？</li>
-<li>一审认定的事实有没有明显违背在案证据的地方？</li>
+<li>一审程序有没有错误？
+</li>
+<li>有没有一审没交过的新证据？
+</li>
+<li>一审认定的事实有没有明显违背在案证据的地方？
+</li>
 </ol>
 <p>三个答案都是"没有"的话，上诉大概率就是陪跑——69% 的撤回者最后也意识到了这一点，只是他们已经花了一轮钱。</p>
 <hr>
@@ -590,38 +775,38 @@
 <p>法官的释明是一个明确的信号——"你现在的证据不够，给你一个机会补"。这个机会不抓住，案子就结束了。</p>
 <hr>
 <h2 id="七结语">七、结语</h2>
-<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300"&gt;
-  &lt;rect width="600" height="300" fill="#fff" rx="6"/&gt;
-  &lt;text x="300" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#333"&gt;败诉原因集中度示意&lt;/text&gt;
-  &lt;text x="300" y="56" text-anchor="middle" font-size="13" fill="#999"&gt;绝大多数失败集中在四个区域&lt;/text&gt;
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">
+  <rect width="600" height="300" fill="#fff" rx="6"/>
+  <text x="300" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#333">败诉原因集中度示意</text>
+  <text x="300" y="56" text-anchor="middle" font-size="13" fill="#999">绝大多数失败集中在四个区域</text>
 
-  &lt;!-- 证据失败 — 最大块 --&gt;
-  &lt;rect x="36" y="80" width="250" height="130" rx="6" fill="#333"/&gt;
-  &lt;text x="161" y="115" text-anchor="middle" font-size="17" font-weight="700" fill="#fff"&gt;证据失败&lt;/text&gt;
-  &lt;text x="161" y="140" text-anchor="middle" font-size="13" fill="#ccc"&gt;70 件（未提供 / 不足以 / 无充分）&lt;/text&gt;
-  &lt;text x="161" y="162" text-anchor="middle" font-size="12" fill="#999"&gt;最主流的败诉方式&lt;/text&gt;
-  &lt;text x="161" y="195" text-anchor="middle" font-size="11" fill="#888"&gt;→ 第二章&lt;/text&gt;
+  <!-- 证据失败 — 最大块 -->
+  <rect x="36" y="80" width="250" height="130" rx="6" fill="#333"/>
+  <text x="161" y="115" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">证据失败</text>
+  <text x="161" y="140" text-anchor="middle" font-size="13" fill="#ccc">70 件（未提供 / 不足以 / 无充分）</text>
+  <text x="161" y="162" text-anchor="middle" font-size="12" fill="#999">最主流的败诉方式</text>
+  <text x="161" y="195" text-anchor="middle" font-size="11" fill="#888">→ 第二章</text>
 
-  &lt;!-- 上诉失败 --&gt;
-  &lt;rect x="302" y="80" width="262" height="60" rx="6" fill="#555"/&gt;
-  &lt;text x="433" y="105" text-anchor="middle" font-size="16" font-weight="700" fill="#fff"&gt;上诉失败&lt;/text&gt;
-  &lt;text x="433" y="125" text-anchor="middle" font-size="12" fill="#ccc"&gt;58 件上诉，69% 撤回，0 件实体改判&lt;/text&gt;
-  &lt;text x="433" y="137" text-anchor="middle" font-size="11" fill="#999"&gt;→ 第三章&lt;/text&gt;
+  <!-- 上诉失败 -->
+  <rect x="302" y="80" width="262" height="60" rx="6" fill="#555"/>
+  <text x="433" y="105" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">上诉失败</text>
+  <text x="433" y="125" text-anchor="middle" font-size="12" fill="#ccc">58 件上诉，69% 撤回，0 件实体改判</text>
+  <text x="433" y="137" text-anchor="middle" font-size="11" fill="#999">→ 第三章</text>
 
-  &lt;!-- 合同失败 --&gt;
-  &lt;rect x="302" y="150" width="124" height="60" rx="6" fill="#777"/&gt;
-  &lt;text x="364" y="175" text-anchor="middle" font-size="15" font-weight="700" fill="#fff"&gt;合同失败&lt;/text&gt;
-  &lt;text x="364" y="195" text-anchor="middle" font-size="11" fill="#ddd"&gt;→ 第四章&lt;/text&gt;
+  <!-- 合同失败 -->
+  <rect x="302" y="150" width="124" height="60" rx="6" fill="#777"/>
+  <text x="364" y="175" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">合同失败</text>
+  <text x="364" y="195" text-anchor="middle" font-size="11" fill="#ddd">→ 第四章</text>
 
-  &lt;!-- 权利失败 --&gt;
-  &lt;rect x="440" y="150" width="124" height="60" rx="6" fill="#999"/&gt;
-  &lt;text x="502" y="175" text-anchor="middle" font-size="15" font-weight="700" fill="#fff"&gt;权利失败&lt;/text&gt;
-  &lt;text x="502" y="195" text-anchor="middle" font-size="11" fill="#eee"&gt;→ 第五章&lt;/text&gt;
+  <!-- 权利失败 -->
+  <rect x="440" y="150" width="124" height="60" rx="6" fill="#999"/>
+  <text x="502" y="175" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">权利失败</text>
+  <text x="502" y="195" text-anchor="middle" font-size="11" fill="#eee">→ 第五章</text>
 
-  &lt;!-- 底部注释 --&gt;
-  &lt;text x="300" y="248" text-anchor="middle" font-size="13" fill="#888"&gt;四个维度几乎覆盖了所有失败模式&lt;/text&gt;
-  &lt;text x="300" y="272" text-anchor="middle" font-size="12" fill="#aaa"&gt;每个维度之下，败诉原因高度集中、高度可预测&lt;/text&gt;
-&lt;/svg&gt;</code></pre>
+  <!-- 底部注释 -->
+  <text x="300" y="248" text-anchor="middle" font-size="13" fill="#888">四个维度几乎覆盖了所有失败模式</text>
+  <text x="300" y="272" text-anchor="middle" font-size="12" fill="#aaa">每个维度之下，败诉原因高度集中、高度可预测</text>
+</svg></figure>
 <p>从 500 份文书里找败诉规律，结论比想象中集中：</p>
 <p><strong>最主流的失败模式不是法律理解错误，是证据缺失。</strong> 48 件案件什么都没交，15 件交了但不够——这些不是因为法律太难，是因为当事人在起诉或应诉的时候没有认真对待"举证"这个动作。</p>
 <p><strong>上诉的 ROI 需要认真算。</strong> 69% 的撤回率，0% 的实体改判率，大量上诉在一审判决后没有新证据、没有程序错误、没有事实认定明显偏差的情况下提起。二审不是重审——如果没带着新东西上去，大概率是要带着老结果下来。</p>
@@ -631,6 +816,34 @@
 <hr>
 <p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享，四明山法师AI夜校公益培训项目发起人。</p>
         </div>
+
+        <nav class="article-prevnext" aria-label="上一篇/下一篇">
+          
+          <a class="prevnext-link prev" href="/articles/2026-05-23-让AI去理解AI-从一段聊天看法律人跨过工程化门槛的真实路径/">
+            <span class="prevnext-label">&larr; 上一篇</span>
+            <span class="prevnext-title">让AI去理解AI：从一段聊天看法律人跨过工程化门槛的真实路径</span>
+          </a>
+          
+          
+          <a class="prevnext-link next" href="/articles/2026-05-23-宁波建设工程法官的裁判密码/">
+            <span class="prevnext-label">下一篇 &rarr;</span>
+            <span class="prevnext-title">宁波建设工程法官的裁判密码</span>
+          </a>
+          
+        </nav>
+
+        
+        <div class="related-mobile">
+          <h4 class="related-title">同类文章</h4>
+          
+          <a class="related-link" href="/articles/2026-07-01-国有资产流失的历史演进/">国有资产流失的历史演进</a>
+          
+          <a class="related-link" href="/articles/2026-07-01-从防止国有资产流失到国有资本经营判断规则-国资监管制度演进的反向后果/">从防止国有资产流失到国有资本经营判断规则：国资监管制度演进的反向后果</a>
+          
+          <a class="related-link" href="/articles/2026-07-01-国资监管不能只设红线-还要给方法/">国资监管不能只设红线，还要给方法</a>
+          
+        </div>
+        
 
         <footer class="article-footer">
           <div class="article-bio-card">
@@ -643,14 +856,120 @@
           </div>
         </footer>
       </article>
+
+      
+      <nav class="article-toc" aria-label="目录">
+        <div class="toc-sticky">
+          <h4 class="toc-title">目录</h4>
+          
+          <a href="#一数据背景" class="toc-link toc-l2" data-target="一数据背景">一、数据背景</a>
+          
+          <a href="#二最常见的死法证据没了" class="toc-link toc-l2" data-target="二最常见的死法证据没了">二、最常见的死法：证据没了</a>
+          
+          <a href="#未提供证据什么都没交" class="toc-link toc-l3" data-target="未提供证据什么都没交">"未提供证据"：什么都没交</a>
+          
+          <a href="#不足以证明交了但差一口气" class="toc-link toc-l3" data-target="不足以证明交了但差一口气">"不足以证明"：交了但差一口气</a>
+          
+          <a href="#建工案件不可省的五类证据" class="toc-link toc-l3" data-target="建工案件不可省的五类证据">建工案件不可省的五类证据</a>
+          
+          <a href="#三上诉为什么失败" class="toc-link toc-l2" data-target="三上诉为什么失败">三、上诉为什么失败</a>
+          
+          <a href="#二审法官不重新认定事实" class="toc-link toc-l3" data-target="二审法官不重新认定事实">二审法官不重新认定事实</a>
+          
+          <a href="#哪些上诉理由注定被驳回" class="toc-link toc-l3" data-target="哪些上诉理由注定被驳回">哪些上诉理由注定被驳回</a>
+          
+          <a href="#上诉前三个问题" class="toc-link toc-l3" data-target="上诉前三个问题">上诉前三个问题</a>
+          
+          <a href="#四合同写漏了什么" class="toc-link toc-l2" data-target="四合同写漏了什么">四、合同写漏了什么</a>
+          
+          <a href="#付款条款发票能不能对抗付款" class="toc-link toc-l3" data-target="付款条款发票能不能对抗付款">付款条款：发票能不能对抗付款？</a>
+          
+          <a href="#主体条款你和谁签的合同" class="toc-link toc-l3" data-target="主体条款你和谁签的合同">主体条款：你和谁签的合同？</a>
+          
+          <a href="#变更条款口头变更等于没有变更" class="toc-link toc-l3" data-target="变更条款口头变更等于没有变更">变更条款：口头变更等于没有变更</a>
+          
+          <a href="#结算条款付款时间的默认规则不一定对你有利" class="toc-link toc-l3" data-target="结算条款付款时间的默认规则不一定对你有利">结算条款：付款时间的默认规则不一定对你有利</a>
+          
+          <a href="#五权利主张为什么被驳回" class="toc-link toc-l2" data-target="五权利主张为什么被驳回">五、权利主张为什么被驳回</a>
+          
+          <a href="#优先受偿权三个最常见的失误" class="toc-link toc-l3" data-target="优先受偿权三个最常见的失误">优先受偿权：三个最常见的失误</a>
+          
+          <a href="#合同无效抗辩想逃但逃不掉" class="toc-link toc-l3" data-target="合同无效抗辩想逃但逃不掉">合同无效抗辩：想逃但逃不掉</a>
+          
+          <a href="#质量异议说了不算得证明" class="toc-link toc-l3" data-target="质量异议说了不算得证明">质量异议：说了不算，得证明</a>
+          
+          <a href="#六那些不该发生的失误" class="toc-link toc-l2" data-target="六那些不该发生的失误">六、那些不该发生的失误</a>
+          
+          <a href="#缺席判决" class="toc-link toc-l3" data-target="缺席判决">缺席判决</a>
+          
+          <a href="#法院释明后不申请鉴定" class="toc-link toc-l3" data-target="法院释明后不申请鉴定">法院释明后不申请鉴定</a>
+          
+          <a href="#七结语" class="toc-link toc-l2" data-target="七结语">七、结语</a>
+          
+        </div>
+      </nav>
+      
     </div>
   </main>
 
   <script>
-    /* Progress bar only */
+    /* Progress bar */
     (function(){
       var bar=document.querySelector('.progress-bar-fill');
       if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+
+    /* TOC scrollspy — 当前阅读章节在目录中高亮 */
+    (function(){
+      var links=document.querySelectorAll('.article-toc .toc-link');
+      if(!links.length||!('IntersectionObserver' in window)){return}
+      var map={};
+      links.forEach(function(l){map[l.getAttribute('data-target')]=l});
+      var headings=document.querySelectorAll('.article-body h2[id],.article-body h3[id]');
+      if(!headings.length){return}
+      var visible={};
+      var observer=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){visible[e.target.id]=e.isIntersecting});
+        var current=null;
+        for(var i=0;i<headings.length;i++){
+          if(visible[headings[i].id]){current=headings[i].id;break}
+        }
+        if(!current){
+          for(var j=headings.length-1;j>=0;j--){
+            if(headings[j].getBoundingClientRect().top<100){current=headings[j].id;break}
+          }
+        }
+        links.forEach(function(l){l.classList.remove('is-active')});
+        if(current&&map[current]){map[current].classList.add('is-active')}
+      },{rootMargin:'-80px 0px -70% 0px',threshold:0});
+      headings.forEach(function(h){observer.observe(h)});
+    })();
+
+    /* Code block copy button */
+    (function(){
+      function copyText(text,done){
+        if(navigator.clipboard&&window.isSecureContext){
+          navigator.clipboard.writeText(text).then(done,done);
+        }else{
+          var ta=document.createElement('textarea');
+          ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+          document.body.appendChild(ta);ta.select();
+          try{document.execCommand('copy')}catch(e){}
+          document.body.removeChild(ta);done();
+        }
+      }
+      document.querySelectorAll('pre.code-block').forEach(function(pre){
+        var btn=document.createElement('button');
+        btn.type='button';btn.className='code-copy';btn.textContent='复制';
+        btn.addEventListener('click',function(){
+          var code=pre.querySelector('code');
+          copyText(code?code.innerText:pre.innerText,function(){
+            btn.textContent='已复制';btn.classList.add('is-done');
+            setTimeout(function(){btn.textContent='复制';btn.classList.remove('is-done')},1500);
+          });
+        });
+        pre.appendChild(btn);
+      });
     })();
   </script>
 </body>

@@ -132,7 +132,8 @@
     a{color:inherit;text-decoration:none}
 
     /* Body */
-    html,body{overflow-x:hidden}
+    html{scroll-behavior:smooth}
+    html,body{overflow-x:hidden;overflow-x:clip}
     body{
       background:#F3EDE3;
       background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
@@ -168,7 +169,7 @@
     .nav__links .sep{color:#C9C0B2;font-weight:300}
 
     /* Progress bar */
-    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:3px;z-index:50}
     .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
 
     /* Layout */
@@ -180,6 +181,10 @@
       padding:110px clamp(20px,5vw,72px) 80px;
       max-width:1160px;
       margin:0 auto;
+    }
+    /* ≥1200px 扩展为三栏（右栏 TOC） */
+    @media (min-width:1200px){
+      .article-layout{grid-template-columns:240px minmax(0,720px) minmax(0,200px);max-width:1296px}
     }
 
     /* Sidebar */
@@ -252,6 +257,93 @@
     .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
     .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
 
+    /* Anchor offset for fixed nav */
+    .article-body h2,.article-body h3{scroll-margin-top:96px}
+
+    /* SVG figures (```svg blocks rendered inline) */
+    .article-svg{
+      margin:28px 0;padding:20px;
+      border:1px solid #C9C0B2;background:#fff;
+      overflow-x:auto;text-align:center;
+    }
+    .article-svg svg{max-width:100%;height:auto;display:inline-block}
+
+    /* Right-rail TOC (desktop ≥1200px) */
+    .article-toc{display:none;position:relative}
+    .toc-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto}
+    .toc-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .toc-link{
+      display:block;padding:5px 0 5px 12px;
+      font-size:12.5px;line-height:1.45;color:#7d756a;
+      border-left:2px solid transparent;transition:color .2s,border-color .2s
+    }
+    .toc-link:hover{color:#1A1714}
+    .toc-link.toc-l3{padding-left:26px;font-size:12px}
+    .toc-link.is-active{color:#C0392B;border-left-color:#C0392B;font-weight:600}
+    @media (min-width:1200px){.article-toc{display:block}}
+
+    /* Mobile TOC (<1200px, collapsible) */
+    .toc-mobile{
+      margin:0 0 32px;padding:16px 20px;
+      border:1px solid #C9C0B2;background:rgba(243,237,227,.5)
+    }
+    .toc-mobile summary{
+      cursor:pointer;font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.1em;color:#C0392B;text-transform:uppercase;user-select:none
+    }
+    .toc-mobile .toc-link{margin-top:8px}
+    @media (min-width:1200px){.toc-mobile{display:none}}
+
+    /* Code copy button */
+    pre.code-block{position:relative}
+    .code-copy{
+      position:absolute;top:8px;right:8px;
+      padding:4px 10px;border:1px solid rgba(232,227,216,.25);border-radius:3px;
+      background:rgba(232,227,216,.08);color:#e8e3d8;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.04em;
+      cursor:pointer;opacity:0;transition:opacity .2s,background .2s
+    }
+    pre.code-block:hover .code-copy{opacity:1}
+    .code-copy:hover{background:rgba(232,227,216,.18)}
+    .code-copy.is-done{color:#7ac28a;border-color:rgba(122,194,138,.4)}
+    @media (hover:none){.code-copy{opacity:1}}
+
+    /* Prev / Next navigation */
+    .article-prevnext{
+      display:grid;grid-template-columns:1fr 1fr;gap:20px;
+      margin-top:56px;padding-top:28px;border-top:1px solid #C9C0B2
+    }
+    .prevnext-link{display:flex;flex-direction:column;gap:6px;min-width:0}
+    .prevnext-link.next{text-align:right;align-items:flex-end}
+    .prevnext-link.next:only-child{grid-column:2}
+    .prevnext-label{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.06em;color:#7d756a
+    }
+    .prevnext-title{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-size:16px;font-weight:600;color:#1A1714;line-height:1.4;
+      transition:color .25s
+    }
+    .prevnext-link:hover .prevnext-title{color:#C0392B}
+
+    /* Related articles (mobile only — sidebar hidden below 860px) */
+    .related-mobile{display:none;margin-top:32px}
+    .related-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:12px;padding-bottom:10px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .related-link{
+      display:block;padding:8px 0;font-size:14px;color:#3a342d;
+      border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .related-link:hover{color:#C0392B}
+
     /* Footer */
     .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
     .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
@@ -279,11 +371,14 @@
       .article-sidebar{display:none}
       .article-title{font-size:clamp(24px,5vw,32px)}
       .article-body{font-size:15px;line-height:1.8}
+      .related-mobile{display:block}
     }
     @media (max-width:600px){
       .article-layout{padding:80px 20px 48px}
       .article-meta-top{font-size:10px;gap:8px}
       .article-cover{margin-bottom:28px}
+      .article-prevnext{grid-template-columns:1fr;gap:16px}
+      .prevnext-link.next{text-align:left;align-items:flex-start}
     }
     @media (prefers-reduced-motion:reduce){
       *{animation:none!important;transition:none!important}
@@ -315,9 +410,9 @@
 
     <h4 class="sidebar-title">分类</h4>
     <nav class="sidebar-nav">
-      <a href="/articles/" class="sidebar-link">全部（123）</a>
+      <a href="/articles/" class="sidebar-link">全部（126）</a>
       
-      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（100）</a>
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（103）</a>
       
       <a href="/categories/legal-practice/" class="sidebar-link">法律实务（18）</a>
       
@@ -388,13 +483,40 @@
         </header>
 
         
+        <details class="toc-mobile">
+          <summary>本文目录</summary>
+          
+          <a href="#一为什么读本院认为" class="toc-link toc-l2">一、为什么读"本院认为"</a>
+          
+          <a href="#二二审论证的标准模板" class="toc-link toc-l2">二、二审论证的"标准模板"</a>
+          
+          <a href="#三四个实务尺度的切片" class="toc-link toc-l2">三、四个实务尺度的切片</a>
+          
+          <a href="#A发票能不能对抗付款" class="toc-link toc-l3">A. 发票能不能对抗付款？</a>
+          
+          <a href="#B合同相对方怎么认定" class="toc-link toc-l3">B. 合同相对方怎么认定？</a>
+          
+          <a href="#C合同无效后的工程款怎么算" class="toc-link toc-l3">C. 合同无效后的工程款怎么算？</a>
+          
+          <a href="#D优先受偿权的三个不" class="toc-link toc-l3">D. 优先受偿权的三个"不"</a>
+          
+          <a href="#四法官的自由裁量地图" class="toc-link toc-l2">四、法官的自由裁量地图</a>
+          
+          <a href="#五法官不说的举证标准" class="toc-link toc-l2">五、法官不说的举证标准</a>
+          
+          <a href="#六结语" class="toc-link toc-l2">六、结语</a>
+          
+        </details>
+        
+
+        
         <figure class="article-cover">
           <img src="cover.png" alt="宁波建设工程法官的裁判密码封面图" loading="lazy">
         </figure>
         
 
         <div class="article-body">
-          <p>!<a href="cover.png">封面</a></p>
+          <p><img src="cover.png" alt="封面" loading="lazy"></p>
 <blockquote>
 <p>从 500 份文书的"本院认为"，读出法官没说出口的裁判逻辑。</p>
 </blockquote>
@@ -421,41 +543,41 @@
 <p>以一份典型判决为例（(2026)浙02民终337号）：分包合同纠纷，上诉人主张协议书存在重大误解、显失公平，且签字人无权限。二审法院的回应非常简洁——"均无充分的反证推翻该公司加盖的公章，故对其异议，本院不予采信"。一句话驳回三项上诉理由，不加展开。</p>
 <p>另一案（(2026)浙02民终549号）中，上诉人主张应先扣除 26% 的税费和管理费。二审回应："现有证据不能证明双方就此进行过沟通且达成一致意见，因此一审法院不予采纳，并无不当。"</p>
 <p>注意这个措辞——"并无不当"，不是"完全正确"，不是"理由充分"。二审法官选择的措辞是克制的、有限度的：一审的认定没有错到需要纠正的程度。这种措辞本身就传递了一个信号：二审的功能不是重新审理，而是纠错。只要一审没有明显错误，就应当维持。</p>
-<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220"&gt;
-  &lt;rect width="600" height="220" fill="#fff" rx="6"/&gt;
-  &lt;text x="300" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#333"&gt;二审维持原判的论证模板&lt;/text&gt;
-  &lt;!-- Step 1 --&gt;
-  &lt;rect x="30" y="50" width="115" height="60" rx="4" fill="#f5f5f5" stroke="#999" stroke-width="1"/&gt;
-  &lt;text x="87" y="75" text-anchor="middle" font-size="12" font-weight="600" fill="#555"&gt;① 确认一审事实&lt;/text&gt;
-  &lt;text x="87" y="95" text-anchor="middle" font-size="11" fill="#888"&gt;"一审认定X&lt;/text&gt;
-  &lt;text x="87" y="108" text-anchor="middle" font-size="11" fill="#888"&gt;并无不当"&lt;/text&gt;
-  &lt;!-- Arrow 1 --&gt;
-  &lt;text x="155" y="85" text-anchor="middle" font-size="14" fill="#bbb"&gt;→&lt;/text&gt;
-  &lt;!-- Step 2 --&gt;
-  &lt;rect x="170" y="50" width="115" height="60" rx="4" fill="#f5f5f5" stroke="#999" stroke-width="1"/&gt;
-  &lt;text x="227" y="75" text-anchor="middle" font-size="12" font-weight="600" fill="#555"&gt;② 回应上诉理由&lt;/text&gt;
-  &lt;text x="227" y="95" text-anchor="middle" font-size="11" fill="#888"&gt;"上诉人主张Y&lt;/text&gt;
-  &lt;text x="227" y="108" text-anchor="middle" font-size="11" fill="#888"&gt;但证据不能证明"&lt;/text&gt;
-  &lt;!-- Arrow 2 --&gt;
-  &lt;text x="295" y="85" text-anchor="middle" font-size="14" fill="#bbb"&gt;→&lt;/text&gt;
-  &lt;!-- Step 3 --&gt;
-  &lt;rect x="310" y="50" width="115" height="60" rx="4" fill="#f5f5f5" stroke="#999" stroke-width="1"/&gt;
-  &lt;text x="367" y="75" text-anchor="middle" font-size="12" font-weight="600" fill="#555"&gt;③ 结论公式&lt;/text&gt;
-  &lt;text x="367" y="95" text-anchor="middle" font-size="11" fill="#888"&gt;"上诉请求不能成立&lt;/text&gt;
-  &lt;text x="367" y="108" text-anchor="middle" font-size="11" fill="#888"&gt;应予驳回"&lt;/text&gt;
-  &lt;!-- Arrow 3 --&gt;
-  &lt;text x="435" y="85" text-anchor="middle" font-size="14" fill="#bbb"&gt;→&lt;/text&gt;
-  &lt;!-- Step 4 --&gt;
-  &lt;rect x="450" y="50" width="120" height="60" rx="4" fill="#f5f5f5" stroke="#999" stroke-width="1"/&gt;
-  &lt;text x="510" y="75" text-anchor="middle" font-size="12" font-weight="600" fill="#555"&gt;④ 援引法条&lt;/text&gt;
-  &lt;text x="510" y="95" text-anchor="middle" font-size="11" fill="#888"&gt;民诉法177条&lt;/text&gt;
-  &lt;text x="510" y="108" text-anchor="middle" font-size="11" fill="#888"&gt;第1款第1项&lt;/text&gt;
-  &lt;!-- Bottom insight --&gt;
-  &lt;rect x="100" y="135" width="400" height="36" rx="4" fill="#2a2a2a"/&gt;
-  &lt;text x="300" y="158" text-anchor="middle" font-size="13" fill="#fff"&gt;改判的突破口：新证据 + 程序错误，而非对一审事实认定的异议&lt;/text&gt;
-  &lt;!-- Bottom stats --&gt;
-  &lt;text x="300" y="200" text-anchor="middle" font-size="11" fill="#999"&gt;58件上诉：18件实质审理全部维持 · 40件撤回（撤回率69%）&lt;/text&gt;
-&lt;/svg&gt;</code></pre>
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220">
+  <rect width="600" height="220" fill="#fff" rx="6"/>
+  <text x="300" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#333">二审维持原判的论证模板</text>
+  <!-- Step 1 -->
+  <rect x="30" y="50" width="115" height="60" rx="4" fill="#f5f5f5" stroke="#999" stroke-width="1"/>
+  <text x="87" y="75" text-anchor="middle" font-size="12" font-weight="600" fill="#555">① 确认一审事实</text>
+  <text x="87" y="95" text-anchor="middle" font-size="11" fill="#888">"一审认定X</text>
+  <text x="87" y="108" text-anchor="middle" font-size="11" fill="#888">并无不当"</text>
+  <!-- Arrow 1 -->
+  <text x="155" y="85" text-anchor="middle" font-size="14" fill="#bbb">→</text>
+  <!-- Step 2 -->
+  <rect x="170" y="50" width="115" height="60" rx="4" fill="#f5f5f5" stroke="#999" stroke-width="1"/>
+  <text x="227" y="75" text-anchor="middle" font-size="12" font-weight="600" fill="#555">② 回应上诉理由</text>
+  <text x="227" y="95" text-anchor="middle" font-size="11" fill="#888">"上诉人主张Y</text>
+  <text x="227" y="108" text-anchor="middle" font-size="11" fill="#888">但证据不能证明"</text>
+  <!-- Arrow 2 -->
+  <text x="295" y="85" text-anchor="middle" font-size="14" fill="#bbb">→</text>
+  <!-- Step 3 -->
+  <rect x="310" y="50" width="115" height="60" rx="4" fill="#f5f5f5" stroke="#999" stroke-width="1"/>
+  <text x="367" y="75" text-anchor="middle" font-size="12" font-weight="600" fill="#555">③ 结论公式</text>
+  <text x="367" y="95" text-anchor="middle" font-size="11" fill="#888">"上诉请求不能成立</text>
+  <text x="367" y="108" text-anchor="middle" font-size="11" fill="#888">应予驳回"</text>
+  <!-- Arrow 3 -->
+  <text x="435" y="85" text-anchor="middle" font-size="14" fill="#bbb">→</text>
+  <!-- Step 4 -->
+  <rect x="450" y="50" width="120" height="60" rx="4" fill="#f5f5f5" stroke="#999" stroke-width="1"/>
+  <text x="510" y="75" text-anchor="middle" font-size="12" font-weight="600" fill="#555">④ 援引法条</text>
+  <text x="510" y="95" text-anchor="middle" font-size="11" fill="#888">民诉法177条</text>
+  <text x="510" y="108" text-anchor="middle" font-size="11" fill="#888">第1款第1项</text>
+  <!-- Bottom insight -->
+  <rect x="100" y="135" width="400" height="36" rx="4" fill="#2a2a2a"/>
+  <text x="300" y="158" text-anchor="middle" font-size="13" fill="#fff">改判的突破口：新证据 + 程序错误，而非对一审事实认定的异议</text>
+  <!-- Bottom stats -->
+  <text x="300" y="200" text-anchor="middle" font-size="11" fill="#999">58件上诉：18件实质审理全部维持 · 40件撤回（撤回率69%）</text>
+</svg></figure>
 <p><strong>这个模板对上诉策略有三个直接影响</strong>：</p>
 <p>第一，二审法官不重新认定事实。事实认定权在一审。如果你上诉的理由是"一审对某份证据的理解不对""一审对某个事实的认定有偏差"，在没有新证据的情况下，改判的可能性极低。</p>
 <p>第二，40/58 件上诉以撤回告终（撤回上诉或撤回起诉），撤回率约 69%。这不一定说明上诉无理——相当一部分可能是上诉后双方达成和解，或者上诉方在阅卷或庭前会议后评估改判无望而策略性撤诉。但不管哪种原因，这个比例至少说明：上诉不等于二审判决，很多案件在上诉过程中就终结了。</p>
@@ -474,24 +596,24 @@
 <h3 id="B合同相对方怎么认定">B. 合同相对方怎么认定？</h3>
 <p>"谁是我的合同相对方"——这个问题听起来简单，但在多层转分包的建设工程纠纷中，它是多个案件的争议焦点。</p>
 <p>从宁波判决书中可以归纳出一个三层递进的认定方法：</p>
-<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 260"&gt;
-  &lt;rect width="600" height="260" fill="#fff" rx="6"/&gt;
-  &lt;text x="300" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#333"&gt;合同相对方认定的三层测试&lt;/text&gt;
-  &lt;!-- Layer 1 (bottom, widest) --&gt;
-  &lt;rect x="60" y="170" width="480" height="50" rx="4" fill="#f0f0f0" stroke="#bbb" stroke-width="1"/&gt;
-  &lt;text x="300" y="191" text-anchor="middle" font-size="13" font-weight="600" fill="#333"&gt;第一层：书面合同签字盖章&lt;/text&gt;
-  &lt;text x="300" y="209" text-anchor="middle" font-size="11" fill="#777"&gt;谁在合同上盖章 → 公章推定公司行为 → 推翻需证明盗用或伪造&lt;/text&gt;
-  &lt;!-- Layer 2 (middle) --&gt;
-  &lt;rect x="110" y="105" width="380" height="50" rx="4" fill="#e8e8e8" stroke="#bbb" stroke-width="1"/&gt;
-  &lt;text x="300" y="126" text-anchor="middle" font-size="13" font-weight="600" fill="#333"&gt;第二层：实际履行行为（合同缺失或主体不清时）&lt;/text&gt;
-  &lt;text x="300" y="144" text-anchor="middle" font-size="11" fill="#777"&gt;谁付款 · 谁沟通 · 谁验收 · 微信聊天记录（辅助）&lt;/text&gt;
-  &lt;!-- Layer 3 (top, narrowest) --&gt;
-  &lt;rect x="160" y="45" width="280" height="45" rx="4" fill="#ddd" stroke="#bbb" stroke-width="1"/&gt;
-  &lt;text x="300" y="64" text-anchor="middle" font-size="13" font-weight="600" fill="#333"&gt;第三层：表见代理 / 职务行为（例外）&lt;/text&gt;
-  &lt;text x="300" y="81" text-anchor="middle" font-size="11" fill="#777"&gt;"有理由相信"可代表公司 + 内部关系不得对抗善意第三人&lt;/text&gt;
-  &lt;!-- Arrows between layers --&gt;
-  &lt;text x="300" y="100" text-anchor="middle" font-size="11" fill="#aaa"&gt;↑ 合同缺失或签署主体不清时上行&lt;/text&gt;
-&lt;/svg&gt;</code></pre>
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 260">
+  <rect width="600" height="260" fill="#fff" rx="6"/>
+  <text x="300" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#333">合同相对方认定的三层测试</text>
+  <!-- Layer 1 (bottom, widest) -->
+  <rect x="60" y="170" width="480" height="50" rx="4" fill="#f0f0f0" stroke="#bbb" stroke-width="1"/>
+  <text x="300" y="191" text-anchor="middle" font-size="13" font-weight="600" fill="#333">第一层：书面合同签字盖章</text>
+  <text x="300" y="209" text-anchor="middle" font-size="11" fill="#777">谁在合同上盖章 → 公章推定公司行为 → 推翻需证明盗用或伪造</text>
+  <!-- Layer 2 (middle) -->
+  <rect x="110" y="105" width="380" height="50" rx="4" fill="#e8e8e8" stroke="#bbb" stroke-width="1"/>
+  <text x="300" y="126" text-anchor="middle" font-size="13" font-weight="600" fill="#333">第二层：实际履行行为（合同缺失或主体不清时）</text>
+  <text x="300" y="144" text-anchor="middle" font-size="11" fill="#777">谁付款 · 谁沟通 · 谁验收 · 微信聊天记录（辅助）</text>
+  <!-- Layer 3 (top, narrowest) -->
+  <rect x="160" y="45" width="280" height="45" rx="4" fill="#ddd" stroke="#bbb" stroke-width="1"/>
+  <text x="300" y="64" text-anchor="middle" font-size="13" font-weight="600" fill="#333">第三层：表见代理 / 职务行为（例外）</text>
+  <text x="300" y="81" text-anchor="middle" font-size="11" fill="#777">"有理由相信"可代表公司 + 内部关系不得对抗善意第三人</text>
+  <!-- Arrows between layers -->
+  <text x="300" y="100" text-anchor="middle" font-size="11" fill="#aaa">↑ 合同缺失或签署主体不清时上行</text>
+</svg></figure>
 <p><strong>第一层：书面合同的签字盖章</strong>。这是最优先的判断依据。谁在合同上盖章，谁就是合同相对方。在一案（(2026)浙02民终337号）中，上诉人主张签字人"无相应权限"，但法院的回应很简单：公章是真的，就推定为公司行为。"无充分的反证推翻该公司加盖的公章"——公章在民事诉讼中具有近乎决定性的证据分量，除非你能举证证明公章是盗用的或者合同是伪造的。</p>
 <p><strong>第二层：实际履行行为</strong>。如果合同缺失或合同签署主体不清晰，法官会转向实际履行行为——谁在付款、谁在沟通施工事宜、谁在验收。微信聊天记录在这类判断中扮演越来越重要的角色。在一起装饰装修纠纷（(2026)浙02民终45号）中，法官明确写道"结合在案微信聊天记录可知"，据此认定合同关系的存在。另一案（(2025)浙0212民初15946号）中，法官综合考虑了"对接缔约及施工事宜""进行结算""配偶支付工程款"等多个履行行为，否定了当事人关于"系职务行为"的抗辩。</p>
 <p><strong>第三层：表见代理和职务行为</strong>。这是例外情形。当签字人不是公司法定代表人也无法人授权时，法官会审查是否有"有理由相信"的客观基础。在一案（(2026)浙0206民初212号）中，尽管签字人不是公司员工（而是分包人的安排），但法院认定他的现场管理行为构成表见代理，因为公司曾在其他文件中确认其为"现场负责人"。</p>
@@ -525,36 +647,36 @@
 <hr>
 <h2 id="四法官的自由裁量地图">四、法官的自由裁量地图</h2>
 <p>判决书中出现"酌定"20 次、"酌情"24 次——法官在相当比例的案件中行使了自由裁量权。分析这些酌定出现的场景，可以画出一张"裁量地图"。</p>
-<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300"&gt;
-  &lt;rect width="600" height="300" fill="#fff" rx="6"/&gt;
-  &lt;text x="300" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#333"&gt;法官"酌定"的五类场景&lt;/text&gt;
-  &lt;!-- Axis lines --&gt;
-  &lt;line x1="50" y1="260" x2="550" y2="260" stroke="#ccc" stroke-width="1"/&gt;
-  &lt;line x1="50" y1="260" x2="50" y2="40" stroke="#ccc" stroke-width="1"/&gt;
-  &lt;!-- Grid labels --&gt;
-  &lt;text x="50" y="278" text-anchor="middle" font-size="10" fill="#aaa"&gt;违约金/损失金额&lt;/text&gt;
-  &lt;text x="155" y="278" text-anchor="middle" font-size="10" fill="#aaa"&gt;利息起算点&lt;/text&gt;
-  &lt;text x="260" y="278" text-anchor="middle" font-size="10" fill="#aaa"&gt;质保金扣减&lt;/text&gt;
-  &lt;text x="365" y="278" text-anchor="middle" font-size="10" fill="#aaa"&gt;未完工程量&lt;/text&gt;
-  &lt;text x="470" y="278" text-anchor="middle" font-size="10" fill="#aaa"&gt;责任比例&lt;/text&gt;
-  &lt;!-- Bar 1: 违约金 - tallest --&gt;
-  &lt;rect x="70" y="90" width="40" height="170" rx="3" fill="#333"/&gt;
-  &lt;text x="90" y="82" text-anchor="middle" font-size="12" font-weight="600" fill="#333"&gt;最高频&lt;/text&gt;
-  &lt;!-- Bar 2: 利息起算点 --&gt;
-  &lt;rect x="175" y="130" width="40" height="130" rx="3" fill="#555"/&gt;
-  &lt;text x="195" y="122" text-anchor="middle" font-size="12" font-weight="600" fill="#555"&gt;高频&lt;/text&gt;
-  &lt;!-- Bar 3: 质保金 --&gt;
-  &lt;rect x="280" y="160" width="40" height="100" rx="3" fill="#777"/&gt;
-  &lt;text x="300" y="152" text-anchor="middle" font-size="12" font-weight="600" fill="#777"&gt;中频&lt;/text&gt;
-  &lt;!-- Bar 4: 未完工程量 --&gt;
-  &lt;rect x="385" y="175" width="40" height="85" rx="3" fill="#999"/&gt;
-  &lt;text x="405" y="167" text-anchor="middle" font-size="12" font-weight="600" fill="#999"&gt;中低频&lt;/text&gt;
-  &lt;!-- Bar 5: 责任比例 --&gt;
-  &lt;rect x="490" y="195" width="40" height="65" rx="3" fill="#bbb"/&gt;
-  &lt;text x="510" y="187" text-anchor="middle" font-size="12" font-weight="600" fill="#bbb"&gt;低频&lt;/text&gt;
-  &lt;!-- Bottom rule --&gt;
-  &lt;text x="300" y="295" text-anchor="middle" font-size="10" fill="#aaa"&gt;酌定边界：能用现有证据合理估算的→酌定 · 需专业技术人员判断的→鉴定&lt;/text&gt;
-&lt;/svg&gt;</code></pre>
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">
+  <rect width="600" height="300" fill="#fff" rx="6"/>
+  <text x="300" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#333">法官"酌定"的五类场景</text>
+  <!-- Axis lines -->
+  <line x1="50" y1="260" x2="550" y2="260" stroke="#ccc" stroke-width="1"/>
+  <line x1="50" y1="260" x2="50" y2="40" stroke="#ccc" stroke-width="1"/>
+  <!-- Grid labels -->
+  <text x="50" y="278" text-anchor="middle" font-size="10" fill="#aaa">违约金/损失金额</text>
+  <text x="155" y="278" text-anchor="middle" font-size="10" fill="#aaa">利息起算点</text>
+  <text x="260" y="278" text-anchor="middle" font-size="10" fill="#aaa">质保金扣减</text>
+  <text x="365" y="278" text-anchor="middle" font-size="10" fill="#aaa">未完工程量</text>
+  <text x="470" y="278" text-anchor="middle" font-size="10" fill="#aaa">责任比例</text>
+  <!-- Bar 1: 违约金 - tallest -->
+  <rect x="70" y="90" width="40" height="170" rx="3" fill="#333"/>
+  <text x="90" y="82" text-anchor="middle" font-size="12" font-weight="600" fill="#333">最高频</text>
+  <!-- Bar 2: 利息起算点 -->
+  <rect x="175" y="130" width="40" height="130" rx="3" fill="#555"/>
+  <text x="195" y="122" text-anchor="middle" font-size="12" font-weight="600" fill="#555">高频</text>
+  <!-- Bar 3: 质保金 -->
+  <rect x="280" y="160" width="40" height="100" rx="3" fill="#777"/>
+  <text x="300" y="152" text-anchor="middle" font-size="12" font-weight="600" fill="#777">中频</text>
+  <!-- Bar 4: 未完工程量 -->
+  <rect x="385" y="175" width="40" height="85" rx="3" fill="#999"/>
+  <text x="405" y="167" text-anchor="middle" font-size="12" font-weight="600" fill="#999">中低频</text>
+  <!-- Bar 5: 责任比例 -->
+  <rect x="490" y="195" width="40" height="65" rx="3" fill="#bbb"/>
+  <text x="510" y="187" text-anchor="middle" font-size="12" font-weight="600" fill="#bbb">低频</text>
+  <!-- Bottom rule -->
+  <text x="300" y="295" text-anchor="middle" font-size="10" fill="#aaa">酌定边界：能用现有证据合理估算的→酌定 · 需专业技术人员判断的→鉴定</text>
+</svg></figure>
 <p><strong>五个最常见的酌定场景</strong>：</p>
 <p><strong>第一，违约金和损失金额</strong>。这是酌定最频繁出现的场景。(2025)浙0212民初22930号 中，智能家居系统存在瑕疵，原告主张全额赔偿 16 万余元。法官的做法是：认定系统确实有问题，但原告"实际上仍大量使用了"原系统，仅拆除了小部分设备，"故本院酌定赔付经济损失 50000 元"。从 16 万到 5 万——法官在证据不足以精确计算损失时，选择了一个"看起来合理"的中间值。</p>
 <p><strong>第二，利息起算点</strong>。多案中利率标准按 LPR 确定（这没有裁量空间），但起算点存在裁量。(2025)浙0203民初26237号 将利息起算点"酌情"调整为起诉之日，而非合同约定的付款日。这通常发生在付款时间约定不明确、或者双方对付款条件是否成就存在合理争议的情况下。</p>
@@ -568,12 +690,37 @@
 <p>"举证责任"这个法律概念，在 500 份文书的"本院认为"中只出现了 3 次。</p>
 <p>但 80 多件案件实质上运用了举证责任分配。法官只是不跟你说理论。</p>
 <p>从法官的具体措辞中，可以读出一套隐性的三级评价体系：</p>
-<p>| 法官写的 | 实际含义 | 出现次数 |</p>
-<p>|---------|---------|---------|</p>
-<p>| "未提供证据证明" | 举证责任在你，你什么都没交 | 47 件 |</p>
-<p>| "不足以证明/认定" | 你交了证据，但证明力不够 | 15 件 |</p>
-<p>| "无充分证据" | 你交了证据、也有一定证明力，但差一口气 | 14 件 |</p>
-<p>| "现有证据不能证明" | 综合全案证据后判断你的主张不成立 | 9 件 |</p>
+<table>
+<thead>
+<tr>
+<th>法官写的</th>
+<th>实际含义</th>
+<th>出现次数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"未提供证据证明"</td>
+<td>举证责任在你，你什么都没交</td>
+<td>47 件</td>
+</tr>
+<tr>
+<td>"不足以证明/认定"</td>
+<td>你交了证据，但证明力不够</td>
+<td>15 件</td>
+</tr>
+<tr>
+<td>"无充分证据"</td>
+<td>你交了证据、也有一定证明力，但差一口气</td>
+<td>14 件</td>
+</tr>
+<tr>
+<td>"现有证据不能证明"</td>
+<td>综合全案证据后判断你的主张不成立</td>
+<td>9 件</td>
+</tr>
+</tbody>
+</table>
 <p><strong>这四个措辞不是同义词</strong>，它们对应不同的举证状态：</p>
 <p>"未提供证据"是最致命的——法官认为你根本没完成举证行为，而不是举证的证明力问题。这种情况下几乎没有翻盘的可能。在 47 件中出现"未提供证据"措辞的案件中，当事人在该争点上的败诉率接近 100%。</p>
 <p>"不足以证明"意味着你交了证据，但法官认为证据的证明力达不到要求。这一档理论上还有补救空间——需要补充更有力的证据，或者改变举证策略。</p>
@@ -588,17 +735,51 @@
 <p>这篇文章试图做的不是"大数据分析"——受限于上网率，公开的 500 份文书不能代表宁波建设工程纠纷的全貌。文章想做的是"裁判思维分析"：从法官写了什么、怎么写的、不写什么中，反向读取对实务工作有用的信息。</p>
 <p>几个判断：</p>
 <ul>
-<li><strong>读懂模板才懂上诉</strong>：二审维持原判的论证高度模板化，改判的突破口在新证据和程序错误，不在对一审事实认定的单纯异议。</li>
-<li><strong>发票抗辩需要合同基础</strong>：多数法官认定开票是从义务、不能阻却付款，想用发票抗辩必须在合同中明确约定先票后款。</li>
-<li><strong>合同无效不等于白干</strong>：无效认定后仍然参照合同折价补偿，真正值得关注的是"参照范围"的边界。</li>
-<li><strong>优先受偿权被低估</strong>：主张率仅 8%，三个典型否定场景值得在诉讼策略中充分评估。</li>
-<li><strong>给法官留裁量空间</strong>：违约金、利息起算点、质保金扣减——这些争点上法官有裁量空间，给法官一个"中间值"选项比"全有或全无"更有可能被采纳。</li>
-<li><strong>法官不说理论但看证据</strong>："举证责任"这个词几乎从"本院认为"中消失了，但法官用四个不同措辞告诉你在哪一点上你的证据还不够。</li>
+<li><strong>读懂模板才懂上诉</strong>：二审维持原判的论证高度模板化，改判的突破口在新证据和程序错误，不在对一审事实认定的单纯异议。
+</li>
+<li><strong>发票抗辩需要合同基础</strong>：多数法官认定开票是从义务、不能阻却付款，想用发票抗辩必须在合同中明确约定先票后款。
+</li>
+<li><strong>合同无效不等于白干</strong>：无效认定后仍然参照合同折价补偿，真正值得关注的是"参照范围"的边界。
+</li>
+<li><strong>优先受偿权被低估</strong>：主张率仅 8%，三个典型否定场景值得在诉讼策略中充分评估。
+</li>
+<li><strong>给法官留裁量空间</strong>：违约金、利息起算点、质保金扣减——这些争点上法官有裁量空间，给法官一个"中间值"选项比"全有或全无"更有可能被采纳。
+</li>
+<li><strong>法官不说理论但看证据</strong>："举证责任"这个词几乎从"本院认为"中消失了，但法官用四个不同措辞告诉你在哪一点上你的证据还不够。
+</li>
 </ul>
 <p>"本院认为"不会直接告诉你"怎么才能赢"，但它会告诉你怎么输的。从"怎么输的"中，比从"怎么赢的"中学到的更多。</p>
 <hr>
 <p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。</p>
         </div>
+
+        <nav class="article-prevnext" aria-label="上一篇/下一篇">
+          
+          <a class="prevnext-link prev" href="/articles/2026-05-23-宁波建工纠纷败诉密码-从500份判决看当事人栽在哪儿/">
+            <span class="prevnext-label">&larr; 上一篇</span>
+            <span class="prevnext-title">宁波建工纠纷败诉密码——从500份判决看当事人栽在哪儿</span>
+          </a>
+          
+          
+          <a class="prevnext-link next" href="/articles/2026-05-23-129份判决告诉你宁波刑事裁判的真相-82-的罪名只有两个-量刑建议法院照单全收/">
+            <span class="prevnext-label">下一篇 &rarr;</span>
+            <span class="prevnext-title">129份判决告诉你宁波刑事裁判的真相：82%的罪名只有两个，量刑建议法院照单全收</span>
+          </a>
+          
+        </nav>
+
+        
+        <div class="related-mobile">
+          <h4 class="related-title">同类文章</h4>
+          
+          <a class="related-link" href="/articles/2026-07-01-国有资产流失的历史演进/">国有资产流失的历史演进</a>
+          
+          <a class="related-link" href="/articles/2026-07-01-从防止国有资产流失到国有资本经营判断规则-国资监管制度演进的反向后果/">从防止国有资产流失到国有资本经营判断规则：国资监管制度演进的反向后果</a>
+          
+          <a class="related-link" href="/articles/2026-07-01-国资监管不能只设红线-还要给方法/">国资监管不能只设红线，还要给方法</a>
+          
+        </div>
+        
 
         <footer class="article-footer">
           <div class="article-bio-card">
@@ -611,14 +792,96 @@
           </div>
         </footer>
       </article>
+
+      
+      <nav class="article-toc" aria-label="目录">
+        <div class="toc-sticky">
+          <h4 class="toc-title">目录</h4>
+          
+          <a href="#一为什么读本院认为" class="toc-link toc-l2" data-target="一为什么读本院认为">一、为什么读"本院认为"</a>
+          
+          <a href="#二二审论证的标准模板" class="toc-link toc-l2" data-target="二二审论证的标准模板">二、二审论证的"标准模板"</a>
+          
+          <a href="#三四个实务尺度的切片" class="toc-link toc-l2" data-target="三四个实务尺度的切片">三、四个实务尺度的切片</a>
+          
+          <a href="#A发票能不能对抗付款" class="toc-link toc-l3" data-target="A发票能不能对抗付款">A. 发票能不能对抗付款？</a>
+          
+          <a href="#B合同相对方怎么认定" class="toc-link toc-l3" data-target="B合同相对方怎么认定">B. 合同相对方怎么认定？</a>
+          
+          <a href="#C合同无效后的工程款怎么算" class="toc-link toc-l3" data-target="C合同无效后的工程款怎么算">C. 合同无效后的工程款怎么算？</a>
+          
+          <a href="#D优先受偿权的三个不" class="toc-link toc-l3" data-target="D优先受偿权的三个不">D. 优先受偿权的三个"不"</a>
+          
+          <a href="#四法官的自由裁量地图" class="toc-link toc-l2" data-target="四法官的自由裁量地图">四、法官的自由裁量地图</a>
+          
+          <a href="#五法官不说的举证标准" class="toc-link toc-l2" data-target="五法官不说的举证标准">五、法官不说的举证标准</a>
+          
+          <a href="#六结语" class="toc-link toc-l2" data-target="六结语">六、结语</a>
+          
+        </div>
+      </nav>
+      
     </div>
   </main>
 
   <script>
-    /* Progress bar only */
+    /* Progress bar */
     (function(){
       var bar=document.querySelector('.progress-bar-fill');
       if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+
+    /* TOC scrollspy — 当前阅读章节在目录中高亮 */
+    (function(){
+      var links=document.querySelectorAll('.article-toc .toc-link');
+      if(!links.length||!('IntersectionObserver' in window)){return}
+      var map={};
+      links.forEach(function(l){map[l.getAttribute('data-target')]=l});
+      var headings=document.querySelectorAll('.article-body h2[id],.article-body h3[id]');
+      if(!headings.length){return}
+      var visible={};
+      var observer=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){visible[e.target.id]=e.isIntersecting});
+        var current=null;
+        for(var i=0;i<headings.length;i++){
+          if(visible[headings[i].id]){current=headings[i].id;break}
+        }
+        if(!current){
+          for(var j=headings.length-1;j>=0;j--){
+            if(headings[j].getBoundingClientRect().top<100){current=headings[j].id;break}
+          }
+        }
+        links.forEach(function(l){l.classList.remove('is-active')});
+        if(current&&map[current]){map[current].classList.add('is-active')}
+      },{rootMargin:'-80px 0px -70% 0px',threshold:0});
+      headings.forEach(function(h){observer.observe(h)});
+    })();
+
+    /* Code block copy button */
+    (function(){
+      function copyText(text,done){
+        if(navigator.clipboard&&window.isSecureContext){
+          navigator.clipboard.writeText(text).then(done,done);
+        }else{
+          var ta=document.createElement('textarea');
+          ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+          document.body.appendChild(ta);ta.select();
+          try{document.execCommand('copy')}catch(e){}
+          document.body.removeChild(ta);done();
+        }
+      }
+      document.querySelectorAll('pre.code-block').forEach(function(pre){
+        var btn=document.createElement('button');
+        btn.type='button';btn.className='code-copy';btn.textContent='复制';
+        btn.addEventListener('click',function(){
+          var code=pre.querySelector('code');
+          copyText(code?code.innerText:pre.innerText,function(){
+            btn.textContent='已复制';btn.classList.add('is-done');
+            setTimeout(function(){btn.textContent='复制';btn.classList.remove('is-done')},1500);
+          });
+        });
+        pre.appendChild(btn);
+      });
     })();
   </script>
 </body>

@@ -4,9 +4,27 @@
   <link rel="alternate" type="text/html" hreflang="zh" href="https://legalagi.cn/"/>
   <link rel="self" type="application/atom+xml" href="https://legalagi.cn/atom.xml"/>
   <id>https://legalagi.cn/</id>
-  <updated>2026-07-13T11:35:56+08:00</updated>
+  <updated>2026-07-21T18:56:34+08:00</updated>
   <author><name>陈石</name></author>
   <subtitle>建设工程/房地产律师 × AI+法律先行者 — 个人博客</subtitle>
+  <entry>
+    <title>人口红利吃完了？下一种红利刚开局</title>
+    <link rel="alternate" type="text/html" href="https://legalagi.cn/articles/2026-07-18-人口红利吃完了-下一种红利刚开局/"/>
+    <id>https://legalagi.cn/articles/2026-07-18-人口红利吃完了-下一种红利刚开局/</id>
+    <published>2026-07-18T00:00:00+08:00</published>
+    <updated>2026-07-18T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>前阵子所里接了个复杂项目要做一轮很重的法律研究放在过去这种活儿是几个人扑上去做一周这次是一个同事带着他自己搭的工作流两天交了稿我盯着那份交付物看了很久它带给我的震动不是效率提升了而是一个更大的念头这个行业的人产出等式正在松动一个行业的等式松动是小事但如果连人口下降国力衰落这个国民级的等式也开始松动呢</summary>
+  </entry>
+  <entry>
+    <title>著作权三百年：它消化了六次技术冲击，为什么AI是例外</title>
+    <link rel="alternate" type="text/html" href="https://legalagi.cn/articles/2026-07-18-著作权三百年-它消化了六次技术冲击-为什么AI是例外/"/>
+    <id>https://legalagi.cn/articles/2026-07-18-著作权三百年-它消化了六次技术冲击-为什么AI是例外/</id>
+    <published>2026-07-18T00:00:00+08:00</published>
+    <updated>2026-07-18T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>年司晓在探索与争鸣发表了一篇文章标题就带着预警意味奇点来临时代的著作权法走向何处他的核心判断是生成式人工智能对著作权的冲击不再是常规的技术调整它瓦解的是底层逻辑思想表达二分法这一制度基石适用价值正在被消解三年过去这个判断至少有一半已经成为日常生成的文字图片音乐正以工业化规模进入内容市场创作者也不只是</summary>
+  </entry>
   <entry>
     <title>智能体该叫代理——一个翻译，决定了你怎么用 AI</title>
     <link rel="alternate" type="text/html" href="https://legalagi.cn/articles/2026-07-13-智能体该叫代理-一个翻译-决定了你怎么用-AI/"/>
@@ -24,6 +42,15 @@
     <updated>2026-07-13T00:00:00+08:00</updated>
     <category term="AI+法律"/>
     <summary></summary>
+  </entry>
+  <entry>
+    <title>法律人，该把你的东西拿出来了</title>
+    <link rel="alternate" type="text/html" href="https://legalagi.cn/articles/2026-07-13-法律人-该把你的东西拿出来了/"/>
+    <id>https://legalagi.cn/articles/2026-07-13-法律人-该把你的东西拿出来了/</id>
+    <published>2026-07-13T00:00:00+08:00</published>
+    <updated>2026-07-13T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>有朋友最近问我你花那么多时间精力做四明山法师夜校又不挣钱图什么这个问题我被问过不止一次每次答得都有点含糊直到前两天听了梁冬在凉子访谈录里的一段话答案突然清楚了梁冬说做这个事情能够给你带来快乐你就做他说自己从百度出来之后财务上就还可以了但创业的公司大部分都亏了买股票也亏了不少最后他得出一个结论当你不指</summary>
   </entry>
   <entry>
     <title>故事大会上的 AI：警惕之后，我们还能做什么</title>
@@ -159,32 +186,5 @@
     <updated>2026-07-02T00:00:00+08:00</updated>
     <category term="AI+法律"/>
     <summary>时代的算力正在变成一种可被交易的商品它会重演石油从开发到加油站的整条产业链这件事已经发生了</summary>
-  </entry>
-  <entry>
-    <title>你 AI 账单里有三种价格在同时跑</title>
-    <link rel="alternate" type="text/html" href="https://legalagi.cn/articles/2026-07-02-你-AI-账单里有三种价格在同时跑/"/>
-    <id>https://legalagi.cn/articles/2026-07-02-你-AI-账单里有三种价格在同时跑/</id>
-    <published>2026-07-02T00:00:00+08:00</published>
-    <updated>2026-07-02T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>一句对话背后三个数字在独立计费能读懂这张账单的人才能跟得上时代的成本真相</summary>
-  </entry>
-  <entry>
-    <title>AI 时代最值钱的不是模型，是"水电煤"层</title>
-    <link rel="alternate" type="text/html" href="https://legalagi.cn/articles/2026-07-02-AI-时代最值钱的不是模型-是-水电煤-层/"/>
-    <id>https://legalagi.cn/articles/2026-07-02-AI-时代最值钱的不是模型-是-水电煤-层/</id>
-    <published>2026-07-02T00:00:00+08:00</published>
-    <updated>2026-07-02T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>当模型能力越来越趋同赚钱的不再是做出更好的模型而是让模型流动起来的管道</summary>
-  </entry>
-  <entry>
-    <title>法律人学 AI，最缺的不是工具</title>
-    <link rel="alternate" type="text/html" href="https://legalagi.cn/articles/2026-07-02-法律人学-AI-最缺的不是工具/"/>
-    <id>https://legalagi.cn/articles/2026-07-02-法律人学-AI-最缺的不是工具/</id>
-    <published>2026-07-02T00:00:00+08:00</published>
-    <updated>2026-07-02T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary></summary>
   </entry>
 </feed>

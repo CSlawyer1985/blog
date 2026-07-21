@@ -132,7 +132,8 @@
     a{color:inherit;text-decoration:none}
 
     /* Body */
-    html,body{overflow-x:hidden}
+    html{scroll-behavior:smooth}
+    html,body{overflow-x:hidden;overflow-x:clip}
     body{
       background:#F3EDE3;
       background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
@@ -168,7 +169,7 @@
     .nav__links .sep{color:#C9C0B2;font-weight:300}
 
     /* Progress bar */
-    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:3px;z-index:50}
     .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
 
     /* Layout */
@@ -180,6 +181,10 @@
       padding:110px clamp(20px,5vw,72px) 80px;
       max-width:1160px;
       margin:0 auto;
+    }
+    /* ≥1200px 扩展为三栏（右栏 TOC） */
+    @media (min-width:1200px){
+      .article-layout{grid-template-columns:240px minmax(0,720px) minmax(0,200px);max-width:1296px}
     }
 
     /* Sidebar */
@@ -252,6 +257,93 @@
     .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
     .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
 
+    /* Anchor offset for fixed nav */
+    .article-body h2,.article-body h3{scroll-margin-top:96px}
+
+    /* SVG figures (```svg blocks rendered inline) */
+    .article-svg{
+      margin:28px 0;padding:20px;
+      border:1px solid #C9C0B2;background:#fff;
+      overflow-x:auto;text-align:center;
+    }
+    .article-svg svg{max-width:100%;height:auto;display:inline-block}
+
+    /* Right-rail TOC (desktop ≥1200px) */
+    .article-toc{display:none;position:relative}
+    .toc-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto}
+    .toc-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .toc-link{
+      display:block;padding:5px 0 5px 12px;
+      font-size:12.5px;line-height:1.45;color:#7d756a;
+      border-left:2px solid transparent;transition:color .2s,border-color .2s
+    }
+    .toc-link:hover{color:#1A1714}
+    .toc-link.toc-l3{padding-left:26px;font-size:12px}
+    .toc-link.is-active{color:#C0392B;border-left-color:#C0392B;font-weight:600}
+    @media (min-width:1200px){.article-toc{display:block}}
+
+    /* Mobile TOC (<1200px, collapsible) */
+    .toc-mobile{
+      margin:0 0 32px;padding:16px 20px;
+      border:1px solid #C9C0B2;background:rgba(243,237,227,.5)
+    }
+    .toc-mobile summary{
+      cursor:pointer;font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.1em;color:#C0392B;text-transform:uppercase;user-select:none
+    }
+    .toc-mobile .toc-link{margin-top:8px}
+    @media (min-width:1200px){.toc-mobile{display:none}}
+
+    /* Code copy button */
+    pre.code-block{position:relative}
+    .code-copy{
+      position:absolute;top:8px;right:8px;
+      padding:4px 10px;border:1px solid rgba(232,227,216,.25);border-radius:3px;
+      background:rgba(232,227,216,.08);color:#e8e3d8;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.04em;
+      cursor:pointer;opacity:0;transition:opacity .2s,background .2s
+    }
+    pre.code-block:hover .code-copy{opacity:1}
+    .code-copy:hover{background:rgba(232,227,216,.18)}
+    .code-copy.is-done{color:#7ac28a;border-color:rgba(122,194,138,.4)}
+    @media (hover:none){.code-copy{opacity:1}}
+
+    /* Prev / Next navigation */
+    .article-prevnext{
+      display:grid;grid-template-columns:1fr 1fr;gap:20px;
+      margin-top:56px;padding-top:28px;border-top:1px solid #C9C0B2
+    }
+    .prevnext-link{display:flex;flex-direction:column;gap:6px;min-width:0}
+    .prevnext-link.next{text-align:right;align-items:flex-end}
+    .prevnext-link.next:only-child{grid-column:2}
+    .prevnext-label{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.06em;color:#7d756a
+    }
+    .prevnext-title{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-size:16px;font-weight:600;color:#1A1714;line-height:1.4;
+      transition:color .25s
+    }
+    .prevnext-link:hover .prevnext-title{color:#C0392B}
+
+    /* Related articles (mobile only — sidebar hidden below 860px) */
+    .related-mobile{display:none;margin-top:32px}
+    .related-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:12px;padding-bottom:10px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .related-link{
+      display:block;padding:8px 0;font-size:14px;color:#3a342d;
+      border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .related-link:hover{color:#C0392B}
+
     /* Footer */
     .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
     .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
@@ -279,11 +371,14 @@
       .article-sidebar{display:none}
       .article-title{font-size:clamp(24px,5vw,32px)}
       .article-body{font-size:15px;line-height:1.8}
+      .related-mobile{display:block}
     }
     @media (max-width:600px){
       .article-layout{padding:80px 20px 48px}
       .article-meta-top{font-size:10px;gap:8px}
       .article-cover{margin-bottom:28px}
+      .article-prevnext{grid-template-columns:1fr;gap:16px}
+      .prevnext-link.next{text-align:left;align-items:flex-start}
     }
     @media (prefers-reduced-motion:reduce){
       *{animation:none!important;transition:none!important}
@@ -315,9 +410,9 @@
 
     <h4 class="sidebar-title">分类</h4>
     <nav class="sidebar-nav">
-      <a href="/articles/" class="sidebar-link">全部（123）</a>
+      <a href="/articles/" class="sidebar-link">全部（126）</a>
       
-      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（100）</a>
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（103）</a>
       
       <a href="/categories/legal-practice/" class="sidebar-link">法律实务（18）</a>
       
@@ -333,9 +428,15 @@
     <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
     <nav class="sidebar-nav">
       
+      <a href="/articles/2026-07-18-人口红利吃完了-下一种红利刚开局/" class="sidebar-link">人口红利吃完了？下一种红利刚开局</a>
+      
+      <a href="/articles/2026-07-18-著作权三百年-它消化了六次技术冲击-为什么AI是例外/" class="sidebar-link">著作权三百年：它消化了六次技术冲击，为什么AI是例外</a>
+      
       <a href="/articles/2026-07-13-智能体该叫代理-一个翻译-决定了你怎么用-AI/" class="sidebar-link">智能体该叫代理——一个翻译，决定了你怎么用 AI</a>
       
       <a href="/articles/2026-07-13-别让法律咨询规则-跑进你的旅游攻略-Agent-的第一条纪律/" class="sidebar-link">别让法律咨询规则，跑进你的旅游攻略——Agent 的第一条纪律</a>
+      
+      <a href="/articles/2026-07-13-法律人-该把你的东西拿出来了/" class="sidebar-link">法律人，该把你的东西拿出来了</a>
       
       <a href="/articles/2026-07-13-故事大会上的-AI-警惕之后-我们还能做什么/" class="sidebar-link">故事大会上的 AI：警惕之后，我们还能做什么</a>
       
@@ -367,12 +468,6 @@
       
       <a href="/articles/2026-07-02-Token-会被当成石油交易/" class="sidebar-link">Token 会被当成石油交易</a>
       
-      <a href="/articles/2026-07-02-你-AI-账单里有三种价格在同时跑/" class="sidebar-link">你 AI 账单里有三种价格在同时跑</a>
-      
-      <a href="/articles/2026-07-02-AI-时代最值钱的不是模型-是-水电煤-层/" class="sidebar-link">AI 时代最值钱的不是模型，是"水电煤"层</a>
-      
-      <a href="/articles/2026-07-02-法律人学-AI-最缺的不是工具/" class="sidebar-link">法律人学 AI，最缺的不是工具</a>
-      
     </nav>
     
   </div>
@@ -392,15 +487,34 @@
         </header>
 
         
+        <details class="toc-mobile">
+          <summary>本文目录</summary>
+          
+          <a href="#Skill为什么重要但不够" class="toc-link toc-l2">Skill为什么重要但不够</a>
+          
+          <a href="#真正的壁垒在编排层" class="toc-link toc-l2">真正的壁垒在编排层</a>
+          
+          <a href="#几个会被问到的反驳" class="toc-link toc-l2">几个会被问到的反驳</a>
+          
+          <a href="#交流中的隐忧" class="toc-link toc-l2">交流中的隐忧</a>
+          
+          <a href="#我也走过弯路" class="toc-link toc-l2">我也走过弯路</a>
+          
+          <a href="#结尾" class="toc-link toc-l2">结尾</a>
+          
+        </details>
+        
+
+        
         <figure class="article-cover">
           <img src="cover.png" alt="法律AI的竞争焦点不在Skill，在Harness封面图" loading="lazy">
         </figure>
         
 
         <div class="article-body">
-          <p>!<a href="cover.png">封面</a></p>
-<p>!<a href="cover.png">封面</a></p>
-<p>!<a href="cover.png">封面</a></p>
+          <p><img src="cover.png" alt="封面" loading="lazy"></p>
+<p><img src="cover.png" alt="封面" loading="lazy"></p>
+<p><img src="cover.png" alt="封面" loading="lazy"></p>
 <p>最近因为陆续做了一些AI认知方面的分享，加上开源了Claude-for-Legal-ZH（中国法适配版）项目以及合同审核、法律分析几个项目，我接到了不少交流或评测邀请。北京、上海多家做法律AI产品的公司，也有不少个人开发者，来聊产品方向和技术路线。</p>
 <p>这些交流里有一个非常一致的倾向：几乎所有人都在强调同一个词——Skill（可复用的AI能力单元）。做产品的说自己在堆Skill库，做投资的问"你们的Skill有多少个"，做竞品分析的比较"谁的Skill覆盖面更广"。</p>
 <p>整个法律AI赛道似乎正在形成一个集体判断：Skill就是法律AI的产品核心，谁掌握了最多、最好的Skill，谁就赢了。</p>
@@ -411,72 +525,72 @@
 <p>它首先是扁平的。Skill要么放在全局，要么放在项目，中间没有层。法律工作的复杂度却是分层的：有些规则对所有案件通用，比如证据认定的一般原则；有些规则只适用于某个业务领域，比如建设工程特有的结算规则；还有些规则只针对某个具体项目，比如某个客户的专属审查标准。你把一个合同审查Skill放在全局，它照顾不到项目的特殊性；放在项目里，又失去了通用性。这不是Skill写得不好，是Skill这个容器本身的结构限制。</p>
 <p>更麻烦的是上下文割裂。每个Skill独立运行，Skill之间没有状态传递。合同审核做完发现了风险条款，这个发现能不能自动喂给后续的风险评估？案例检索找到了三个类案，能不能自动进入下一个写作环节作为论据？在纯Skill架构下，这些"之间"的事没人管。每个Skill只对自己的输入输出负责，不关心上下游。</p>
 <p>还有一个根本性的问题：能力不等于编排。拥有一百个法律Skill，和拥有一个能协同调用这一百个Skill的系统，是完全不同的事。100个零件散落在地上不等于一辆车。零件之间的关系——谁先谁后、谁调谁、什么条件下触发——才是让零件变成系统的关键。</p>
-<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 260"&gt;
-  &lt;rect width="600" height="260" fill="#fafafa" rx="4"/&gt;
-  &lt;text x="130" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#333" font-family="system-ui, sans-serif"&gt;纯 Skill 架构&lt;/text&gt;
-  &lt;rect x="30" y="52" width="90" height="34" rx="3" fill="#e8e8e8" stroke="#ccc" stroke-width="1"/&gt;
-  &lt;text x="75" y="74" text-anchor="middle" font-size="11" fill="#666" font-family="system-ui, sans-serif"&gt;合同审查&lt;/text&gt;
-  &lt;rect x="140" y="48" width="90" height="34" rx="3" fill="#e8e8e8" stroke="#ccc" stroke-width="1"/&gt;
-  &lt;text x="185" y="70" text-anchor="middle" font-size="11" fill="#666" font-family="system-ui, sans-serif"&gt;案例检索&lt;/text&gt;
-  &lt;rect x="60" y="102" width="90" height="34" rx="3" fill="#e8e8e8" stroke="#ccc" stroke-width="1"/&gt;
-  &lt;text x="105" y="124" text-anchor="middle" font-size="11" fill="#666" font-family="system-ui, sans-serif"&gt;法条查询&lt;/text&gt;
-  &lt;rect x="170" y="98" width="90" height="34" rx="3" fill="#e8e8e8" stroke="#ccc" stroke-width="1"/&gt;
-  &lt;text x="215" y="120" text-anchor="middle" font-size="11" fill="#666" font-family="system-ui, sans-serif"&gt;文书起草&lt;/text&gt;
-  &lt;rect x="100" y="155" width="90" height="34" rx="3" fill="#e8e8e8" stroke="#ccc" stroke-width="1"/&gt;
-  &lt;text x="145" y="177" text-anchor="middle" font-size="11" fill="#666" font-family="system-ui, sans-serif"&gt;风险评估&lt;/text&gt;
-  &lt;text x="130" y="230" text-anchor="middle" font-size="12" fill="#999" font-family="system-ui, sans-serif"&gt;各 Skill 独立运行，互不关联&lt;/text&gt;
-  &lt;line x1="278" y1="125" x2="322" y2="125" stroke="#333" stroke-width="2"/&gt;
-  &lt;polygon points="320,120 330,125 320,130" fill="#333"/&gt;
-  &lt;text x="470" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#333" font-family="system-ui, sans-serif"&gt;Harness 架构&lt;/text&gt;
-  &lt;rect x="350" y="42" width="240" height="185" rx="4" fill="none" stroke="#333" stroke-width="1.8"/&gt;
-  &lt;text x="470" y="62" text-anchor="middle" font-size="11" fill="#333" font-weight="600" font-family="system-ui, sans-serif"&gt;HARNESS 编排层&lt;/text&gt;
-  &lt;line x1="358" y1="70" x2="582" y2="70" stroke="#e0e0e0" stroke-width="1"/&gt;
-  &lt;rect x="358" y="78" width="108" height="26" rx="2" fill="#f0f0f0" stroke="#aaa" stroke-width="1"/&gt;
-  &lt;text x="412" y="95" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif"&gt;规则引擎&lt;/text&gt;
-  &lt;rect x="474" y="78" width="108" height="26" rx="2" fill="#f0f0f0" stroke="#aaa" stroke-width="1"/&gt;
-  &lt;text x="528" y="95" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif"&gt;工具路由&lt;/text&gt;
-  &lt;rect x="358" y="112" width="108" height="26" rx="2" fill="#f0f0f0" stroke="#aaa" stroke-width="1"/&gt;
-  &lt;text x="412" y="129" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif"&gt;知识编排&lt;/text&gt;
-  &lt;rect x="474" y="112" width="108" height="26" rx="2" fill="#f0f0f0" stroke="#aaa" stroke-width="1"/&gt;
-  &lt;text x="528" y="129" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif"&gt;状态管理&lt;/text&gt;
-  &lt;rect x="358" y="146" width="224" height="26" rx="2" fill="#f0f0f0" stroke="#aaa" stroke-width="1"/&gt;
-  &lt;text x="470" y="163" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif"&gt;工作流管线&lt;/text&gt;
-  &lt;line x1="358" y1="182" x2="582" y2="182" stroke="#e0e0e0" stroke-width="1"/&gt;
-  &lt;rect x="358" y="190" width="68" height="24" rx="2" fill="#e0e0e0" stroke="#bbb" stroke-width="1"/&gt;
-  &lt;text x="392" y="206" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui, sans-serif"&gt;Skill A&lt;/text&gt;
-  &lt;rect x="434" y="190" width="68" height="24" rx="2" fill="#e0e0e0" stroke="#bbb" stroke-width="1"/&gt;
-  &lt;text x="468" y="206" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui, sans-serif"&gt;Skill B&lt;/text&gt;
-  &lt;rect x="510" y="190" width="68" height="24" rx="2" fill="#e0e0e0" stroke="#bbb" stroke-width="1"/&gt;
-  &lt;text x="544" y="206" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui, sans-serif"&gt;Skill C&lt;/text&gt;
-  &lt;text x="470" y="247" text-anchor="middle" font-size="12" fill="#999" font-family="system-ui, sans-serif"&gt;Harness 调度 Skill，协同运转&lt;/text&gt;
-&lt;/svg&gt;</code></pre>
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 260">
+  <rect width="600" height="260" fill="#fafafa" rx="4"/>
+  <text x="130" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#333" font-family="system-ui, sans-serif">纯 Skill 架构</text>
+  <rect x="30" y="52" width="90" height="34" rx="3" fill="#e8e8e8" stroke="#ccc" stroke-width="1"/>
+  <text x="75" y="74" text-anchor="middle" font-size="11" fill="#666" font-family="system-ui, sans-serif">合同审查</text>
+  <rect x="140" y="48" width="90" height="34" rx="3" fill="#e8e8e8" stroke="#ccc" stroke-width="1"/>
+  <text x="185" y="70" text-anchor="middle" font-size="11" fill="#666" font-family="system-ui, sans-serif">案例检索</text>
+  <rect x="60" y="102" width="90" height="34" rx="3" fill="#e8e8e8" stroke="#ccc" stroke-width="1"/>
+  <text x="105" y="124" text-anchor="middle" font-size="11" fill="#666" font-family="system-ui, sans-serif">法条查询</text>
+  <rect x="170" y="98" width="90" height="34" rx="3" fill="#e8e8e8" stroke="#ccc" stroke-width="1"/>
+  <text x="215" y="120" text-anchor="middle" font-size="11" fill="#666" font-family="system-ui, sans-serif">文书起草</text>
+  <rect x="100" y="155" width="90" height="34" rx="3" fill="#e8e8e8" stroke="#ccc" stroke-width="1"/>
+  <text x="145" y="177" text-anchor="middle" font-size="11" fill="#666" font-family="system-ui, sans-serif">风险评估</text>
+  <text x="130" y="230" text-anchor="middle" font-size="12" fill="#999" font-family="system-ui, sans-serif">各 Skill 独立运行，互不关联</text>
+  <line x1="278" y1="125" x2="322" y2="125" stroke="#333" stroke-width="2"/>
+  <polygon points="320,120 330,125 320,130" fill="#333"/>
+  <text x="470" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#333" font-family="system-ui, sans-serif">Harness 架构</text>
+  <rect x="350" y="42" width="240" height="185" rx="4" fill="none" stroke="#333" stroke-width="1.8"/>
+  <text x="470" y="62" text-anchor="middle" font-size="11" fill="#333" font-weight="600" font-family="system-ui, sans-serif">HARNESS 编排层</text>
+  <line x1="358" y1="70" x2="582" y2="70" stroke="#e0e0e0" stroke-width="1"/>
+  <rect x="358" y="78" width="108" height="26" rx="2" fill="#f0f0f0" stroke="#aaa" stroke-width="1"/>
+  <text x="412" y="95" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif">规则引擎</text>
+  <rect x="474" y="78" width="108" height="26" rx="2" fill="#f0f0f0" stroke="#aaa" stroke-width="1"/>
+  <text x="528" y="95" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif">工具路由</text>
+  <rect x="358" y="112" width="108" height="26" rx="2" fill="#f0f0f0" stroke="#aaa" stroke-width="1"/>
+  <text x="412" y="129" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif">知识编排</text>
+  <rect x="474" y="112" width="108" height="26" rx="2" fill="#f0f0f0" stroke="#aaa" stroke-width="1"/>
+  <text x="528" y="129" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif">状态管理</text>
+  <rect x="358" y="146" width="224" height="26" rx="2" fill="#f0f0f0" stroke="#aaa" stroke-width="1"/>
+  <text x="470" y="163" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif">工作流管线</text>
+  <line x1="358" y1="182" x2="582" y2="182" stroke="#e0e0e0" stroke-width="1"/>
+  <rect x="358" y="190" width="68" height="24" rx="2" fill="#e0e0e0" stroke="#bbb" stroke-width="1"/>
+  <text x="392" y="206" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui, sans-serif">Skill A</text>
+  <rect x="434" y="190" width="68" height="24" rx="2" fill="#e0e0e0" stroke="#bbb" stroke-width="1"/>
+  <text x="468" y="206" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui, sans-serif">Skill B</text>
+  <rect x="510" y="190" width="68" height="24" rx="2" fill="#e0e0e0" stroke="#bbb" stroke-width="1"/>
+  <text x="544" y="206" text-anchor="middle" font-size="9" fill="#888" font-family="system-ui, sans-serif">Skill C</text>
+  <text x="470" y="247" text-anchor="middle" font-size="12" fill="#999" font-family="system-ui, sans-serif">Harness 调度 Skill，协同运转</text>
+</svg></figure>
 <h2 id="真正的壁垒在编排层">真正的壁垒在编排层</h2>
 <p>我想再强调这个概念：Harness（驾驭层）。</p>
 <p>Harness不是AI本身，是让AI在真实工作场景中可靠运转的那套工程体系。打个粗略的比方：如果AI模型是发动机，Harness就是整台车——传动系统、刹车系统、仪表盘、安全气囊——让发动机的动力能可靠地传到轮子上的所有东西。</p>
 <p>具体来说，Harness管几件事：什么时候触发什么规则，规则冲突时怎么排优先级；什么任务用什么工具，工具挂了怎么降级；什么场景调什么知识库，不同来源的信息可信度怎么标注；从输入到输出的完整流程怎么串，每个环节的质检标准是什么；跨步骤、跨会话的上下文怎么延续。</p>
 <p>在这个架构里，Skill只是一个被调度的能力单元，和命令行工具、MCP服务器（一种让AI调用外部工具的标准接口）、规则文件是平级关系。调度它们的不是某个全能的Skill，是Harness。</p>
-<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 290"&gt;
-  &lt;rect width="600" height="290" fill="#fafafa" rx="4"/&gt;
-  &lt;text x="300" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#333" font-family="system-ui, sans-serif"&gt;Harness 分层架构示意&lt;/text&gt;
-  &lt;rect x="60" y="42" width="480" height="46" rx="3" fill="#f2f2f2" stroke="#aaa" stroke-width="1.5"/&gt;
-  &lt;text x="300" y="62" text-anchor="middle" font-size="12" font-weight="600" fill="#333" font-family="system-ui, sans-serif"&gt;全局规则层&lt;/text&gt;
-  &lt;text x="300" y="78" text-anchor="middle" font-size="10" fill="#888" font-family="system-ui, sans-serif"&gt;证据认定原则 · 法律研究规范 · 输出规范&lt;/text&gt;
-  &lt;rect x="100" y="102" width="400" height="46" rx="3" fill="#e8e8e8" stroke="#999" stroke-width="1.5"/&gt;
-  &lt;text x="300" y="122" text-anchor="middle" font-size="12" font-weight="600" fill="#333" font-family="system-ui, sans-serif"&gt;领域规则层&lt;/text&gt;
-  &lt;text x="300" y="138" text-anchor="middle" font-size="10" fill="#888" font-family="system-ui, sans-serif"&gt;建工结算规则 · 投融资审查标准 · 合同分类路由&lt;/text&gt;
-  &lt;rect x="140" y="162" width="320" height="46" rx="3" fill="#ddd" stroke="#888" stroke-width="1.5"/&gt;
-  &lt;text x="300" y="182" text-anchor="middle" font-size="12" font-weight="600" fill="#333" font-family="system-ui, sans-serif"&gt;项目规则层&lt;/text&gt;
-  &lt;text x="300" y="198" text-anchor="middle" font-size="10" fill="#888" font-family="system-ui, sans-serif"&gt;客户专属标准 · 案件特定配置&lt;/text&gt;
-  &lt;rect x="80" y="228" width="100" height="30" rx="2" fill="#d0d0d0" stroke="#aaa" stroke-width="1"/&gt;
-  &lt;text x="130" y="248" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif"&gt;Skill 插件&lt;/text&gt;
-  &lt;rect x="195" y="228" width="100" height="30" rx="2" fill="#d0d0d0" stroke="#aaa" stroke-width="1"/&gt;
-  &lt;text x="245" y="248" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif"&gt;CLI 工具&lt;/text&gt;
-  &lt;rect x="310" y="228" width="100" height="30" rx="2" fill="#d0d0d0" stroke="#aaa" stroke-width="1"/&gt;
-  &lt;text x="360" y="248" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif"&gt;MCP 服务&lt;/text&gt;
-  &lt;rect x="425" y="228" width="100" height="30" rx="2" fill="#d0d0d0" stroke="#aaa" stroke-width="1"/&gt;
-  &lt;text x="475" y="248" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif"&gt;知识库&lt;/text&gt;
-  &lt;text x="300" y="280" text-anchor="middle" font-size="10" fill="#aaa" font-family="system-ui, sans-serif"&gt;能力单元层 — 被 Harness 调度，不做调度&lt;/text&gt;
-&lt;/svg&gt;</code></pre>
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 290">
+  <rect width="600" height="290" fill="#fafafa" rx="4"/>
+  <text x="300" y="26" text-anchor="middle" font-size="14" font-weight="700" fill="#333" font-family="system-ui, sans-serif">Harness 分层架构示意</text>
+  <rect x="60" y="42" width="480" height="46" rx="3" fill="#f2f2f2" stroke="#aaa" stroke-width="1.5"/>
+  <text x="300" y="62" text-anchor="middle" font-size="12" font-weight="600" fill="#333" font-family="system-ui, sans-serif">全局规则层</text>
+  <text x="300" y="78" text-anchor="middle" font-size="10" fill="#888" font-family="system-ui, sans-serif">证据认定原则 · 法律研究规范 · 输出规范</text>
+  <rect x="100" y="102" width="400" height="46" rx="3" fill="#e8e8e8" stroke="#999" stroke-width="1.5"/>
+  <text x="300" y="122" text-anchor="middle" font-size="12" font-weight="600" fill="#333" font-family="system-ui, sans-serif">领域规则层</text>
+  <text x="300" y="138" text-anchor="middle" font-size="10" fill="#888" font-family="system-ui, sans-serif">建工结算规则 · 投融资审查标准 · 合同分类路由</text>
+  <rect x="140" y="162" width="320" height="46" rx="3" fill="#ddd" stroke="#888" stroke-width="1.5"/>
+  <text x="300" y="182" text-anchor="middle" font-size="12" font-weight="600" fill="#333" font-family="system-ui, sans-serif">项目规则层</text>
+  <text x="300" y="198" text-anchor="middle" font-size="10" fill="#888" font-family="system-ui, sans-serif">客户专属标准 · 案件特定配置</text>
+  <rect x="80" y="228" width="100" height="30" rx="2" fill="#d0d0d0" stroke="#aaa" stroke-width="1"/>
+  <text x="130" y="248" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif">Skill 插件</text>
+  <rect x="195" y="228" width="100" height="30" rx="2" fill="#d0d0d0" stroke="#aaa" stroke-width="1"/>
+  <text x="245" y="248" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif">CLI 工具</text>
+  <rect x="310" y="228" width="100" height="30" rx="2" fill="#d0d0d0" stroke="#aaa" stroke-width="1"/>
+  <text x="360" y="248" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif">MCP 服务</text>
+  <rect x="425" y="228" width="100" height="30" rx="2" fill="#d0d0d0" stroke="#aaa" stroke-width="1"/>
+  <text x="475" y="248" text-anchor="middle" font-size="10" fill="#555" font-family="system-ui, sans-serif">知识库</text>
+  <text x="300" y="280" text-anchor="middle" font-size="10" fill="#aaa" font-family="system-ui, sans-serif">能力单元层 — 被 Harness 调度，不做调度</text>
+</svg></figure>
 <p>Harness比Skill难复制得多。一段Prompt封装的Skill，竞争对手花几天就能逆向。你写了一个合同审查Skill，别人拿你的输出样本做参照，迭代几轮也能做到八九不离十。但Harness是系统工程——架构设计、分层规则、工具链编排、知识库治理，每一个环节都需要和具体的法律业务深度磨合。这种磨合是在真实案件中、在客户反馈中、在一次次幻觉和错误中迭代出来的，不是坐在办公室里能想出来的。</p>
 <p>一句话：Skill是菜谱，Harness是后厨管理体系。菜谱可以抄，但一家餐厅能不能稳定出菜，看的是管理体系。</p>
 <p>行业里也能看到这个趋势。Anthropic自己在Claude for Legal上的方向，推的是整套工作流编排能力，不是一个Skill市场。真正在企业级场景跑通的法律AI产品，竞争力都不在单一Skill的数量上，而在整体系统的可靠性上。</p>
@@ -503,6 +617,34 @@
 <p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。</p>
         </div>
 
+        <nav class="article-prevnext" aria-label="上一篇/下一篇">
+          
+          <a class="prevnext-link prev" href="/articles/2026-05-18-领域知识就是护城河-法律人如何把专业判断变成-AI-不可替代的资产/">
+            <span class="prevnext-label">&larr; 上一篇</span>
+            <span class="prevnext-title">领域知识就是护城河——法律人如何把专业判断变成 AI 不可替代的资产</span>
+          </a>
+          
+          
+          <a class="prevnext-link next" href="/articles/2026-05-18-用规则代替软件-一个-Agent-完成从构思到发布的完整写作链路/">
+            <span class="prevnext-label">下一篇 &rarr;</span>
+            <span class="prevnext-title">用规则代替软件：一个 Agent 完成从构思到发布的完整写作链路</span>
+          </a>
+          
+        </nav>
+
+        
+        <div class="related-mobile">
+          <h4 class="related-title">同类文章</h4>
+          
+          <a class="related-link" href="/articles/2026-07-18-人口红利吃完了-下一种红利刚开局/">人口红利吃完了？下一种红利刚开局</a>
+          
+          <a class="related-link" href="/articles/2026-07-18-著作权三百年-它消化了六次技术冲击-为什么AI是例外/">著作权三百年：它消化了六次技术冲击，为什么AI是例外</a>
+          
+          <a class="related-link" href="/articles/2026-07-13-智能体该叫代理-一个翻译-决定了你怎么用-AI/">智能体该叫代理——一个翻译，决定了你怎么用 AI</a>
+          
+        </div>
+        
+
         <footer class="article-footer">
           <div class="article-bio-card">
             <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
@@ -514,14 +656,88 @@
           </div>
         </footer>
       </article>
+
+      
+      <nav class="article-toc" aria-label="目录">
+        <div class="toc-sticky">
+          <h4 class="toc-title">目录</h4>
+          
+          <a href="#Skill为什么重要但不够" class="toc-link toc-l2" data-target="Skill为什么重要但不够">Skill为什么重要但不够</a>
+          
+          <a href="#真正的壁垒在编排层" class="toc-link toc-l2" data-target="真正的壁垒在编排层">真正的壁垒在编排层</a>
+          
+          <a href="#几个会被问到的反驳" class="toc-link toc-l2" data-target="几个会被问到的反驳">几个会被问到的反驳</a>
+          
+          <a href="#交流中的隐忧" class="toc-link toc-l2" data-target="交流中的隐忧">交流中的隐忧</a>
+          
+          <a href="#我也走过弯路" class="toc-link toc-l2" data-target="我也走过弯路">我也走过弯路</a>
+          
+          <a href="#结尾" class="toc-link toc-l2" data-target="结尾">结尾</a>
+          
+        </div>
+      </nav>
+      
     </div>
   </main>
 
   <script>
-    /* Progress bar only */
+    /* Progress bar */
     (function(){
       var bar=document.querySelector('.progress-bar-fill');
       if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+
+    /* TOC scrollspy — 当前阅读章节在目录中高亮 */
+    (function(){
+      var links=document.querySelectorAll('.article-toc .toc-link');
+      if(!links.length||!('IntersectionObserver' in window)){return}
+      var map={};
+      links.forEach(function(l){map[l.getAttribute('data-target')]=l});
+      var headings=document.querySelectorAll('.article-body h2[id],.article-body h3[id]');
+      if(!headings.length){return}
+      var visible={};
+      var observer=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){visible[e.target.id]=e.isIntersecting});
+        var current=null;
+        for(var i=0;i<headings.length;i++){
+          if(visible[headings[i].id]){current=headings[i].id;break}
+        }
+        if(!current){
+          for(var j=headings.length-1;j>=0;j--){
+            if(headings[j].getBoundingClientRect().top<100){current=headings[j].id;break}
+          }
+        }
+        links.forEach(function(l){l.classList.remove('is-active')});
+        if(current&&map[current]){map[current].classList.add('is-active')}
+      },{rootMargin:'-80px 0px -70% 0px',threshold:0});
+      headings.forEach(function(h){observer.observe(h)});
+    })();
+
+    /* Code block copy button */
+    (function(){
+      function copyText(text,done){
+        if(navigator.clipboard&&window.isSecureContext){
+          navigator.clipboard.writeText(text).then(done,done);
+        }else{
+          var ta=document.createElement('textarea');
+          ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+          document.body.appendChild(ta);ta.select();
+          try{document.execCommand('copy')}catch(e){}
+          document.body.removeChild(ta);done();
+        }
+      }
+      document.querySelectorAll('pre.code-block').forEach(function(pre){
+        var btn=document.createElement('button');
+        btn.type='button';btn.className='code-copy';btn.textContent='复制';
+        btn.addEventListener('click',function(){
+          var code=pre.querySelector('code');
+          copyText(code?code.innerText:pre.innerText,function(){
+            btn.textContent='已复制';btn.classList.add('is-done');
+            setTimeout(function(){btn.textContent='复制';btn.classList.remove('is-done')},1500);
+          });
+        });
+        pre.appendChild(btn);
+      });
     })();
   </script>
 </body>

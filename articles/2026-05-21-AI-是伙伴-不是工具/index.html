@@ -132,7 +132,8 @@
     a{color:inherit;text-decoration:none}
 
     /* Body */
-    html,body{overflow-x:hidden}
+    html{scroll-behavior:smooth}
+    html,body{overflow-x:hidden;overflow-x:clip}
     body{
       background:#F3EDE3;
       background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
@@ -168,7 +169,7 @@
     .nav__links .sep{color:#C9C0B2;font-weight:300}
 
     /* Progress bar */
-    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:3px;z-index:50}
     .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
 
     /* Layout */
@@ -180,6 +181,10 @@
       padding:110px clamp(20px,5vw,72px) 80px;
       max-width:1160px;
       margin:0 auto;
+    }
+    /* ≥1200px 扩展为三栏（右栏 TOC） */
+    @media (min-width:1200px){
+      .article-layout{grid-template-columns:240px minmax(0,720px) minmax(0,200px);max-width:1296px}
     }
 
     /* Sidebar */
@@ -252,6 +257,93 @@
     .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
     .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
 
+    /* Anchor offset for fixed nav */
+    .article-body h2,.article-body h3{scroll-margin-top:96px}
+
+    /* SVG figures (```svg blocks rendered inline) */
+    .article-svg{
+      margin:28px 0;padding:20px;
+      border:1px solid #C9C0B2;background:#fff;
+      overflow-x:auto;text-align:center;
+    }
+    .article-svg svg{max-width:100%;height:auto;display:inline-block}
+
+    /* Right-rail TOC (desktop ≥1200px) */
+    .article-toc{display:none;position:relative}
+    .toc-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto}
+    .toc-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .toc-link{
+      display:block;padding:5px 0 5px 12px;
+      font-size:12.5px;line-height:1.45;color:#7d756a;
+      border-left:2px solid transparent;transition:color .2s,border-color .2s
+    }
+    .toc-link:hover{color:#1A1714}
+    .toc-link.toc-l3{padding-left:26px;font-size:12px}
+    .toc-link.is-active{color:#C0392B;border-left-color:#C0392B;font-weight:600}
+    @media (min-width:1200px){.article-toc{display:block}}
+
+    /* Mobile TOC (<1200px, collapsible) */
+    .toc-mobile{
+      margin:0 0 32px;padding:16px 20px;
+      border:1px solid #C9C0B2;background:rgba(243,237,227,.5)
+    }
+    .toc-mobile summary{
+      cursor:pointer;font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.1em;color:#C0392B;text-transform:uppercase;user-select:none
+    }
+    .toc-mobile .toc-link{margin-top:8px}
+    @media (min-width:1200px){.toc-mobile{display:none}}
+
+    /* Code copy button */
+    pre.code-block{position:relative}
+    .code-copy{
+      position:absolute;top:8px;right:8px;
+      padding:4px 10px;border:1px solid rgba(232,227,216,.25);border-radius:3px;
+      background:rgba(232,227,216,.08);color:#e8e3d8;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.04em;
+      cursor:pointer;opacity:0;transition:opacity .2s,background .2s
+    }
+    pre.code-block:hover .code-copy{opacity:1}
+    .code-copy:hover{background:rgba(232,227,216,.18)}
+    .code-copy.is-done{color:#7ac28a;border-color:rgba(122,194,138,.4)}
+    @media (hover:none){.code-copy{opacity:1}}
+
+    /* Prev / Next navigation */
+    .article-prevnext{
+      display:grid;grid-template-columns:1fr 1fr;gap:20px;
+      margin-top:56px;padding-top:28px;border-top:1px solid #C9C0B2
+    }
+    .prevnext-link{display:flex;flex-direction:column;gap:6px;min-width:0}
+    .prevnext-link.next{text-align:right;align-items:flex-end}
+    .prevnext-link.next:only-child{grid-column:2}
+    .prevnext-label{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.06em;color:#7d756a
+    }
+    .prevnext-title{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-size:16px;font-weight:600;color:#1A1714;line-height:1.4;
+      transition:color .25s
+    }
+    .prevnext-link:hover .prevnext-title{color:#C0392B}
+
+    /* Related articles (mobile only — sidebar hidden below 860px) */
+    .related-mobile{display:none;margin-top:32px}
+    .related-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:12px;padding-bottom:10px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .related-link{
+      display:block;padding:8px 0;font-size:14px;color:#3a342d;
+      border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .related-link:hover{color:#C0392B}
+
     /* Footer */
     .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
     .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
@@ -279,11 +371,14 @@
       .article-sidebar{display:none}
       .article-title{font-size:clamp(24px,5vw,32px)}
       .article-body{font-size:15px;line-height:1.8}
+      .related-mobile{display:block}
     }
     @media (max-width:600px){
       .article-layout{padding:80px 20px 48px}
       .article-meta-top{font-size:10px;gap:8px}
       .article-cover{margin-bottom:28px}
+      .article-prevnext{grid-template-columns:1fr;gap:16px}
+      .prevnext-link.next{text-align:left;align-items:flex-start}
     }
     @media (prefers-reduced-motion:reduce){
       *{animation:none!important;transition:none!important}
@@ -315,9 +410,9 @@
 
     <h4 class="sidebar-title">分类</h4>
     <nav class="sidebar-nav">
-      <a href="/articles/" class="sidebar-link">全部（123）</a>
+      <a href="/articles/" class="sidebar-link">全部（126）</a>
       
-      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（100）</a>
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（103）</a>
       
       <a href="/categories/legal-practice/" class="sidebar-link">法律实务（18）</a>
       
@@ -333,9 +428,15 @@
     <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
     <nav class="sidebar-nav">
       
+      <a href="/articles/2026-07-18-人口红利吃完了-下一种红利刚开局/" class="sidebar-link">人口红利吃完了？下一种红利刚开局</a>
+      
+      <a href="/articles/2026-07-18-著作权三百年-它消化了六次技术冲击-为什么AI是例外/" class="sidebar-link">著作权三百年：它消化了六次技术冲击，为什么AI是例外</a>
+      
       <a href="/articles/2026-07-13-智能体该叫代理-一个翻译-决定了你怎么用-AI/" class="sidebar-link">智能体该叫代理——一个翻译，决定了你怎么用 AI</a>
       
       <a href="/articles/2026-07-13-别让法律咨询规则-跑进你的旅游攻略-Agent-的第一条纪律/" class="sidebar-link">别让法律咨询规则，跑进你的旅游攻略——Agent 的第一条纪律</a>
+      
+      <a href="/articles/2026-07-13-法律人-该把你的东西拿出来了/" class="sidebar-link">法律人，该把你的东西拿出来了</a>
       
       <a href="/articles/2026-07-13-故事大会上的-AI-警惕之后-我们还能做什么/" class="sidebar-link">故事大会上的 AI：警惕之后，我们还能做什么</a>
       
@@ -367,12 +468,6 @@
       
       <a href="/articles/2026-07-02-Token-会被当成石油交易/" class="sidebar-link">Token 会被当成石油交易</a>
       
-      <a href="/articles/2026-07-02-你-AI-账单里有三种价格在同时跑/" class="sidebar-link">你 AI 账单里有三种价格在同时跑</a>
-      
-      <a href="/articles/2026-07-02-AI-时代最值钱的不是模型-是-水电煤-层/" class="sidebar-link">AI 时代最值钱的不是模型，是"水电煤"层</a>
-      
-      <a href="/articles/2026-07-02-法律人学-AI-最缺的不是工具/" class="sidebar-link">法律人学 AI，最缺的不是工具</a>
-      
     </nav>
     
   </div>
@@ -392,13 +487,15 @@
         </header>
 
         
+
+        
         <figure class="article-cover">
           <img src="cover.png" alt="AI 是伙伴，不是工具封面图" loading="lazy">
         </figure>
         
 
         <div class="article-body">
-          <p>!<a href="cover.png">封面</a></p>
+          <p><img src="cover.png" alt="封面" loading="lazy"></p>
 <p>这两年分享 AI 的话题比较多，莫名被贴上了"AI 律师"的标签。同行朋友见面，常问三个问题：</p>
 <p>"哪个 AI 好用？"</p>
 <p>"AI 幻觉还是很多吧，是不是应该再等等？"</p>
@@ -410,47 +507,47 @@
 <p><strong>但 AI 不是这样的东西。</strong></p>
 <p>同样的提示词，你输入两次，得到的结果不一样。你今天让它写一份法律意见书，明天同样的指令再问一次，措辞变了，重点偏了，甚至结论都不一样。</p>
 <p>这不是 AI 的 bug，这是它的 feature。AI 底层是概率模型，不是规则引擎。它的输出天生具有不确定性。</p>
-<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300"&gt;
-  &lt;defs&gt;
-    &lt;marker id="arrow" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto"&gt;
-      &lt;path d="M0,0 L6,3 L0,6 Z" fill="#333"/&gt;
-    &lt;/marker&gt;
-  &lt;/defs&gt;
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">
+  <defs>
+    <marker id="arrow" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#333"/>
+    </marker>
+  </defs>
 
-  &lt;!-- 工具 --&gt;
-  &lt;text x="300" y="24" text-anchor="middle" font-size="13" fill="#999" font-family="sans-serif"&gt;工具 · 确定性系统&lt;/text&gt;
-  &lt;rect x="40" y="42" width="100" height="32" rx="4" fill="#f0f0f0" stroke="#999" stroke-width="1"/&gt;
-  &lt;text x="90" y="63" text-anchor="middle" font-size="14" fill="#333" font-family="sans-serif"&gt;输入 A&lt;/text&gt;
-  &lt;line x1="140" y1="58" x2="178" y2="58" stroke="#333" stroke-width="1.2" marker-end="url(#arrow)"/&gt;
-  &lt;rect x="180" y="42" width="160" height="32" rx="4" fill="#fff" stroke="#333" stroke-width="1"/&gt;
-  &lt;text x="260" y="63" text-anchor="middle" font-size="13" fill="#333" font-family="sans-serif"&gt;固定规则引擎&lt;/text&gt;
-  &lt;line x1="340" y1="58" x2="378" y2="58" stroke="#333" stroke-width="1.2" marker-end="url(#arrow)"/&gt;
-  &lt;rect x="380" y="42" width="100" height="32" rx="4" fill="#f0f0f0" stroke="#999" stroke-width="1"/&gt;
-  &lt;text x="430" y="63" text-anchor="middle" font-size="14" fill="#333" font-family="sans-serif"&gt;输出 B&lt;/text&gt;
-  &lt;text x="300" y="92" text-anchor="middle" font-size="12" fill="#999" font-family="sans-serif"&gt;每次相同&lt;/text&gt;
+  <!-- 工具 -->
+  <text x="300" y="24" text-anchor="middle" font-size="13" fill="#999" font-family="sans-serif">工具 · 确定性系统</text>
+  <rect x="40" y="42" width="100" height="32" rx="4" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
+  <text x="90" y="63" text-anchor="middle" font-size="14" fill="#333" font-family="sans-serif">输入 A</text>
+  <line x1="140" y1="58" x2="178" y2="58" stroke="#333" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <rect x="180" y="42" width="160" height="32" rx="4" fill="#fff" stroke="#333" stroke-width="1"/>
+  <text x="260" y="63" text-anchor="middle" font-size="13" fill="#333" font-family="sans-serif">固定规则引擎</text>
+  <line x1="340" y1="58" x2="378" y2="58" stroke="#333" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <rect x="380" y="42" width="100" height="32" rx="4" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
+  <text x="430" y="63" text-anchor="middle" font-size="14" fill="#333" font-family="sans-serif">输出 B</text>
+  <text x="300" y="92" text-anchor="middle" font-size="12" fill="#999" font-family="sans-serif">每次相同</text>
 
-  &lt;!-- 分隔线 --&gt;
-  &lt;line x1="40" y1="122" x2="560" y2="122" stroke="#e0e0e0" stroke-width="0.5"/&gt;
+  <!-- 分隔线 -->
+  <line x1="40" y1="122" x2="560" y2="122" stroke="#e0e0e0" stroke-width="0.5"/>
 
-  &lt;!-- AI --&gt;
-  &lt;text x="300" y="144" text-anchor="middle" font-size="13" fill="#999" font-family="sans-serif"&gt;AI · 概率系统&lt;/text&gt;
-  &lt;rect x="40" y="162" width="100" height="32" rx="4" fill="#f0f0f0" stroke="#999" stroke-width="1"/&gt;
-  &lt;text x="90" y="183" text-anchor="middle" font-size="14" fill="#333" font-family="sans-serif"&gt;输入 A&lt;/text&gt;
-  &lt;line x1="140" y1="178" x2="188" y2="178" stroke="#333" stroke-width="1.2" marker-end="url(#arrow)"/&gt;
-  &lt;rect x="190" y="162" width="140" height="32" rx="4" fill="#fff" stroke="#333" stroke-width="1"/&gt;
-  &lt;text x="260" y="183" text-anchor="middle" font-size="13" fill="#333" font-family="sans-serif"&gt;概率模型&lt;/text&gt;
+  <!-- AI -->
+  <text x="300" y="144" text-anchor="middle" font-size="13" fill="#999" font-family="sans-serif">AI · 概率系统</text>
+  <rect x="40" y="162" width="100" height="32" rx="4" fill="#f0f0f0" stroke="#999" stroke-width="1"/>
+  <text x="90" y="183" text-anchor="middle" font-size="14" fill="#333" font-family="sans-serif">输入 A</text>
+  <line x1="140" y1="178" x2="188" y2="178" stroke="#333" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <rect x="190" y="162" width="140" height="32" rx="4" fill="#fff" stroke="#333" stroke-width="1"/>
+  <text x="260" y="183" text-anchor="middle" font-size="13" fill="#333" font-family="sans-serif">概率模型</text>
 
-  &lt;!-- 三个不同输出 --&gt;
-  &lt;line x1="330" y1="170" x2="378" y2="170" stroke="#333" stroke-width="1.2" marker-end="url(#arrow)"/&gt;
-  &lt;rect x="380" y="150" width="100" height="28" rx="4" fill="#f5f0e8" stroke="#c0a060" stroke-width="1"/&gt;
-  &lt;text x="430" y="169" text-anchor="middle" font-size="13" fill="#333" font-family="sans-serif"&gt;输出 B₁&lt;/text&gt;
+  <!-- 三个不同输出 -->
+  <line x1="330" y1="170" x2="378" y2="170" stroke="#333" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <rect x="380" y="150" width="100" height="28" rx="4" fill="#f5f0e8" stroke="#c0a060" stroke-width="1"/>
+  <text x="430" y="169" text-anchor="middle" font-size="13" fill="#333" font-family="sans-serif">输出 B₁</text>
 
-  &lt;line x1="330" y1="186" x2="378" y2="196" stroke="#333" stroke-width="1.2" marker-end="url(#arrow)"/&gt;
-  &lt;rect x="380" y="186" width="100" height="28" rx="4" fill="#f0f0f8" stroke="#8090c0" stroke-width="1"/&gt;
-  &lt;text x="430" y="205" text-anchor="middle" font-size="13" fill="#333" font-family="sans-serif"&gt;输出 B₂&lt;/text&gt;
+  <line x1="330" y1="186" x2="378" y2="196" stroke="#333" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <rect x="380" y="186" width="100" height="28" rx="4" fill="#f0f0f8" stroke="#8090c0" stroke-width="1"/>
+  <text x="430" y="205" text-anchor="middle" font-size="13" fill="#333" font-family="sans-serif">输出 B₂</text>
 
-  &lt;text x="300" y="252" text-anchor="middle" font-size="12" fill="#c0a060" font-family="sans-serif"&gt;每次不同——这是 feature，不是 bug&lt;/text&gt;
-&lt;/svg&gt;</code></pre>
+  <text x="300" y="252" text-anchor="middle" font-size="12" fill="#c0a060" font-family="sans-serif">每次不同——这是 feature，不是 bug</text>
+</svg></figure>
 <p>问题来了：一个输出不确定的东西，怎么在工作中为你所用？</p>
 <p>工具框架给不了答案。AI 应用公司可以采集行业数据做微调，给你一个看起来很惊艳的 Demo。60 分的方案，覆盖通用场景，让外行觉得"哇好厉害"。但如果你是一个对专业呈现有要求的人，60 分离你的标准差太远了。</p>
 <p>你的专业标准本身就是非标准的。你看合同的方式、你判断风险的直觉、你对某个条款的措辞偏好、你在特定类型项目中的处理习惯——这些不是任何厂家能替你封装好的。厂家的通用控制，打不到你的七寸。</p>
@@ -466,50 +563,50 @@
 <p>这些规则没有捷径。为什么？</p>
 <p>因为隐性知识只有在被勾起的时候才能被表达。你坐在那里空想"我的专业方法论是什么"，是写不出来的。但当你面对一个具体的合同条款、一个具体的交易结构、一个具体的争议场景时，你的直觉被触发了，你意识到"这里有问题"——这时候你才能把这个判断转化成语言，交给 AI，让它记住。</p>
 <p>一次交互，一点沉淀。累积得多了，AI 就会越来越接近你的预期。它开始适应你的工作方法，适应你的目标和习惯，适应你的表达方式。它的输出开始带着"你"的影子。</p>
-<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340"&gt;
-  &lt;defs&gt;
-    &lt;marker id="arrow2" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto"&gt;
-      &lt;path d="M0,0 L6,3 L0,6 Z" fill="#555"/&gt;
-    &lt;/marker&gt;
-  &lt;/defs&gt;
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340">
+  <defs>
+    <marker id="arrow2" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#555"/>
+    </marker>
+  </defs>
 
-  &lt;!-- 四个节点，环形布局 --&gt;
+  <!-- 四个节点，环形布局 -->
 
-  &lt;!-- 节点1：场景触发 --&gt;
-  &lt;rect x="200" y="20" width="140" height="50" rx="6" fill="#fff" stroke="#333" stroke-width="1.2"/&gt;
-  &lt;text x="270" y="42" text-anchor="middle" font-size="14" fill="#333" font-family="sans-serif"&gt;具体场景&lt;/text&gt;
-  &lt;text x="270" y="60" text-anchor="middle" font-size="11" fill="#999" font-family="sans-serif"&gt;一个合同 / 一个条款&lt;/text&gt;
+  <!-- 节点1：场景触发 -->
+  <rect x="200" y="20" width="140" height="50" rx="6" fill="#fff" stroke="#333" stroke-width="1.2"/>
+  <text x="270" y="42" text-anchor="middle" font-size="14" fill="#333" font-family="sans-serif">具体场景</text>
+  <text x="270" y="60" text-anchor="middle" font-size="11" fill="#999" font-family="sans-serif">一个合同 / 一个条款</text>
 
-  &lt;!-- 箭头：场景 → 直觉 --&gt;
-  &lt;line x1="340" y1="45" x2="420" y2="100" stroke="#555" stroke-width="1.2" marker-end="url(#arrow2)"/&gt;
+  <!-- 箭头：场景 → 直觉 -->
+  <line x1="340" y1="45" x2="420" y2="100" stroke="#555" stroke-width="1.2" marker-end="url(#arrow2)"/>
 
-  &lt;!-- 节点2：直觉触发 --&gt;
-  &lt;rect x="400" y="105" width="150" height="50" rx="6" fill="#fff" stroke="#333" stroke-width="1.2"/&gt;
-  &lt;text x="475" y="127" text-anchor="middle" font-size="14" fill="#333" font-family="sans-serif"&gt;专业直觉被触发&lt;/text&gt;
-  &lt;text x="475" y="145" text-anchor="middle" font-size="11" fill="#999" font-family="sans-serif"&gt;"这里有问题"&lt;/text&gt;
+  <!-- 节点2：直觉触发 -->
+  <rect x="400" y="105" width="150" height="50" rx="6" fill="#fff" stroke="#333" stroke-width="1.2"/>
+  <text x="475" y="127" text-anchor="middle" font-size="14" fill="#333" font-family="sans-serif">专业直觉被触发</text>
+  <text x="475" y="145" text-anchor="middle" font-size="11" fill="#999" font-family="sans-serif">"这里有问题"</text>
 
-  &lt;!-- 箭头：直觉 → 反馈 --&gt;
-  &lt;line x1="475" y1="155" x2="475" y2="195" stroke="#555" stroke-width="1.2" marker-end="url(#arrow2)"/&gt;
+  <!-- 箭头：直觉 → 反馈 -->
+  <line x1="475" y1="155" x2="475" y2="195" stroke="#555" stroke-width="1.2" marker-end="url(#arrow2)"/>
 
-  &lt;!-- 节点3：语言化反馈 --&gt;
-  &lt;rect x="390" y="200" width="170" height="50" rx="6" fill="#fff" stroke="#333" stroke-width="1.2"/&gt;
-  &lt;text x="475" y="222" text-anchor="middle" font-size="14" fill="#333" font-family="sans-serif"&gt;表达判断 / 纠正输出&lt;/text&gt;
-  &lt;text x="475" y="240" text-anchor="middle" font-size="11" fill="#999" font-family="sans-serif"&gt;"我要的是这样，因为…"&lt;/text&gt;
+  <!-- 节点3：语言化反馈 -->
+  <rect x="390" y="200" width="170" height="50" rx="6" fill="#fff" stroke="#333" stroke-width="1.2"/>
+  <text x="475" y="222" text-anchor="middle" font-size="14" fill="#333" font-family="sans-serif">表达判断 / 纠正输出</text>
+  <text x="475" y="240" text-anchor="middle" font-size="11" fill="#999" font-family="sans-serif">"我要的是这样，因为…"</text>
 
-  &lt;!-- 箭头：反馈 → 规则 --&gt;
-  &lt;line x1="390" y1="225" x2="310" y2="175" stroke="#555" stroke-width="1.2" marker-end="url(#arrow2)"/&gt;
+  <!-- 箭头：反馈 → 规则 -->
+  <line x1="390" y1="225" x2="310" y2="175" stroke="#555" stroke-width="1.2" marker-end="url(#arrow2)"/>
 
-  &lt;!-- 节点4：规则沉淀 --&gt;
-  &lt;rect x="170" y="150" width="140" height="50" rx="6" fill="#f8f8f8" stroke="#333" stroke-width="1.2"/&gt;
-  &lt;text x="240" y="172" text-anchor="middle" font-size="14" fill="#333" font-family="sans-serif"&gt;规则沉淀&lt;/text&gt;
-  &lt;text x="240" y="190" text-anchor="middle" font-size="11" fill="#999" font-family="sans-serif"&gt;AI 记忆 / 指令固化&lt;/text&gt;
+  <!-- 节点4：规则沉淀 -->
+  <rect x="170" y="150" width="140" height="50" rx="6" fill="#f8f8f8" stroke="#333" stroke-width="1.2"/>
+  <text x="240" y="172" text-anchor="middle" font-size="14" fill="#333" font-family="sans-serif">规则沉淀</text>
+  <text x="240" y="190" text-anchor="middle" font-size="11" fill="#999" font-family="sans-serif">AI 记忆 / 指令固化</text>
 
-  &lt;!-- 箭头：规则 → 场景（回到起点） --&gt;
-  &lt;line x1="240" y1="150" x2="270" y2="70" stroke="#555" stroke-width="1.2" marker-end="url(#arrow2)"/&gt;
+  <!-- 箭头：规则 → 场景（回到起点） -->
+  <line x1="240" y1="150" x2="270" y2="70" stroke="#555" stroke-width="1.2" marker-end="url(#arrow2)"/>
 
-  &lt;!-- 中心文字 --&gt;
-  &lt;text x="370" y="302" text-anchor="middle" font-size="12" fill="#999" font-family="sans-serif"&gt;隐性知识显性化循环 · 伴生的本质&lt;/text&gt;
-&lt;/svg&gt;</code></pre>
+  <!-- 中心文字 -->
+  <text x="370" y="302" text-anchor="middle" font-size="12" fill="#999" font-family="sans-serif">隐性知识显性化循环 · 伴生的本质</text>
+</svg></figure>
 <p><strong>这就是伴生。</strong></p>
 <p>你从来没有期待过，世界上存在一个厂家，能生产出一个伙伴，交到你手里就满足你所有需求，就能跟你无缝协作。你天然地理解，伙伴是处出来的，不是买来的。</p>
 <p>那为什么到了 AI 这里，就变成了"等它成熟了直接用"？</p>
@@ -528,6 +625,34 @@
 <p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。</p>
         </div>
 
+        <nav class="article-prevnext" aria-label="上一篇/下一篇">
+          
+          <a class="prevnext-link prev" href="/articles/2026-05-21-笔迹鉴定申请实操指南-基于104件案例的九条法则/">
+            <span class="prevnext-label">&larr; 上一篇</span>
+            <span class="prevnext-title">笔迹鉴定申请实操指南——基于104件案例的九条法则</span>
+          </a>
+          
+          
+          <a class="prevnext-link next" href="/articles/2026-05-20-别让我拿破裤衩给你补一条裤子/">
+            <span class="prevnext-label">下一篇 &rarr;</span>
+            <span class="prevnext-title">别让我拿破裤衩给你补一条裤子</span>
+          </a>
+          
+        </nav>
+
+        
+        <div class="related-mobile">
+          <h4 class="related-title">同类文章</h4>
+          
+          <a class="related-link" href="/articles/2026-07-18-人口红利吃完了-下一种红利刚开局/">人口红利吃完了？下一种红利刚开局</a>
+          
+          <a class="related-link" href="/articles/2026-07-18-著作权三百年-它消化了六次技术冲击-为什么AI是例外/">著作权三百年：它消化了六次技术冲击，为什么AI是例外</a>
+          
+          <a class="related-link" href="/articles/2026-07-13-智能体该叫代理-一个翻译-决定了你怎么用-AI/">智能体该叫代理——一个翻译，决定了你怎么用 AI</a>
+          
+        </div>
+        
+
         <footer class="article-footer">
           <div class="article-bio-card">
             <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
@@ -539,14 +664,69 @@
           </div>
         </footer>
       </article>
+
+      
     </div>
   </main>
 
   <script>
-    /* Progress bar only */
+    /* Progress bar */
     (function(){
       var bar=document.querySelector('.progress-bar-fill');
       if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+
+    /* TOC scrollspy — 当前阅读章节在目录中高亮 */
+    (function(){
+      var links=document.querySelectorAll('.article-toc .toc-link');
+      if(!links.length||!('IntersectionObserver' in window)){return}
+      var map={};
+      links.forEach(function(l){map[l.getAttribute('data-target')]=l});
+      var headings=document.querySelectorAll('.article-body h2[id],.article-body h3[id]');
+      if(!headings.length){return}
+      var visible={};
+      var observer=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){visible[e.target.id]=e.isIntersecting});
+        var current=null;
+        for(var i=0;i<headings.length;i++){
+          if(visible[headings[i].id]){current=headings[i].id;break}
+        }
+        if(!current){
+          for(var j=headings.length-1;j>=0;j--){
+            if(headings[j].getBoundingClientRect().top<100){current=headings[j].id;break}
+          }
+        }
+        links.forEach(function(l){l.classList.remove('is-active')});
+        if(current&&map[current]){map[current].classList.add('is-active')}
+      },{rootMargin:'-80px 0px -70% 0px',threshold:0});
+      headings.forEach(function(h){observer.observe(h)});
+    })();
+
+    /* Code block copy button */
+    (function(){
+      function copyText(text,done){
+        if(navigator.clipboard&&window.isSecureContext){
+          navigator.clipboard.writeText(text).then(done,done);
+        }else{
+          var ta=document.createElement('textarea');
+          ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+          document.body.appendChild(ta);ta.select();
+          try{document.execCommand('copy')}catch(e){}
+          document.body.removeChild(ta);done();
+        }
+      }
+      document.querySelectorAll('pre.code-block').forEach(function(pre){
+        var btn=document.createElement('button');
+        btn.type='button';btn.className='code-copy';btn.textContent='复制';
+        btn.addEventListener('click',function(){
+          var code=pre.querySelector('code');
+          copyText(code?code.innerText:pre.innerText,function(){
+            btn.textContent='已复制';btn.classList.add('is-done');
+            setTimeout(function(){btn.textContent='复制';btn.classList.remove('is-done')},1500);
+          });
+        });
+        pre.appendChild(btn);
+      });
     })();
   </script>
 </body>

@@ -132,7 +132,8 @@
     a{color:inherit;text-decoration:none}
 
     /* Body */
-    html,body{overflow-x:hidden}
+    html{scroll-behavior:smooth}
+    html,body{overflow-x:hidden;overflow-x:clip}
     body{
       background:#F3EDE3;
       background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
@@ -168,7 +169,7 @@
     .nav__links .sep{color:#C9C0B2;font-weight:300}
 
     /* Progress bar */
-    .progress-bar{position:fixed;top:0;left:0;width:100%;height:2px;z-index:50}
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:3px;z-index:50}
     .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
 
     /* Layout */
@@ -180,6 +181,10 @@
       padding:110px clamp(20px,5vw,72px) 80px;
       max-width:1160px;
       margin:0 auto;
+    }
+    /* ≥1200px 扩展为三栏（右栏 TOC） */
+    @media (min-width:1200px){
+      .article-layout{grid-template-columns:240px minmax(0,720px) minmax(0,200px);max-width:1296px}
     }
 
     /* Sidebar */
@@ -252,6 +257,93 @@
     .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
     .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
 
+    /* Anchor offset for fixed nav */
+    .article-body h2,.article-body h3{scroll-margin-top:96px}
+
+    /* SVG figures (```svg blocks rendered inline) */
+    .article-svg{
+      margin:28px 0;padding:20px;
+      border:1px solid #C9C0B2;background:#fff;
+      overflow-x:auto;text-align:center;
+    }
+    .article-svg svg{max-width:100%;height:auto;display:inline-block}
+
+    /* Right-rail TOC (desktop ≥1200px) */
+    .article-toc{display:none;position:relative}
+    .toc-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto}
+    .toc-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .toc-link{
+      display:block;padding:5px 0 5px 12px;
+      font-size:12.5px;line-height:1.45;color:#7d756a;
+      border-left:2px solid transparent;transition:color .2s,border-color .2s
+    }
+    .toc-link:hover{color:#1A1714}
+    .toc-link.toc-l3{padding-left:26px;font-size:12px}
+    .toc-link.is-active{color:#C0392B;border-left-color:#C0392B;font-weight:600}
+    @media (min-width:1200px){.article-toc{display:block}}
+
+    /* Mobile TOC (<1200px, collapsible) */
+    .toc-mobile{
+      margin:0 0 32px;padding:16px 20px;
+      border:1px solid #C9C0B2;background:rgba(243,237,227,.5)
+    }
+    .toc-mobile summary{
+      cursor:pointer;font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.1em;color:#C0392B;text-transform:uppercase;user-select:none
+    }
+    .toc-mobile .toc-link{margin-top:8px}
+    @media (min-width:1200px){.toc-mobile{display:none}}
+
+    /* Code copy button */
+    pre.code-block{position:relative}
+    .code-copy{
+      position:absolute;top:8px;right:8px;
+      padding:4px 10px;border:1px solid rgba(232,227,216,.25);border-radius:3px;
+      background:rgba(232,227,216,.08);color:#e8e3d8;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.04em;
+      cursor:pointer;opacity:0;transition:opacity .2s,background .2s
+    }
+    pre.code-block:hover .code-copy{opacity:1}
+    .code-copy:hover{background:rgba(232,227,216,.18)}
+    .code-copy.is-done{color:#7ac28a;border-color:rgba(122,194,138,.4)}
+    @media (hover:none){.code-copy{opacity:1}}
+
+    /* Prev / Next navigation */
+    .article-prevnext{
+      display:grid;grid-template-columns:1fr 1fr;gap:20px;
+      margin-top:56px;padding-top:28px;border-top:1px solid #C9C0B2
+    }
+    .prevnext-link{display:flex;flex-direction:column;gap:6px;min-width:0}
+    .prevnext-link.next{text-align:right;align-items:flex-end}
+    .prevnext-link.next:only-child{grid-column:2}
+    .prevnext-label{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.06em;color:#7d756a
+    }
+    .prevnext-title{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-size:16px;font-weight:600;color:#1A1714;line-height:1.4;
+      transition:color .25s
+    }
+    .prevnext-link:hover .prevnext-title{color:#C0392B}
+
+    /* Related articles (mobile only — sidebar hidden below 860px) */
+    .related-mobile{display:none;margin-top:32px}
+    .related-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:12px;padding-bottom:10px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .related-link{
+      display:block;padding:8px 0;font-size:14px;color:#3a342d;
+      border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .related-link:hover{color:#C0392B}
+
     /* Footer */
     .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
     .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
@@ -279,11 +371,14 @@
       .article-sidebar{display:none}
       .article-title{font-size:clamp(24px,5vw,32px)}
       .article-body{font-size:15px;line-height:1.8}
+      .related-mobile{display:block}
     }
     @media (max-width:600px){
       .article-layout{padding:80px 20px 48px}
       .article-meta-top{font-size:10px;gap:8px}
       .article-cover{margin-bottom:28px}
+      .article-prevnext{grid-template-columns:1fr;gap:16px}
+      .prevnext-link.next{text-align:left;align-items:flex-start}
     }
     @media (prefers-reduced-motion:reduce){
       *{animation:none!important;transition:none!important}
@@ -315,9 +410,9 @@
 
     <h4 class="sidebar-title">分类</h4>
     <nav class="sidebar-nav">
-      <a href="/articles/" class="sidebar-link">全部（123）</a>
+      <a href="/articles/" class="sidebar-link">全部（126）</a>
       
-      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（100）</a>
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（103）</a>
       
       <a href="/categories/legal-practice/" class="sidebar-link">法律实务（18）</a>
       
@@ -388,6 +483,23 @@
         </header>
 
         
+        <details class="toc-mobile">
+          <summary>本文目录</summary>
+          
+          <a href="#一谁决策谁负责不是谁开会谁免责" class="toc-link toc-l2">一、"谁决策、谁负责"，不是"谁开会、谁免责"</a>
+          
+          <a href="#二党纪问责终身追责不论岗位如何变动" class="toc-link toc-l2">二、党纪问责：终身追责，不论岗位如何变动</a>
+          
+          <a href="#三一个反直觉的法律规则沉默服从不能免责" class="toc-link toc-l2">三、一个反直觉的法律规则：沉默服从不能免责</a>
+          
+          <a href="#四公私法的同构刑法与公司法的呼应" class="toc-link toc-l2">四、公私法的同构：刑法与公司法的呼应</a>
+          
+          <a href="#五回到求是文章法律早已给出了答案" class="toc-link toc-l2">五、回到《求是》文章：法律早已给出了答案</a>
+          
+        </details>
+        
+
+        
         <figure class="article-cover">
           <img src="cover.png" alt="上了会，就不用担责了吗？封面图" loading="lazy">
         </figure>
@@ -404,9 +516,12 @@
 <p>注意措辞——"集体决策失误造成重大损失"本身就是一个追责事由。"集体"二字不是免责的理由，而是追责的前提条件。</p>
 <p>张家口市政务公开责任追究办法中，对责任区分做了更精细的规定："经过领导班子集体讨论决定作出违反政务公开规定的行政行为，由主要领导承担主要责任，其他领导成员和承办人员承担次要责任。"这意味着：</p>
 <ul>
-<li>上了会 ≠ 不担责</li>
-<li>集体决定 ≠ 法不责众</li>
-<li>领导不仅跑不掉，反而承担<strong>主要</strong>责任</li>
+<li>上了会 ≠ 不担责
+</li>
+<li>集体决定 ≠ 法不责众
+</li>
+<li>领导不仅跑不掉，反而承担<strong>主要</strong>责任
+</li>
 </ul>
 <p>程序是否合规（走了集体讨论程序），和实体上要不要承担责任（为自己的判断负责），是两个独立的评价维度。前者不能替代后者。</p>
 <hr>
@@ -422,46 +537,49 @@
 <p>湖南省工业和信息化厅《重大行政决策制度》第十八条规定："集体讨论决定决策事项时，有关人员对严重失误决策明确持不赞成态度或者保留意见的，应当免除或者减轻责任。"云南省民政厅重大行政决策程序规定第四十四条有同款表述。</p>
 <p>这条规则的逻辑是：</p>
 <ul>
-<li><strong>默认状态</strong>：参与集体决策的人，要对决策后果承担相应责任</li>
-<li><strong>免责例外</strong>：只有在会上<strong>明确反对</strong>或<strong>保留意见</strong>，且意见被记录在案，才能免除或减轻责任</li>
-<li><strong>沉默 = 同意 = 担责</strong>：不表态、随大流、口头说"我有点担心"但没有正式记录——都不构成免责事由</li>
+<li><strong>默认状态</strong>：参与集体决策的人，要对决策后果承担相应责任
+</li>
+<li><strong>免责例外</strong>：只有在会上<strong>明确反对</strong>或<strong>保留意见</strong>，且意见被记录在案，才能免除或减轻责任
+</li>
+<li><strong>沉默 = 同意 = 担责</strong>：不表态、随大流、口头说"我有点担心"但没有正式记录——都不构成免责事由
+</li>
 </ul>
 <p>这个规则设计得相当精巧。它实际上把集体讨论还原成了它本来的功能：不是责任的分散机制，而是<strong>风险的暴露机制</strong>。集体讨论的价值在于不同观点碰撞，从而发现个人思考中的盲区。如果你在讨论中明确指出了风险，尽到了个体的判断义务，法律给你免责保护；如果你什么都没说、或者说了但没留痕，法律视为你同意了这个决策——你要负责。</p>
-<pre class="code-block"><code class="language-svg">&lt;svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300"&gt;
-  &lt;rect width="600" height="300" fill="#fff" rx="6"/&gt;
-  &lt;text x="300" y="36" text-anchor="middle" font-size="16" font-weight="700" fill="#333" font-family="sans-serif"&gt;集体决策中的责任区分逻辑&lt;/text&gt;
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">
+  <rect width="600" height="300" fill="#fff" rx="6"/>
+  <text x="300" y="36" text-anchor="middle" font-size="16" font-weight="700" fill="#333" font-family="sans-serif">集体决策中的责任区分逻辑</text>
 
-  &lt;!-- 三个分支 --&gt;
-  &lt;!-- 分支1：明确反对 --&gt;
-  &lt;rect x="30" y="60" width="170" height="200" rx="4" fill="#f0f9eb" stroke="#67c23a" stroke-width="1.5"/&gt;
-  &lt;text x="115" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#67c23a" font-family="sans-serif"&gt;明确反对&lt;/text&gt;
-  &lt;text x="115" y="115" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;正式表达异议&lt;/text&gt;
-  &lt;text x="115" y="135" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;要求记录在案&lt;/text&gt;
-  &lt;line x1="60" y1="150" x2="170" y2="150" stroke="#ddd" stroke-width="0.5"/&gt;
-  &lt;text x="115" y="175" text-anchor="middle" font-size="13" font-weight="700" fill="#67c23a" font-family="sans-serif"&gt;免除或减轻责任&lt;/text&gt;
-  &lt;text x="115" y="200" text-anchor="middle" font-size="11" fill="#999" font-family="sans-serif"&gt;法律明确保护异议者&lt;/text&gt;
+  <!-- 三个分支 -->
+  <!-- 分支1：明确反对 -->
+  <rect x="30" y="60" width="170" height="200" rx="4" fill="#f0f9eb" stroke="#67c23a" stroke-width="1.5"/>
+  <text x="115" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#67c23a" font-family="sans-serif">明确反对</text>
+  <text x="115" y="115" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif">正式表达异议</text>
+  <text x="115" y="135" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif">要求记录在案</text>
+  <line x1="60" y1="150" x2="170" y2="150" stroke="#ddd" stroke-width="0.5"/>
+  <text x="115" y="175" text-anchor="middle" font-size="13" font-weight="700" fill="#67c23a" font-family="sans-serif">免除或减轻责任</text>
+  <text x="115" y="200" text-anchor="middle" font-size="11" fill="#999" font-family="sans-serif">法律明确保护异议者</text>
 
-  &lt;!-- 分支2：沉默/随大流 --&gt;
-  &lt;rect x="215" y="60" width="170" height="200" rx="4" fill="#fef0f0" stroke="#f56c6c" stroke-width="1.5"/&gt;
-  &lt;text x="300" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#f56c6c" font-family="sans-serif"&gt;沉默随大流&lt;/text&gt;
-  &lt;text x="300" y="115" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;不表态/口头担心&lt;/text&gt;
-  &lt;text x="300" y="135" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;未正式记录异议&lt;/text&gt;
-  &lt;line x1="245" y1="150" x2="355" y2="150" stroke="#ddd" stroke-width="0.5"/&gt;
-  &lt;text x="300" y="175" text-anchor="middle" font-size="13" font-weight="700" fill="#f56c6c" font-family="sans-serif"&gt;承担相应责任&lt;/text&gt;
-  &lt;text x="300" y="200" text-anchor="middle" font-size="11" fill="#999" font-family="sans-serif"&gt;沉默=同意，不免责&lt;/text&gt;
+  <!-- 分支2：沉默/随大流 -->
+  <rect x="215" y="60" width="170" height="200" rx="4" fill="#fef0f0" stroke="#f56c6c" stroke-width="1.5"/>
+  <text x="300" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#f56c6c" font-family="sans-serif">沉默随大流</text>
+  <text x="300" y="115" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif">不表态/口头担心</text>
+  <text x="300" y="135" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif">未正式记录异议</text>
+  <line x1="245" y1="150" x2="355" y2="150" stroke="#ddd" stroke-width="0.5"/>
+  <text x="300" y="175" text-anchor="middle" font-size="13" font-weight="700" fill="#f56c6c" font-family="sans-serif">承担相应责任</text>
+  <text x="300" y="200" text-anchor="middle" font-size="11" fill="#999" font-family="sans-serif">沉默=同意，不免责</text>
 
-  &lt;!-- 分支3：主动推动 --&gt;
-  &lt;rect x="400" y="60" width="170" height="200" rx="4" fill="#fdf6ec" stroke="#e6a23c" stroke-width="1.5"/&gt;
-  &lt;text x="485" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#e6a23c" font-family="sans-serif"&gt;主动推动&lt;/text&gt;
-  &lt;text x="485" y="115" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;提出方案/主导讨论&lt;/text&gt;
-  &lt;text x="485" y="135" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif"&gt;提供关键信息/数据&lt;/text&gt;
-  &lt;line x1="430" y1="150" x2="540" y2="150" stroke="#ddd" stroke-width="0.5"/&gt;
-  &lt;text x="485" y="175" text-anchor="middle" font-size="13" font-weight="700" fill="#e6a23c" font-family="sans-serif"&gt;承担主要责任&lt;/text&gt;
-  &lt;text x="485" y="200" text-anchor="middle" font-size="11" fill="#999" font-family="sans-serif"&gt;主要领导/直接责任人&lt;/text&gt;
+  <!-- 分支3：主动推动 -->
+  <rect x="400" y="60" width="170" height="200" rx="4" fill="#fdf6ec" stroke="#e6a23c" stroke-width="1.5"/>
+  <text x="485" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#e6a23c" font-family="sans-serif">主动推动</text>
+  <text x="485" y="115" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif">提出方案/主导讨论</text>
+  <text x="485" y="135" text-anchor="middle" font-size="12" fill="#555" font-family="sans-serif">提供关键信息/数据</text>
+  <line x1="430" y1="150" x2="540" y2="150" stroke="#ddd" stroke-width="0.5"/>
+  <text x="485" y="175" text-anchor="middle" font-size="13" font-weight="700" fill="#e6a23c" font-family="sans-serif">承担主要责任</text>
+  <text x="485" y="200" text-anchor="middle" font-size="11" fill="#999" font-family="sans-serif">主要领导/直接责任人</text>
 
-  &lt;!-- 底部标注 --&gt;
-  &lt;text x="300" y="285" text-anchor="middle" font-size="11" fill="#aaa" font-family="sans-serif"&gt;依据：《湖南省工信厅重大行政决策制度》第18条、张家口市政务公开责任追究办法等&lt;/text&gt;
-&lt;/svg&gt;</code></pre>
+  <!-- 底部标注 -->
+  <text x="300" y="285" text-anchor="middle" font-size="11" fill="#aaa" font-family="sans-serif">依据：《湖南省工信厅重大行政决策制度》第18条、张家口市政务公开责任追究办法等</text>
+</svg></figure>
 <p>从另一个角度看，这条规则也给了"敢担当"的人一个法律出口。不是说每个集体决策都必须有人反对，而是说，如果你确实认为某个决策有问题，你有明确的、能被法律认可的自我保护方式——在会上正式表达异议，并要求记录在案。</p>
 <hr>
 <h2 id="四公私法的同构刑法与公司法的呼应">四、公私法的同构：刑法与公司法的呼应</h2>
@@ -475,9 +593,12 @@
 <p>那些想用"上会"来分散责任的人，在法律上做了一件毫无意义的事。他们以为会议记录是一份责任保险，但法律把它看作一份责任清单。会上每个人的发言、表态、投票，恰恰是事后追责的最直接证据。</p>
 <p>真正应该做的不是"不上会"，而是：</p>
 <ul>
-<li><strong>权责清单清晰</strong>——该个人决策的，不推给集体。不是所有事都需要上会，集体决策的适用范围本身就应该有边界</li>
-<li><strong>会上明确表态</strong>——有不同意见就说出来，要求记录在案。这不是"不合群"，是法律给你的保护机制</li>
-<li><strong>程序与实体并重</strong>——走了程序不代表尽到了判断义务，会议的真正价值是讨论质量，不是出席人数</li>
+<li><strong>权责清单清晰</strong>——该个人决策的，不推给集体。不是所有事都需要上会，集体决策的适用范围本身就应该有边界
+</li>
+<li><strong>会上明确表态</strong>——有不同意见就说出来，要求记录在案。这不是"不合群"，是法律给你的保护机制
+</li>
+<li><strong>程序与实体并重</strong>——走了程序不代表尽到了判断义务，会议的真正价值是讨论质量，不是出席人数
+</li>
 </ul>
 <p>法律给"敢担当"的人留了出路——明确反对可以免责。法律也给"假担当"划了红线——沉默服从不能免责。程序的铠甲不是用来躲避责任的，是用来确保判断质量的。</p>
 <hr>
@@ -485,6 +606,34 @@
 <hr>
 <p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
         </div>
+
+        <nav class="article-prevnext" aria-label="上一篇/下一篇">
+          
+          <a class="prevnext-link prev" href="/articles/2026-06-06-当AI开始写自己的代码-法律人在焦虑什么/">
+            <span class="prevnext-label">&larr; 上一篇</span>
+            <span class="prevnext-title">当AI开始写自己的代码，法律人在焦虑什么</span>
+          </a>
+          
+          
+          <a class="prevnext-link next" href="/articles/2026-06-04-甲方这个位置-正在悄悄吃掉你的真本事/">
+            <span class="prevnext-label">下一篇 &rarr;</span>
+            <span class="prevnext-title">甲方这个位置，正在悄悄吃掉你的真本事</span>
+          </a>
+          
+        </nav>
+
+        
+        <div class="related-mobile">
+          <h4 class="related-title">同类文章</h4>
+          
+          <a class="related-link" href="/articles/2026-07-01-国有资产流失的历史演进/">国有资产流失的历史演进</a>
+          
+          <a class="related-link" href="/articles/2026-07-01-从防止国有资产流失到国有资本经营判断规则-国资监管制度演进的反向后果/">从防止国有资产流失到国有资本经营判断规则：国资监管制度演进的反向后果</a>
+          
+          <a class="related-link" href="/articles/2026-07-01-国资监管不能只设红线-还要给方法/">国资监管不能只设红线，还要给方法</a>
+          
+        </div>
+        
 
         <footer class="article-footer">
           <div class="article-bio-card">
@@ -497,14 +646,86 @@
           </div>
         </footer>
       </article>
+
+      
+      <nav class="article-toc" aria-label="目录">
+        <div class="toc-sticky">
+          <h4 class="toc-title">目录</h4>
+          
+          <a href="#一谁决策谁负责不是谁开会谁免责" class="toc-link toc-l2" data-target="一谁决策谁负责不是谁开会谁免责">一、"谁决策、谁负责"，不是"谁开会、谁免责"</a>
+          
+          <a href="#二党纪问责终身追责不论岗位如何变动" class="toc-link toc-l2" data-target="二党纪问责终身追责不论岗位如何变动">二、党纪问责：终身追责，不论岗位如何变动</a>
+          
+          <a href="#三一个反直觉的法律规则沉默服从不能免责" class="toc-link toc-l2" data-target="三一个反直觉的法律规则沉默服从不能免责">三、一个反直觉的法律规则：沉默服从不能免责</a>
+          
+          <a href="#四公私法的同构刑法与公司法的呼应" class="toc-link toc-l2" data-target="四公私法的同构刑法与公司法的呼应">四、公私法的同构：刑法与公司法的呼应</a>
+          
+          <a href="#五回到求是文章法律早已给出了答案" class="toc-link toc-l2" data-target="五回到求是文章法律早已给出了答案">五、回到《求是》文章：法律早已给出了答案</a>
+          
+        </div>
+      </nav>
+      
     </div>
   </main>
 
   <script>
-    /* Progress bar only */
+    /* Progress bar */
     (function(){
       var bar=document.querySelector('.progress-bar-fill');
       if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+
+    /* TOC scrollspy — 当前阅读章节在目录中高亮 */
+    (function(){
+      var links=document.querySelectorAll('.article-toc .toc-link');
+      if(!links.length||!('IntersectionObserver' in window)){return}
+      var map={};
+      links.forEach(function(l){map[l.getAttribute('data-target')]=l});
+      var headings=document.querySelectorAll('.article-body h2[id],.article-body h3[id]');
+      if(!headings.length){return}
+      var visible={};
+      var observer=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){visible[e.target.id]=e.isIntersecting});
+        var current=null;
+        for(var i=0;i<headings.length;i++){
+          if(visible[headings[i].id]){current=headings[i].id;break}
+        }
+        if(!current){
+          for(var j=headings.length-1;j>=0;j--){
+            if(headings[j].getBoundingClientRect().top<100){current=headings[j].id;break}
+          }
+        }
+        links.forEach(function(l){l.classList.remove('is-active')});
+        if(current&&map[current]){map[current].classList.add('is-active')}
+      },{rootMargin:'-80px 0px -70% 0px',threshold:0});
+      headings.forEach(function(h){observer.observe(h)});
+    })();
+
+    /* Code block copy button */
+    (function(){
+      function copyText(text,done){
+        if(navigator.clipboard&&window.isSecureContext){
+          navigator.clipboard.writeText(text).then(done,done);
+        }else{
+          var ta=document.createElement('textarea');
+          ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+          document.body.appendChild(ta);ta.select();
+          try{document.execCommand('copy')}catch(e){}
+          document.body.removeChild(ta);done();
+        }
+      }
+      document.querySelectorAll('pre.code-block').forEach(function(pre){
+        var btn=document.createElement('button');
+        btn.type='button';btn.className='code-copy';btn.textContent='复制';
+        btn.addEventListener('click',function(){
+          var code=pre.querySelector('code');
+          copyText(code?code.innerText:pre.innerText,function(){
+            btn.textContent='已复制';btn.classList.add('is-done');
+            setTimeout(function(){btn.textContent='复制';btn.classList.remove('is-done')},1500);
+          });
+        });
+        pre.appendChild(btn);
+      });
     })();
   </script>
 </body>
