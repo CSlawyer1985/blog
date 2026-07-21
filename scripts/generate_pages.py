@@ -116,6 +116,20 @@ class SimpleTemplate:
 
 # ── 页面生成 ───────────────────────────────────
 
+def extract_toc(body_html: str) -> list:
+    """从正文 HTML 提取 h2/h3 目录（供文章页锚点导航使用）
+
+    仅当存在至少一个 h2 时返回目录，否则返回空列表（模板不渲染 TOC）。
+    """
+    toc = []
+    for m in re.finditer(r'<h([23]) id="([^"]+)">(.*?)</h\1>', body_html, re.DOTALL):
+        text = re.sub(r'<[^>]+>', '', m.group(3)).strip()
+        toc.append({'level': m.group(1), 'id': m.group(2), 'text': text})
+    if not any(t['level'] == '2' for t in toc):
+        return []
+    return toc
+
+
 def generate_all(articles: list, site_data: dict, articles_index: dict):
     """生成所有静态 HTML 页面"""
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -163,12 +177,27 @@ def generate_all(articles: list, site_data: dict, articles_index: dict):
         # Build same-category article list for sidebar (cap at 20)
         same_cat = [art for art in articles_index['articles']
                     if art['category_id'] == a['category_id']][:20]
+        # 移动端底部同类推荐（排除当前文章，取 3 篇）
+        related = [art for art in same_cat if art['slug'] != a['slug']][:3]
+        # 上一篇（更新）/ 下一篇（更旧）——articles 按日期倒序
+        prev_article = None
+        if i > 0:
+            pa = articles[i - 1]
+            prev_article = {'slug': pa['slug'], 'title': pa['title'], 'date_str': pa['date_str']}
+        next_article = None
+        if i + 1 < len(articles):
+            na = articles[i + 1]
+            next_article = {'slug': na['slug'], 'title': na['title'], 'date_str': na['date_str']}
         ctx = {
             'site': site_data['site'],
             'author': site_data['author'],
             'article': a,
             'stats': site_data['stats'],
             'body_html': body_html,
+            'toc': extract_toc(body_html),
+            'prev_article': prev_article,
+            'next_article': next_article,
+            'related_articles': related,
             'all_categories': site_data['stats']['categories'],
             'sidebar_active': a['category_id'],
             'sidebar_articles': same_cat,
