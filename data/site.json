@@ -92,7 +92,7 @@
   },
   "stats": {
     "total_articles": 126,
-    "total_chars": 323758,
+    "total_chars": 323550,
     "honor_count": 6,
     "categories": [
       {
@@ -103,7 +103,7 @@
       {
         "id": "legal-practice",
         "label": "法律实务",
-        "count": 18
+        "count": 19
       },
       {
         "id": "industry",
@@ -113,7 +113,7 @@
       {
         "id": "methodology",
         "label": "方法论/思维",
-        "count": 2
+        "count": 1
       },
       {
         "id": "data-analysis",
@@ -121,6 +121,6 @@
         "count": 2
       }
     ],
-    "updated": "2026-07-21T18:55:07.173245"
+    "updated": "2026-07-21T20:21:34.277193"
   }
 }

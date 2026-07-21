@@ -4,19 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文 — 陈石 · 法与AI</title>
-  <meta name="description" content="">
+  <meta name="description" content="我不是工程师这篇是我作为律师硬着头皮读论文后的理解技术细节如有不准欢迎懂行的朋友指正一引子律师的体感与一个外行的诚实我做律师这些年过去一年明显感觉到一件事用这些越来越快了不是快了一点是那种从等一杯咖啡到喝一口水的快同样问一个法律问题半年前要盯着进度条转半天现在似乎刚把问题敲完答案就开始往外蹦我得先承">
       <link rel="canonical" href="https://legalagi.cn/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/">
     <link rel="alternate" type="application/atom+xml" title="陈石 · 法与AI" href="/atom.xml">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="陈石 · 法与AI">
     <meta property="og:title" content="读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文">
-    <meta property="og:description" content="">
+    <meta property="og:description" content="我不是工程师这篇是我作为律师硬着头皮读论文后的理解技术细节如有不准欢迎懂行的朋友指正一引子律师的体感与一个外行的诚实我做律师这些年过去一年明显感觉到一件事用这些越来越快了不是快了一点是那种从等一杯咖啡到喝一口水的快同样问一个法律问题半年前要盯着进度条转半天现在似乎刚把问题敲完答案就开始往外蹦我得先承">
     <meta property="og:url" content="https://legalagi.cn/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/">
     <meta property="og:image" content="https://legalagi.cn/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/cover.png">
     <meta property="og:locale" content="zh_CN">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文">
-    <meta name="twitter:description" content="">
+    <meta name="twitter:description" content="我不是工程师这篇是我作为律师硬着头皮读论文后的理解技术细节如有不准欢迎懂行的朋友指正一引子律师的体感与一个外行的诚实我做律师这些年过去一年明显感觉到一件事用这些越来越快了不是快了一点是那种从等一杯咖啡到喝一口水的快同样问一个法律问题半年前要盯着进度条转半天现在似乎刚把问题敲完答案就开始往外蹦我得先承">
     <meta name="twitter:image" content="https://legalagi.cn/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/cover.png">
     <meta property="article:published_time" content="2026-07-01">
     <meta property="article:author" content="陈石">
@@ -37,7 +37,7 @@
       },
       "datePublished": "2026-07-01",
       "dateModified": "2026-07-01",
-      "description": "",
+      "description": "我不是工程师这篇是我作为律师硬着头皮读论文后的理解技术细节如有不准欢迎懂行的朋友指正一引子律师的体感与一个外行的诚实我做律师这些年过去一年明显感觉到一件事用这些越来越快了不是快了一点是那种从等一杯咖啡到喝一口水的快同样问一个法律问题半年前要盯着进度条转半天现在似乎刚把问题敲完答案就开始往外蹦我得先承",
       "image": {
         "@type": "ImageObject",
         "url": "https://legalagi.cn/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/cover.png"
@@ -414,11 +414,11 @@
       
       <a href="/categories/ai-law/" class="sidebar-link">AI+法律（103）</a>
       
-      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（18）</a>
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（19）</a>
       
       <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
       
-      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（2）</a>
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（1）</a>
       
       <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
       
@@ -522,8 +522,7 @@
         
 
         <div class="article-body">
-          <p><img src="cover.png" alt="封面" loading="lazy"></p>
-<blockquote>
+          <blockquote>
 <p>我不是 AI 工程师。这篇是我作为律师，硬着头皮读 DSpark 论文后的理解。技术细节如有不准，欢迎懂行的朋友指正。</p>
 </blockquote>
 <h2 id="一引子律师的体感与一个外行的诚实">一、引子：律师的体感，与一个外行的诚实</h2>

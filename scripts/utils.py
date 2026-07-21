@@ -86,10 +86,17 @@ def extract_title_and_body(md_path: str) -> dict:
     # 检测封面图（正文开头的 ![cover] 或 ![...] 图片）
     has_cover = False
     cover_alt = ''
-    cover_match = re.match(r'!\[([^\]]*)\]\(([^\)]+)\)', body.strip())
+    cover_line_end = 0  # 封面图所在行的结束偏移，用于从正文移除避免重复渲染
+    stripped_body = body.lstrip('\n')
+    leading_blank = len(body) - len(stripped_body)
+    cover_match = re.match(r'!\[([^\]]*)\]\(([^\)]+)\)', stripped_body)
     if cover_match:
         has_cover = True
         cover_alt = cover_match.group(1)
+        # 计算该图片行（含其后换行）在原 body 中的结束位置
+        cover_line_end = leading_blank + cover_match.end()
+        if cover_line_end < len(body) and body[cover_line_end] == '\n':
+            cover_line_end += 1
 
     # 分离作者简介（最后一个 --- 之后，或 > **作者简介：** 之后）
     bio_md = ''
@@ -109,6 +116,16 @@ def extract_title_and_body(md_path: str) -> dict:
             split_pos = bio_match.start()
             main_body = body[:split_pos]
             bio_md = body[split_pos:]
+
+    # 若 main_body 包含被识别为封面的图片行，从正文中移除（模板将单独渲染，避免重复显示）
+    if has_cover:
+        cover_md = cover_match.group(0)  # 完整 markdown 语法如 ![alt](cover.png)
+        if cover_md in main_body:
+            # 优先删除"图片行（含其后换行）"——保持原段落结构干净
+            if cover_md + '\n' in main_body:
+                main_body = main_body.replace(cover_md + '\n', '', 1)
+            else:
+                main_body = main_body.replace(cover_md, '', 1)
 
     return {
         "title": title,
@@ -143,6 +160,37 @@ def extract_excerpt(md_text: str, max_chars: int = 120) -> str:
 
 # ── 简易 Markdown → HTML 转换器 ──────────────────
 
+# 识别"首张图作为封面"——文件名以 cover 开头或路径含 /cover.
+_COVER_RE = re.compile(r'^!\[([^\]]*)\]\(([^)]+)\)', re.MULTILINE)
+
+def _strip_leading_cover(md_text: str) -> tuple[str, bool]:
+    """剥离正文首张 markdown 图片（若文件名像 cover）。返回 (处理后 md, 是否剥离)。
+
+    仅当图片出现在文档开头（允许前置空行/标题后）且文件名像 cover 才剥离，
+    避免误删正文插图。剥离该图片后，正文头部的空行也会一并裁掉，避免空段落。
+    """
+    m = _COVER_RE.search(md_text)
+    if not m:
+        return md_text, False
+    src = m.group(2).strip()
+    base = src.rsplit('/', 1)[-1].lower()
+    if not (base.startswith('cover') or 'cover.' in base):
+        return md_text, False
+    end = m.end()
+    if end < len(md_text) and md_text[end] == '\n':
+        end += 1
+    # 去掉标题行（如有）+ 其后空行 + 封面行 + 其后空行，全部头部清理干净
+    stripped = md_text.lstrip('\n')
+    # 同时去掉首行 # 标题
+    lines = stripped.split('\n', 1)
+    body = lines[1] if len(lines) > 1 else ''
+    body = body.lstrip('\n')
+    # 再去掉 cover 行（如果还在开头）
+    body = _COVER_RE.sub('', body, count=1)
+    body = body.lstrip('\n')
+    return body, True
+
+
 def md_to_html(md_text: str) -> str:
     """将 Markdown 转换为 HTML（覆盖博客文章常用语法）
 
@@ -150,6 +198,8 @@ def md_to_html(md_text: str) -> str:
           无序列表(含一级嵌套)、有序列表、代码块(fenced)、
           ```svg 代码块直渲染、管道表格、引用块、水平线
     """
+    # 剥离正文首张 cover 图（模板已通过 article.has_cover 单独渲染封面，避免重复显示）
+    md_text, _ = _strip_leading_cover(md_text)
     lines = md_text.split('\n')
     html_lines = []
     i = 0
