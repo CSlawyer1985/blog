@@ -31,7 +31,7 @@ AUTHOR = {
     },
     "ai_school": {
         "name": "四明山法师 AI 夜校",
-        "url": "https://cslawyer1985.github.io/xinchun-ai-prework/",
+        "url": "https://course.legalagi.cn/",
         "description": "法律人AI实训项目，发起人"
     },
     "social_roles": [
