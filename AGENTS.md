@@ -21,7 +21,7 @@
 | `https://claude.legalagi.cn/` | Claude for Legal 中国法适配 | `CSlawyer1985/claude-for-legal-ZH` | `claude-for-legal-zh` |
 | `https://wiki.legalagi.cn/` | 法律概念 Wiki | `CSlawyer1985/legalwiki` | `legalwiki` |
 
-`https://course.legalagi.cn/` 是夜校曾使用的过渡域名，可保留兼容访问，但新链接和 SEO canonical 必须使用 `https://legalagi.cn/`。
+`course.legalagi.cn` 已停用并从 Cloudflare Pages 与 DNS 中移除。不得恢复或写入新的页面、导航、文章、模板及 SEO 数据；夜校入口统一使用 `https://legalagi.cn/`。
 
 ## 修改约束
 
