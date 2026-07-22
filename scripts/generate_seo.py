@@ -11,7 +11,7 @@ SEO / GEO 文件生成器
   - 模板引擎 SimpleTemplate 无 json 过滤器，所有 JSON-LD 在本模块用 json.dumps(ensure_ascii=False)
     预构建为完整 <script> 块字符串，模板侧用 {{ var|safe }} 注入，避免中文引号转义错误。
   - 采用 @graph 形式，同一页多个实体放在一个 JSON-LD 块中，通过 @id 互相引用，对解析器最稳健。
-  - canonical 域名统一从 config.SITE['base_url'] 派生（已修正为 https://legalagi.cn）。
+  - canonical 域名统一从 config.SITE['base_url'] 派生（已修正为 https://chenshi.ai）。
 """
 
 import json
@@ -24,7 +24,7 @@ from xml.sax.saxutils import escape as xml_escape
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import SITE
 
-BASE_URL = SITE.get("base_url", "https://legalagi.cn").rstrip("/")
+BASE_URL = SITE.get("base_url", "https://chenshi.ai").rstrip("/")
 SITE_NAME = SITE.get("name", "")
 SITE_DESC = SITE.get("description", "")
 DEFAULT_OG = BASE_URL + SITE.get("default_og_image", "/assets/portrait.png")

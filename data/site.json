@@ -2,8 +2,8 @@
   "site": {
     "name": "陈石 · 法与AI",
     "description": "建设工程/房地产律师 × AI+法律先行者 — 个人博客",
-    "url": "https://legalagi.cn",
-    "base_url": "https://legalagi.cn",
+    "url": "https://chenshi.ai",
+    "base_url": "https://chenshi.ai",
     "default_og_image": "/assets/portrait.png",
     "locale": "zh_CN",
     "rss_path": "/atom.xml",
@@ -29,7 +29,7 @@
     },
     "ai_school": {
       "name": "四明山法师 AI 夜校",
-      "url": "https://course.legalagi.cn/",
+      "url": "https://legalagi.cn/",
       "description": "法律人AI实训项目，发起人"
     },
     "social_roles": [

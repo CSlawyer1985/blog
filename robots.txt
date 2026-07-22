@@ -51,4 +51,4 @@ User-agent: Meta-ExternalAgent  # Meta AI
 Allow: /
 
 # ── 站点地图与订阅 ──
-Sitemap: https://legalagi.cn/sitemap.xml
+Sitemap: https://chenshi.ai/sitemap.xml

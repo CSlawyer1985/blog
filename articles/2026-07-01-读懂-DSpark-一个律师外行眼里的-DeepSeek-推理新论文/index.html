@@ -5,19 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文 — 陈石 · 法与AI</title>
   <meta name="description" content="我不是工程师这篇是我作为律师硬着头皮读论文后的理解技术细节如有不准欢迎懂行的朋友指正一引子律师的体感与一个外行的诚实我做律师这些年过去一年明显感觉到一件事用这些越来越快了不是快了一点是那种从等一杯咖啡到喝一口水的快同样问一个法律问题半年前要盯着进度条转半天现在似乎刚把问题敲完答案就开始往外蹦我得先承">
-      <link rel="canonical" href="https://legalagi.cn/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/">
+      <link rel="canonical" href="https://chenshi.ai/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/">
     <link rel="alternate" type="application/atom+xml" title="陈石 · 法与AI" href="/atom.xml">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="陈石 · 法与AI">
     <meta property="og:title" content="读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文">
     <meta property="og:description" content="我不是工程师这篇是我作为律师硬着头皮读论文后的理解技术细节如有不准欢迎懂行的朋友指正一引子律师的体感与一个外行的诚实我做律师这些年过去一年明显感觉到一件事用这些越来越快了不是快了一点是那种从等一杯咖啡到喝一口水的快同样问一个法律问题半年前要盯着进度条转半天现在似乎刚把问题敲完答案就开始往外蹦我得先承">
-    <meta property="og:url" content="https://legalagi.cn/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/">
-    <meta property="og:image" content="https://legalagi.cn/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/cover.png">
+    <meta property="og:url" content="https://chenshi.ai/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/">
+    <meta property="og:image" content="https://chenshi.ai/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/cover.png">
     <meta property="og:locale" content="zh_CN">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文">
     <meta name="twitter:description" content="我不是工程师这篇是我作为律师硬着头皮读论文后的理解技术细节如有不准欢迎懂行的朋友指正一引子律师的体感与一个外行的诚实我做律师这些年过去一年明显感觉到一件事用这些越来越快了不是快了一点是那种从等一杯咖啡到喝一口水的快同样问一个法律问题半年前要盯着进度条转半天现在似乎刚把问题敲完答案就开始往外蹦我得先承">
-    <meta name="twitter:image" content="https://legalagi.cn/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/cover.png">
+    <meta name="twitter:image" content="https://chenshi.ai/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/cover.png">
     <meta property="article:published_time" content="2026-07-01">
     <meta property="article:author" content="陈石">
     <meta property="article:section" content="AI+法律">
@@ -27,37 +27,37 @@
   "@graph": [
     {
       "@type": "BlogPosting",
-      "@id": "https://legalagi.cn/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/#article",
+      "@id": "https://chenshi.ai/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/#article",
       "headline": "读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文",
       "name": "读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文",
-      "url": "https://legalagi.cn/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/",
+      "url": "https://chenshi.ai/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/",
       "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://legalagi.cn/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/"
+        "@id": "https://chenshi.ai/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/"
       },
       "datePublished": "2026-07-01",
       "dateModified": "2026-07-01",
       "description": "我不是工程师这篇是我作为律师硬着头皮读论文后的理解技术细节如有不准欢迎懂行的朋友指正一引子律师的体感与一个外行的诚实我做律师这些年过去一年明显感觉到一件事用这些越来越快了不是快了一点是那种从等一杯咖啡到喝一口水的快同样问一个法律问题半年前要盯着进度条转半天现在似乎刚把问题敲完答案就开始往外蹦我得先承",
       "image": {
         "@type": "ImageObject",
-        "url": "https://legalagi.cn/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/cover.png"
+        "url": "https://chenshi.ai/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/cover.png"
       },
       "inLanguage": "zh-CN",
       "author": {
-        "@id": "https://legalagi.cn/#person"
+        "@id": "https://chenshi.ai/#person"
       },
       "publisher": {
-        "@id": "https://legalagi.cn/#person"
+        "@id": "https://chenshi.ai/#person"
       },
       "articleSection": "AI+法律",
       "timeRequired": "PT10M"
     },
     {
       "@type": "Person",
-      "@id": "https://legalagi.cn/#person",
+      "@id": "https://chenshi.ai/#person",
       "name": "陈石",
-      "url": "https://legalagi.cn/about.html",
-      "image": "https://legalagi.cn/assets/portrait.png",
+      "url": "https://chenshi.ai/about.html",
+      "image": "https://chenshi.ai/assets/portrait.png",
       "description": "陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。",
       "jobTitle": "副主任、高级合伙人",
       "knowsAbout": [
@@ -80,7 +80,7 @@
       },
       "sameAs": [
         "https://github.com/CSlawyer1985",
-        "https://course.legalagi.cn/"
+        "https://legalagi.cn/"
       ],
       "worksFor": {
         "@type": "Organization",
@@ -98,25 +98,25 @@
     },
     {
       "@type": "BreadcrumbList",
-      "@id": "https://legalagi.cn/#breadcrumb",
+      "@id": "https://chenshi.ai/#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
           "position": 1,
           "name": "首页",
-          "item": "https://legalagi.cn/"
+          "item": "https://chenshi.ai/"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "AI+法律",
-          "item": "https://legalagi.cn/categories/ai-law/"
+          "item": "https://chenshi.ai/categories/ai-law/"
         },
         {
           "@type": "ListItem",
           "position": 3,
           "name": "读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文",
-          "item": "https://legalagi.cn/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/"
+          "item": "https://chenshi.ai/articles/2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文/"
         }
       ]
     }
@@ -706,7 +706,7 @@
           <div class="article-bio-card">
             <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
             <div class="article-bio-links">
-              <a href="https://course.legalagi.cn/" target="_blank" rel="noopener">legalAGI.cn</a>
+              <a href="https://legalagi.cn/" target="_blank" rel="noopener">legalAGI.cn</a>
               <span>·</span>
               <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
             </div>
