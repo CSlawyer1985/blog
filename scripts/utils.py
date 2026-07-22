@@ -52,6 +52,74 @@ def classify_article(title: str, body_first_500: str, categories: list) -> str:
     return "uncategorized"
 
 
+_LEADING_IMAGE_RE = re.compile(
+    r'\A[ \t]*!\[([^\]]*)\]\(([^)]+)\)[ \t]*(?:\n|\Z)'
+)
+_IMAGE_LINE_RE = re.compile(
+    r'(?m)^[ \t]*!\[([^\]]*)\]\(([^)]+)\)[ \t]*(?:\n|\Z)'
+)
+
+
+def _is_cover_source(src: str) -> bool:
+    """判断图片路径是否为封面文件。"""
+    base = src.strip().split('?', 1)[0].split('#', 1)[0].rsplit('/', 1)[-1].lower()
+    return base in {'cover.png', 'cover.jpg', 'cover.jpeg', 'cover.webp'}
+
+
+def _strip_standard_cover_references(md_text: str) -> tuple[str, bool, str]:
+    """移除正文中对标准 cover 文件的所有单独成行引用。"""
+    found = False
+    first_alt = ''
+
+    def replace_if_cover(match: re.Match) -> str:
+        nonlocal found, first_alt
+        if not _is_cover_source(match.group(2)):
+            return match.group(0)
+        if not found:
+            first_alt = match.group(1)
+        found = True
+        return ''
+
+    cleaned = _IMAGE_LINE_RE.sub(replace_if_cover, md_text)
+    return cleaned, found, first_alt
+
+
+def _strip_leading_cover_block(
+    md_text: str, *, require_cover_filename: bool
+) -> tuple[str, bool, str]:
+    """移除文章开头的封面块。
+
+    第一张图与后续同路径图视为同一封面的重复引用；当第一张图名为
+    cover 时，连续的其他 cover 文件也一并移除。一旦遇到正文或不同的
+    普通图片就停止，不影响正文配图。
+    """
+    remaining = md_text.lstrip('\n')
+    first = _LEADING_IMAGE_RE.match(remaining)
+    if not first:
+        return md_text, False, ''
+
+    first_src = first.group(2).strip()
+    first_is_cover = _is_cover_source(first_src)
+    if require_cover_filename and not first_is_cover:
+        return md_text, False, ''
+
+    cover_alt = first.group(1)
+    remaining = remaining[first.end():].lstrip('\n')
+
+    while True:
+        duplicate = _LEADING_IMAGE_RE.match(remaining)
+        if not duplicate:
+            break
+        duplicate_src = duplicate.group(2).strip()
+        if duplicate_src != first_src and not (
+            first_is_cover and _is_cover_source(duplicate_src)
+        ):
+            break
+        remaining = remaining[duplicate.end():].lstrip('\n')
+
+    return remaining, True, cover_alt
+
+
 def extract_title_and_body(md_path: str) -> dict:
     """从 Markdown 文件提取标题、正文、作者简介
 
@@ -83,20 +151,14 @@ def extract_title_and_body(md_path: str) -> dict:
 
     body = '\n'.join(lines[body_start:])
 
-    # 检测封面图（正文开头的 ![cover] 或 ![...] 图片）
-    has_cover = False
-    cover_alt = ''
-    cover_line_end = 0  # 封面图所在行的结束偏移，用于从正文移除避免重复渲染
-    stripped_body = body.lstrip('\n')
-    leading_blank = len(body) - len(stripped_body)
-    cover_match = re.match(r'!\[([^\]]*)\]\(([^\)]+)\)', stripped_body)
-    if cover_match:
+    # 封面由模板统一渲染；源文章开头误写多次时，在解析层全部去重。
+    body, has_cover, cover_alt = _strip_leading_cover_block(
+        body, require_cover_filename=False
+    )
+    body, has_standard_cover, standard_cover_alt = _strip_standard_cover_references(body)
+    if has_standard_cover:
         has_cover = True
-        cover_alt = cover_match.group(1)
-        # 计算该图片行（含其后换行）在原 body 中的结束位置
-        cover_line_end = leading_blank + cover_match.end()
-        if cover_line_end < len(body) and body[cover_line_end] == '\n':
-            cover_line_end += 1
+        cover_alt = cover_alt or standard_cover_alt
 
     # 分离作者简介（最后一个 --- 之后，或 > **作者简介：** 之后）
     bio_md = ''
@@ -116,16 +178,6 @@ def extract_title_and_body(md_path: str) -> dict:
             split_pos = bio_match.start()
             main_body = body[:split_pos]
             bio_md = body[split_pos:]
-
-    # 若 main_body 包含被识别为封面的图片行，从正文中移除（模板将单独渲染，避免重复显示）
-    if has_cover:
-        cover_md = cover_match.group(0)  # 完整 markdown 语法如 ![alt](cover.png)
-        if cover_md in main_body:
-            # 优先删除"图片行（含其后换行）"——保持原段落结构干净
-            if cover_md + '\n' in main_body:
-                main_body = main_body.replace(cover_md + '\n', '', 1)
-            else:
-                main_body = main_body.replace(cover_md, '', 1)
 
     return {
         "title": title,
@@ -160,35 +212,10 @@ def extract_excerpt(md_text: str, max_chars: int = 120) -> str:
 
 # ── 简易 Markdown → HTML 转换器 ──────────────────
 
-# 识别"首张图作为封面"——文件名以 cover 开头或路径含 /cover.
-_COVER_RE = re.compile(r'^!\[([^\]]*)\]\(([^)]+)\)', re.MULTILINE)
-
 def _strip_leading_cover(md_text: str) -> tuple[str, bool]:
-    """剥离正文首张 markdown 图片（若文件名像 cover）。返回 (处理后 md, 是否剥离)。
-
-    仅当图片出现在文档开头（允许前置空行/标题后）且文件名像 cover 才剥离，
-    避免误删正文插图。剥离该图片后，正文头部的空行也会一并裁掉，避免空段落。
-    """
-    m = _COVER_RE.search(md_text)
-    if not m:
-        return md_text, False
-    src = m.group(2).strip()
-    base = src.rsplit('/', 1)[-1].lower()
-    if not (base.startswith('cover') or 'cover.' in base):
-        return md_text, False
-    end = m.end()
-    if end < len(md_text) and md_text[end] == '\n':
-        end += 1
-    # 去掉标题行（如有）+ 其后空行 + 封面行 + 其后空行，全部头部清理干净
-    stripped = md_text.lstrip('\n')
-    # 同时去掉首行 # 标题
-    lines = stripped.split('\n', 1)
-    body = lines[1] if len(lines) > 1 else ''
-    body = body.lstrip('\n')
-    # 再去掉 cover 行（如果还在开头）
-    body = _COVER_RE.sub('', body, count=1)
-    body = body.lstrip('\n')
-    return body, True
+    """剥离正文中的标准 cover 图片，作为 HTML 转换层的二次防护。"""
+    body, stripped, _ = _strip_standard_cover_references(md_text)
+    return body, stripped
 
 
 def md_to_html(md_text: str) -> str:
@@ -448,4 +475,3 @@ def _heading_id(text: str) -> str:
     # 保留中文和字母数字，其余替换
     clean = re.sub(r'[^\w一-鿿-]', '', clean)
     return clean or 'section'
-
