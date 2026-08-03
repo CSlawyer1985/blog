@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>别用 kiosk 模式按 AI 的按钮：电梯调度算法教给法律人的四堂课 — 陈石 · 法与AI</title>
+  <meta name="description" content="等电梯等到怀疑人生是每个上班族的共同记忆明明按了按钮电梯就是不来来了不停好不容易停了方向还是反的电梯真的没有针对你它在解一道年就有人申请专利的调度难题最近读到一篇拆解电梯调度算法的文章我意外发现电梯工程师几十年前验证过的结论和法律人今天用的方式几乎是同一套问题的两个版本最反直觉的那个结论先放在这里给">
+      <link rel="canonical" href="https://chenshi.ai/articles/2026-08-01-别用-kiosk-模式按-AI-的按钮-电梯调度算法教给法律人的四堂课/">
+    <link rel="alternate" type="application/atom+xml" title="陈石 · 法与AI" href="/atom.xml">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="陈石 · 法与AI">
+    <meta property="og:title" content="别用 kiosk 模式按 AI 的按钮：电梯调度算法教给法律人的四堂课">
+    <meta property="og:description" content="等电梯等到怀疑人生是每个上班族的共同记忆明明按了按钮电梯就是不来来了不停好不容易停了方向还是反的电梯真的没有针对你它在解一道年就有人申请专利的调度难题最近读到一篇拆解电梯调度算法的文章我意外发现电梯工程师几十年前验证过的结论和法律人今天用的方式几乎是同一套问题的两个版本最反直觉的那个结论先放在这里给">
+    <meta property="og:url" content="https://chenshi.ai/articles/2026-08-01-别用-kiosk-模式按-AI-的按钮-电梯调度算法教给法律人的四堂课/">
+    <meta property="og:image" content="https://chenshi.ai/articles/2026-08-01-别用-kiosk-模式按-AI-的按钮-电梯调度算法教给法律人的四堂课/cover.png">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="别用 kiosk 模式按 AI 的按钮：电梯调度算法教给法律人的四堂课">
+    <meta name="twitter:description" content="等电梯等到怀疑人生是每个上班族的共同记忆明明按了按钮电梯就是不来来了不停好不容易停了方向还是反的电梯真的没有针对你它在解一道年就有人申请专利的调度难题最近读到一篇拆解电梯调度算法的文章我意外发现电梯工程师几十年前验证过的结论和法律人今天用的方式几乎是同一套问题的两个版本最反直觉的那个结论先放在这里给">
+    <meta name="twitter:image" content="https://chenshi.ai/articles/2026-08-01-别用-kiosk-模式按-AI-的按钮-电梯调度算法教给法律人的四堂课/cover.png">
+    <meta property="article:published_time" content="2026-08-01">
+    <meta property="article:author" content="陈石">
+    <meta property="article:section" content="AI+法律">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://chenshi.ai/articles/2026-08-01-别用-kiosk-模式按-AI-的按钮-电梯调度算法教给法律人的四堂课/#article",
+      "headline": "别用 kiosk 模式按 AI 的按钮：电梯调度算法教给法律人的四堂课",
+      "name": "别用 kiosk 模式按 AI 的按钮：电梯调度算法教给法律人的四堂课",
+      "url": "https://chenshi.ai/articles/2026-08-01-别用-kiosk-模式按-AI-的按钮-电梯调度算法教给法律人的四堂课/",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://chenshi.ai/articles/2026-08-01-别用-kiosk-模式按-AI-的按钮-电梯调度算法教给法律人的四堂课/"
+      },
+      "datePublished": "2026-08-01",
+      "dateModified": "2026-08-01",
+      "description": "等电梯等到怀疑人生是每个上班族的共同记忆明明按了按钮电梯就是不来来了不停好不容易停了方向还是反的电梯真的没有针对你它在解一道年就有人申请专利的调度难题最近读到一篇拆解电梯调度算法的文章我意外发现电梯工程师几十年前验证过的结论和法律人今天用的方式几乎是同一套问题的两个版本最反直觉的那个结论先放在这里给",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://chenshi.ai/articles/2026-08-01-别用-kiosk-模式按-AI-的按钮-电梯调度算法教给法律人的四堂课/cover.png"
+      },
+      "inLanguage": "zh-CN",
+      "author": {
+        "@id": "https://chenshi.ai/#person"
+      },
+      "publisher": {
+        "@id": "https://chenshi.ai/#person"
+      },
+      "articleSection": "AI+法律",
+      "timeRequired": "PT6M"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://chenshi.ai/#person",
+      "name": "陈石",
+      "url": "https://chenshi.ai/about.html",
+      "image": "https://chenshi.ai/assets/portrait.png",
+      "description": "陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。",
+      "jobTitle": "副主任、高级合伙人",
+      "knowsAbout": [
+        "建设工程/房地产律师",
+        "AI+法律先行者",
+        "建设工程",
+        "房地产法律",
+        "AI 法律应用",
+        "法律科技"
+      ],
+      "nationality": {
+        "@type": "Country",
+        "name": "中国"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "宁波",
+        "addressRegion": "浙江",
+        "addressCountry": "CN"
+      },
+      "sameAs": [
+        "https://github.com/CSlawyer1985",
+        "https://legalagi.cn/"
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "浙江海泰律师事务所"
+      },
+      "department": "房地产与建设工程部主任",
+      "award": [
+        "律新社 2025 年度管理合伙人 20 佳（华东）",
+        "LegalOne 实务先锋45强（建工及房地产）中国区",
+        "《商法》(China Business Law Journal) The A-List 法律精英 2024-25：中国业务律师新星",
+        "ALB China 区域市场十五佳长三角地区律师新星",
+        "律新社 2024 年度并购领域品牌之星：匠心律师",
+        "宁波市律协第三届诉讼/仲裁文书大赛一等奖"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://chenshi.ai/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "首页",
+          "item": "https://chenshi.ai/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "AI+法律",
+          "item": "https://chenshi.ai/categories/ai-law/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "别用 kiosk 模式按 AI 的按钮：电梯调度算法教给法律人的四堂课",
+          "item": "https://chenshi.ai/articles/2026-08-01-别用-kiosk-模式按-AI-的按钮-电梯调度算法教给法律人的四堂课/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html{scroll-behavior:smooth}
+    html,body{overflow-x:hidden;overflow-x:clip}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:3px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+    /* ≥1200px 扩展为三栏（右栏 TOC） */
+    @media (min-width:1200px){
+      .article-layout{grid-template-columns:240px minmax(0,720px) minmax(0,200px);max-width:1296px}
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Anchor offset for fixed nav */
+    .article-body h2,.article-body h3{scroll-margin-top:96px}
+
+    /* SVG figures (```svg blocks rendered inline) */
+    .article-svg{
+      margin:28px 0;padding:20px;
+      border:1px solid #C9C0B2;background:#fff;
+      overflow-x:auto;text-align:center;
+    }
+    .article-svg svg{max-width:100%;height:auto;display:inline-block}
+
+    /* Right-rail TOC (desktop ≥1200px) */
+    .article-toc{display:none;position:relative}
+    .toc-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto}
+    .toc-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .toc-link{
+      display:block;padding:5px 0 5px 12px;
+      font-size:12.5px;line-height:1.45;color:#7d756a;
+      border-left:2px solid transparent;transition:color .2s,border-color .2s
+    }
+    .toc-link:hover{color:#1A1714}
+    .toc-link.toc-l3{padding-left:26px;font-size:12px}
+    .toc-link.is-active{color:#C0392B;border-left-color:#C0392B;font-weight:600}
+    @media (min-width:1200px){.article-toc{display:block}}
+
+    /* Mobile TOC (<1200px, collapsible) */
+    .toc-mobile{
+      margin:0 0 32px;padding:16px 20px;
+      border:1px solid #C9C0B2;background:rgba(243,237,227,.5)
+    }
+    .toc-mobile summary{
+      cursor:pointer;font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.1em;color:#C0392B;text-transform:uppercase;user-select:none
+    }
+    .toc-mobile .toc-link{margin-top:8px}
+    @media (min-width:1200px){.toc-mobile{display:none}}
+
+    /* Code copy button */
+    pre.code-block{position:relative}
+    .code-copy{
+      position:absolute;top:8px;right:8px;
+      padding:4px 10px;border:1px solid rgba(232,227,216,.25);border-radius:3px;
+      background:rgba(232,227,216,.08);color:#e8e3d8;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.04em;
+      cursor:pointer;opacity:0;transition:opacity .2s,background .2s
+    }
+    pre.code-block:hover .code-copy{opacity:1}
+    .code-copy:hover{background:rgba(232,227,216,.18)}
+    .code-copy.is-done{color:#7ac28a;border-color:rgba(122,194,138,.4)}
+    @media (hover:none){.code-copy{opacity:1}}
+
+    /* Prev / Next navigation */
+    .article-prevnext{
+      display:grid;grid-template-columns:1fr 1fr;gap:20px;
+      margin-top:56px;padding-top:28px;border-top:1px solid #C9C0B2
+    }
+    .prevnext-link{display:flex;flex-direction:column;gap:6px;min-width:0}
+    .prevnext-link.next{text-align:right;align-items:flex-end}
+    .prevnext-link.next:only-child{grid-column:2}
+    .prevnext-label{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.06em;color:#7d756a
+    }
+    .prevnext-title{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-size:16px;font-weight:600;color:#1A1714;line-height:1.4;
+      transition:color .25s
+    }
+    .prevnext-link:hover .prevnext-title{color:#C0392B}
+
+    /* Related articles (mobile only — sidebar hidden below 860px) */
+    .related-mobile{display:none;margin-top:32px}
+    .related-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:12px;padding-bottom:10px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .related-link{
+      display:block;padding:8px 0;font-size:14px;color:#3a342d;
+      border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .related-link:hover{color:#C0392B}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+      .related-mobile{display:block}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+      .article-prevnext{grid-template-columns:1fr;gap:16px}
+      .prevnext-link.next{text-align:left;align-items:flex-start}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（135）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（111）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（20）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（1）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-08-03-Skill-是洗漱包-不是浴室/" class="sidebar-link">Skill 是洗漱包，不是浴室</a>
+      
+      <a href="/articles/2026-08-02-自当善任-AI-时代法律人的五个关键词/" class="sidebar-link">自当善任：AI 时代法律人的五个关键词</a>
+      
+      <a href="/articles/2026-08-02-好好说话-AI-时代-律师的主场在语言/" class="sidebar-link">好好说话：AI 时代，律师的主场在语言</a>
+      
+      <a href="/articles/2026-08-02-从-植物人-到液态机器人-AI-正在长出-手脚/" class="sidebar-link">从"植物人"到液态机器人：AI 正在长出"手脚"</a>
+      
+      <a href="/articles/2026-08-02-人人都在用-WorkBuddy-你的竞争力在哪里/" class="sidebar-link">人人都在用 WorkBuddy，你的竞争力在哪里？</a>
+      
+      <a href="/articles/2026-08-02-六个-AI-分工写了一份裁决书-一个仲裁员的实测/" class="sidebar-link">六个 AI 分工写了一份裁决书：一个仲裁员的实测</a>
+      
+      <a href="/articles/2026-08-01-别用-kiosk-模式按-AI-的按钮-电梯调度算法教给法律人的四堂课/" class="sidebar-link">别用 kiosk 模式按 AI 的按钮：电梯调度算法教给法律人的四堂课</a>
+      
+      <a href="/articles/2026-07-29-DAU-是负债-AI-三年了-超级-APP-的逻辑已经破产/" class="sidebar-link">DAU 是负债：AI 三年了，超级 APP 的逻辑已经破产</a>
+      
+      <a href="/articles/2026-07-18-人口红利吃完了-下一种红利刚开局/" class="sidebar-link">人口红利吃完了？下一种红利刚开局</a>
+      
+      <a href="/articles/2026-07-18-著作权三百年-它消化了六次技术冲击-为什么AI是例外/" class="sidebar-link">著作权三百年：它消化了六次技术冲击，为什么AI是例外</a>
+      
+      <a href="/articles/2026-07-13-智能体该叫代理-一个翻译-决定了你怎么用-AI/" class="sidebar-link">智能体该叫代理——一个翻译，决定了你怎么用 AI</a>
+      
+      <a href="/articles/2026-07-13-别让法律咨询规则-跑进你的旅游攻略-Agent-的第一条纪律/" class="sidebar-link">别让法律咨询规则，跑进你的旅游攻略——Agent 的第一条纪律</a>
+      
+      <a href="/articles/2026-07-13-法律人-该把你的东西拿出来了/" class="sidebar-link">法律人，该把你的东西拿出来了</a>
+      
+      <a href="/articles/2026-07-13-故事大会上的-AI-警惕之后-我们还能做什么/" class="sidebar-link">故事大会上的 AI：警惕之后，我们还能做什么</a>
+      
+      <a href="/articles/2026-07-13-docx-是压缩包-法律人理解-AI-的最短路径/" class="sidebar-link">docx 是压缩包——法律人理解 AI 的最短路径</a>
+      
+      <a href="/articles/2026-07-13-所谓-精英律师技能-就是一个-md-文件-Skill-祛魅/" class="sidebar-link">所谓"精英律师技能"，就是一个 .md 文件——Skill 祛魅</a>
+      
+      <a href="/articles/2026-07-08-你和AI聊了三天的案件-重新打开它-不认识你了/" class="sidebar-link">你和AI聊了三天的案件，重新打开它：不认识你了</a>
+      
+      <a href="/articles/2026-07-08-你用过的法律AI产品-为什么总是不够好用-一个办公室里没人能回答的问题/" class="sidebar-link">你用过的法律AI产品，为什么总是不够好用？一个办公室里没人能回答的问题</a>
+      
+      <a href="/articles/2026-07-08-律师注意-有人在你的文件里藏了看不见的指令/" class="sidebar-link">律师注意！有人在你的文件里藏了看不见的指令</a>
+      
+      <a href="/articles/2026-07-08-AI时代律师的第一角色转变-不是干活-是把关/" class="sidebar-link">AI时代律师的第一角色转变：不是干活，是把关</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-08-01">2026年8月1日</time>
+            <span class="dotsep"></span>
+            <span>6 分钟阅读</span>
+          </div>
+          <h1 class="article-title">别用 kiosk 模式按 AI 的按钮：电梯调度算法教给法律人的四堂课</h1>
+        </header>
+
+        
+        <details class="toc-mobile">
+          <summary>本文目录</summary>
+          
+          <a href="#一先搞懂电梯在算什么" class="toc-link toc-l2">一、先搞懂电梯在算什么</a>
+          
+          <a href="#二kiosk陷阱一次性喂全料是在帮倒忙" class="toc-link toc-l2">二、kiosk 陷阱：一次性喂全料，是在帮倒忙</a>
+          
+          <a href="#三满载反超简单规则什么时候赢" class="toc-link toc-l2">三、满载反超：简单规则什么时候赢</a>
+          
+          <a href="#四p90信任定律信任由最坏那次翻车定义" class="toc-link toc-l2">四、p90 信任定律：信任由最坏那次翻车定义</a>
+          
+          <a href="#五早高峰模式按流量配AI别均匀铺设" class="toc-link toc-l2">五、早高峰模式：按流量配 AI，别均匀铺设</a>
+          
+          <a href="#六边界什么时候锁定反而是对的" class="toc-link toc-l2">六、边界：什么时候"锁定"反而是对的</a>
+          
+          <a href="#结尾" class="toc-link toc-l2">结尾</a>
+          
+        </details>
+        
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="别用 kiosk 模式按 AI 的按钮：电梯调度算法教给法律人的四堂课封面图" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>等电梯等到怀疑人生，是每个上班族的共同记忆。明明按了按钮，电梯就是不来；来了不停；好不容易停了，方向还是反的。</p>
+<p>电梯真的没有针对你。它在解一道 1961 年就有人申请专利的调度难题。最近读到一篇拆解电梯调度算法的文章，我意外发现：电梯工程师几十年前验证过的结论，和法律人今天用 AI 的方式，几乎是同一套问题的两个版本。</p>
+<p>最反直觉的那个结论，先放在这里：<strong>给系统更多信息、把流程锁得更死，产出反而更差。</strong></p>
+<p>电梯调度的四个发现，恰好对应法律人用 AI 的四个误区。挨个说。</p>
+<h2 id="一先搞懂电梯在算什么">一、先搞懂电梯在算什么</h2>
+<p>最基础的电梯算法叫 SCAN，1961 年的专利：电梯从大堂出发，一路开到顶楼，掉头往下，沿途谁按都停。它有个变体叫 LOOK——只开到当前最高请求楼层就掉头，不傻乎乎跑完全程。</p>
+<p>一台电梯好办，多台就麻烦了：谁去接谁？奥的斯公司的 RSR 算法给每台电梯打分，评估它接这个乘客的适配度。关键机制是：<strong>RSR 每 5 秒重新优化一次</strong>。原本分给 A 电梯的乘客，A 一旦延误，系统立刻改派 B。这种动态重平衡，是疏通客流的关键。</p>
+<p>还有两个事实值得记住。</p>
+<p>一是等待时间要看分布，不看平均。p50 是 1 分钟，意味着一半乘客等电梯不超过 1 分钟；p90 是 2 分钟，意味着九成乘客不超过 2 分钟。这里有个心理学陷阱：人记不住平均等待，只记得等到天荒地老的那次。<strong>p90 的极端体验，才是口碑的决定者。</strong></p>
+<p>二是流量有方向。早高峰几乎全是大堂到高层的上行，晚高峰反过来，午休是混合流，平时还有层间短途。不同时段的流量模式完全不同，算法必须跟着换模式。</p>
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 250" font-family="PingFang SC, Microsoft YaHei, sans-serif">
+  <rect width="600" height="250" fill="#fff" rx="6"/>
+  <text x="150" y="36" text-anchor="middle" font-size="16" font-weight="700" fill="#333">LOOK：到最高请求层就掉头</text>
+  <line x1="60" y1="60" x2="60" y2="210" stroke="#999" stroke-width="2"/>
+  <text x="42" y="75" font-size="13" fill="#666">5F</text>
+  <text x="42" y="112" font-size="13" fill="#666">4F</text>
+  <text x="42" y="150" font-size="13" fill="#666">3F</text>
+  <text x="42" y="187" font-size="13" fill="#666">2F</text>
+  <text x="42" y="210" font-size="13" fill="#666">1F</text>
+  <circle cx="60" cy="105" r="5" fill="#333"/>
+  <text x="75" y="109" font-size="13" fill="#333">最高请求 4F</text>
+  <path d="M 90 205 L 90 110" stroke="#333" stroke-width="2.5" fill="none" marker-end="url(#a1)"/>
+  <path d="M 105 115 L 105 200" stroke="#999" stroke-width="2.5" fill="none" stroke-dasharray="5,4" marker-end="url(#a1)"/>
+  <defs><marker id="a1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#333" stroke-width="1.5"/></marker></defs>
+  <text x="150" y="235" text-anchor="middle" font-size="13" fill="#666">简单规则：不跑空程</text>
+  <line x1="300" y1="30" x2="300" y2="230" stroke="#eee"/>
+  <text x="450" y="36" text-anchor="middle" font-size="16" font-weight="700" fill="#333">RSR：打分 + 每 5 秒重优化</text>
+  <text x="360" y="70" font-size="14" fill="#333">A 梯 适配分 12</text>
+  <text x="360" y="95" font-size="14" font-weight="700" fill="#333">B 梯 适配分 8 ✓ 派它</text>
+  <text x="360" y="120" font-size="14" fill="#333">C 梯 适配分 20</text>
+  <path d="M 480 150 a 32 32 0 1 1 -20 28" stroke="#333" stroke-width="2" fill="none" marker-end="url(#a1)"/>
+  <text x="450" y="158" text-anchor="middle" font-size="13" fill="#333">5 秒</text>
+  <text x="450" y="200" text-anchor="middle" font-size="13" fill="#666">A 梯延误 → 改派 B 梯</text>
+  <text x="450" y="235" text-anchor="middle" font-size="13" fill="#666">动态重平衡</text>
+</svg></figure>
+<h2 id="二kiosk陷阱一次性喂全料是在帮倒忙">二、kiosk 陷阱：一次性喂全料，是在帮倒忙</h2>
+<p>现在有些新电梯干脆取消了轿厢内按钮。你在楼层的自助终端（kiosk）上输入目的地，系统告诉你该等哪台——这叫 Destination Dispatch。</p>
+<p>听起来很智能：优化器掌握了所有人的完整出行信息，调度结果应该更优才对。</p>
+<p>实测结果是，大多数情况下，传统上下按钮反而更好。</p>
+<p>原因就藏在那个"每 5 秒重优化"里。传统按钮模式下，系统保留了对每个乘客重新分配的权利，电梯跑着跑着路径还能调。而 kiosk 一旦把你指派给某台电梯，你就必须上那台——<strong>你按下按钮 30 秒后，世界可能已经变了，但系统失去了适应的能力。</strong>灵活性损失的代价，超过了额外信息带来的收益。</p>
+<p>读到这里，我立刻想到法律人用 AI 最常见的姿势：把整本案卷、整份合同一次性丢进对话框，配一个几百字的超长 prompt，要求一次性输出完整的法律意见书。</p>
+<p>看起来，这是给了 AI"完整信息"，是对工作负责。但按电梯工程师的逻辑，这恰恰是 kiosk 模式——<strong>你在起点就锁死了全部纠偏空间。</strong></p>
+<p>法律工作的事实是流动的。新证据会进来，客户会改主意，对方随时出新动作；连你自己的判断，也在分析深入的过程中不断修正。AI 写到一半，世界已经变了——而一次性锁定的方案没有改派的余地。你要么全盘推翻重来，要么硬着头皮接受一个从中间某段就开始偏离的产出。</p>
+<p>传统按钮模式长什么样？<strong>分阶段交付，每个阶段留确认节点</strong>——这就是法律人版的"每 5 秒重优化"：</p>
+<ul>
+<li>案件分析：先让 AI 对齐事实时间线，确认事实层没问题，再开法律评价；
+</li>
+<li>合同审查：先出风险清单定方向，圈定重点条款，再逐条深化；
+</li>
+<li>文书起草：先审大纲，再展开正文。
+</li>
+</ul>
+<p>在四明山法师 AI 夜校的实训里，翻车率最高的恰恰是最认真的学员——材料喂得最全、prompt 写得最长的那批。他们不是不努力，是把所有决策都在起点做完了。</p>
+<p><strong>你给 AI 的信息越全，它为你保留的调整空间就越小。</strong></p>
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 280" font-family="PingFang SC, Microsoft YaHei, sans-serif">
+  <rect width="600" height="280" fill="#fff" rx="6"/>
+  <text x="300" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#333">按下按钮之后，两种系统的命运</text>
+  <text x="60" y="72" font-size="14" font-weight="700" fill="#333">kiosk 模式</text>
+  <circle cx="90" cy="105" r="6" fill="#333"/>
+  <line x1="96" y1="105" x2="180" y2="105" stroke="#999" stroke-width="2"/>
+  <circle cx="186" cy="105" r="6" fill="#333"/>
+  <line x1="192" y1="105" x2="400" y2="105" stroke="#ddd" stroke-width="2" stroke-dasharray="5,4"/>
+  <rect x="405" y="93" width="130" height="24" fill="none" stroke="#333" stroke-width="1.5" rx="3"/>
+  <text x="470" y="110" text-anchor="middle" font-size="13" fill="#333">锁定，无法改派</text>
+  <text x="90" y="130" text-anchor="middle" font-size="12" fill="#666">输入目的地</text>
+  <text x="186" y="130" text-anchor="middle" font-size="12" fill="#666">系统指派 A 梯</text>
+  <text x="300" y="130" text-anchor="middle" font-size="12" fill="#999">30 秒后客流突变……</text>
+  <text x="60" y="185" font-size="14" font-weight="700" fill="#333">传统按钮</text>
+  <circle cx="90" cy="218" r="6" fill="#333"/>
+  <line x1="96" y1="218" x2="180" y2="218" stroke="#999" stroke-width="2"/>
+  <circle cx="186" cy="218" r="6" fill="#333"/>
+  <line x1="192" y1="218" x2="280" y2="218" stroke="#999" stroke-width="2"/>
+  <circle cx="286" cy="218" r="6" fill="#fff" stroke="#333" stroke-width="2"/>
+  <line x1="292" y1="218" x2="380" y2="218" stroke="#999" stroke-width="2"/>
+  <circle cx="386" cy="218" r="6" fill="#fff" stroke="#333" stroke-width="2"/>
+  <line x1="392" y1="218" x2="480" y2="218" stroke="#999" stroke-width="2"/>
+  <circle cx="486" cy="218" r="6" fill="#fff" stroke="#333" stroke-width="2"/>
+  <text x="90" y="243" text-anchor="middle" font-size="12" fill="#666">按方向键</text>
+  <text x="186" y="243" text-anchor="middle" font-size="12" fill="#666">初步分配</text>
+  <text x="286" y="243" text-anchor="middle" font-size="12" fill="#666">5 秒重优化</text>
+  <text x="386" y="243" text-anchor="middle" font-size="12" fill="#666">改派 B 梯</text>
+  <text x="486" y="243" text-anchor="middle" font-size="12" fill="#666">持续适应</text>
+</svg></figure>
+<h2 id="三满载反超简单规则什么时候赢">三、满载反超：简单规则什么时候赢</h2>
+<p>第二个反直觉发现：拿 LOOK 和 RSR 对打，<strong>流量越高，LOOK 反而开始反超</strong>。</p>
+<p>逻辑不难懂：电梯满载、每层都停的时候，"派谁去接"的精巧计算就失去了意义，反正每台都得每层停。小建筑、电梯少的场景，LOOK 也常常胜出。</p>
+<p>映射到法律 AI，先分清你的任务是"满载场景"还是"轻载场景"。</p>
+<p>高度标准化、批量化的任务——批量合同初审、证据编目、格式化文书——就是满载场景。这时候一条简单 SOP（固定清单、固定流程、固定输出格式）胜过精巧的多轮调度。小团队、轻量需求，也不必急着上复杂的多 Agent 编排。</p>
+<p>反过来，真正非标准化的任务——复杂交易结构设计、疑难争议的策略推演——才值得精细调度。</p>
+<p>我们团队的做法是两层分开：大型尽调项目里，批量合同初筛走固定清单（LOOK 模式），只对重大合同启动精细审查流程（RSR 模式）。两层不混用：用 RSR 的方式筛几百份普通合同是浪费，用 LOOK 的方式审重大合同是失职。</p>
+<p>接任务前问两个问题：这是标准化批量任务吗？任务期间事实还会变吗？两个答案，决定你用哪种模式。</p>
+<h2 id="四p90信任定律信任由最坏那次翻车定义">四、p90 信任定律：信任由最坏那次翻车定义</h2>
+<p>电梯的口碑不取决于平均等待，取决于 p90 的极端等待。</p>
+<p>AI 的信任也一样。一个工具给你生成了一百次流畅漂亮的文本，只要有一次编造了一个不存在的法条——而你差点把它写进提交法院的意见书——之前积累的所有信任当场清零。</p>
+<p>法律场景对幻觉的容忍度，大概是所有行业里最低的。律师用 AI 引错一条法条，签名的是你，担责的也是你。</p>
+<p>所以法条时效核验、来源标注、关键结论人工复核这些"验证门禁"，不是锦上添花，是信任的基础设施。由此得出一个资源分配上的反常识推论：<strong>法律人用 AI 的优化目标，不是把平均质量从 80 分提到 90 分，而是把 p99 的灾难性错误压到零。</strong>这两件事的打法完全不同：前者靠更强的模型，后者靠更严的验证。</p>
+<p>我在《赋能法律人》里反复强调的就是这件事：验证，是法律人用 AI 的第一性原理。</p>
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 260" font-family="PingFang SC, Microsoft YaHei, sans-serif">
+  <rect width="600" height="260" fill="#fff" rx="6"/>
+  <text x="300" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#333">体验的分布：口碑由尾部决定</text>
+  <line x1="70" y1="200" x2="560" y2="200" stroke="#333" stroke-width="2"/>
+  <rect x="100" y="140" width="34" height="60" fill="#ddd"/>
+  <rect x="140" y="110" width="34" height="90" fill="#ddd"/>
+  <rect x="180" y="85" width="34" height="115" fill="#ddd"/>
+  <rect x="220" y="70" width="34" height="130" fill="#ddd"/>
+  <rect x="260" y="80" width="34" height="120" fill="#ddd"/>
+  <rect x="300" y="100" width="34" height="100" fill="#ddd"/>
+  <rect x="340" y="125" width="34" height="75" fill="#ddd"/>
+  <rect x="380" y="150" width="34" height="50" fill="#ddd"/>
+  <rect x="420" y="168" width="34" height="32" fill="#333"/>
+  <rect x="460" y="180" width="34" height="20" fill="#333"/>
+  <rect x="500" y="188" width="34" height="12" fill="#333"/>
+  <line x1="237" y1="60" x2="237" y2="200" stroke="#333" stroke-width="1.5" stroke-dasharray="5,4"/>
+  <text x="237" y="52" text-anchor="middle" font-size="13" fill="#333">p50：平均体验</text>
+  <line x1="477" y1="60" x2="477" y2="200" stroke="#333" stroke-width="2.5"/>
+  <text x="477" y="52" text-anchor="middle" font-size="13" font-weight="700" fill="#333">p90：口碑定义者</text>
+  <text x="300" y="228" text-anchor="middle" font-size="13" fill="#666">等待时间 → ｜ AI 产出的信任，同样由最坏的那次决定</text>
+</svg></figure>
+<h2 id="五早高峰模式按流量配AI别均匀铺设">五、早高峰模式：按流量配 AI，别均匀铺设</h2>
+<p>电梯算法必须应对早高峰：全员上行，任何精细调度都不如简单粗暴的集中调配。</p>
+<p>法律工作的负载同样有波峰和方向性：尽调的窗口期、月底的批量审核、开庭前的文书冲刺。高峰期就是满载场景，用简单可靠的规则，别在冲刺期调试新流程。日常轻载期，才是试验精细调度、迭代工作流的窗口。</p>
+<p>在早高峰里搞算法升级，是对系统和自己双重不友好。</p>
+<h2 id="六边界什么时候锁定反而是对的">六、边界：什么时候"锁定"反而是对的</h2>
+<p>说句公道话，kiosk 模式并非一无是处。在机场、医院这类目的地高度固定的场景，它确实更优——因为"世界会变"这个前提不成立。</p>
+<p>法律 AI 也一样。封闭、无变化、一次性的任务——翻译、格式转换、摘要提取——一次性交付完全没问题，不必硬拆阶段。</p>
+<p>判断标准就两条：任务期间事实会不会变，产出错了代价大不大。事实会变、错了代价大，就分阶段、留节点；事实不变、错了好改，就一次跑完，别折腾。</p>
+<h2 id="结尾">结尾</h2>
+<p>回到最初的问题：电梯听到你的召唤了吗？听到了。它只是要在简单与复杂、信息与灵活之间做权衡。</p>
+<p>AI 也一样。</p>
+<p><strong>信息更多不代表决策更好。给 AI 留调整的余地，就是给自己留纠错的余地。</strong></p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+        </div>
+
+        <nav class="article-prevnext" aria-label="上一篇/下一篇">
+          
+          <a class="prevnext-link prev" href="/articles/2026-08-01-一个协会-只能留一个奖了/">
+            <span class="prevnext-label">&larr; 上一篇</span>
+            <span class="prevnext-title">一个协会，只能留一个奖了</span>
+          </a>
+          
+          
+          <a class="prevnext-link next" href="/articles/2026-07-29-DAU-是负债-AI-三年了-超级-APP-的逻辑已经破产/">
+            <span class="prevnext-label">下一篇 &rarr;</span>
+            <span class="prevnext-title">DAU 是负债：AI 三年了，超级 APP 的逻辑已经破产</span>
+          </a>
+          
+        </nav>
+
+        
+        <div class="related-mobile">
+          <h4 class="related-title">同类文章</h4>
+          
+          <a class="related-link" href="/articles/2026-08-03-Skill-是洗漱包-不是浴室/">Skill 是洗漱包，不是浴室</a>
+          
+          <a class="related-link" href="/articles/2026-08-02-自当善任-AI-时代法律人的五个关键词/">自当善任：AI 时代法律人的五个关键词</a>
+          
+          <a class="related-link" href="/articles/2026-08-02-好好说话-AI-时代-律师的主场在语言/">好好说话：AI 时代，律师的主场在语言</a>
+          
+        </div>
+        
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalagi.cn/" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+
+      
+      <nav class="article-toc" aria-label="目录">
+        <div class="toc-sticky">
+          <h4 class="toc-title">目录</h4>
+          
+          <a href="#一先搞懂电梯在算什么" class="toc-link toc-l2" data-target="一先搞懂电梯在算什么">一、先搞懂电梯在算什么</a>
+          
+          <a href="#二kiosk陷阱一次性喂全料是在帮倒忙" class="toc-link toc-l2" data-target="二kiosk陷阱一次性喂全料是在帮倒忙">二、kiosk 陷阱：一次性喂全料，是在帮倒忙</a>
+          
+          <a href="#三满载反超简单规则什么时候赢" class="toc-link toc-l2" data-target="三满载反超简单规则什么时候赢">三、满载反超：简单规则什么时候赢</a>
+          
+          <a href="#四p90信任定律信任由最坏那次翻车定义" class="toc-link toc-l2" data-target="四p90信任定律信任由最坏那次翻车定义">四、p90 信任定律：信任由最坏那次翻车定义</a>
+          
+          <a href="#五早高峰模式按流量配AI别均匀铺设" class="toc-link toc-l2" data-target="五早高峰模式按流量配AI别均匀铺设">五、早高峰模式：按流量配 AI，别均匀铺设</a>
+          
+          <a href="#六边界什么时候锁定反而是对的" class="toc-link toc-l2" data-target="六边界什么时候锁定反而是对的">六、边界：什么时候"锁定"反而是对的</a>
+          
+          <a href="#结尾" class="toc-link toc-l2" data-target="结尾">结尾</a>
+          
+        </div>
+      </nav>
+      
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+
+    /* TOC scrollspy — 当前阅读章节在目录中高亮 */
+    (function(){
+      var links=document.querySelectorAll('.article-toc .toc-link');
+      if(!links.length||!('IntersectionObserver' in window)){return}
+      var map={};
+      links.forEach(function(l){map[l.getAttribute('data-target')]=l});
+      var headings=document.querySelectorAll('.article-body h2[id],.article-body h3[id]');
+      if(!headings.length){return}
+      var visible={};
+      var observer=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){visible[e.target.id]=e.isIntersecting});
+        var current=null;
+        for(var i=0;i<headings.length;i++){
+          if(visible[headings[i].id]){current=headings[i].id;break}
+        }
+        if(!current){
+          for(var j=headings.length-1;j>=0;j--){
+            if(headings[j].getBoundingClientRect().top<100){current=headings[j].id;break}
+          }
+        }
+        links.forEach(function(l){l.classList.remove('is-active')});
+        if(current&&map[current]){map[current].classList.add('is-active')}
+      },{rootMargin:'-80px 0px -70% 0px',threshold:0});
+      headings.forEach(function(h){observer.observe(h)});
+    })();
+
+    /* Code block copy button */
+    (function(){
+      function copyText(text,done){
+        if(navigator.clipboard&&window.isSecureContext){
+          navigator.clipboard.writeText(text).then(done,done);
+        }else{
+          var ta=document.createElement('textarea');
+          ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+          document.body.appendChild(ta);ta.select();
+          try{document.execCommand('copy')}catch(e){}
+          document.body.removeChild(ta);done();
+        }
+      }
+      document.querySelectorAll('pre.code-block').forEach(function(pre){
+        var btn=document.createElement('button');
+        btn.type='button';btn.className='code-copy';btn.textContent='复制';
+        btn.addEventListener('click',function(){
+          var code=pre.querySelector('code');
+          copyText(code?code.innerText:pre.innerText,function(){
+            btn.textContent='已复制';btn.classList.add('is-done');
+            setTimeout(function(){btn.textContent='复制';btn.classList.remove('is-done')},1500);
+          });
+        });
+        pre.appendChild(btn);
+      });
+    })();
+  </script>
+</body>
+</html>

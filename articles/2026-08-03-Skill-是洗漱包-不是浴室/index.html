@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill 是洗漱包，不是浴室 — 陈石 · 法与AI</title>
+  <meta name="description" content="最近的法律科技圈成了一个硬通货英文圈有人整理了一个叫的开源合集一口气收录项法律专用技能号称覆盖合规合同审查法律翻译主流工具都能加载中文圈也出现了面向法律人的集合这类项目宗旨写得很直白沉淀并分发面向法律工作者的技能连自己都下场了今年月发布了一份页的部署手册把自家法务团队的四条工作流公开为示范教材合约红">
+      <link rel="canonical" href="https://chenshi.ai/articles/2026-08-03-Skill-是洗漱包-不是浴室/">
+    <link rel="alternate" type="application/atom+xml" title="陈石 · 法与AI" href="/atom.xml">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="陈石 · 法与AI">
+    <meta property="og:title" content="Skill 是洗漱包，不是浴室">
+    <meta property="og:description" content="最近的法律科技圈成了一个硬通货英文圈有人整理了一个叫的开源合集一口气收录项法律专用技能号称覆盖合规合同审查法律翻译主流工具都能加载中文圈也出现了面向法律人的集合这类项目宗旨写得很直白沉淀并分发面向法律工作者的技能连自己都下场了今年月发布了一份页的部署手册把自家法务团队的四条工作流公开为示范教材合约红">
+    <meta property="og:url" content="https://chenshi.ai/articles/2026-08-03-Skill-是洗漱包-不是浴室/">
+    <meta property="og:image" content="https://chenshi.ai/articles/2026-08-03-Skill-是洗漱包-不是浴室/cover.png">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Skill 是洗漱包，不是浴室">
+    <meta name="twitter:description" content="最近的法律科技圈成了一个硬通货英文圈有人整理了一个叫的开源合集一口气收录项法律专用技能号称覆盖合规合同审查法律翻译主流工具都能加载中文圈也出现了面向法律人的集合这类项目宗旨写得很直白沉淀并分发面向法律工作者的技能连自己都下场了今年月发布了一份页的部署手册把自家法务团队的四条工作流公开为示范教材合约红">
+    <meta name="twitter:image" content="https://chenshi.ai/articles/2026-08-03-Skill-是洗漱包-不是浴室/cover.png">
+    <meta property="article:published_time" content="2026-08-03">
+    <meta property="article:author" content="陈石">
+    <meta property="article:section" content="AI+法律">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://chenshi.ai/articles/2026-08-03-Skill-是洗漱包-不是浴室/#article",
+      "headline": "Skill 是洗漱包，不是浴室",
+      "name": "Skill 是洗漱包，不是浴室",
+      "url": "https://chenshi.ai/articles/2026-08-03-Skill-是洗漱包-不是浴室/",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://chenshi.ai/articles/2026-08-03-Skill-是洗漱包-不是浴室/"
+      },
+      "datePublished": "2026-08-03",
+      "dateModified": "2026-08-03",
+      "description": "最近的法律科技圈成了一个硬通货英文圈有人整理了一个叫的开源合集一口气收录项法律专用技能号称覆盖合规合同审查法律翻译主流工具都能加载中文圈也出现了面向法律人的集合这类项目宗旨写得很直白沉淀并分发面向法律工作者的技能连自己都下场了今年月发布了一份页的部署手册把自家法务团队的四条工作流公开为示范教材合约红",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://chenshi.ai/articles/2026-08-03-Skill-是洗漱包-不是浴室/cover.png"
+      },
+      "inLanguage": "zh-CN",
+      "author": {
+        "@id": "https://chenshi.ai/#person"
+      },
+      "publisher": {
+        "@id": "https://chenshi.ai/#person"
+      },
+      "articleSection": "AI+法律",
+      "timeRequired": "PT10M"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://chenshi.ai/#person",
+      "name": "陈石",
+      "url": "https://chenshi.ai/about.html",
+      "image": "https://chenshi.ai/assets/portrait.png",
+      "description": "陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。",
+      "jobTitle": "副主任、高级合伙人",
+      "knowsAbout": [
+        "建设工程/房地产律师",
+        "AI+法律先行者",
+        "建设工程",
+        "房地产法律",
+        "AI 法律应用",
+        "法律科技"
+      ],
+      "nationality": {
+        "@type": "Country",
+        "name": "中国"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "宁波",
+        "addressRegion": "浙江",
+        "addressCountry": "CN"
+      },
+      "sameAs": [
+        "https://github.com/CSlawyer1985",
+        "https://legalagi.cn/"
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "浙江海泰律师事务所"
+      },
+      "department": "房地产与建设工程部主任",
+      "award": [
+        "律新社 2025 年度管理合伙人 20 佳（华东）",
+        "LegalOne 实务先锋45强（建工及房地产）中国区",
+        "《商法》(China Business Law Journal) The A-List 法律精英 2024-25：中国业务律师新星",
+        "ALB China 区域市场十五佳长三角地区律师新星",
+        "律新社 2024 年度并购领域品牌之星：匠心律师",
+        "宁波市律协第三届诉讼/仲裁文书大赛一等奖"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://chenshi.ai/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "首页",
+          "item": "https://chenshi.ai/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "AI+法律",
+          "item": "https://chenshi.ai/categories/ai-law/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Skill 是洗漱包，不是浴室",
+          "item": "https://chenshi.ai/articles/2026-08-03-Skill-是洗漱包-不是浴室/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html{scroll-behavior:smooth}
+    html,body{overflow-x:hidden;overflow-x:clip}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:3px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+    /* ≥1200px 扩展为三栏（右栏 TOC） */
+    @media (min-width:1200px){
+      .article-layout{grid-template-columns:240px minmax(0,720px) minmax(0,200px);max-width:1296px}
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Anchor offset for fixed nav */
+    .article-body h2,.article-body h3{scroll-margin-top:96px}
+
+    /* SVG figures (```svg blocks rendered inline) */
+    .article-svg{
+      margin:28px 0;padding:20px;
+      border:1px solid #C9C0B2;background:#fff;
+      overflow-x:auto;text-align:center;
+    }
+    .article-svg svg{max-width:100%;height:auto;display:inline-block}
+
+    /* Right-rail TOC (desktop ≥1200px) */
+    .article-toc{display:none;position:relative}
+    .toc-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto}
+    .toc-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .toc-link{
+      display:block;padding:5px 0 5px 12px;
+      font-size:12.5px;line-height:1.45;color:#7d756a;
+      border-left:2px solid transparent;transition:color .2s,border-color .2s
+    }
+    .toc-link:hover{color:#1A1714}
+    .toc-link.toc-l3{padding-left:26px;font-size:12px}
+    .toc-link.is-active{color:#C0392B;border-left-color:#C0392B;font-weight:600}
+    @media (min-width:1200px){.article-toc{display:block}}
+
+    /* Mobile TOC (<1200px, collapsible) */
+    .toc-mobile{
+      margin:0 0 32px;padding:16px 20px;
+      border:1px solid #C9C0B2;background:rgba(243,237,227,.5)
+    }
+    .toc-mobile summary{
+      cursor:pointer;font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.1em;color:#C0392B;text-transform:uppercase;user-select:none
+    }
+    .toc-mobile .toc-link{margin-top:8px}
+    @media (min-width:1200px){.toc-mobile{display:none}}
+
+    /* Code copy button */
+    pre.code-block{position:relative}
+    .code-copy{
+      position:absolute;top:8px;right:8px;
+      padding:4px 10px;border:1px solid rgba(232,227,216,.25);border-radius:3px;
+      background:rgba(232,227,216,.08);color:#e8e3d8;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.04em;
+      cursor:pointer;opacity:0;transition:opacity .2s,background .2s
+    }
+    pre.code-block:hover .code-copy{opacity:1}
+    .code-copy:hover{background:rgba(232,227,216,.18)}
+    .code-copy.is-done{color:#7ac28a;border-color:rgba(122,194,138,.4)}
+    @media (hover:none){.code-copy{opacity:1}}
+
+    /* Prev / Next navigation */
+    .article-prevnext{
+      display:grid;grid-template-columns:1fr 1fr;gap:20px;
+      margin-top:56px;padding-top:28px;border-top:1px solid #C9C0B2
+    }
+    .prevnext-link{display:flex;flex-direction:column;gap:6px;min-width:0}
+    .prevnext-link.next{text-align:right;align-items:flex-end}
+    .prevnext-link.next:only-child{grid-column:2}
+    .prevnext-label{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.06em;color:#7d756a
+    }
+    .prevnext-title{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-size:16px;font-weight:600;color:#1A1714;line-height:1.4;
+      transition:color .25s
+    }
+    .prevnext-link:hover .prevnext-title{color:#C0392B}
+
+    /* Related articles (mobile only — sidebar hidden below 860px) */
+    .related-mobile{display:none;margin-top:32px}
+    .related-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:12px;padding-bottom:10px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .related-link{
+      display:block;padding:8px 0;font-size:14px;color:#3a342d;
+      border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .related-link:hover{color:#C0392B}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+      .related-mobile{display:block}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+      .article-prevnext{grid-template-columns:1fr;gap:16px}
+      .prevnext-link.next{text-align:left;align-items:flex-start}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（135）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（111）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（20）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（1）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（1）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-08-03-Skill-是洗漱包-不是浴室/" class="sidebar-link">Skill 是洗漱包，不是浴室</a>
+      
+      <a href="/articles/2026-08-02-自当善任-AI-时代法律人的五个关键词/" class="sidebar-link">自当善任：AI 时代法律人的五个关键词</a>
+      
+      <a href="/articles/2026-08-02-好好说话-AI-时代-律师的主场在语言/" class="sidebar-link">好好说话：AI 时代，律师的主场在语言</a>
+      
+      <a href="/articles/2026-08-02-从-植物人-到液态机器人-AI-正在长出-手脚/" class="sidebar-link">从"植物人"到液态机器人：AI 正在长出"手脚"</a>
+      
+      <a href="/articles/2026-08-02-人人都在用-WorkBuddy-你的竞争力在哪里/" class="sidebar-link">人人都在用 WorkBuddy，你的竞争力在哪里？</a>
+      
+      <a href="/articles/2026-08-02-六个-AI-分工写了一份裁决书-一个仲裁员的实测/" class="sidebar-link">六个 AI 分工写了一份裁决书：一个仲裁员的实测</a>
+      
+      <a href="/articles/2026-08-01-别用-kiosk-模式按-AI-的按钮-电梯调度算法教给法律人的四堂课/" class="sidebar-link">别用 kiosk 模式按 AI 的按钮：电梯调度算法教给法律人的四堂课</a>
+      
+      <a href="/articles/2026-07-29-DAU-是负债-AI-三年了-超级-APP-的逻辑已经破产/" class="sidebar-link">DAU 是负债：AI 三年了，超级 APP 的逻辑已经破产</a>
+      
+      <a href="/articles/2026-07-18-人口红利吃完了-下一种红利刚开局/" class="sidebar-link">人口红利吃完了？下一种红利刚开局</a>
+      
+      <a href="/articles/2026-07-18-著作权三百年-它消化了六次技术冲击-为什么AI是例外/" class="sidebar-link">著作权三百年：它消化了六次技术冲击，为什么AI是例外</a>
+      
+      <a href="/articles/2026-07-13-智能体该叫代理-一个翻译-决定了你怎么用-AI/" class="sidebar-link">智能体该叫代理——一个翻译，决定了你怎么用 AI</a>
+      
+      <a href="/articles/2026-07-13-别让法律咨询规则-跑进你的旅游攻略-Agent-的第一条纪律/" class="sidebar-link">别让法律咨询规则，跑进你的旅游攻略——Agent 的第一条纪律</a>
+      
+      <a href="/articles/2026-07-13-法律人-该把你的东西拿出来了/" class="sidebar-link">法律人，该把你的东西拿出来了</a>
+      
+      <a href="/articles/2026-07-13-故事大会上的-AI-警惕之后-我们还能做什么/" class="sidebar-link">故事大会上的 AI：警惕之后，我们还能做什么</a>
+      
+      <a href="/articles/2026-07-13-docx-是压缩包-法律人理解-AI-的最短路径/" class="sidebar-link">docx 是压缩包——法律人理解 AI 的最短路径</a>
+      
+      <a href="/articles/2026-07-13-所谓-精英律师技能-就是一个-md-文件-Skill-祛魅/" class="sidebar-link">所谓"精英律师技能"，就是一个 .md 文件——Skill 祛魅</a>
+      
+      <a href="/articles/2026-07-08-你和AI聊了三天的案件-重新打开它-不认识你了/" class="sidebar-link">你和AI聊了三天的案件，重新打开它：不认识你了</a>
+      
+      <a href="/articles/2026-07-08-你用过的法律AI产品-为什么总是不够好用-一个办公室里没人能回答的问题/" class="sidebar-link">你用过的法律AI产品，为什么总是不够好用？一个办公室里没人能回答的问题</a>
+      
+      <a href="/articles/2026-07-08-律师注意-有人在你的文件里藏了看不见的指令/" class="sidebar-link">律师注意！有人在你的文件里藏了看不见的指令</a>
+      
+      <a href="/articles/2026-07-08-AI时代律师的第一角色转变-不是干活-是把关/" class="sidebar-link">AI时代律师的第一角色转变：不是干活，是把关</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-08-03">2026年8月3日</time>
+            <span class="dotsep"></span>
+            <span>10 分钟阅读</span>
+          </div>
+          <h1 class="article-title">Skill 是洗漱包，不是浴室</h1>
+        </header>
+
+        
+        <details class="toc-mobile">
+          <summary>本文目录</summary>
+          
+          <a href="#一先把公道话说足Skill确实是好东西" class="toc-link toc-l2">一、先把公道话说足：Skill 确实是好东西</a>
+          
+          <a href="#二三个结构性短板Skill装不下的东西" class="toc-link toc-l2">二、三个结构性短板：Skill 装不下的东西</a>
+          
+          <a href="#第一个短板Skill没有积累" class="toc-link toc-l3">第一个短板：Skill 没有积累</a>
+          
+          <a href="#第二个短板Skill没有编排也没有路由" class="toc-link toc-l3">第二个短板：Skill 没有编排，也没有路由</a>
+          
+          <a href="#第三个短板迁移性悖论这一点最锋利也最少有人说" class="toc-link toc-l3">第三个短板：迁移性悖论，这一点最锋利，也最少有人说</a>
+          
+          <a href="#三Skill热的利益结构谁在为这场热闹买单" class="toc-link toc-l2">三、Skill 热的利益结构：谁在为这场热闹买单</a>
+          
+          <a href="#四浴室与洗漱包重新定义Skill的位置" class="toc-link toc-l2">四、浴室与洗漱包：重新定义 Skill 的位置</a>
+          
+          <a href="#五认真对待反方Skill不是只是提示词" class="toc-link toc-l2">五、认真对待反方：Skill 不是"只是提示词"</a>
+          
+          <a href="#六收个尾" class="toc-link toc-l2">六、收个尾</a>
+          
+        </details>
+        
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="Skill 是洗漱包，不是浴室封面图" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>最近的法律科技圈，Skill 成了一个硬通货。</p>
+<p>英文圈有人整理了一个叫 Awesome Legal Skills 的开源合集，一口气收录 139 项法律专用技能，号称覆盖合规、合同审查、法律翻译，主流 Agent 工具都能加载。中文圈也出现了"面向法律人的 Skills 集合"这类项目，宗旨写得很直白：沉淀并分发面向法律工作者的 AI 技能。连 Anthropic 自己都下场了：今年 5 月发布了一份 21 页的《Claude for the legal industry》部署手册，把自家法务团队的四条工作流公开为示范教材：合约红线从几小时压到几分钟，隐私影响评估从两小时缩到三十分钟。</p>
+<p>做产品的在堆 Skill 库，做投资的在问"你们的 Skill 有多少个"，做竞品的在比"谁的 Skill 覆盖面广"。</p>
+<p>先交代一下我自己的立场坐标：我有 106 个 Skill。我不是站在门外泼冷水的人，我可能是国内法律人里 Skill 最多的人之一。</p>
+<p>但也正因为在门里面，我越来越确定一件事：这轮 Skill 热里，大多数人搞错了一个根本问题——Skill 到底是什么，以及，它到底不是你的什么。</p>
+<h2 id="一先把公道话说足Skill确实是好东西">一、先把公道话说足：Skill 确实是好东西</h2>
+<p>冷思考的前提是诚实。如果只挑毛病不提价值，那不是思考，是酸。</p>
+<p>Skill 的第一重价值，是它是目前最成熟的"蒸馏器"。做法律科技的 Zack Shapiro 有一个概括我很认可：一个好的 Skill 不是一段提示词，而是一套包含分析框架、风险权重、表达风格和验证机制的指令集。换句话说，它能把"一个资深律师怎么审一类合同"这件事固化成一个可以反复执行的文件：先看什么、后看什么、什么条款要什么权重、什么情况必须停下来。把业务端口的标准作业方法，蒸馏成技术端口的可执行资产。这件事本身是有价值的，而且价值不小。</p>
+<p>第二重价值在加载机制上。Skill 的官方设计里有一个核心原则叫渐进式披露，说白了就是很懂事的"按需加载"：平时只占一行书签的位置——名字加一句话说明，模型扫一眼知道"什么时候该翻你"；真派上用场了才翻开正文；正文里提到的附件材料，用到哪页查哪页。不像有些做法，不管你用不用得上，几千行说明先一股脑塞进上下文里。这个设计是精巧的。</p>
+<p>第三重价值是它的接口属性：边界清晰、接口稳定、容易迁移、容易共享、容易版本化、容易测试。一份 Skill 写好，可以在网页端、命令行、开发接口里多处运行，甚至跨厂商通用。作为分发一个标准作业程序（SOP）的最小单位，它几乎是现成的最佳形态。新人入职，不用懂什么提示词工程，加载即用。</p>
+<p>这里我还要修正我自己过去的一个说法。我之前写过一篇《Skill 祛魅》，说 Skill 的本质就是一个 md 文件。这话要补充一句：Skill 不只是一个 markdown 文件，它还可以捆绑脚本、模板、数据。Anthropic 内部分享过他们跑的几百个 Skill，反复强调的就是"Skill 是文件夹，不只是文件"。确定性的活让脚本干，判断性的活让模型干，这个分工是对的。</p>
+<p>好话说完了。但请注意一个区分——<strong>"封装格式优秀"和"它是你的资产"，是两回事。</strong> 上面夸的每一条，夸的都是"封装格式"。而 Skill 热真正的问题，恰恰藏在后面。</p>
+<h2 id="二三个结构性短板Skill装不下的东西">二、三个结构性短板：Skill 装不下的东西</h2>
+<h3 id="第一个短板Skill没有积累">第一个短板：Skill 没有积累</h3>
+<p>我每次调用一个 Skill，它都是从零开始的。它不记得上次审这家客户的合同时发现了什么，不记得这个项目上次卡在哪个条款，不记得上周那次判断为什么翻车。</p>
+<p>听起来像个小毛病，其实打在要害上。因为法律工作里最值钱的东西，恰恰不是"流程"，而是<strong>决策记录</strong>：为什么这个客户最终接受了 20% 的责任上限，为什么我坚持把那个看似标准的付款条款删掉，为什么这个项目我宁可放弃固定总价也要争一个调价机制。这些"为什么"，是一个律师年复一年攒下来的真正的本钱。</p>
+<p>而一个 Skill 的文件结构里，没有一个位置是放这个的。它装的是"怎么干"，装不下"当时为什么这么定"。Skill 是消耗品式的能力，每次用完即归零；工作区是复利式的能力，每一次使用都在为下一次积攒利息。这个差别，用一天看不出来，用三年就是鸿沟。</p>
+<h3 id="第二个短板Skill没有编排也没有路由">第二个短板：Skill 没有编排，也没有路由</h3>
+<p>这一点我去年在另一篇文章里详细论证过，这里只说结论：Skill 是扁平的，要么全局要么项目，中间没有层；Skill 之间互不通气，审合同的 Skill 发现了风险条款，不会自动喂给下游的风险评估。一百个零件散在地上，不等于一辆车。</p>
+<p>更要命的是路由的缺失。一个成熟律师的工作方式是层层下钻的：这是哪个客户，他有什么历史偏好；这是哪类合同，这类合同有什么专属坑；这是哪个项目，前几轮是怎么谈的。路由到最后，才真正开始干活。而触发一个 Skill 靠的是什么？名字和简介里的关键词匹配。它不知道客户是谁，不知道项目前史，它只是被一个叫"合同审查"的词唤醒了。</p>
+<h3 id="第三个短板迁移性悖论这一点最锋利也最少有人说">第三个短板：迁移性悖论，这一点最锋利，也最少有人说</h3>
+<p>Skill 最被吹捧的优点是"迁移便利"。但请你顺着这个优点往下想一步：一个 Skill 要能迁移，前提是什么？</p>
+<p>前提是它必须抽象掉具体环境。一个能在任何人电脑、任何项目、任何客户场景下运行的合同审查 Skill，必然不包含你的客户习惯，不包含你的历史决策，不包含你的条款库，不包含你的项目背景，因为这些东西换一个环境就失效。可迁移性这个东西，天生排斥私有上下文。</p>
+<p>于是就有一个悖论：<strong>能被装进 Skill 里四处流转的，永远是你方法论里"最不值钱"的那部分</strong>。不是因为它写得不好，是因为"可被公共化"本来就是它的设计前提。你的方法论是一个金字塔，能蒸馏进 Skill 的是底座，那些同行想想也能想到的标准动作；蒸馏不出去的是塔尖，你的客户知识、你的判断权重、你踩过的坑，这些才是真正构成壁垒的部分。</p>
+<p>能被蒸馏的是你的方法，蒸馏不出去的是你的壁垒。记住这句话，下一节要用。</p>
+<h2 id="三Skill热的利益结构谁在为这场热闹买单">三、Skill 热的利益结构：谁在为这场热闹买单</h2>
+<p>想清楚了"能蒸馏的是底座"，再回头看这轮 Skill 热，很多事情就通透了。</p>
+<p>先看厂商侧的账。对模型厂商和垂类应用厂商来说，Skill 简直是完美的资产收集器：每多一个高质量的法律 Skill 被分享出来，他们的产品在某个业务领域的基础表现就增强一分。收集成本是多少？几乎是零。不用谈判，不用付费，用户自己会打磨好了传上来，还自带传播热情。天底下没有比这更划算的蒸馏生意了。</p>
+<p>这不是猜测，官方动作就摆在那里。Anthropic 把 Skills 做成了开放标准，让一次编写可以到处运行；又专门发布了那份 21 页的法律行业部署手册，把自家法务的工作流公开出来当教材。行业顾问 Rudy DeFelice 对手册的定位说得直白：Claude 不再只是垂直工具底下的模型，而是"工作得以完成的基础设施"。</p>
+<p>请注意"基础设施"这三个字。这是一切平台的标准剧本：先把路修好，让大家把生意都搬到路上来，路本身就成了最值钱的资产。我不认为这是阴谋。这是教科书级的平台战略，过去二十年每一轮平台扩张都是这么打的，而且客观上确实降低了整个行业的起步门槛。但法律人至少要知道，这场交易里自己付出的是什么。</p>
+<p>行业里其实有明白人。手册发布前后，Lawtrades 的策略长有个流传很广的比喻：Claude 的插件加连接器是一把多功能瑞士刀，预算有限的团队一把刀能应付八成场景，但"想切牛排还是得换刀"。The LegalTech Fund 的 Zach Posner 说得更直接：基础模型厂商大概能做到法律工具八成的功能，剩下最难的两成，留给垂直厂商。</p>
+<p>把这句话翻译到律师个人身上，就是上一节那个结论：<strong>能被做成 Skill 分发的是那八成，可标准化的部分；剩下两成蒸馏不出去的，恰恰是你的壁垒。</strong> 厂商很清楚这个边界在哪，所以他们放心大胆地鼓励你分享。怕的是你自己不清楚。</p>
+<p>再算用户侧的账。收益是真的：别人蒸馏好的作业标准，拿来就能用，起步门槛大降。代价有两个。一个是显性的：你分享出去的 Skill 越通用，就越成为所有用户，包括你的竞争对手，都能加载的公共基础设施。分享增强的是整个品类，稀释的是你的相对竞争力。另一个是隐性的，也是我更担心的：热度过高造成认知错配，法律人把"做 Skill"当成了"建能力"的全部，每天忙着攒洗漱包，忘了家里还没有浴室。</p>
+<p>最后补一个实务提醒，和利益无关，和安全有关。Skill 是可以捆绑可执行脚本的，Anthropic 官方自己就警告过：恶意的 Skill 可能引入漏洞，可能把你的数据导向外部。律师的电脑里装的是什么？客户的保密信息、案件的未公开材料。从技能市场随手装一个来路不明的"精英律师"，跟把一个陌生人的 U 盘插进案卷库，区别没有想象的那么大。</p>
+<h2 id="四浴室与洗漱包重新定义Skill的位置">四、浴室与洗漱包：重新定义 Skill 的位置</h2>
+<p>说了这么多短板，Skill 到底应该摆在什么位置？我用一个生活里的比喻。</p>
+<p>你的工作区和 Skill 的关系，有点像家里的浴室和出门用的洗漱包。</p>
+<p>浴室是一个长期存在、不断调整的生活环境。里面不只有牙刷牙膏，还有每个家庭成员的专属物品、各自的摆放位置、使用习惯、补充记录，和一套谁都能找到东西的取用规则。它随着日常生活不断丰富，也能根据不同人和不同场景，自动拿出需要的东西。</p>
+<p>Skill 是一只洗漱包。包里的用品可能和浴室里的完全相同——牙刷可以是同一把牙刷——但它经过了筛选、组织和标注：什么时候用、带什么、怎么用、什么算用完，都明明白白。它的价值不是用品本身更强，而是边界清晰、拿起就走，也容易交给别人用。</p>
+<p>这个比喻把两者的关系说透了：<strong>差别从来不在内容，在于一个是长期积累的环境，一个是标准入口的封装。</strong> 用技术一点的话说：Skill 是接口，像 API；工作区是系统，像操作系统。</p>
+<p>而且我可以负责任地说：Skill 能做的，一个成熟的工作区全都能做——按需加载，规则文件可以做到；SOP，工作流文件可以做到；工具调用、脚本、模板，工作区都有对应的位置；记忆和规则进化，Skill 反而没有。反过来，工作区能做的——分层路由、客户知识、状态传递、决策积累——Skill 一样都做不到。这不是哪个更好的问题，是两者根本不在同一层。</p>
+<p>我自己的系统是个现成的例子。不算机密，只说结构：106 个 Skill，底下垫着 27 个全局规则文件、约 4500 行行为约束、22 个项目工作区、54 个项目级规则，外加上万篇知识库文章、跨会话的经验记录、独立沉淀的个人方法论。那 106 个 Skill 只是整个系统最上面的一层——标准入口层。</p>
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340">
+  <rect width="600" height="340" fill="#fff" rx="6"/>
+  <text x="150" y="30" text-anchor="middle" font-size="15" font-weight="700" fill="#333">浴室（工作区）</text>
+  <rect x="50" y="48" width="200" height="240" fill="none" stroke="#333" stroke-width="1.8" rx="4"/>
+  <rect x="62" y="60" width="176" height="34" fill="#f5f5f5" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="150" y="81" text-anchor="middle" font-size="11" fill="#555">规则层 · 27 个文件 / 4500 行</text>
+  <rect x="62" y="102" width="176" height="34" fill="#f0f0f0" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="150" y="123" text-anchor="middle" font-size="11" fill="#555">路由层 · 22 个工作区 / 54 个规则</text>
+  <rect x="62" y="144" width="176" height="34" fill="#ebebeb" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="150" y="165" text-anchor="middle" font-size="11" fill="#555">知识层 · 知识库 / 条款库 / 客户经验</text>
+  <rect x="62" y="186" width="176" height="34" fill="#e6e6e6" stroke="#999" stroke-width="1" rx="2"/>
+  <text x="150" y="207" text-anchor="middle" font-size="11" fill="#555">记忆层 · 决策记录 / 跨会话经验</text>
+  <rect x="62" y="228" width="176" height="34" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+  <text x="150" y="249" text-anchor="middle" font-size="11" font-weight="700" fill="#333">入口层 · 106 个 Skill</text>
+  <text x="150" y="312" text-anchor="middle" font-size="11" fill="#999">长期积累，只增不减</text>
+  <text x="450" y="30" text-anchor="middle" font-size="15" font-weight="700" fill="#333">洗漱包（Skill）</text>
+  <rect x="350" y="120" width="200" height="90" fill="#fafafa" stroke="#333" stroke-width="1.8" rx="10"/>
+  <rect x="410" y="102" width="80" height="22" fill="none" stroke="#333" stroke-width="1.8" rx="10"/>
+  <rect x="366" y="136" width="50" height="26" fill="#fff" stroke="#999" stroke-width="1" rx="3"/>
+  <text x="391" y="153" text-anchor="middle" font-size="10" fill="#666">SOP</text>
+  <rect x="424" y="136" width="50" height="26" fill="#fff" stroke="#999" stroke-width="1" rx="3"/>
+  <text x="449" y="153" text-anchor="middle" font-size="10" fill="#666">脚本</text>
+  <rect x="482" y="136" width="50" height="26" fill="#fff" stroke="#999" stroke-width="1" rx="3"/>
+  <text x="507" y="153" text-anchor="middle" font-size="10" fill="#666">模板</text>
+  <text x="450" y="190" text-anchor="middle" font-size="11" fill="#888">筛选 · 标注 · 拿起就走</text>
+  <text x="450" y="312" text-anchor="middle" font-size="11" fill="#999">标准入口，即用即抛</text>
+  <text x="300" y="335" text-anchor="middle" font-size="12" font-weight="700" fill="#555">牙刷可以是同一把牙刷——差别在于有没有一个家</text>
+</svg></figure>
+<p>做一个思想实验：把我那 106 个 Skill 全部拿走，我的系统照常运转，无非是少了一些顺手的入口；但如果把底下的规则层抽走，106 个 Skill 立刻变成一盘散沙。每一个都还能单独跑，但没有一个知道该为谁跑、按谁的口径跑、跑完交给谁。</p>
+<p>旅行确实需要洗漱包。但没有人会把"我有一个洗漱包"当成"我有一个家"。</p>
+<h2 id="五认真对待反方Skill不是只是提示词">五、认真对待反方：Skill 不是"只是提示词"</h2>
+<p>写到这里，必须认真回应一下反方，不然这篇文章就是自说自话。</p>
+<p>反方最有力的说法是：你把 Skill 说浅了。Anthropic 内部跑几百个 Skill，人家的经验是 Skill 能装脚本、数据、参考代码、模板；Zack Shapiro 也说了，那是指令集不是提示词。你口中的"工作区才能做的事"，人家一个组织良好的 Skill 也能做到大半。</p>
+<p>这话在能力层面是对的，所以我在第一节就做了自我修正。但请顺着往下想：Skill 里能装脚本，工作区里有 scripts 目录；Skill 里能放模板，工作区里有模板库；Skill 里能塞参考数据，工作区里有整个知识库。能力清单逐项对下来，没有一项是 Skill 独有的。</p>
+<p>所以"Skill 是不是只是 markdown"根本是个岔题。真正的问题只有一个：<strong>你的能力体系，住在哪。</strong></p>
+<p>住在 Skill 里，它是便携的、可分发的——同时也是公共的、不积累的。住在工作区里，它是私有的、持续积累的、每天都有利息进账的。这两个住所没有高下，只有分工：出门带洗漱包，回家过日子。怕的是把全部家当都塞进洗漱包里，还以为自己置业了。</p>
+<h2 id="六收个尾">六、收个尾</h2>
+<p>有人会问：那你还写 Skill 吗？</p>
+<p>写，照写，照用，也照分享。洗漱包出门确实方便，而且说实话，分享 Skill 对行业是有真实贡献的——让更多人起步快一点，这件事值得做。我反对的从来不是 Skill，是把 Skill 当成能力的终点。</p>
+<p>我自己的做法是分账：Skill 是消耗品预算，花出去不心疼；工作区是固定资产，每天收工前真正花心思的是另一件事——今天的工作里，有哪些判断、哪些"为什么"，值得留进我的浴室。一个条款为什么让步，一个策略为什么调整，一个客户为什么是这个偏好。这些东西进不了任何 Skill，但三年之后，它们就是我和任何一个拿着同样 106 个 Skill 的人之间的全部差别。</p>
+<p>Skill 热会过去的，洗漱包会过时的，浴室是你每天要回去的地方。</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，第十届宁波市律师协会常务理事、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办"首宗百亿地王""长春第一高楼""台州第一高楼"等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。</p>
+        </div>
+
+        <nav class="article-prevnext" aria-label="上一篇/下一篇">
+          
+          
+          <a class="prevnext-link next" href="/articles/2026-08-02-自当善任-AI-时代法律人的五个关键词/">
+            <span class="prevnext-label">下一篇 &rarr;</span>
+            <span class="prevnext-title">自当善任：AI 时代法律人的五个关键词</span>
+          </a>
+          
+        </nav>
+
+        
+        <div class="related-mobile">
+          <h4 class="related-title">同类文章</h4>
+          
+          <a class="related-link" href="/articles/2026-08-02-自当善任-AI-时代法律人的五个关键词/">自当善任：AI 时代法律人的五个关键词</a>
+          
+          <a class="related-link" href="/articles/2026-08-02-好好说话-AI-时代-律师的主场在语言/">好好说话：AI 时代，律师的主场在语言</a>
+          
+          <a class="related-link" href="/articles/2026-08-02-从-植物人-到液态机器人-AI-正在长出-手脚/">从"植物人"到液态机器人：AI 正在长出"手脚"</a>
+          
+        </div>
+        
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalagi.cn/" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+
+      
+      <nav class="article-toc" aria-label="目录">
+        <div class="toc-sticky">
+          <h4 class="toc-title">目录</h4>
+          
+          <a href="#一先把公道话说足Skill确实是好东西" class="toc-link toc-l2" data-target="一先把公道话说足Skill确实是好东西">一、先把公道话说足：Skill 确实是好东西</a>
+          
+          <a href="#二三个结构性短板Skill装不下的东西" class="toc-link toc-l2" data-target="二三个结构性短板Skill装不下的东西">二、三个结构性短板：Skill 装不下的东西</a>
+          
+          <a href="#第一个短板Skill没有积累" class="toc-link toc-l3" data-target="第一个短板Skill没有积累">第一个短板：Skill 没有积累</a>
+          
+          <a href="#第二个短板Skill没有编排也没有路由" class="toc-link toc-l3" data-target="第二个短板Skill没有编排也没有路由">第二个短板：Skill 没有编排，也没有路由</a>
+          
+          <a href="#第三个短板迁移性悖论这一点最锋利也最少有人说" class="toc-link toc-l3" data-target="第三个短板迁移性悖论这一点最锋利也最少有人说">第三个短板：迁移性悖论，这一点最锋利，也最少有人说</a>
+          
+          <a href="#三Skill热的利益结构谁在为这场热闹买单" class="toc-link toc-l2" data-target="三Skill热的利益结构谁在为这场热闹买单">三、Skill 热的利益结构：谁在为这场热闹买单</a>
+          
+          <a href="#四浴室与洗漱包重新定义Skill的位置" class="toc-link toc-l2" data-target="四浴室与洗漱包重新定义Skill的位置">四、浴室与洗漱包：重新定义 Skill 的位置</a>
+          
+          <a href="#五认真对待反方Skill不是只是提示词" class="toc-link toc-l2" data-target="五认真对待反方Skill不是只是提示词">五、认真对待反方：Skill 不是"只是提示词"</a>
+          
+          <a href="#六收个尾" class="toc-link toc-l2" data-target="六收个尾">六、收个尾</a>
+          
+        </div>
+      </nav>
+      
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+
+    /* TOC scrollspy — 当前阅读章节在目录中高亮 */
+    (function(){
+      var links=document.querySelectorAll('.article-toc .toc-link');
+      if(!links.length||!('IntersectionObserver' in window)){return}
+      var map={};
+      links.forEach(function(l){map[l.getAttribute('data-target')]=l});
+      var headings=document.querySelectorAll('.article-body h2[id],.article-body h3[id]');
+      if(!headings.length){return}
+      var visible={};
+      var observer=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){visible[e.target.id]=e.isIntersecting});
+        var current=null;
+        for(var i=0;i<headings.length;i++){
+          if(visible[headings[i].id]){current=headings[i].id;break}
+        }
+        if(!current){
+          for(var j=headings.length-1;j>=0;j--){
+            if(headings[j].getBoundingClientRect().top<100){current=headings[j].id;break}
+          }
+        }
+        links.forEach(function(l){l.classList.remove('is-active')});
+        if(current&&map[current]){map[current].classList.add('is-active')}
+      },{rootMargin:'-80px 0px -70% 0px',threshold:0});
+      headings.forEach(function(h){observer.observe(h)});
+    })();
+
+    /* Code block copy button */
+    (function(){
+      function copyText(text,done){
+        if(navigator.clipboard&&window.isSecureContext){
+          navigator.clipboard.writeText(text).then(done,done);
+        }else{
+          var ta=document.createElement('textarea');
+          ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+          document.body.appendChild(ta);ta.select();
+          try{document.execCommand('copy')}catch(e){}
+          document.body.removeChild(ta);done();
+        }
+      }
+      document.querySelectorAll('pre.code-block').forEach(function(pre){
+        var btn=document.createElement('button');
+        btn.type='button';btn.className='code-copy';btn.textContent='复制';
+        btn.addEventListener('click',function(){
+          var code=pre.querySelector('code');
+          copyText(code?code.innerText:pre.innerText,function(){
+            btn.textContent='已复制';btn.classList.add('is-done');
+            setTimeout(function(){btn.textContent='复制';btn.classList.remove('is-done')},1500);
+          });
+        });
+        pre.appendChild(btn);
+      });
+    })();
+  </script>
+</body>
+</html>
