@@ -2,51 +2,135 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://chenshi.ai/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/articles/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/about.html</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/categories/ai-law/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/categories/legal-practice/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/categories/industry/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/categories/methodology/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/categories/data-analysis/</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-08-17-律师的经验-为什么-倒-不出来-默会知识蒸馏的四条路径/</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-08-17-知识库的信任陷阱-用得越多-越要怀疑/</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-08-17-数据不出域-怎么用-AI-一家银行的双轨实践/</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-08-17-我在教律师写-AI-技能-一位听众点醒了我/</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-08-17-合同审核-AI-缺的不是法律-是上下文/</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-08-17-厂商为什么拼命教你写-Skill/</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-08-17-判断归-AI-计算归脚本-法律-AI-的确定性分工律/</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-08-17-DeepSeek-Harness-真正的信号-不是插件/</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-08-17-提示词-Skill-Memory-工作区规则-其实是同一件事/</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-08-17-Vibe-coding-的补丁陷阱-先画根目录-再动手/</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-08-17-Skill-选品学-为什么-律师助手-这类大包不值得装/</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-08-17-AI-没读完你的-20-个文件-但它不会告诉你/</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-08-13-半年-108-倍-法律人正在把活交给-AI/</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-08-05-法律-Agent-最危险的能力-不是答错-而是不知道自己漏读了什么/</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/articles/2026-08-03-Skill-是洗漱包-不是浴室/</loc>

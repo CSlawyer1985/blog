@@ -4,9 +4,135 @@
   <link rel="alternate" type="text/html" hreflang="zh" href="https://chenshi.ai/"/>
   <link rel="self" type="application/atom+xml" href="https://chenshi.ai/atom.xml"/>
   <id>https://chenshi.ai/</id>
-  <updated>2026-08-03T21:21:45+08:00</updated>
+  <updated>2026-08-20T13:42:10+08:00</updated>
   <author><name>陈石</name></author>
   <subtitle>建设工程/房地产律师 × AI+法律先行者 — 个人博客</subtitle>
+  <entry>
+    <title>律师的经验，为什么“倒”不出来？——默会知识蒸馏的四条路径</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-08-17-律师的经验-为什么-倒-不出来-默会知识蒸馏的四条路径/"/>
+    <id>https://chenshi.ai/articles/2026-08-17-律师的经验-为什么-倒-不出来-默会知识蒸馏的四条路径/</id>
+    <published>2026-08-17T00:00:00+08:00</published>
+    <updated>2026-08-17T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>上周末的交流会结束后我留了一道作业试着把你最熟的那类业务写成一个能照着执行的后来收到的反馈里最典型的一条来自一位做了很多年的资深律师他对着电脑坐了两个小时只写出三条规则三条都对但都是这个行业里谁都知道的东西他水平够也不难写是经验倒不出来你掌握的知识大部分说不出来知识分两种显性知识是能写成文字的法条流</summary>
+  </entry>
+  <entry>
+    <title>知识库的信任陷阱：用得越多，越要怀疑</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-08-17-知识库的信任陷阱-用得越多-越要怀疑/"/>
+    <id>https://chenshi.ai/articles/2026-08-17-知识库的信任陷阱-用得越多-越要怀疑/</id>
+    <published>2026-08-17T00:00:00+08:00</published>
+    <updated>2026-08-17T00:00:00+08:00</updated>
+    <category term="行业观察"/>
+    <summary>交流会上讨论知识库建设一位公职律师同行说了一句话我回去想了很久如果你没有数据库你反而不会出问题乍听是反话他的意思是没有数据库你会老老实实现查有了数据库你就依赖它它错了你不知道它过期了你也不知道甜区和苦区同一场会上有另一个对照组一位承担生态环境法典普法任务的同行建了自己的知识库法典文本各律所的公众号文</summary>
+  </entry>
+  <entry>
+    <title>数据不出域，怎么用 AI？——一家银行的双轨实践</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-08-17-数据不出域-怎么用-AI-一家银行的双轨实践/"/>
+    <id>https://chenshi.ai/articles/2026-08-17-数据不出域-怎么用-AI-一家银行的双轨实践/</id>
+    <published>2026-08-17T00:00:00+08:00</published>
+    <updated>2026-08-17T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>解决什么问题机构数据不能出内网又想用上的合同审查能力这是一家银行的真实做法我把架构拆开讲适合有数据安全硬约束的律所法务部门和机构参考先交代约束条件交流会上一位来自银行的参会者分享了他们的实践约束很硬电脑是全封闭的局域网合同数据不能拿出来训练本地的大模型平台又比较弱这个约束条件不少律所和机构听着耳熟客</summary>
+  </entry>
+  <entry>
+    <title>我在教律师写 AI 技能，一位听众点醒了我</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-08-17-我在教律师写-AI-技能-一位听众点醒了我/"/>
+    <id>https://chenshi.ai/articles/2026-08-17-我在教律师写-AI-技能-一位听众点醒了我/</id>
+    <published>2026-08-17T00:00:00+08:00</published>
+    <updated>2026-08-17T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>上周末我们律协数字化专门委员会办了一场交流会主题是教律师把经验写成能执行的把你怎么审合同怎么分析案件的规则封装起来让照着做三十多位同行我主讲下半场交流环节一位公职律师同行站起来讲了一个案例给全场泼了一盆冷水一个离婚案怎么就变成了刑事案件外地的一起离婚官司两口子分财产典型的民事案件两位代理律师也都很专</summary>
+  </entry>
+  <entry>
+    <title>合同审核 AI，缺的不是法律，是上下文</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-08-17-合同审核-AI-缺的不是法律-是上下文/"/>
+    <id>https://chenshi.ai/articles/2026-08-17-合同审核-AI-缺的不是法律-是上下文/</id>
+    <published>2026-08-17T00:00:00+08:00</published>
+    <updated>2026-08-17T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>合同审核几乎是每一家法律科技公司的标配产品名单拉出来谁都有一款但你要问身边的律师同行真正把这类产品放进日常工作流天天在用的几乎没有上周末我们律协的数字化专门委员会办了一场技能编写交流会三十多位同行聊了一下午话题绕来绕去最后绕回了合同审核因为它是覆盖面最广的那个也是争议最大的那个一个行业标配的产品为什</summary>
+  </entry>
+  <entry>
+    <title>厂商为什么拼命教你写 Skill？</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-08-17-厂商为什么拼命教你写-Skill/"/>
+    <id>https://chenshi.ai/articles/2026-08-17-厂商为什么拼命教你写-Skill/</id>
+    <published>2026-08-17T00:00:00+08:00</published>
+    <updated>2026-08-17T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>上个月我接到一个电话对方在做某种平台问我你上那两个开源的可不可以放到他的平台上计价出售我说我都是开源的还放什么放挂了电话我意识到一件事一个市场正在形成而且比我预想的快先回答标题的问题如果你留意会发现这两年的法律科技公司甚至通用模型公司都在极力推广这个东西办比赛建市场出教程热情得很为什么我在交流会上说</summary>
+  </entry>
+  <entry>
+    <title>判断归 AI，计算归脚本——法律 AI 的确定性分工律</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-08-17-判断归-AI-计算归脚本-法律-AI-的确定性分工律/"/>
+    <id>https://chenshi.ai/articles/2026-08-17-判断归-AI-计算归脚本-法律-AI-的确定性分工律/</id>
+    <published>2026-08-17T00:00:00+08:00</published>
+    <updated>2026-08-17T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>交流会上一位刚取得破产管理人资质的同行分享了他的项目债权申报计算器想法很实际债权申报要算天数算利息算截止日各地规则还不一样深圳出的指引用天换一个地区又是另一个口径他让教着他做十几稿改下来界面像样了卡在了计算上卡到什么程度这位律师朋友现在开始自学编程了他的困境一句话就能说清他把一个算的问题交给了只会猜</summary>
+  </entry>
+  <entry>
+    <title>DeepSeek Harness 真正的信号，不是插件</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-08-17-DeepSeek-Harness-真正的信号-不是插件/"/>
+    <id>https://chenshi.ai/articles/2026-08-17-DeepSeek-Harness-真正的信号-不是插件/</id>
+    <published>2026-08-17T00:00:00+08:00</published>
+    <updated>2026-08-17T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>月日发布了一个叫的东西协议开源当天星数破了三万接下来几天各种实测铺满了时间线怎么安装有哪些插件四种模式怎么切换界面长什么样我看了几篇都挺热闹但都没说到点上我不是工程师的技术内核我说不准但它的架构口号只有一句话这句话我熟一切皆插件模型工具技能存储界面甚至的工作循环本身全部是可以拆可以换可以重组的插件按</summary>
+  </entry>
+  <entry>
+    <title>提示词、Skill、Memory、工作区规则——其实是同一件事</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-08-17-提示词-Skill-Memory-工作区规则-其实是同一件事/"/>
+    <id>https://chenshi.ai/articles/2026-08-17-提示词-Skill-Memory-工作区规则-其实是同一件事/</id>
+    <published>2026-08-17T00:00:00+08:00</published>
+    <updated>2026-08-17T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>这两年领域的名词更新得比法规还快提示词工程刚学会又来了还没用顺火了刚入门人家又在聊每出一个新名词就学一遍你累不累我说一个可能会让你松一口气的判断这些东西在功能上是高度重叠的它们做的都是同一件事上下文管理马甲不一样里子是同一个所有这些机制本质都是同一个动作有一个文档在软件启动或者加载工作区的时候被读一</summary>
+  </entry>
+  <entry>
+    <title>Vibe coding 的补丁陷阱：先画根目录，再动手</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-08-17-Vibe-coding-的补丁陷阱-先画根目录-再动手/"/>
+    <id>https://chenshi.ai/articles/2026-08-17-Vibe-coding-的补丁陷阱-先画根目录-再动手/</id>
+    <published>2026-08-17T00:00:00+08:00</published>
+    <updated>2026-08-17T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>交流会上一位同行讲了他做破产债权计算工具时的痛苦规则太多各地不同改来改去越改越乱旁边一位背景很特别的同行在体制内做过事的接了过去他没谈代码谈的是指纹比对指纹比对是怎么做成的他说指纹比对这项技术不是哪个聪明人灵机一动做出来的是公安部用一个大课题做出来的做成它要两个东西第一收集大量的史料全国所有相关的资</summary>
+  </entry>
+  <entry>
+    <title>Skill 选品学：为什么“律师助手”这类大包不值得装</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-08-17-Skill-选品学-为什么-律师助手-这类大包不值得装/"/>
+    <id>https://chenshi.ai/articles/2026-08-17-Skill-选品学-为什么-律师助手-这类大包不值得装/</id>
+    <published>2026-08-17T00:00:00+08:00</published>
+    <updated>2026-08-17T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>打开任何一个智能体的技能市场法律区永远是那几副面孔精英律师律师助手全能法律顾问名字一个比一个响图标一个比一个亮我但凡看到这类大包就不想装名字和里子是两回事一个的表现好不好跟它的名字没有任何关系你千万不要看到一个精英律师就觉得它审出来的一定是精英律师的水平反过来也完全可能一个叫草根律师的里面的规则写得</summary>
+  </entry>
+  <entry>
+    <title>AI 没读完你的 20 个文件，但它不会告诉你</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-08-17-AI-没读完你的-20-个文件-但它不会告诉你/"/>
+    <id>https://chenshi.ai/articles/2026-08-17-AI-没读完你的-20-个文件-但它不会告诉你/</id>
+    <published>2026-08-17T00:00:00+08:00</published>
+    <updated>2026-08-17T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>解决什么问题把一摞案件材料丢给分析时怎么确认它真的都读了适合所有拿处理文件的律师不需要技术背景三招都不需要写代码照着指令改一改就能用先说问题交流会上我提过一件事值得单独拿出来讲你把一个案件的材料包丢给个文件扫描件聊天记录截图什么格式都有过一会儿它给你一份分析结构完整逻辑顺畅引用材料有鼻子有眼真相是这</summary>
+  </entry>
+  <entry>
+    <title>半年 108 倍：法律人正在把活交给 AI</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-08-13-半年-108-倍-法律人正在把活交给-AI/"/>
+    <id>https://chenshi.ai/articles/2026-08-13-半年-108-倍-法律人正在把活交给-AI/</id>
+    <published>2026-08-13T00:00:00+08:00</published>
+    <updated>2026-08-13T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>月日发了一份企业使用报告看完之后有一个数字在我脑子里转了一天今年月以来企业客户里产品的周活跃用户增长最快的职能不是程序员是法律法律职能涨了倍同期销售倍招聘倍市场倍工程应用的大本营只有倍一个以保守谨慎慢半拍著称的行业成了渗透最快的知识工作领域为什么法律是代码之外最像代码的工作在报告里解释过软件为什么先</summary>
+  </entry>
+  <entry>
+    <title>法律 Agent 最危险的能力，不是答错，而是不知道自己漏读了什么</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-08-05-法律-Agent-最危险的能力-不是答错-而是不知道自己漏读了什么/"/>
+    <id>https://chenshi.ai/articles/2026-08-05-法律-Agent-最危险的能力-不是答错-而是不知道自己漏读了什么/</id>
+    <published>2026-08-05T00:00:00+08:00</published>
+    <updated>2026-08-05T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>一份工程造价结算的个里面塞满了公式和引用处理完告诉你已解析但它只读了每个格子显示的数字没读到背后的公式一份原告提交的证据扫描件页抽样看了十几页给整份证据做了归类然后它输出了一份带法条带结论措辞专业的法律分析意见没有报错流程跑完了系统告诉你任务完成了但工程款的计算逻辑藏在那些没读到的公式里关键的签证单</summary>
+  </entry>
   <entry>
     <title>Skill 是洗漱包，不是浴室</title>
     <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-08-03-Skill-是洗漱包-不是浴室/"/>
@@ -60,131 +186,5 @@
     <updated>2026-08-02T00:00:00+08:00</updated>
     <category term="AI+法律"/>
     <summary>这篇讲一个可以复现的工作流用的专家团功能让多个智能体分工协作处理一整包仲裁案卷产出争议焦点分析和裁决书初稿适合需要啃长卷宗的法律人参考我自己是仲裁员这个场景我熟文末会加一个内行验收的视角前提条件其他支持多智能体协作的平台同理一包处理干净的案件材料先转成文本确认没有读取障碍印章多扫描质量差的页面人工先</summary>
-  </entry>
-  <entry>
-    <title>一个协会，只能留一个奖了</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-08-01-一个协会-只能留一个奖了/"/>
-    <id>https://chenshi.ai/articles/2026-08-01-一个协会-只能留一个奖了/</id>
-    <published>2026-08-01T00:00:00+08:00</published>
-    <updated>2026-08-01T00:00:00+08:00</updated>
-    <category term="法律实务"/>
-    <summary>今天年月日起社会组织评比表彰活动管理办法正式施行这份由民政部和中央社会工作部联合印发的文件把社会组织开展评比表彰活动装进了一个新制度框架项目清单管理不在清单里的评比表彰一律不得开展配套的全国性社会组织评比表彰项目清单早在去年月就已公布一共个项目说实话看到这个数字时我愣了一下全国在民政部门登记的社会组</summary>
-  </entry>
-  <entry>
-    <title>别用 kiosk 模式按 AI 的按钮：电梯调度算法教给法律人的四堂课</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-08-01-别用-kiosk-模式按-AI-的按钮-电梯调度算法教给法律人的四堂课/"/>
-    <id>https://chenshi.ai/articles/2026-08-01-别用-kiosk-模式按-AI-的按钮-电梯调度算法教给法律人的四堂课/</id>
-    <published>2026-08-01T00:00:00+08:00</published>
-    <updated>2026-08-01T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>等电梯等到怀疑人生是每个上班族的共同记忆明明按了按钮电梯就是不来来了不停好不容易停了方向还是反的电梯真的没有针对你它在解一道年就有人申请专利的调度难题最近读到一篇拆解电梯调度算法的文章我意外发现电梯工程师几十年前验证过的结论和法律人今天用的方式几乎是同一套问题的两个版本最反直觉的那个结论先放在这里给</summary>
-  </entry>
-  <entry>
-    <title>DAU 是负债：AI 三年了，超级 APP 的逻辑已经破产</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-07-29-DAU-是负债-AI-三年了-超级-APP-的逻辑已经破产/"/>
-    <id>https://chenshi.ai/articles/2026-07-29-DAU-是负债-AI-三年了-超级-APP-的逻辑已经破产/</id>
-    <published>2026-07-29T00:00:00+08:00</published>
-    <updated>2026-07-29T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>去年月发布整三年我在一场分享会上听完了压轴演讲讲者是一位正在做销售产品的创业者一天硬核的技术分享之后他反倒没讲技术上来先给过去三年判了个死刑所有想做超级的产品基本都死了死法只有三种这个判断我在心里过了一遍三年里冒出来的应用名字能记住的不少活到今天还活得很好的确实不多三种死法第一种投流死烧钱买量把日活</summary>
-  </entry>
-  <entry>
-    <title>人口红利吃完了？下一种红利刚开局</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-07-18-人口红利吃完了-下一种红利刚开局/"/>
-    <id>https://chenshi.ai/articles/2026-07-18-人口红利吃完了-下一种红利刚开局/</id>
-    <published>2026-07-18T00:00:00+08:00</published>
-    <updated>2026-07-18T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>前阵子所里接了个复杂项目要做一轮很重的法律研究放在过去这种活儿是几个人扑上去做一周这次是一个同事带着他自己搭的工作流两天交了稿我盯着那份交付物看了很久它带给我的震动不是效率提升了而是一个更大的念头这个行业的人产出等式正在松动一个行业的等式松动是小事但如果连人口下降国力衰落这个国民级的等式也开始松动呢</summary>
-  </entry>
-  <entry>
-    <title>著作权三百年：它消化了六次技术冲击，为什么AI是例外</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-07-18-著作权三百年-它消化了六次技术冲击-为什么AI是例外/"/>
-    <id>https://chenshi.ai/articles/2026-07-18-著作权三百年-它消化了六次技术冲击-为什么AI是例外/</id>
-    <published>2026-07-18T00:00:00+08:00</published>
-    <updated>2026-07-18T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>年司晓在探索与争鸣发表了一篇文章标题就带着预警意味奇点来临时代的著作权法走向何处他的核心判断是生成式人工智能对著作权的冲击不再是常规的技术调整它瓦解的是底层逻辑思想表达二分法这一制度基石适用价值正在被消解三年过去这个判断至少有一半已经成为日常生成的文字图片音乐正以工业化规模进入内容市场创作者也不只是</summary>
-  </entry>
-  <entry>
-    <title>智能体该叫代理——一个翻译，决定了你怎么用 AI</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-07-13-智能体该叫代理-一个翻译-决定了你怎么用-AI/"/>
-    <id>https://chenshi.ai/articles/2026-07-13-智能体该叫代理-一个翻译-决定了你怎么用-AI/</id>
-    <published>2026-07-13T00:00:00+08:00</published>
-    <updated>2026-07-13T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>身边很多人聊起最常问的一句话是它什么时候能像助理一样帮我干活这个问法里藏着一个陷阱陷阱不在问题本身在智能体这三个字我用用得越久越觉得这个翻译害人不浅先说词义从来都是代理的意思这个词的英文核心一直是代理代表律师是经纪人是特工是房产中介还是这些角色有一个共同点他们不是自己有主张的人是代表别人做事的人法律</summary>
-  </entry>
-  <entry>
-    <title>别让法律咨询规则，跑进你的旅游攻略——Agent 的第一条纪律</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-07-13-别让法律咨询规则-跑进你的旅游攻略-Agent-的第一条纪律/"/>
-    <id>https://chenshi.ai/articles/2026-07-13-别让法律咨询规则-跑进你的旅游攻略-Agent-的第一条纪律/</id>
-    <published>2026-07-13T00:00:00+08:00</published>
-    <updated>2026-07-13T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>用的人第一条纪律不是学写规则是先建工作空间这件事听起来是细枝末节但用得越久越发现它决定了你的三个月后是个清爽好用的搭档还是一个对所有事情都啰嗦的怪东西一个真实的翻车场景你在里写了一条规则回答任何法律问题前先去本地知识库检索做法规核验按法律意见书结构输出本意是给法律咨询用的但你不小心把这条规则放在了根</summary>
-  </entry>
-  <entry>
-    <title>法律人，该把你的东西拿出来了</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-07-13-法律人-该把你的东西拿出来了/"/>
-    <id>https://chenshi.ai/articles/2026-07-13-法律人-该把你的东西拿出来了/</id>
-    <published>2026-07-13T00:00:00+08:00</published>
-    <updated>2026-07-13T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>有朋友最近问我你花那么多时间精力做四明山法师夜校又不挣钱图什么这个问题我被问过不止一次每次答得都有点含糊直到前两天听了梁冬在凉子访谈录里的一段话答案突然清楚了梁冬说做这个事情能够给你带来快乐你就做他说自己从百度出来之后财务上就还可以了但创业的公司大部分都亏了买股票也亏了不少最后他得出一个结论当你不指</summary>
-  </entry>
-  <entry>
-    <title>故事大会上的 AI：警惕之后，我们还能做什么</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-07-13-故事大会上的-AI-警惕之后-我们还能做什么/"/>
-    <id>https://chenshi.ai/articles/2026-07-13-故事大会上的-AI-警惕之后-我们还能做什么/</id>
-    <published>2026-07-13T00:00:00+08:00</published>
-    <updated>2026-07-13T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>西湖边的剧场级台风推迟登陆位法律人冒雨而来九位嘉宾轮番上台讲的都是人生故事但有意思的是有六七位都不约而同地谈到了许荣荣问豆包什么是级台风薛怡飞讲了一个豆律师编案号的段子全场笑翻卢医生被患者家属用全程质问张薇吐槽常老师用给她精心写的剧本提意见尹哥讲了一个唐僧和三个徒弟的比喻他们的姿态出奇地一致警惕戏谑</summary>
-  </entry>
-  <entry>
-    <title>docx 是压缩包——法律人理解 AI 的最短路径</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-07-13-docx-是压缩包-法律人理解-AI-的最短路径/"/>
-    <id>https://chenshi.ai/articles/2026-07-13-docx-是压缩包-法律人理解-AI-的最短路径/</id>
-    <published>2026-07-13T00:00:00+08:00</published>
-    <updated>2026-07-13T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>前几天做了一场讲座讲到一半我给屏幕前的所有人看了一份文件那是一份企业信用报告白底上面是红色的标题绿色的标签居中的字每一页顶部都会重复出现的企业我问了一个看起来挺无聊的问题为什么它是这个样子为什么这里红那里绿为什么这个字居中为什么这个图标在每一页顶部都会重复出现大部分人会答因为它就是一份文件文件不就是</summary>
-  </entry>
-  <entry>
-    <title>所谓"精英律师技能"，就是一个 .md 文件——Skill 祛魅</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-07-13-所谓-精英律师技能-就是一个-md-文件-Skill-祛魅/"/>
-    <id>https://chenshi.ai/articles/2026-07-13-所谓-精英律师技能-就是一个-md-文件-Skill-祛魅/</id>
-    <published>2026-07-13T00:00:00+08:00</published>
-    <updated>2026-07-13T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>打开任何一个产品的技能市场你会看到一堆名字精英律师合同审查专家法律写作大师尽职调查专家名字很唬人有些还要付费有些要你配才能用你可能会想这些技能到底是怎么做出来的凭什么叫精英里面是不是藏着什么我没见过的黑科技答案可能让你意外它们大多数就是一个文件的本质是一份结构化提示词任何一个不管名字多唬人你点开它所</summary>
-  </entry>
-  <entry>
-    <title>你和AI聊了三天的案件，重新打开它：不认识你了</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-07-08-你和AI聊了三天的案件-重新打开它-不认识你了/"/>
-    <id>https://chenshi.ai/articles/2026-07-08-你和AI聊了三天的案件-重新打开它-不认识你了/</id>
-    <published>2026-07-08T00:00:00+08:00</published>
-    <updated>2026-07-08T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>你和聊一个建设工程施工合同纠纷聊到第三天案情已经梳理清楚了合同效力工期延误价款结算三个争议焦点都有初步结论第四天打开同一段对话想继续往下推进的反应是它不知道你们聊到哪了你以为它还记得它不知道它只知道你们在聊这个项目但具体聊了哪些内容形成了哪些判断以哪个时间点的证据为基础它没有时间概念它不知道哪个是今</summary>
-  </entry>
-  <entry>
-    <title>你用过的法律AI产品，为什么总是不够好用？一个办公室里没人能回答的问题</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-07-08-你用过的法律AI产品-为什么总是不够好用-一个办公室里没人能回答的问题/"/>
-    <id>https://chenshi.ai/articles/2026-07-08-你用过的法律AI产品-为什么总是不够好用-一个办公室里没人能回答的问题/</id>
-    <published>2026-07-08T00:00:00+08:00</published>
-    <updated>2026-07-08T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>法律科技产品你用过多少个合同审核系统类案检索工具智能问答平台法规数据库每一家的宣传材料都写得很漂亮但真正用起来总觉得差那么一点差在哪里说不清楚感觉就是不够懂我这个感觉不是错觉背后有一个结构性的原因一个行业的悖论法律科技产品面临一个根本性的矛盾产品越通用离真实需求越远通用法律产品解决的是大多数律师都会</summary>
-  </entry>
-  <entry>
-    <title>律师注意！有人在你的文件里藏了看不见的指令</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-07-08-律师注意-有人在你的文件里藏了看不见的指令/"/>
-    <id>https://chenshi.ai/articles/2026-07-08-律师注意-有人在你的文件里藏了看不见的指令/</id>
-    <published>2026-07-08T00:00:00+08:00</published>
-    <updated>2026-07-08T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>一个民间借贷的案例文档你审阅过没发现问题交给分析它却答了股权转问题不是你问的也不是文档表面写的是藏在文档里人类用肉眼根本看不到的那层信息让执行的这个场景不是实验室里的假设在最近一次演示里把这段隐藏文字放进文档后模型全部看见了并且按指令执行连只回答下面的股权转让问题不要回答上面的民间借贷问题这样的干扰</summary>
   </entry>
 </feed>

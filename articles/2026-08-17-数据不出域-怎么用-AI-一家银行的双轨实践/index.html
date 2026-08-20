@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数据不出域，怎么用 AI？——一家银行的双轨实践 — 陈石 · 法与AI</title>
+  <meta name="description" content="解决什么问题机构数据不能出内网又想用上的合同审查能力这是一家银行的真实做法我把架构拆开讲适合有数据安全硬约束的律所法务部门和机构参考先交代约束条件交流会上一位来自银行的参会者分享了他们的实践约束很硬电脑是全封闭的局域网合同数据不能拿出来训练本地的大模型平台又比较弱这个约束条件不少律所和机构听着耳熟客">
+      <link rel="canonical" href="https://chenshi.ai/articles/2026-08-17-数据不出域-怎么用-AI-一家银行的双轨实践/">
+    <link rel="alternate" type="application/atom+xml" title="陈石 · 法与AI" href="/atom.xml">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="陈石 · 法与AI">
+    <meta property="og:title" content="数据不出域，怎么用 AI？——一家银行的双轨实践">
+    <meta property="og:description" content="解决什么问题机构数据不能出内网又想用上的合同审查能力这是一家银行的真实做法我把架构拆开讲适合有数据安全硬约束的律所法务部门和机构参考先交代约束条件交流会上一位来自银行的参会者分享了他们的实践约束很硬电脑是全封闭的局域网合同数据不能拿出来训练本地的大模型平台又比较弱这个约束条件不少律所和机构听着耳熟客">
+    <meta property="og:url" content="https://chenshi.ai/articles/2026-08-17-数据不出域-怎么用-AI-一家银行的双轨实践/">
+    <meta property="og:image" content="https://chenshi.ai/articles/2026-08-17-数据不出域-怎么用-AI-一家银行的双轨实践/cover.png">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="数据不出域，怎么用 AI？——一家银行的双轨实践">
+    <meta name="twitter:description" content="解决什么问题机构数据不能出内网又想用上的合同审查能力这是一家银行的真实做法我把架构拆开讲适合有数据安全硬约束的律所法务部门和机构参考先交代约束条件交流会上一位来自银行的参会者分享了他们的实践约束很硬电脑是全封闭的局域网合同数据不能拿出来训练本地的大模型平台又比较弱这个约束条件不少律所和机构听着耳熟客">
+    <meta name="twitter:image" content="https://chenshi.ai/articles/2026-08-17-数据不出域-怎么用-AI-一家银行的双轨实践/cover.png">
+    <meta property="article:published_time" content="2026-08-17">
+    <meta property="article:author" content="陈石">
+    <meta property="article:section" content="AI+法律">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://chenshi.ai/articles/2026-08-17-数据不出域-怎么用-AI-一家银行的双轨实践/#article",
+      "headline": "数据不出域，怎么用 AI？——一家银行的双轨实践",
+      "name": "数据不出域，怎么用 AI？——一家银行的双轨实践",
+      "url": "https://chenshi.ai/articles/2026-08-17-数据不出域-怎么用-AI-一家银行的双轨实践/",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://chenshi.ai/articles/2026-08-17-数据不出域-怎么用-AI-一家银行的双轨实践/"
+      },
+      "datePublished": "2026-08-17",
+      "dateModified": "2026-08-17",
+      "description": "解决什么问题机构数据不能出内网又想用上的合同审查能力这是一家银行的真实做法我把架构拆开讲适合有数据安全硬约束的律所法务部门和机构参考先交代约束条件交流会上一位来自银行的参会者分享了他们的实践约束很硬电脑是全封闭的局域网合同数据不能拿出来训练本地的大模型平台又比较弱这个约束条件不少律所和机构听着耳熟客",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://chenshi.ai/articles/2026-08-17-数据不出域-怎么用-AI-一家银行的双轨实践/cover.png"
+      },
+      "inLanguage": "zh-CN",
+      "author": {
+        "@id": "https://chenshi.ai/#person"
+      },
+      "publisher": {
+        "@id": "https://chenshi.ai/#person"
+      },
+      "articleSection": "AI+法律",
+      "timeRequired": "PT3M"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://chenshi.ai/#person",
+      "name": "陈石",
+      "url": "https://chenshi.ai/about.html",
+      "image": "https://chenshi.ai/assets/portrait.png",
+      "description": "陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。",
+      "jobTitle": "副主任、高级合伙人",
+      "knowsAbout": [
+        "建设工程/房地产律师",
+        "AI+法律先行者",
+        "建设工程",
+        "房地产法律",
+        "AI 法律应用",
+        "法律科技"
+      ],
+      "nationality": {
+        "@type": "Country",
+        "name": "中国"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "宁波",
+        "addressRegion": "浙江",
+        "addressCountry": "CN"
+      },
+      "sameAs": [
+        "https://github.com/CSlawyer1985",
+        "https://legalagi.cn/"
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "浙江海泰律师事务所"
+      },
+      "department": "房地产与建设工程部主任",
+      "award": [
+        "律新社 2025 年度管理合伙人 20 佳（华东）",
+        "LegalOne 实务先锋45强（建工及房地产）中国区",
+        "《商法》(China Business Law Journal) The A-List 法律精英 2024-25：中国业务律师新星",
+        "ALB China 区域市场十五佳长三角地区律师新星",
+        "律新社 2024 年度并购领域品牌之星：匠心律师",
+        "宁波市律协第三届诉讼/仲裁文书大赛一等奖"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://chenshi.ai/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "首页",
+          "item": "https://chenshi.ai/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "AI+法律",
+          "item": "https://chenshi.ai/categories/ai-law/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "数据不出域，怎么用 AI？——一家银行的双轨实践",
+          "item": "https://chenshi.ai/articles/2026-08-17-数据不出域-怎么用-AI-一家银行的双轨实践/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html{scroll-behavior:smooth}
+    html,body{overflow-x:hidden;overflow-x:clip}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:3px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+    /* ≥1200px 扩展为三栏（右栏 TOC） */
+    @media (min-width:1200px){
+      .article-layout{grid-template-columns:240px minmax(0,720px) minmax(0,200px);max-width:1296px}
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Anchor offset for fixed nav */
+    .article-body h2,.article-body h3{scroll-margin-top:96px}
+
+    /* SVG figures (```svg blocks rendered inline) */
+    .article-svg{
+      margin:28px 0;padding:20px;
+      border:1px solid #C9C0B2;background:#fff;
+      overflow-x:auto;text-align:center;
+    }
+    .article-svg svg{max-width:100%;height:auto;display:inline-block}
+
+    /* Right-rail TOC (desktop ≥1200px) */
+    .article-toc{display:none;position:relative}
+    .toc-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto}
+    .toc-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .toc-link{
+      display:block;padding:5px 0 5px 12px;
+      font-size:12.5px;line-height:1.45;color:#7d756a;
+      border-left:2px solid transparent;transition:color .2s,border-color .2s
+    }
+    .toc-link:hover{color:#1A1714}
+    .toc-link.toc-l3{padding-left:26px;font-size:12px}
+    .toc-link.is-active{color:#C0392B;border-left-color:#C0392B;font-weight:600}
+    @media (min-width:1200px){.article-toc{display:block}}
+
+    /* Mobile TOC (<1200px, collapsible) */
+    .toc-mobile{
+      margin:0 0 32px;padding:16px 20px;
+      border:1px solid #C9C0B2;background:rgba(243,237,227,.5)
+    }
+    .toc-mobile summary{
+      cursor:pointer;font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.1em;color:#C0392B;text-transform:uppercase;user-select:none
+    }
+    .toc-mobile .toc-link{margin-top:8px}
+    @media (min-width:1200px){.toc-mobile{display:none}}
+
+    /* Code copy button */
+    pre.code-block{position:relative}
+    .code-copy{
+      position:absolute;top:8px;right:8px;
+      padding:4px 10px;border:1px solid rgba(232,227,216,.25);border-radius:3px;
+      background:rgba(232,227,216,.08);color:#e8e3d8;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.04em;
+      cursor:pointer;opacity:0;transition:opacity .2s,background .2s
+    }
+    pre.code-block:hover .code-copy{opacity:1}
+    .code-copy:hover{background:rgba(232,227,216,.18)}
+    .code-copy.is-done{color:#7ac28a;border-color:rgba(122,194,138,.4)}
+    @media (hover:none){.code-copy{opacity:1}}
+
+    /* Prev / Next navigation */
+    .article-prevnext{
+      display:grid;grid-template-columns:1fr 1fr;gap:20px;
+      margin-top:56px;padding-top:28px;border-top:1px solid #C9C0B2
+    }
+    .prevnext-link{display:flex;flex-direction:column;gap:6px;min-width:0}
+    .prevnext-link.next{text-align:right;align-items:flex-end}
+    .prevnext-link.next:only-child{grid-column:2}
+    .prevnext-label{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.06em;color:#7d756a
+    }
+    .prevnext-title{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-size:16px;font-weight:600;color:#1A1714;line-height:1.4;
+      transition:color .25s
+    }
+    .prevnext-link:hover .prevnext-title{color:#C0392B}
+
+    /* Related articles (mobile only — sidebar hidden below 860px) */
+    .related-mobile{display:none;margin-top:32px}
+    .related-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:12px;padding-bottom:10px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .related-link{
+      display:block;padding:8px 0;font-size:14px;color:#3a342d;
+      border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .related-link:hover{color:#C0392B}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
+      .article-sidebar{display:none}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:15px;line-height:1.8}
+      .related-mobile{display:block}
+    }
+    @media (max-width:600px){
+      .article-layout{padding:80px 20px 48px}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+      .article-prevnext{grid-template-columns:1fr;gap:16px}
+      .prevnext-link.next{text-align:left;align-items:flex-start}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h4 class="sidebar-title">分类</h4>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（149）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（124）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（20）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（2）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（1）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-08-17-律师的经验-为什么-倒-不出来-默会知识蒸馏的四条路径/" class="sidebar-link">律师的经验，为什么“倒”不出来？——默会知识蒸馏的四条路径</a>
+      
+      <a href="/articles/2026-08-17-数据不出域-怎么用-AI-一家银行的双轨实践/" class="sidebar-link">数据不出域，怎么用 AI？——一家银行的双轨实践</a>
+      
+      <a href="/articles/2026-08-17-我在教律师写-AI-技能-一位听众点醒了我/" class="sidebar-link">我在教律师写 AI 技能，一位听众点醒了我</a>
+      
+      <a href="/articles/2026-08-17-合同审核-AI-缺的不是法律-是上下文/" class="sidebar-link">合同审核 AI，缺的不是法律，是上下文</a>
+      
+      <a href="/articles/2026-08-17-厂商为什么拼命教你写-Skill/" class="sidebar-link">厂商为什么拼命教你写 Skill？</a>
+      
+      <a href="/articles/2026-08-17-判断归-AI-计算归脚本-法律-AI-的确定性分工律/" class="sidebar-link">判断归 AI，计算归脚本——法律 AI 的确定性分工律</a>
+      
+      <a href="/articles/2026-08-17-DeepSeek-Harness-真正的信号-不是插件/" class="sidebar-link">DeepSeek Harness 真正的信号，不是插件</a>
+      
+      <a href="/articles/2026-08-17-提示词-Skill-Memory-工作区规则-其实是同一件事/" class="sidebar-link">提示词、Skill、Memory、工作区规则——其实是同一件事</a>
+      
+      <a href="/articles/2026-08-17-Vibe-coding-的补丁陷阱-先画根目录-再动手/" class="sidebar-link">Vibe coding 的补丁陷阱：先画根目录，再动手</a>
+      
+      <a href="/articles/2026-08-17-Skill-选品学-为什么-律师助手-这类大包不值得装/" class="sidebar-link">Skill 选品学：为什么“律师助手”这类大包不值得装</a>
+      
+      <a href="/articles/2026-08-17-AI-没读完你的-20-个文件-但它不会告诉你/" class="sidebar-link">AI 没读完你的 20 个文件，但它不会告诉你</a>
+      
+      <a href="/articles/2026-08-13-半年-108-倍-法律人正在把活交给-AI/" class="sidebar-link">半年 108 倍：法律人正在把活交给 AI</a>
+      
+      <a href="/articles/2026-08-05-法律-Agent-最危险的能力-不是答错-而是不知道自己漏读了什么/" class="sidebar-link">法律 Agent 最危险的能力，不是答错，而是不知道自己漏读了什么</a>
+      
+      <a href="/articles/2026-08-03-Skill-是洗漱包-不是浴室/" class="sidebar-link">Skill 是洗漱包，不是浴室</a>
+      
+      <a href="/articles/2026-08-02-自当善任-AI-时代法律人的五个关键词/" class="sidebar-link">自当善任：AI 时代法律人的五个关键词</a>
+      
+      <a href="/articles/2026-08-02-好好说话-AI-时代-律师的主场在语言/" class="sidebar-link">好好说话：AI 时代，律师的主场在语言</a>
+      
+      <a href="/articles/2026-08-02-从-植物人-到液态机器人-AI-正在长出-手脚/" class="sidebar-link">从"植物人"到液态机器人：AI 正在长出"手脚"</a>
+      
+      <a href="/articles/2026-08-02-人人都在用-WorkBuddy-你的竞争力在哪里/" class="sidebar-link">人人都在用 WorkBuddy，你的竞争力在哪里？</a>
+      
+      <a href="/articles/2026-08-02-六个-AI-分工写了一份裁决书-一个仲裁员的实测/" class="sidebar-link">六个 AI 分工写了一份裁决书：一个仲裁员的实测</a>
+      
+      <a href="/articles/2026-08-01-别用-kiosk-模式按-AI-的按钮-电梯调度算法教给法律人的四堂课/" class="sidebar-link">别用 kiosk 模式按 AI 的按钮：电梯调度算法教给法律人的四堂课</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-08-17">2026年8月17日</time>
+            <span class="dotsep"></span>
+            <span>3 分钟阅读</span>
+          </div>
+          <h1 class="article-title">数据不出域，怎么用 AI？——一家银行的双轨实践</h1>
+        </header>
+
+        
+        <details class="toc-mobile">
+          <summary>本文目录</summary>
+          
+          <a href="#先交代约束条件" class="toc-link toc-l2">先交代约束条件</a>
+          
+          <a href="#他们的前身一个95准确率但更新不起的系统" class="toc-link toc-l2">他们的前身：一个 95% 准确率但更新不起的系统</a>
+          
+          <a href="#双轨架构把提炼和执行拆开" class="toc-link toc-l2">双轨架构：把提炼和执行拆开</a>
+          
+          <a href="#这套架构可借鉴的三点" class="toc-link toc-l2">这套架构可借鉴的三点</a>
+          
+          <a href="#坑和局限" class="toc-link toc-l2">坑和局限</a>
+          
+          <a href="#最后墙没破能力进来了" class="toc-link toc-l2">最后：墙没破，能力进来了</a>
+          
+        </details>
+        
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="数据不出域，怎么用 AI？——一家银行的双轨实践封面图" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>解决什么问题：机构数据不能出内网，又想用上 AI 的合同审查能力。这是一家银行的真实做法，我把架构拆开讲。适合有数据安全硬约束的律所、法务部门和机构参考。</p>
+<h2 id="先交代约束条件">先交代约束条件</h2>
+<p>交流会上，一位来自银行的参会者分享了他们的实践。约束很硬：OA 电脑是全封闭的局域网，合同数据不能拿出来训练，本地的大模型平台又比较弱。</p>
+<p>这个约束条件，不少律所和机构听着耳熟。客户资料不能出域，但又眼馋大模型的能力。他们趟出了一条路，值得讲。</p>
+<h2 id="他们的前身一个95准确率但更新不起的系统">他们的前身：一个 95% 准确率但更新不起的系统</h2>
+<p>先说他们早年的一次投入，这个教训比后面的方案更有警示性。</p>
+<p>大模型出来之前，他们找垂类技术公司做过一套托管合同审查系统，小模型路线。效果好到什么程度？在他们的合同审查量里，准确率稳定在 95% 以上。问题是投入到了近百万量级，而且后来的更新极难——规则一变，改动成本高得吓人。</p>
+<p>小模型时代的确定性是真的，迭代成本也是真的。换成大模型吧，又有新的不放心：大模型是猜的，可能前三次都很对，第四次就不对。那种知道 5% 错在哪里的日子，回不去了。</p>
+<h2 id="双轨架构把提炼和执行拆开">双轨架构：把提炼和执行拆开</h2>
+<p>他们业务部门的最终方案，拆成两半。</p>
+<p>一半在墙外，提炼规则。在外部的电脑上，用强模型做规则提炼。关键在语料的选择——用的是公募基金托管合同，这类合同本来就是公开披露的，没有数据安全问题。强模型把这些透明合同吃透，提炼出审查规则。</p>
+<p>一半在墙内，双轨执行。提炼好的规则包拉回内网。执行层是两条轨并行：一条是传统的规则库关键字检索，确定性强但僵硬；一条是本地模型的语义理解，灵活但有不确定性。两条轨互相校验。</p>
+<figure class="article-svg"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320">
+  <rect width="600" height="320" fill="#ffffff"/>
+  <text x="300" y="32" text-anchor="middle" font-family="Smiley Sans, PingFang SC, Microsoft YaHei, sans-serif" font-size="18" font-weight="700" fill="#222222">双轨架构：规则在墙外提炼，执行在墙内闭环</text>
+  <rect x="20" y="56" width="270" height="180" fill="#f5f5f5" stroke="#999999" stroke-width="1" rx="6"/>
+  <text x="155" y="82" text-anchor="middle" font-family="Smiley Sans, PingFang SC, Microsoft YaHei, sans-serif" font-size="14" font-weight="700" fill="#333333">墙外 · 云端强模型</text>
+  <rect x="40" y="100" width="230" height="44" fill="#ffffff" stroke="#bbbbbb" stroke-width="1" rx="4"/>
+  <text x="155" y="127" text-anchor="middle" font-family="Smiley Sans, PingFang SC, Microsoft YaHei, sans-serif" font-size="12" fill="#444444">语料：公开披露的合同样本</text>
+  <rect x="40" y="152" width="230" height="44" fill="#ffffff" stroke="#bbbbbb" stroke-width="1" rx="4"/>
+  <text x="155" y="179" text-anchor="middle" font-family="Smiley Sans, PingFang SC, Microsoft YaHei, sans-serif" font-size="12" fill="#444444">任务：提炼审查规则</text>
+  <text x="155" y="222" text-anchor="middle" font-family="Smiley Sans, PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#888888">强模型只做一件事：把规则想清楚</text>
+  <rect x="310" y="56" width="270" height="180" fill="#222222" rx="6"/>
+  <text x="445" y="82" text-anchor="middle" font-family="Smiley Sans, PingFang SC, Microsoft YaHei, sans-serif" font-size="14" font-weight="700" fill="#ffffff">墙内 · 封闭局域网</text>
+  <rect x="330" y="100" width="230" height="44" fill="#333333" stroke="#555555" stroke-width="1" rx="4"/>
+  <text x="445" y="127" text-anchor="middle" font-family="Smiley Sans, PingFang SC, Microsoft YaHei, sans-serif" font-size="12" fill="#dddddd">轨一：规则库关键字检索（确定性）</text>
+  <rect x="330" y="152" width="230" height="44" fill="#333333" stroke="#555555" stroke-width="1" rx="4"/>
+  <text x="445" y="179" text-anchor="middle" font-family="Smiley Sans, PingFang SC, Microsoft YaHei, sans-serif" font-size="12" fill="#dddddd">轨二：本地模型语义理解（灵活性）</text>
+  <text x="445" y="222" text-anchor="middle" font-family="Smiley Sans, PingFang SC, Microsoft YaHei, sans-serif" font-size="11" fill="#aaaaaa">真实合同全程不出域</text>
+  <rect x="255" y="246" width="90" height="36" fill="#ffffff" stroke="#222222" stroke-width="2" rx="4"/>
+  <text x="300" y="269" text-anchor="middle" font-family="Smiley Sans, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" font-weight="700" fill="#111111">规则包</text>
+  <line x1="155" y1="236" x2="255" y2="258" stroke="#666666" stroke-width="1.5"/>
+  <polygon points="253,264 255,254 261,260" fill="#666666"/>
+  <line x1="345" y1="258" x2="445" y2="240" stroke="#666666" stroke-width="1.5"/>
+  <polygon points="452,238 442,237 447,231" fill="#666666"/>
+  <text x="300" y="308" text-anchor="middle" font-family="Smiley Sans, PingFang SC, Microsoft YaHei, sans-serif" font-size="13" fill="#888888">流动的只有规则，不流动的是数据</text>
+</svg></figure>
+<p>我听完的总结是一句话：<strong>好模型做计划，差一点的模型做执行。</strong></p>
+<p>规则的提炼需要最强的模型，那是一次性的智力活；规则提炼出来以后，执行环节本地小模型就够用，那是重复性的体力活。强模型的活做完就撤，执行环节的确定性交给规则库，灵活性交给语义理解。</p>
+<h2 id="这套架构可借鉴的三点">这套架构可借鉴的三点</h2>
+<p>第一，语料的公开性是前提。他们能用这个方案，是因为公募基金托管合同本身要公示。换到你的场景，先问：我的领域有没有公开语料可以拿来提炼规则？裁判文书、指导性案例、公开范本，都是候选。</p>
+<p>第二，流动的是规则，不是数据。出域的只是规则包，真实合同从头到尾没离开过内网。这是整个架构的安全支点。</p>
+<p>第三，双轨互为校验。关键字轨知道“错在哪”，语义轨知道“什么意思”。单用哪一轨都有短板，并排跑才稳。</p>
+<h2 id="坑和局限">坑和局限</h2>
+<p>这个方案不是零门槛。规则提炼的质量，取决于公开语料和你真实业务的贴近程度——托管合同恰好高度标准化，换到千差万别的业务场景，规则的代表性要打个问号。本地小模型的性能要有心理预期，它干执行够了，干不了规划。另外，规则包本身也要持续更新，老系统“更新不起”的教训就在前面。</p>
+<h2 id="最后墙没破能力进来了">最后：墙没破，能力进来了</h2>
+<p>数据安全和大模型能力，不是一个二选一的题。</p>
+<p>把“用 AI”拆成“提炼”和“执行”两段，让强模型在公开语料上做它最擅长的一次性智力活，让本地小模型在封闭环境里做重复执行。数据一步没出门，能力已经到岗。</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师，浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，宁波市律师协会副秘书长、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办“首宗百亿地王”“长春第一高楼”“台州第一高楼”等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。四明山法师 AI 夜校（legalAGI.cn）发起人。</p>
+        </div>
+
+        <nav class="article-prevnext" aria-label="上一篇/下一篇">
+          
+          <a class="prevnext-link prev" href="/articles/2026-08-17-知识库的信任陷阱-用得越多-越要怀疑/">
+            <span class="prevnext-label">&larr; 上一篇</span>
+            <span class="prevnext-title">知识库的信任陷阱：用得越多，越要怀疑</span>
+          </a>
+          
+          
+          <a class="prevnext-link next" href="/articles/2026-08-17-我在教律师写-AI-技能-一位听众点醒了我/">
+            <span class="prevnext-label">下一篇 &rarr;</span>
+            <span class="prevnext-title">我在教律师写 AI 技能，一位听众点醒了我</span>
+          </a>
+          
+        </nav>
+
+        
+        <div class="related-mobile">
+          <h4 class="related-title">同类文章</h4>
+          
+          <a class="related-link" href="/articles/2026-08-17-律师的经验-为什么-倒-不出来-默会知识蒸馏的四条路径/">律师的经验，为什么“倒”不出来？——默会知识蒸馏的四条路径</a>
+          
+          <a class="related-link" href="/articles/2026-08-17-我在教律师写-AI-技能-一位听众点醒了我/">我在教律师写 AI 技能，一位听众点醒了我</a>
+          
+          <a class="related-link" href="/articles/2026-08-17-合同审核-AI-缺的不是法律-是上下文/">合同审核 AI，缺的不是法律，是上下文</a>
+          
+        </div>
+        
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalagi.cn/" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+
+      
+      <nav class="article-toc" aria-label="目录">
+        <div class="toc-sticky">
+          <h4 class="toc-title">目录</h4>
+          
+          <a href="#先交代约束条件" class="toc-link toc-l2" data-target="先交代约束条件">先交代约束条件</a>
+          
+          <a href="#他们的前身一个95准确率但更新不起的系统" class="toc-link toc-l2" data-target="他们的前身一个95准确率但更新不起的系统">他们的前身：一个 95% 准确率但更新不起的系统</a>
+          
+          <a href="#双轨架构把提炼和执行拆开" class="toc-link toc-l2" data-target="双轨架构把提炼和执行拆开">双轨架构：把提炼和执行拆开</a>
+          
+          <a href="#这套架构可借鉴的三点" class="toc-link toc-l2" data-target="这套架构可借鉴的三点">这套架构可借鉴的三点</a>
+          
+          <a href="#坑和局限" class="toc-link toc-l2" data-target="坑和局限">坑和局限</a>
+          
+          <a href="#最后墙没破能力进来了" class="toc-link toc-l2" data-target="最后墙没破能力进来了">最后：墙没破，能力进来了</a>
+          
+        </div>
+      </nav>
+      
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+
+    /* TOC scrollspy — 当前阅读章节在目录中高亮 */
+    (function(){
+      var links=document.querySelectorAll('.article-toc .toc-link');
+      if(!links.length||!('IntersectionObserver' in window)){return}
+      var map={};
+      links.forEach(function(l){map[l.getAttribute('data-target')]=l});
+      var headings=document.querySelectorAll('.article-body h2[id],.article-body h3[id]');
+      if(!headings.length){return}
+      var visible={};
+      var observer=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){visible[e.target.id]=e.isIntersecting});
+        var current=null;
+        for(var i=0;i<headings.length;i++){
+          if(visible[headings[i].id]){current=headings[i].id;break}
+        }
+        if(!current){
+          for(var j=headings.length-1;j>=0;j--){
+            if(headings[j].getBoundingClientRect().top<100){current=headings[j].id;break}
+          }
+        }
+        links.forEach(function(l){l.classList.remove('is-active')});
+        if(current&&map[current]){map[current].classList.add('is-active')}
+      },{rootMargin:'-80px 0px -70% 0px',threshold:0});
+      headings.forEach(function(h){observer.observe(h)});
+    })();
+
+    /* Code block copy button */
+    (function(){
+      function copyText(text,done){
+        if(navigator.clipboard&&window.isSecureContext){
+          navigator.clipboard.writeText(text).then(done,done);
+        }else{
+          var ta=document.createElement('textarea');
+          ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+          document.body.appendChild(ta);ta.select();
+          try{document.execCommand('copy')}catch(e){}
+          document.body.removeChild(ta);done();
+        }
+      }
+      document.querySelectorAll('pre.code-block').forEach(function(pre){
+        var btn=document.createElement('button');
+        btn.type='button';btn.className='code-copy';btn.textContent='复制';
+        btn.addEventListener('click',function(){
+          var code=pre.querySelector('code');
+          copyText(code?code.innerText:pre.innerText,function(){
+            btn.textContent='已复制';btn.classList.add('is-done');
+            setTimeout(function(){btn.textContent='复制';btn.classList.remove('is-done')},1500);
+          });
+        });
+        pre.appendChild(btn);
+      });
+    })();
+  </script>
+</body>
+</html>
