@@ -151,4 +151,4 @@ CATEGORIES = [
 ]
 
 # 文章工作区路径
-ARTICLE_WORKSPACE = "/Users/CS/Trae/个人工作/文章撰写"
+ARTICLE_WORKSPACE = "/Users/CS/Documents/AI Builder/工作空间/文章撰写"
