@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ── ⑥ Writing list ── */
   initWritingList();
+  syncArticleCount();
 
   /* ── ⑦ Mobile nav ── */
   initMobileNav();
@@ -261,7 +262,7 @@ function updateFeatureCard(a) {
 
   var img = feat.querySelector('.feat__img');
   if (img) {
-    img.src = 'articles/' + a.slug + '/cover.png';
+    img.src = 'articles/' + a.slug + '/' + (a.cover_file || 'cover.png');
     img.onerror = function() {
       if (img.parentElement) img.parentElement.style.background = 'linear-gradient(135deg,#2c3e50,#8b2500)';
       img.style.display = 'none';
@@ -288,7 +289,7 @@ function renderWritingList(list, articles) {
   list.innerHTML = listArticles.map(function(a, i) {
     var idx = String(i + 2).padStart(2, '0');
     var thumb = a.has_cover
-      ? '<span class="wpost__thumb"><img src="articles/' + a.slug + '/cover.png" alt="" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></span>'
+      ? '<span class="wpost__thumb"><img src="articles/' + a.slug + '/' + (a.cover_file || 'cover.png') + '" alt="" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></span>'
       : '';
     return '<a class="wpost" href="articles/' + a.slug + '/">' +
       '<span class="wpost__idx">' + idx + '</span>' +
@@ -315,6 +316,25 @@ function getFallbackArticles() {
     { slug: '2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文', title: '读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文', category_label: 'AI+法律', date: '2026.07.01', read_time: '10', has_cover: true },
     { slug: '2026-07-01-月入百万的AI中转站-钱到底从哪来', title: '月入百万的AI中转站，钱到底从哪来？', category_label: 'AI+法律', date: '2026.07.01', read_time: '7', has_cover: true },
   ];
+}
+
+function syncArticleCount() {
+  fetch('data/site.json')
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      var count = data.stats && data.stats.total_articles;
+      if (!count) return;
+
+      var navStat = document.querySelector('.nav__stat');
+      if (navStat) navStat.innerHTML = '<i></i>' + count;
+
+      var blueprintStat = document.querySelector('.bp__anno--ver .bp__mono:last-child');
+      if (blueprintStat) {
+        blueprintStat.innerHTML = '<span lang="zh">文章: ' + count + ' 篇</span>' +
+          '<span lang="en">ARTICLES: ' + count + '</span>';
+      }
+    })
+    .catch(function() {});
 }
 
 function escapeHTML(str) {

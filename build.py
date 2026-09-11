@@ -16,6 +16,7 @@
 
 import sys
 import os
+import re
 import shutil
 import subprocess
 
@@ -158,9 +159,47 @@ def copy_cover_images(articles: list) -> int:
                         compressed += 1
                 break
 
+        copy_referenced_images(a, dest_dir)
+
     if compressed:
         print(f"  ✅ 已压缩 {compressed} 张封面图")
     return count
+
+
+def copy_referenced_images(article: dict, dest_dir: str) -> int:
+    """复制正文实际引用的同目录本地图片，避免文章配图在站点上 404。"""
+    source_path = article.get('source_path', '')
+    if not source_path or not os.path.isfile(source_path):
+        return 0
+
+    source_dir = os.path.dirname(source_path)
+    cover_names = {'cover.png', 'cover.jpg', 'cover.jpeg', 'cover.webp'}
+    copied = 0
+    with open(source_path, 'r', encoding='utf-8') as f:
+        markdown = f.read()
+
+    for raw_src in re.findall(r'!\[[^\]]*\]\(([^)]+)\)', markdown):
+        src = raw_src.strip().split('?', 1)[0].split('#', 1)[0]
+        if (not src or src.startswith(('/', '//')) or
+                re.match(r'^[a-zA-Z][a-zA-Z0-9+.-]*:', src)):
+            continue
+
+        rel_src = os.path.normpath(src)
+        if rel_src == '..' or rel_src.startswith(f'..{os.sep}'):
+            continue
+
+        source = os.path.normpath(os.path.join(source_dir, rel_src))
+        if not os.path.isfile(source) or os.path.basename(source).lower() in cover_names:
+            continue
+
+        dest = os.path.normpath(os.path.join(dest_dir, rel_src))
+        if os.path.commonpath([dest, dest_dir]) != os.path.normpath(dest_dir):
+            continue
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        shutil.copy2(source, dest)
+        copied += 1
+
+    return copied
 
 
 def resize_image(path: str, max_width: int) -> bool:

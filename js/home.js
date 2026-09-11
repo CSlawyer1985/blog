@@ -40,7 +40,7 @@
     grid.innerHTML = articles.map(a => `
       <article class="article-card reveal">
         <a href="articles/${a.slug}/" class="article-card-link">
-          ${a.has_cover ? `<div class="article-card-cover"><img src="articles/${a.slug}/cover.png" alt="" loading="lazy" width="400" height="225"></div>` : ''}
+          ${a.has_cover ? `<div class="article-card-cover"><img src="articles/${a.slug}/${a.cover_file || 'cover.png'}" alt="" loading="lazy" width="400" height="225"></div>` : ''}
           <div class="article-card-body">
           <div class="article-card-meta">
             <span class="article-card-date">${a.date_str}</span>

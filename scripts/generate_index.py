@@ -31,6 +31,7 @@ def generate_articles_index(articles: list) -> dict:
             "read_time": a["read_time"],
             "excerpt": a["excerpt"],
             "has_cover": a["has_cover"],
+            "cover_file": a["cover_file"],
             "slug": a["slug"],
         })
 

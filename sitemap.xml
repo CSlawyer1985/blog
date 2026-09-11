@@ -2,51 +2,177 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://chenshi.ai/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <lastmod>2026-09-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/articles/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <lastmod>2026-09-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/about.html</loc>
-    <lastmod>2026-08-27</lastmod>
+    <lastmod>2026-09-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/categories/ai-law/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <lastmod>2026-09-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/categories/legal-practice/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <lastmod>2026-09-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/categories/industry/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <lastmod>2026-09-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/categories/methodology/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <lastmod>2026-09-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/categories/data-analysis/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <lastmod>2026-09-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-11-99-的法律人都在用AI-真正危险的是只会在聊天框里用/</loc>
+    <lastmod>2026-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-08-我网站访问量最大的客户-是苹果和谷歌的爬虫/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-08-让-AI-自己跟自己打官司/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-08-100-不进大模型-的脱敏网站-是偷换概念/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-08-比官方便宜的-Claude-你敢用吗/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-08-模型路由越智能-账单越贵-一个反常识的省钱真相/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-08-更小的知识库-反而更有价值/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-08-数据比规则更重要-AI-出错时-先查输入再怪模型/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-08-十五分钟搭一个法律咨询工作区-含可抄的需求原文/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-08-你以为-AI-读了你的材料/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-08-云端脱敏没有意义-法律人把材料交给-AI-之前的正确姿势/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-08-一套规则喂饱三个-AI-法律工作区的多-agent-兼容改造/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-08-AI-只能算半个工具/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-05-你的执行案件刚-终本-律师的短信就到了/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-03-我做了一颗悬浮小球-按住说句话-日程就进日历/</loc>
+    <lastmod>2026-09-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-02-别再等免费的-AI-了-AI-时代正在改写软件的付费逻辑/</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-01-人类正在成为-AI-系统里最慢的组件/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-08-29-幽灵规章-到底是-AI-的幻觉-还是我们的幻觉/</loc>
+    <lastmod>2026-08-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-08-29-把场景拆碎-把幻觉照镜-在中国仲裁周圆桌-我讲了-20-分钟-AI-怎么落地/</loc>
+    <lastmod>2026-08-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-08-29-AI-产品出厂那一刻-是半成品/</loc>
+    <lastmod>2026-08-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-08-28-我的伙伴AI/</loc>
+    <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/articles/2026-08-23-人的判断力是最后一道防线-拆开看看/</loc>

@@ -132,6 +132,7 @@ def process_article(md_path: str, dirname: str) -> dict:
         'read_time': read_time,
         'excerpt': excerpt,
         'has_cover': has_cover,
+        'cover_file': os.path.basename(cover_path) if cover_path else None,
         'has_wechat': has_wechat,
         'has_bio': bool(bio_md.strip()),
         'slug': slug,

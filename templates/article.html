@@ -311,7 +311,7 @@
 
         {% if article.has_cover %}
         <figure class="article-cover">
-          <img src="cover.png" alt="{{ article.title }}封面图" loading="lazy">
+          <img src="{{ article.cover_file }}" alt="{{ article.title }}封面图" loading="lazy">
         </figure>
         {% endif %}
 
