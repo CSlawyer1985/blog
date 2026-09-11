@@ -1,5 +1,11 @@
 # 网站域名与部署架构
 
+## 首页作品卡片规范（按任务必读）
+
+新增、修改首页作品卡片，或调整其配图、动效、布局和平台入口前，必须完整读取项目根 `PORTFOLIO_DESIGN.md`，再读取其中指定的正式首页、CSS/JS 与 `docs/portfolio/prompts.md`。该文件是用户已认可的卡片设计与扩展约束的唯一内容源，适用于所有参与本项目的模型；不得因换模型而另起风格。
+
+2026-09-11 用户确认后已迁入 `index.html`，资源位于 `css/portfolio.css`、`js/portfolio.js`、`assets/portfolio/`。保留纸质微缩模型、暖纸/墨/朱红配色、桌面三列和按真实功能编排的默认播放动效。Hero 约束见 `docs/hero-portrait.md`；首次生成回退模板 `templates/home.html` 与首页同步。未经用户要求，不提交、推送或部署。
+
 ## 本项目定位
 
 - 站点：陈石个人博客「陈石 · 法与 AI」

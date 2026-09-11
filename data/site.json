@@ -1,7 +1,7 @@
 {
   "site": {
     "name": "陈石 · 法与AI",
-    "description": "建设工程/房地产律师 × AI+法律先行者 — 个人博客",
+    "description": "商事律师 × AI Builder — 个人博客",
     "url": "https://chenshi.ai",
     "base_url": "https://chenshi.ai",
     "default_og_image": "/assets/portrait.png",
@@ -15,8 +15,8 @@
     "title": "浙江海泰律师事务所副主任、高级合伙人",
     "department": "房地产与建设工程部主任",
     "dual_identity": [
-      "建设工程/房地产律师",
-      "AI+法律先行者"
+      "商事律师",
+      "AI Builder"
     ],
     "experience_years": 15,
     "experience_start": "2011年6月",

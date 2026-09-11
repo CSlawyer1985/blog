@@ -5,7 +5,7 @@
 
 SITE = {
     "name": "陈石 · 法与AI",
-    "description": "建设工程/房地产律师 × AI+法律先行者 — 个人博客",
+    "description": "商事律师 × AI Builder — 个人博客",
     "url": "https://chenshi.ai",
     "base_url": "https://chenshi.ai",           # canonical 域名（Cloudflare Pages 自定义域名）
     "default_og_image": "/assets/portrait.png",  # 文章无封面时的兜底分享图
@@ -19,7 +19,7 @@ AUTHOR = {
     "name": "陈石",
     "title": "浙江海泰律师事务所副主任、高级合伙人",
     "department": "房地产与建设工程部主任",
-    "dual_identity": ["建设工程/房地产律师", "AI+法律先行者"],
+    "dual_identity": ["商事律师", "AI Builder"],
     "experience_years": 15,
     "experience_start": "2011年6月",
     "total_investment": "1000亿+",

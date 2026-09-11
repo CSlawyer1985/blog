@@ -1,0 +1,142 @@
+/* Approved responsive Hero. The media station and project gallery are independent.
+   J / personal identity; split composition -> vertical stack; native CSS + Canvas 2D.
+   Text remains readable. Image and particle layer use the same natural aspect ratio. */
+.hero.hero-responsive {
+  padding: calc(var(--nav-h) + 32px) 24px 40px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+  align-items: end;
+  overflow: hidden;
+}
+.hero-responsive .hero__left {
+  min-width: 0;
+  max-width: none;
+  padding: 0;
+}
+.hero-responsive .hero__wordmark {
+  font-size: clamp(140px, 22vw, 350px);
+  line-height: .82;
+  letter-spacing: -.045em;
+}
+.hero-responsive .hero__lower { margin: 32px 0 0; }
+.hero-responsive .hero__kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  color: var(--accent);
+  font-size: 15px;
+  line-height: 1.6;
+  letter-spacing: 0;
+}
+.hero-responsive .hero__kicker .dot { width: 6px; height: 6px; }
+.hero-responsive .hero__slogan {
+  font-family: var(--sans-cjk);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.65;
+  letter-spacing: 0;
+  margin-bottom: 24px;
+  text-wrap: pretty;
+}
+.hero-responsive .hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 448px;
+  gap: 12px;
+}
+.hero-responsive .hero__cta .btn {
+  flex: 1 1 132px;
+  min-width: 0;
+  height: 56px;
+  padding: 0 12px;
+  font-size: 15px;
+  white-space: nowrap;
+  gap: 12px;
+}
+.hero-responsive .hero__cta .btn span { flex-shrink: 0; }
+.hero-responsive .hero__right {
+  display: flex;
+  min-width: 0;
+  width: 100%;
+  justify-content: center;
+  align-items: end;
+}
+.hero-responsive .portrait {
+  flex: 0 1 auto;
+  width: 100%;
+  max-width: 760px;
+  aspect-ratio: auto;
+  margin: 0;
+  overflow: visible;
+  isolation: isolate;
+}
+.hero-responsive .portrait__media {
+  display: block;
+  position: relative;
+  inset: auto;
+  overflow: visible;
+}
+.hero-responsive picture { display: block; line-height: 0; }
+.hero-responsive .portrait__img {
+  display: block;
+  position: static;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  opacity: .92;
+  filter: saturate(.86) contrast(1.04);
+  mix-blend-mode: multiply;
+  transform: none;
+  transition: none;
+}
+.hero-responsive .portrait__particles {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  mix-blend-mode: normal;
+}
+.hero-responsive .portrait__cross { width: 24px; height: 24px; }
+.hero-responsive .portrait__cross--tl { top: 6%; left: 0; }
+.hero-responsive .portrait__cross--br { right: 0; bottom: 0; }
+.hero-responsive .hero__cta a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+.hero-responsive + .about { padding-top: 56px; }
+@media (min-width: 680px) {
+  .hero.hero-responsive {
+    padding: calc(var(--nav-h) + 40px) 48px 56px;
+    gap: 40px;
+  }
+  .hero-responsive .hero__kicker { font-size: 16px; }
+  .hero-responsive .hero__slogan { font-size: 22px; }
+  .hero-responsive .hero__cta .btn { font-size: 16px; }
+  .hero-responsive .portrait__cross { width: 36px; height: 36px; }
+}
+@media (min-width: 1100px) {
+  .hero.hero-responsive {
+    padding: calc(var(--nav-h) + 48px) clamp(48px, 5vw, 88px) 72px calc(var(--rail-x) + 56px);
+    grid-template-columns: minmax(0, .43fr) minmax(0, .57fr);
+    column-gap: clamp(24px, 2.8vw, 48px);
+  }
+  .hero-responsive .hero__left { align-self: end; }
+  .hero-responsive .hero__lower { margin-top: 40px; }
+  .hero-responsive .hero__slogan { font-size: 24px; }
+  .hero-responsive .portrait { max-width: 900px; }
+  .hero-responsive .portrait__cross { width: 48px; height: 48px; }
+}
+@media (min-width: 1800px) {
+  .hero.hero-responsive {
+    padding-inline: max(104px, calc((100vw - 1560px) / 2));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-responsive .portrait__particles { display: none; }
+  .hero-responsive .portrait.is-particle-ready .portrait__img {
+    opacity: .92 !important;
+    filter: saturate(.86) contrast(1.04) !important;
+  }
+}
