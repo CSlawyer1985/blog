@@ -4,6 +4,7 @@
 阅读顺序：CS / 介绍 / 查看作品 → 人像 → About；移动端上下重排，正文不缩小。
 作品沿用暖纸、墨、朱红微缩模型和功能叙事动效；规范见 PORTFOLIO_DESIGN.md。
 Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片尺寸。
+新增 RuleNav 作品卡片反思：内容类型 B 流程/步骤 + C 节点/工具连接；表达形式为三域工作台微缩模型 + 原生 SVG 路径动画；技术栈 L2（HTML/CSS + SVG），阅读路径为事实 → 规则 → 责任依据；构图家族为 process-flow，布局原语为 triptych / path，主轴为横向、焦点为中央规则页；语义理由是产品价值在于沿依据完成定位，而非泛化对话；响应式策略沿用 640/1024px 的单列 → 双列 → 三列；参考来源为现有 portfolio 卡片系统与 rule.chenshi.ai 的三域信息架构，只借鉴结构，不复制页面素材；不使用框架、视频、GIF 或新增 CDN；交互为整卡外链，动画为可见时播放的 8 秒功能叙事循环；移动端自适应并保持标题与用途可读；反 AI 审美检查：无紫蓝渐变、无玻璃态、无通用机器人与装饰粒子。
 -->
 <html lang="zh-CN" data-lang="zh">
 <head>
@@ -420,7 +421,7 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
     </section>
 
 <section class="project-gallery" id="project-gallery" aria-labelledby="gallery-heading">
-  <header class="gallery-head"><div><p class="gallery-kicker">THE BUILD INDEX <span>/ 01—07</span></p><h2 id="gallery-heading"><span lang="zh">想法，做成了这些。</span><span lang="en">Ideas, made tangible.</span></h2></div><div class="gallery-aside"><p><span lang="zh">课程、工具与实验，持续建造中。</span><span lang="en">Courses, tools and experiments. Always building.</span></p></div></header>
+  <header class="gallery-head"><div><p class="gallery-kicker">THE BUILD INDEX <span>/ 01—08</span></p><h2 id="gallery-heading"><span lang="zh">想法，做成了这些。</span><span lang="en">Ideas, made tangible.</span></h2></div><div class="gallery-aside"><p><span lang="zh">课程、工具与实验，持续建造中。</span><span lang="en">Courses, tools and experiments. Always building.</span></p></div></header>
   <div class="project-grid"><article class="project-item project-night-school">
   <a class="project-link" href="https://legalagi.cn/" target="_blank" rel="noopener noreferrer">
     <div class="project-art" data-art="night-school">
@@ -575,6 +576,30 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
       </svg>
     </div>
     <div class="project-caption"><span class="project-no">07</span><div><h3><span lang="zh">DeepSeek Harness<br>桌面客户端</span><span lang="en">DeepSeek Harness<br>Desktop</span></h3><p><span lang="zh">双击即用，让本地 Harness 开箱运行。</span><span lang="en">Your local Harness, ready in a double-click.</span></p></div><span class="project-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span></div>
+  </a></article>
+<article class="project-item project-rulenav">
+  <a class="project-link" href="https://rule.chenshi.ai/" target="_blank" rel="noopener noreferrer">
+    <div class="project-art" data-art="rulenav">
+      <img src="assets/portfolio/rulenav.webp" alt="纪考工作台 RuleNav 的规则定位工作台微缩模型" width="1200" height="800" loading="lazy">
+      <span class="art-corner art-corner-tl" aria-hidden="true"></span><span class="art-corner art-corner-br" aria-hidden="true"></span>
+      <span class="art-index">08 / LEGAL WORKBENCH</span>
+      <span class="art-action"><span lang="zh">访问项目</span><span lang="en">Visit project</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span>
+      <svg class="art-motion" viewBox="0 0 600 400" fill="none" aria-hidden="true">
+<path class="loop draw rulenav-route" pathLength="1" d="M112 248C158 248 181 214 241 188M364 188C401 188 421 207 447 207" stroke="#b63c2f" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="5 5"/>
+<rect class="loop rulenav-scan" x="248" y="76" width="112" height="14" rx="2" fill="#b63c2f" opacity=".14"/>
+<g stroke="#b63c2f" stroke-width="2.2" stroke-linecap="round">
+  <path class="loop draw rulenav-clause-a" pathLength="1" d="M255 120h74M255 134h58"/>
+  <path class="loop draw rulenav-clause-b" pathLength="1" d="M255 163h81M255 177h64"/>
+  <path class="loop draw rulenav-clause-c" pathLength="1" d="M255 206h60"/>
+</g>
+<g fill="#b63c2f"><circle class="loop node-pulse rulenav-node-a" cx="112" cy="248" r="5"/><circle class="loop node-pulse rulenav-node-b" cx="304" cy="188" r="6"/><circle class="loop node-pulse rulenav-node-c" cx="447" cy="207" r="5"/></g>
+<circle class="loop rulenav-packet" r="4" fill="#b63c2f"/>
+<g class="loop pop rulenav-input-label"><rect x="48" y="292" width="100" height="35" rx="2" fill="#f5edde"/><text x="64" y="315">01 事实</text></g>
+<g class="loop pop rulenav-rule-label"><rect x="232" y="260" width="104" height="35" rx="2" fill="#f5edde"/><text x="248" y="283">02 规则</text></g>
+<g class="loop pop rulenav-result"><rect x="386" y="290" width="169" height="39" rx="2" fill="#f5edde"/><circle cx="405" cy="310" r="4" fill="#b63c2f"/><text x="419" y="315">依据已定位</text></g>
+      </svg>
+    </div>
+    <div class="project-caption"><span class="project-no">08</span><div><h3><span lang="zh">纪考工作台 · RuleNav</span><span lang="en">RuleNav Workbench</span></h3><p><span lang="zh">从投诉事实定位违规行为与责任依据。</span><span lang="en">Trace complaint facts to rules and responsibility grounds.</span></p></div><span class="project-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span></div>
   </a></article></div>
   <div class="gallery-foot"><span>MADE WITH CURIOSITY. BUILT IN PUBLIC.</span><a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener noreferrer"><span lang="zh">更多开源探索</span><span lang="en">More on GitHub</span> ↗</a></div>
 </section>

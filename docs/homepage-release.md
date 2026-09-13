@@ -33,3 +33,12 @@
 发布后的回退应通过对本次发布提交执行常规git revert并推送完成；不得强推或重置整个仓库。只回退本次提交，不影响其他后续改动。
 
 本文件记录提交前验收；Git推送结果与正式域名生效情况以交付时的实际检查为准。
+
+## RuleNav 补充验收（2026-09-13）
+
+- 首页作品集新增第 08 张产品卡片“纪考工作台 · RuleNav”，链接至 `https://rule.chenshi.ai/`；卡片采用既有 3:2 作品结构，补充关于页项目入口。
+- 新增作品图源文件 `docs/portfolio/sources/rulenav.png`，网页优化副本为 `assets/portfolio/rulenav.webp`；图像表达 RuleNav 的“事实 → 规则 → 责任依据”三段式工作台。
+- 卡片交互沿用现有 IntersectionObserver、页面可见性与 `prefers-reduced-motion` 管线；新增 SVG 路径包、扫描线、节点与标签的 8 秒叙事动画，卡片离屏暂停，减少动效时隐藏 SVG 动画。
+- `node tests/homepage-static.cjs`：通过（8 件作品、6 个频道、10 个关于页条目）。`node --check js/portfolio.js`、`git diff --check`：通过。
+- 本机 Chromium 实际检查：1440/1024/768/375 四个视口分别为 3/3/2/1 列，均无横向溢出；图片成功加载；进入视口播放、离屏暂停、键盘焦点轮廓、系统减少动效均已验证。
+- 最终渲染截图：`docs/portfolio/screenshots/rulenav-desktop.png`、`docs/portfolio/screenshots/rulenav-mobile.png`。

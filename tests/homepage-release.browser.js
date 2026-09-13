@@ -21,7 +21,7 @@ async (page) => {
       overflow:document.documentElement.scrollWidth>innerWidth,
       count:document.querySelectorAll('.project-item').length
     }));
-    check(width+': gallery columns/count/no overflow', result.columns===(width>=1024?3:width>=640?2:1)&&result.count===7&&!result.overflow,result);
+    check(width+': gallery columns/count/no overflow', result.columns===(width>=1024?3:width>=640?2:1)&&result.count===8&&!result.overflow,result);
   }
   await page.setViewportSize({width:1440,height:1000});
   for (const card of await page.locator('.project-item').all()) {
@@ -58,7 +58,7 @@ async (page) => {
   await page.goto('http://127.0.0.1:8765/about.html?release='+Date.now()+'#open-source-projects');
   await page.waitForTimeout(1800);
   const entries=await page.locator('#open-source-projects .proj-item').evaluateAll(nodes=>nodes.map(n=>({name:n.querySelector('.proj-item__name').textContent,url:n.href})));
-  check('about retains five and adds four',entries.length===9,entries);
+  check('about retains five and adds five',entries.length===10,entries);
   for (const width of [1440,768,375]) {
     await page.setViewportSize({width,height:1000});
     await page.locator('#open-source-projects').scrollIntoViewIfNeeded();
