@@ -610,5 +610,28 @@ function initMobileNav() {
 
 /* ── Visitor Counter ── */
 (function() {
-  // Busuanzi 服务自动填充 #busuanzi_value_site_pv，无需额外逻辑
+  var el = document.getElementById("busuanzi_value_site_pv");
+  if (!el) return;
+
+  // Busuanzi 在迁移时已有 482 次；补回旧 CounterAPI 的 868 次历史基准。
+  // 以后仍由 Busuanzi 计数，偏移量只负责保留迁移前的历史。
+  var HISTORY_OFFSET = 868 - 482;
+  var observer;
+
+  function applyHistoryOffset() {
+    var raw = el.textContent.replace(/[^0-9]/g, "");
+    if (!raw) return false;
+
+    var value = parseInt(raw, 10);
+    if (isNaN(value)) return false;
+
+    if (observer) observer.disconnect();
+    el.textContent = (value + HISTORY_OFFSET).toLocaleString("en-US");
+    return true;
+  }
+
+  if (!applyHistoryOffset() && window.MutationObserver) {
+    observer = new MutationObserver(applyHistoryOffset);
+    observer.observe(el, { childList: true, characterData: true, subtree: true });
+  }
 })();
