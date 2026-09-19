@@ -5,6 +5,7 @@
 作品沿用暖纸、墨、朱红微缩模型和功能叙事动效；规范见 PORTFOLIO_DESIGN.md。
 Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片尺寸。
 新增 RuleNav 作品卡片反思：内容类型 B 流程/步骤 + C 节点/工具连接；表达形式为三域工作台微缩模型 + 原生 SVG 路径动画；技术栈 L2（HTML/CSS + SVG），阅读路径为事实 → 规则 → 责任依据；构图家族为 process-flow，布局原语为 triptych / path，主轴为横向、焦点为中央规则页；语义理由是产品价值在于沿依据完成定位，而非泛化对话；响应式策略沿用 640/1024px 的单列 → 双列 → 三列；参考来源为现有 portfolio 卡片系统与 rule.chenshi.ai 的三域信息架构，只借鉴结构，不复制页面素材；不使用框架、视频、GIF 或新增 CDN；交互为整卡外链，动画为可见时播放的 8 秒功能叙事循环；移动端自适应并保持标题与用途可读；反 AI 审美检查：无紫蓝渐变、无玻璃态、无通用机器人与装饰粒子。
+新增法律元 SKILL 作品卡片反思：内容类型 B 流程/步骤 + C 节点/工具连接；表达形式为六阶段法律能力装配台微缩模型 + 原生 SVG 路径动画；技术栈 L2（HTML/CSS + SVG），阅读路径为输入 → 研究/建模 → 封装 → 评测 → 复核通过；构图家族为 process-flow，布局原语为 rail / gate，主轴为横向、焦点为中央封装压制台与右侧复核门；语义理由是产品价值在于把重复法律工作治理成可复用、可评测的 Skill，而非展示单个工具；响应式策略沿用 640/1024px 的单列 → 双列 → 三列；参考来源为现有 portfolio 卡片系统与 skill.chenshi.ai/legal-meta-skill 的六阶段工作流，只借鉴结构，不复制页面素材；不使用框架、视频、GIF 或新增 CDN；交互为整卡外链，动画为可见时播放的 8 秒功能叙事循环；移动端自适应并保持标题与用途可读；反 AI 审美检查：无紫蓝渐变、无玻璃态、无通用机器人与装饰粒子。
 -->
 <html lang="zh-CN" data-lang="zh">
 <head>
@@ -421,7 +422,7 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
     </section>
 
 <section class="project-gallery" id="project-gallery" aria-labelledby="gallery-heading">
-  <header class="gallery-head"><div><p class="gallery-kicker">THE BUILD INDEX <span>/ 01—08</span></p><h2 id="gallery-heading"><span lang="zh">想法，做成了这些。</span><span lang="en">Ideas, made tangible.</span></h2></div><div class="gallery-aside"><p><span lang="zh">课程、工具与实验，持续建造中。</span><span lang="en">Courses, tools and experiments. Always building.</span></p></div></header>
+  <header class="gallery-head"><div><p class="gallery-kicker">THE BUILD INDEX <span>/ 01—09</span></p><h2 id="gallery-heading"><span lang="zh">想法，做成了这些。</span><span lang="en">Ideas, made tangible.</span></h2></div><div class="gallery-aside"><p><span lang="zh">课程、工具与实验，持续建造中。</span><span lang="en">Courses, tools and experiments. Always building.</span></p></div></header>
   <div class="project-grid"><article class="project-item project-night-school">
   <a class="project-link" href="https://legalagi.cn/" target="_blank" rel="noopener noreferrer">
     <div class="project-art" data-art="night-school">
@@ -600,6 +601,26 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
       </svg>
     </div>
     <div class="project-caption"><span class="project-no">08</span><div><h3><span lang="zh">纪考工作台 · RuleNav</span><span lang="en">RuleNav Workbench</span></h3><p><span lang="zh">从投诉事实定位违规行为与责任依据。</span><span lang="en">Trace complaint facts to rules and responsibility grounds.</span></p></div><span class="project-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span></div>
+  </a></article>
+<article class="project-item project-legal-meta-skill">
+  <a class="project-link" href="https://skill.chenshi.ai/legal-meta-skill" target="_blank" rel="noopener noreferrer">
+    <div class="project-art" data-art="legal-meta-skill">
+      <img src="assets/portfolio/legal-meta-skill.webp" alt="法律元 SKILL 六阶段法律能力装配台微缩模型" width="1200" height="800" loading="lazy">
+      <span class="art-corner art-corner-tl" aria-hidden="true"></span><span class="art-corner art-corner-br" aria-hidden="true"></span>
+      <span class="art-index">09 / META SKILL</span>
+      <span class="art-action"><span lang="zh">访问项目</span><span lang="en">Visit project</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span>
+      <svg class="art-motion" viewBox="0 0 600 400" fill="none" aria-hidden="true">
+<path class="loop draw meta-route" pathLength="1" d="M104 245h102l42-35h65l62 48h74l72-18" stroke="#b63c2f" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="5 5"/>
+<rect class="loop meta-scan" x="78" y="112" width="105" height="13" rx="2" fill="#b63c2f" opacity=".14"/>
+<path class="loop draw meta-contract" pathLength="1" d="M236 176h72m-72 14h48m-48 14h64" stroke="#b63c2f" stroke-width="2" stroke-linecap="round"/>
+<path class="loop draw meta-eval" pathLength="1" d="M407 167h80m-80 16h80" stroke="#b63c2f" stroke-width="2" stroke-linecap="round"/>
+<circle class="loop meta-packet" r="4" fill="#b63c2f"/>
+<g class="loop pop meta-input-label"><rect x="35" y="296" width="112" height="35" rx="2" fill="#f5edde"/><text x="51" y="319">01 输入</text></g>
+<g class="loop pop meta-package-label"><rect x="219" y="296" width="126" height="35" rx="2" fill="#f5edde"/><text x="235" y="319">04 封装</text></g>
+<g class="loop pop meta-review-label"><rect x="390" y="296" width="163" height="35" rx="2" fill="#f5edde"/><circle cx="410" cy="314" r="4" fill="#b63c2f"/><text x="424" y="319">06 复核通过</text></g>
+      </svg>
+    </div>
+    <div class="project-caption"><span class="project-no">09</span><div><h3><span lang="zh">法律元 SKILL</span><span lang="en">Legal Meta Skill</span></h3><p><span lang="zh">把重复的法律工作流，治理成可复用、可评测的 Agent Skill。</span><span lang="en">Turn repeatable legal workflows into governed, testable Agent Skills.</span></p></div><span class="project-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span></div>
   </a></article></div>
   <div class="gallery-foot"><span>MADE WITH CURIOSITY. BUILT IN PUBLIC.</span><a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener noreferrer"><span lang="zh">更多开源探索</span><span lang="en">More on GitHub</span> ↗</a></div>
 </section>

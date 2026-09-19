@@ -51,4 +51,27 @@ Materials/textures: uncoated paper, folded-card architectural forms, graphite ro
 Text (verbatim): none.
 Constraints: no text, no letters, no numbers, no logos, no watermark; do not render a real software screenshot; keep the model readable at small card size; make the three-zone structure visibly distinct from an open encyclopedia or a generic desktop computer.
 Avoid: purple, blue gradients, neon, glassmorphism, generic robots, planets, stars, floating particles, cute cartoon style, glossy plastic, dense UI text, fake branding.
+
+## legal-meta-skill · 2026-09-19
+
+用途：portfolio card image for the project gallery；原始 PNG：`sources/legal-meta-skill.png`；网页资产：`assets/portfolio/legal-meta-skill.webp`（1200×800）。
+
+```text
+Use case: stylized-concept.
+Asset type: portfolio card image for a personal blog project gallery.
+Input images: Image 1 and Image 2 are reference images for the existing warm paper architectural-maquette visual language only; do not copy their objects or any text.
+Primary request: Create a premium editorial illustration for “法律元 SKILL / legal-meta-skill”, a governance meta-skill that turns repeatable China-law workflows into reusable, testable, auditable Agent Skill packages.
+Scene/backdrop: warm parchment seamless studio background (#e9dfcf), shallow ivory rectangular plinth.
+Subject: a precise handcrafted architectural maquette of a small legal-skill assembly line. The main subject is an ivory stepped workflow rail with six clearly distinct bays, a small vermilion module moving through the bays from left to right. On the left, one compact rack of loose ivory source cards and a graphite research folder. In the center, the vermilion module passes through a taller ivory modeling and packaging press. On the right, a small ivory review gate with two graphite measuring rails and a vermilion approval marker, ending in one neatly packaged ivory skill block with a red tab. The composition should communicate intent → research → model → package → evaluate → review, without rendering words.
+Style/medium: analog craftsmanship, tactile uncoated paper, sophisticated miniature still life, refined realistic materials, architectural maquette, near-front orthographic 3/4 view.
+Composition/framing: landscape 3:2, subject centered in middle 65%, generous clear edges, readable at small card size, all structures grounded on the plinth.
+Lighting/mood: soft directional daylight from upper left, restrained contact shadows and ambient occlusion, quiet, precise, editorial.
+Color palette: warm parchment, ivory paper, graphite metal, one vermilion red accent (#b63c2f); no blue or purple.
+Materials/textures: folded-card paper, graphite rails, subtle paper grain, crisp miniature joinery.
+Text (verbatim): none.
+Constraints: no text, no letters, no numbers, no logos, no watermark; do not render a software screenshot; keep the six-stage pipeline and final review gate visually legible.
+Avoid: purple, blue gradients, neon, glassmorphism, generic robots, planets, stars, floating particles, cute cartoon style, glossy plastic, dense UI text, fake branding.
+```
+
+生成方式：宿主内置 imagegen；Image 1 = `assets/portfolio/skill-hub.webp`（同族材质参考），Image 2 = `assets/portfolio/rulenav.webp`（同族法律工作台参考）。
 ```

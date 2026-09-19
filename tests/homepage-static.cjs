@@ -10,10 +10,10 @@ assert(html.includes('Commercial Lawyer × AI Builder'));
 assert(!/noindex|preview-dock|previews\/|data-portrait-preview|AI\+法律先行者/.test(html), 'no preview-only or obsolete identity residue');
 assert(html.includes('<title>陈石 · 法与AI</title>'));
 assert(html.includes('<link rel="canonical" href="https://chenshi.ai/">'));
-assert.equal((html.match(/class="project-item /g) || []).length, 8);
+assert.equal((html.match(/class="project-item /g) || []).length, 9);
 assert.equal((html.match(/class="channel"/g) || []).length, 6);
-assert.equal((about.match(/class="proj-item"/g) || []).length, 10);
-for (const url of ['https://dsh.chenshi.ai/', 'https://memoball.chenshi.ai/', 'https://skill.chenshi.ai/', 'https://learn-agent.legalagi.cn/', 'https://rule.chenshi.ai/']) {
+assert.equal((about.match(/class="proj-item"/g) || []).length, 11);
+for (const url of ['https://dsh.chenshi.ai/', 'https://memoball.chenshi.ai/', 'https://skill.chenshi.ai/', 'https://skill.chenshi.ai/legal-meta-skill', 'https://learn-agent.legalagi.cn/', 'https://rule.chenshi.ai/']) {
   assert(html.includes('href="' + url + '"'));
   assert(about.includes('href="' + url + '"'));
 }
@@ -36,4 +36,4 @@ const data = JSON.parse(read('data/site.json'));
 assert.equal(data.site.description, '商事律师 × AI Builder — 个人博客');
 assert.deepEqual(data.author.dual_identity, ['商事律师', 'AI Builder']);
 assert(!read('css/portfolio.css').includes('preview-dock'));
-console.log('PASS: homepage/template, identity, 8 projects, 6 channels, 10 about entries, preserved repos, local assets, anchors, SEO');
+console.log('PASS: homepage/template, identity, 9 projects, 6 channels, 11 about entries, preserved repos, local assets, anchors, SEO');

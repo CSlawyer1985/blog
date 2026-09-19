@@ -111,6 +111,14 @@
 .rulenav-input-label { animation-delay: .25s; }
 .rulenav-rule-label { animation-delay: 1.35s; }
 .rulenav-result { animation-delay: 2.55s; }
+.meta-route { animation-delay: .1s; }
+.meta-scan { animation-name: meta-scan; animation-delay: .45s; }
+.meta-contract { animation-delay: 1.1s; }
+.meta-eval { animation-delay: 1.9s; }
+.meta-packet { animation-name: meta-travel; }
+.meta-input-label { animation-delay: .2s; }
+.meta-package-label { animation-delay: 1.45s; }
+.meta-review-label { animation-delay: 2.65s; }
 .project-caption { display: grid; grid-template-columns: 24px minmax(0,1fr) 24px; gap: 8px; padding-block: 20px 0; }
 .project-no { padding-top: 4px; font-size: 10px; color: var(--studio-muted); }
 .project-caption h3 { font-size: 19px; font-weight: 600; line-height: 1.5; text-wrap: balance; overflow-wrap: anywhere; transition: color 180ms var(--studio-ease); }
@@ -139,6 +147,8 @@
 @keyframes agent-travel { 0% { transform: translate(147px,268px); opacity: 0; } 8% { opacity: 1; } 18% { transform: translate(181px,240px); } 30% { transform: translate(285px,240px); } 40% { transform: translate(285px,172px); } 53% { transform: translate(322px,146px); } 65% { transform: translate(359px,159px); } 74% { transform: translate(359px,244px); } 84% { transform: translate(442px,285px); opacity: 1; } 98%,100% { transform: translate(442px,326px); opacity: 0; } }
 @keyframes terminal-line { 0%,10%,97%,100% { opacity: 0; transform: translateY(3px); } 22%,77% { opacity: 1; transform: translateY(0); } }
 @keyframes rulenav-travel { 0%,4% { transform: translate(112px,248px); opacity: 0; } 8% { opacity: 1; } 34% { transform: translate(241px,188px); } 55% { transform: translate(304px,188px); } 80% { transform: translate(447px,207px); opacity: 1; } 96%,100% { transform: translate(447px,207px); opacity: 0; } }
+@keyframes meta-scan { 0%,10%,95%,100% { opacity: 0; transform: translateY(0); } 24%,68% { opacity: .16; transform: translateY(100px); } 84% { opacity: 0; transform: translateY(115px); } }
+@keyframes meta-travel { 0%,4% { transform: translate(104px,245px); opacity: 0; } 8% { opacity: 1; } 23% { transform: translate(206px,245px); } 39% { transform: translate(248px,210px); } 55% { transform: translate(313px,210px); } 72% { transform: translate(375px,258px); } 86% { transform: translate(448px,258px); opacity: 1; } 97%,100% { transform: translate(520px,240px); opacity: 0; } }
 @media (min-width: 640px) {
   .project-gallery { padding: 32px 48px 64px; }
   .project-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 48px 32px; }
