@@ -2,51 +2,237 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://chenshi.ai/</loc>
-    <lastmod>2026-09-11</lastmod>
+    <lastmod>2026-09-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/articles/</loc>
-    <lastmod>2026-09-11</lastmod>
+    <lastmod>2026-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/about.html</loc>
-    <lastmod>2026-09-11</lastmod>
+    <lastmod>2026-09-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/categories/ai-law/</loc>
-    <lastmod>2026-09-11</lastmod>
+    <lastmod>2026-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/categories/legal-practice/</loc>
-    <lastmod>2026-09-11</lastmod>
+    <lastmod>2026-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/categories/industry/</loc>
-    <lastmod>2026-09-11</lastmod>
+    <lastmod>2026-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/categories/methodology/</loc>
-    <lastmod>2026-09-11</lastmod>
+    <lastmod>2026-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/categories/data-analysis/</loc>
-    <lastmod>2026-09-11</lastmod>
+    <lastmod>2026-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-从提示词到-驾驭工程-让-AI-稳定工作的环境怎么搭/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-AI-会不会动摇律所的金字塔人才结构/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-AI-协调团队的三步-先透明-再路由-最后才是编排/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-什么才是-AI-时代的-超级律师/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-为什么资深律师可能比年轻律师更难跨过-AI-门槛/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-律所的-AI-变革-是设计出来的-还是长出来的/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-AI-转型的第一推动力-是让成果被看见/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-当十小时工作缩短到一小时-计时收费怎么办/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-AI-红利用来裁员-还是用来增长-这是两种完全不同的律所/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-律所竞争力公式-人才密度-AI-杠杆-组织摩擦/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-律所知识库的下一步-不是更好地搜索-而是直接执行/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-法律知识属于个人-还是属于组织-AI-让旧矛盾无法再回避/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-AI-越快-律师的注意力反而越稀缺/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-未来的律所-拼人数还是拼人机密度/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-律师行业需要的-不是再买一个-AI-平台/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-当客户也到了-80-分-律师还能卖什么/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-个人效率提高十倍-团队为什么可能一点没变/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-十倍产出只换来-1-2-倍回报-超级律师一定会离开/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-律所-AI-转型的-加法偏见-为什么工具越多-流程可能越重/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-高效律师与超级律师的分界线-有没有让团队变快/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-一群会用-AI-的律师-为什么还不是超级团队/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-律师团队的协作逻辑-从-岗位补缺-到-优势放大/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-AI-正在重排律师人才榜-领先者未必是原来的领先者/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-买了-AI-不等于律所发生了-AI-变革/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-AI-已经让一个人很强-为什么还需要律师团队/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-提示词之后-律师更应该学的是-上下文工程/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-AI-时代-律所-KPI-为什么会越来越失真/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-AI-不会让律师能力平权-它会放大差距/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-AI-把律师拉到-80-分之后-青年律师怎么成长/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-18-一场不惊动全所的-90-天-AI-试验-应该怎么设计/</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://chenshi.ai/articles/2026-09-17-法律工作台-不是一门好生意-却可能是一件好工具/</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://chenshi.ai/articles/2026-09-11-99-的法律人都在用AI-真正危险的是只会在聊天框里用/</loc>
