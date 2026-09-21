@@ -261,8 +261,19 @@ def compress_image(path: str, quality: str = COVER_QUALITY) -> bool:
              '--force', '--output', tmp, path],
             check=True, capture_output=True
         )
-        # 验证压缩后文件有效且比原文件小
+        # pngquant 可能返回成功但写出损坏的 PNG；先做实际解码校验，
+        # 再比较体积，避免把坏图替换进站点产物。
         if os.path.isfile(tmp) and os.path.getsize(tmp) > 0:
+            try:
+                from PIL import Image
+                with Image.open(tmp) as image:
+                    image.verify()
+            except Exception as exc:
+                print(f"  ⚠️  压缩结果校验失败，保留原图: {path} — {exc}")
+                os.remove(tmp)
+                return False
+
+            # 验证压缩后文件有效且比原文件小
             if os.path.getsize(tmp) < os.path.getsize(path):
                 os.replace(tmp, path)
                 return True
