@@ -1,4 +1,4 @@
-# robots.txt — 陈石 · 法与AI (legalagi.cn)
+# robots.txt — 陈石 · 法与AI (chenshi.ai)
 # 全站允许抓取，包括主流 AI 训练/检索爬虫（GEO 前提：明确放行，避免被默认规则误伤）
 
 User-agent: *
