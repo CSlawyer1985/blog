@@ -1,0 +1,12 @@
+# Cloudflare Pages 自定义响应头（版本库管理）
+# 批次三（GEO 优化计划 docs/geo-optimization-plan.md §批次三）
+#
+# HSTS：max-age=31536000（geo.new 复测要求 ≥1 天；未加 includeSubDomains——
+# chenshi.ai 各子域均为 HTTPS 服务，确认全部子域支持 HTTPS 后再考虑追加）。
+# 站点已由托管默认发送 X-Content-Type-Options 与 Referrer-Policy，此处不重复。
+
+/*
+  Strict-Transport-Security: max-age=31536000
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://busuanzi.ibruce.info https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://busuanzi.ibruce.info; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
