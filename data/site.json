@@ -8,7 +8,8 @@
     "locale": "zh_CN",
     "rss_path": "/atom.xml",
     "author": "陈石",
-    "github": "https://github.com/CSlawyer1985"
+    "github": "https://github.com/CSlawyer1985",
+    "email": "worldmodel@agent.qq.com"
   },
   "author": {
     "name": "陈石",
@@ -121,6 +122,6 @@
         "count": 2
       }
     ],
-    "updated": "2026-10-02T22:47:54.958377"
+    "updated": "2026-10-02T22:59:57.318171"
   }
 }
