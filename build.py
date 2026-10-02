@@ -90,10 +90,11 @@ def build():
 
     # Phase 5: 生成 SEO/GEO 文件 + 注入首页 SEO head
     print("\n[5/5] 生成 SEO/GEO 文件...")
-    from scripts.generate_seo import generate_all as generate_seo_files, inject_index_meta
+    from scripts.generate_seo import generate_all as generate_seo_files, inject_index_meta, inject_about_meta
     project_root = os.path.dirname(os.path.abspath(__file__))
     generate_seo_files(articles, site_data, project_root)
     inject_index_meta(site_data, os.path.join(project_root, 'index.html'))
+    inject_about_meta(site_data, os.path.join(project_root, 'about.html'))
 
     print("\n" + "=" * 60)
     print(f"  ✅ 构建完成！共生成 {len(articles)} 个文章页面")

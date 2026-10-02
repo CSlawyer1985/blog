@@ -131,8 +131,15 @@ def _website_entity(author: dict) -> dict:
     }
 
 
-def _article_entity(article: dict) -> dict:
+def _article_entity(article: dict, image_dims=None) -> dict:
     url = article_url(article["slug"])
+    image = {
+        "@type": "ImageObject",
+        "url": cover_url(article),
+    }
+    if image_dims:
+        image["width"] = image_dims[0]
+        image["height"] = image_dims[1]
     ent = {
         "@type": "BlogPosting",
         "@id": url + "#article",
@@ -143,10 +150,7 @@ def _article_entity(article: dict) -> dict:
         "datePublished": article["date"],
         "dateModified": article["date"],
         "description": article.get("excerpt", ""),
-        "image": {
-            "@type": "ImageObject",
-            "url": cover_url(article),
-        },
+        "image": image,
         "inLanguage": "zh-CN",
         "author": {"@id": f"{BASE_URL}/#person"},
         "publisher": {"@id": f"{BASE_URL}/#person"},
@@ -208,7 +212,7 @@ def build_homepage_jsonld(site_data: dict) -> str:
     return _render([_website_entity(author), _person_entity(author)])
 
 
-def build_article_jsonld(article: dict, site_data: dict) -> str:
+def build_article_jsonld(article: dict, site_data: dict, image_dims=None) -> str:
     """文章页（BlogPosting + Person + BreadcrumbList）"""
     author = site_data["author"]
     crumbs = [
@@ -217,7 +221,7 @@ def build_article_jsonld(article: dict, site_data: dict) -> str:
         (article["title"], article_url(article["slug"])),
     ]
     return _render([
-        _article_entity(article),
+        _article_entity(article, image_dims=image_dims),
         _person_entity(author),
         _breadcrumb_entity(crumbs),
     ])
@@ -259,9 +263,11 @@ def build_all_articles_jsonld(site_data: dict) -> str:
 #  返回可直接嵌入 <head> 的多行 HTML 字符串
 # ════════════════════════════════════════════════════════════
 
-def og_tags(title, description, url, image, og_type="website", extra=""):
+def og_tags(title, description, url, image, og_type="website", extra="",
+            image_dims=None):
     """生成 Open Graph + Twitter Card 标签（多行字符串）。
-    属性值经 html_escape 转义，确保标题/摘要中的引号不破坏标签。"""
+    属性值经 html_escape 转义，确保标题/摘要中的引号不破坏标签。
+    image_dims: (width, height) 或 None——提供时补 og:image:width/height。"""
     esc = html_escape
     lines = [
         f'    <meta property="og:type" content="{og_type}">',
@@ -270,6 +276,11 @@ def og_tags(title, description, url, image, og_type="website", extra=""):
         f'    <meta property="og:description" content="{esc(description)}">',
         f'    <meta property="og:url" content="{url}">',
         f'    <meta property="og:image" content="{image}">',
+    ]
+    if image_dims:
+        lines.append(f'    <meta property="og:image:width" content="{image_dims[0]}">')
+        lines.append(f'    <meta property="og:image:height" content="{image_dims[1]}">')
+    lines += [
         f'    <meta property="og:locale" content="{SITE.get("locale", "zh_CN")}">',
         f'    <meta name="twitter:card" content="summary_large_image">',
         f'    <meta name="twitter:title" content="{esc(title)}">',
@@ -285,6 +296,32 @@ def _rss_link():
     return f'    <link rel="alternate" type="application/atom+xml" title="{html_escape(SITE_NAME)}" href="{SITE.get("rss_path", "/atom.xml")}">'
 
 
+def _favicon_links():
+    return ('    <link rel="icon" href="/assets/favicon.ico" sizes="32x32">\n'
+            '    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">')
+
+
+def _cover_dimensions(article: dict):
+    """读取已复制到输出目录的封面图实际尺寸，返回 (width, height) 或 None。
+
+    供 og:image 与 ImageObject 声明尺寸，提升各平台预览稳定性；
+    Pillow 不可用或文件缺失时静默降级为不声明。"""
+    try:
+        from PIL import Image
+    except ImportError:
+        return None
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    fname = article.get('cover_file') or 'cover.png'
+    path = os.path.join(project_root, 'articles', article['slug'], fname)
+    if not os.path.isfile(path):
+        return None
+    try:
+        with Image.open(path) as im:
+            return im.size
+    except Exception:
+        return None
+
+
 def article_meta_head(article: dict, site_data: dict) -> str:
     """文章页 <head> SEO 区块：canonical + RSS + OG/Twitter + JSON-LD。
     供模板 {{ article_meta|safe }} 注入。"""
@@ -293,17 +330,20 @@ def article_meta_head(article: dict, site_data: dict) -> str:
     title = article["title"]
     desc = article.get("excerpt", "")
     author_name = site_data.get("author", {}).get("name", "")
+    dims = _cover_dimensions(article)
     og = og_tags(
         title, desc, url, img, og_type="article",
         extra=(f'    <meta property="article:published_time" content="{article["date"]}">\n'
                f'    <meta property="article:author" content="{html_escape(author_name)}">\n'
                f'    <meta property="article:section" content="{html_escape(article.get("category_label", ""))}">'),
+        image_dims=dims,
     )
     return (
         f'    <link rel="canonical" href="{url}">\n'
+        f"{_favicon_links()}\n"
         f"{_rss_link()}\n"
         f"{og}\n"
-        f"{build_article_jsonld(article, site_data)}"
+        f"{build_article_jsonld(article, site_data, image_dims=dims)}"
     )
 
 
@@ -316,6 +356,7 @@ def category_meta_head(category: dict, site_data: dict) -> str:
     og = og_tags(label, desc, url, DEFAULT_OG)
     return (
         f'    <link rel="canonical" href="{url}">\n'
+        f"{_favicon_links()}\n"
         f"{_rss_link()}\n"
         f"{og}\n"
         f"{build_category_jsonld(category, site_data)}"
@@ -330,6 +371,7 @@ def all_articles_meta_head(site_data: dict) -> str:
     og = og_tags("全部文章", desc, url, DEFAULT_OG)
     return (
         f'    <link rel="canonical" href="{url}">\n'
+        f"{_favicon_links()}\n"
         f"{_rss_link()}\n"
         f"{og}\n"
         f"{build_all_articles_jsonld(site_data)}"
@@ -342,10 +384,50 @@ def homepage_meta_head(site_data: dict) -> str:
     og = og_tags(SITE_NAME, SITE_DESC, url, DEFAULT_OG)
     return (
         f'    <link rel="canonical" href="{url}">\n'
+        f"{_favicon_links()}\n"
         f"{_rss_link()}\n"
         f"{og}\n"
         f"{build_homepage_jsonld(site_data)}"
     )
+
+
+def about_meta_head(site_data: dict) -> str:
+    """关于页 <head> SEO 区块：canonical + favicon + OG + Person 实体。
+
+    about.html 是手工设计页，通过 SEO_HEAD_BEGIN/END 标记随构建注入，
+    实体数据与 config 单一来源保持同步。"""
+    url = f"{BASE_URL}/about"
+    author = site_data.get("author", {})
+    title = f"{author.get('name', SITE_NAME)} · 关于"
+    desc = author.get("bio_short", SITE_DESC)
+    og = og_tags(title, desc, url, DEFAULT_OG)
+    return (
+        f'    <link rel="canonical" href="{url}">\n'
+        f"{_favicon_links()}\n"
+        f"{og}\n"
+        f"{_render(_person_entity(author))}"
+    )
+
+
+def inject_about_meta(site_data: dict, about_path: str):
+    """将关于页 SEO head 注入 about.html 的 SEO_HEAD_BEGIN/END 标记之间。"""
+    if not os.path.isfile(about_path):
+        print("  [SKIP] about.html 不存在，跳过关于页 SEO 注入")
+        return
+    with open(about_path, "r", encoding="utf-8") as f:
+        content = f.read()
+    begin = "<!-- SEO_HEAD_BEGIN -->"
+    end = "<!-- SEO_HEAD_END -->"
+    if begin not in content or end not in content:
+        print("  [SKIP] about.html 未找到 SEO_HEAD 标记，跳过注入")
+        return
+    meta = about_meta_head(site_data)
+    before = content[:content.index(begin)]
+    after = content[content.index(end) + len(end):]
+    new_content = f"{before}{begin}\n{meta}\n  {end}{after}"
+    with open(about_path, "w", encoding="utf-8") as f:
+        f.write(new_content)
+    print("  → about.html SEO head 已注入")
 
 
 # ════════════════════════════════════════════════════════════
