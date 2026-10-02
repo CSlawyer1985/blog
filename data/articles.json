@@ -1,6 +1,6 @@
 {
   "updated": "2026-10-01",
-  "total": 213,
+  "total": 212,
   "articles": [
     {
       "id": "2026-10-01-我用了一天dot-AI把中层做成了产品",
@@ -15,20 +15,6 @@
       "has_cover": true,
       "cover_file": "cover.png",
       "slug": "2026-10-01-我用了一天dot-AI把中层做成了产品"
-    },
-    {
-      "id": "2026-10-01-草稿提交回执与核验边界",
-      "title": "草稿提交回执与核验边界",
-      "date": "2026-10-01",
-      "date_str": "2026年10月1日",
-      "category_id": "ai-law",
-      "category_label": "AI+法律",
-      "char_count": 811,
-      "read_time": 2,
-      "excerpt": "文章：我用了一天dot：AI把中层做成了产品账号路由：main（配置仅此一个账号；固定IP网关）。草稿mediaid：c4Wr1WqdKirxdWY2yalEg1nAeOgYm5H7KEccYwfKry8bBlxrQUqwWqv8ZA状态：草稿已创建，发布管线本次运行成功。",
-      "has_cover": true,
-      "cover_file": "cover.png",
-      "slug": "2026-10-01-草稿提交回执与核验边界"
     },
     {
       "id": "2026-09-26-AI进法院-最难的不是模型",
