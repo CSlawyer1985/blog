@@ -89,7 +89,7 @@ def _person_entity(author: dict) -> dict:
         "@type": "Person",
         "@id": f"{BASE_URL}/#person",
         "name": author.get("name", SITE_NAME),
-        "url": f"{BASE_URL}/about.html",
+        "url": f"{BASE_URL}/about",
         "image": DEFAULT_OG,
         "description": author.get("bio_short", SITE_DESC),
         "jobTitle": job_title or title,
@@ -363,7 +363,7 @@ def generate_sitemap(articles: list, site_data: dict, out_dir: str):
     urls.append((f"{BASE_URL}/articles/", today, "weekly", "0.9"))
     # 关于页
     if os.path.isfile(os.path.join(out_dir, "about.html")):
-        urls.append((f"{BASE_URL}/about.html", today, "monthly", "0.5"))
+        urls.append((f"{BASE_URL}/about", today, "monthly", "0.5"))
     # 分类页
     for cat in site_data.get("stats", {}).get("categories", []):
         urls.append((category_url(cat["id"]), today, "weekly", "0.6"))
@@ -454,7 +454,7 @@ def generate_llms_txt(articles: list, site_data: dict, out_dir: str):
         "",
         "## 核心页面",
         "",
-        f"- [关于陈石]({BASE_URL}/about.html): {author.get('bio_short', '')}",
+        f"- [关于陈石]({BASE_URL}/about): {author.get('bio_short', '')}",
         f"- [全部文章]({BASE_URL}/articles/): {stats.get('total_articles', len(articles))} 篇",
         f"- [RSS 订阅]({BASE_URL}/atom.xml): Atom feed",
         "",
