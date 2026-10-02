@@ -391,8 +391,26 @@ def homepage_meta_head(site_data: dict) -> str:
     )
 
 
-def about_meta_head(site_data: dict) -> str:
-    """关于页 <head> SEO 区块：canonical + favicon + OG + Person 实体。
+ABOUT_DATE_PUBLISHED = "2026-07-06"  # about.html 首次提交日期（git log 核实）
+
+
+def _about_page_modified(about_path: str) -> str:
+    """about.html 最后一次实际变更日期（git），失败时回退到今天。"""
+    try:
+        import subprocess
+        out = subprocess.run(
+            ["git", "log", "-1", "--format=%cs", "--", about_path],
+            capture_output=True, text=True, timeout=5,
+        )
+        if out.returncode == 0 and out.stdout.strip():
+            return out.stdout.strip()
+    except Exception:
+        pass
+    return datetime.now(CST).date().isoformat()
+
+
+def about_meta_head(site_data: dict, date_modified: str) -> str:
+    """关于页 <head> SEO 区块：canonical + favicon + OG + Person/AboutPage/面包屑。
 
     about.html 是手工设计页，通过 SEO_HEAD_BEGIN/END 标记随构建注入，
     实体数据与 config 单一来源保持同步。"""
@@ -401,11 +419,24 @@ def about_meta_head(site_data: dict) -> str:
     title = f"{author.get('name', SITE_NAME)} · 关于"
     desc = author.get("bio_short", SITE_DESC)
     og = og_tags(title, desc, url, DEFAULT_OG)
+    page_node = {
+        "@type": "AboutPage",
+        "@id": url + "#webpage",
+        "url": url,
+        "name": title,
+        "description": desc,
+        "inLanguage": "zh-CN",
+        "datePublished": ABOUT_DATE_PUBLISHED,
+        "dateModified": date_modified,
+        "about": {"@id": f"{BASE_URL}/#person"},
+        "primaryImageOfPage": {"@type": "ImageObject", "url": DEFAULT_OG},
+    }
+    crumbs = [("首页", BASE_URL + "/"), ("关于陈石", url)]
     return (
         f'    <link rel="canonical" href="{url}">\n'
         f"{_favicon_links()}\n"
         f"{og}\n"
-        f"{_render(_person_entity(author))}"
+        f"{_render([_person_entity(author), page_node, _breadcrumb_entity(crumbs)])}"
     )
 
 
@@ -421,7 +452,7 @@ def inject_about_meta(site_data: dict, about_path: str):
     if begin not in content or end not in content:
         print("  [SKIP] about.html 未找到 SEO_HEAD 标记，跳过注入")
         return
-    meta = about_meta_head(site_data)
+    meta = about_meta_head(site_data, date_modified=_about_page_modified(about_path))
     before = content[:content.index(begin)]
     after = content[content.index(end) + len(end):]
     new_content = f"{before}{begin}\n{meta}\n  {end}{after}"
