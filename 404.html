@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>404 · 页面不存在 — 陈石 · 法与AI</title>
+  <style>
+    :root { --paper: #F3EDE3; --ink: #1A1714; --accent: #C0392B; --muted: #6B6257; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    main { max-width: 480px; text-align: center; }
+    .code {
+      font-size: clamp(72px, 18vw, 128px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.02em;
+      color: var(--accent);
+    }
+    h1 { font-size: 20px; margin: 16px 0 8px; }
+    p { color: var(--muted); font-size: 14px; line-height: 1.7; margin-bottom: 28px; }
+    a {
+      display: inline-block;
+      margin: 0 8px;
+      padding: 10px 22px;
+      border: 1px solid var(--ink);
+      border-radius: 6px;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 14px;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    a:hover, a:focus-visible { background: var(--ink); color: var(--paper); }
+    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="code" aria-hidden="true">404</div>
+    <h1>这个页面不存在</h1>
+    <p>链接可能已失效，或者地址写错了。文章都在，换个入口即可。</p>
+    <nav aria-label="推荐入口">
+      <a href="/">回到首页</a>
+      <a href="/articles/">全部文章</a>
+      <a href="/about/">关于陈石</a>
+    </nav>
+  </main>
+</body>
+</html>
