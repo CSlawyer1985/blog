@@ -134,6 +134,7 @@ def extract_title_and_body(md_path: str) -> dict:
     with open(md_path, 'r', encoding='utf-8') as f:
         raw = f.read()
 
+    raw = strip_html_comments(raw)
     lines = raw.split('\n')
     title = ''
     body_start = 0
@@ -198,6 +199,25 @@ def estimate_read_time(char_count: int) -> int:
     return max(1, round(char_count / 400))
 
 
+def strip_html_comments(md_text: str) -> str:
+    """去掉 Markdown 中的 HTML 注释（如正文首行的 <!-- digest: ... --> 元数据）。
+
+    围栏代码块内的注释是教学示例内容，保留不动。简易转换器本就不认识
+    HTML 注释——不剥离的话，注释文本会被当作正文渲染出来。
+    """
+    if not md_text or '<!--' not in md_text:
+        return md_text
+    lines = []
+    in_fence = False
+    for ln in md_text.split('\n'):
+        if ln.lstrip().startswith('```'):
+            in_fence = not in_fence
+        if not in_fence:
+            ln = re.sub(r'<!--.*?-->', '', ln)
+        lines.append(ln)
+    return '\n'.join(lines)
+
+
 def extract_excerpt(md_text: str, max_chars: int = 120) -> str:
     """从 Markdown 正文提取摘要（保留中英文、数字与标点，句末收尾）
 
@@ -247,6 +267,8 @@ def md_to_html(md_text: str) -> str:
     """
     # 剥离正文首张 cover 图（模板已通过 article.has_cover 单独渲染封面，避免重复显示）
     md_text, _ = _strip_leading_cover(md_text)
+    # 去掉 HTML 注释（front-matter digest 等），避免被当作正文渲染
+    md_text = strip_html_comments(md_text)
     lines = md_text.split('\n')
     html_lines = []
     i = 0
@@ -300,14 +322,27 @@ def md_to_html(md_text: str) -> str:
 
     def inline_format(text: str) -> str:
         """处理行内格式"""
+        # 行内代码先摘出为占位符：其一，内容中的 <、>、& 必须转义
+        #（否则 <code><h1></code> 会被浏览器解析成真实的 h1 元素）；
+        # 其二，避免代码内的 *、[、! 等记号被后续行内规则改写。
+        code_spans = []
+
+        def _stash_code(m):
+            inner = (m.group(1).replace('&', '&amp;')
+                     .replace('<', '&lt;').replace('>', '&gt;'))
+            code_spans.append(f'<code>{inner}</code>')
+            return f'\x00{len(code_spans) - 1}\x00'
+
+        text = re.sub(r'`([^`]+)`', _stash_code, text)
         text = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', text)
         text = re.sub(r'(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)', r'<em>\1</em>', text)
-        text = re.sub(r'`([^`]+)`', r'<code>\1</code>', text)
         # 图片必须在链接之前——否则 ![alt](url) 会被链接规则吃掉
         text = re.sub(r'!\[([^\]]*)\]\(([^)]+)\)',
                       r'<img src="\2" alt="\1" loading="lazy">', text)
         text = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'<a href="\2">\1</a>', text)
         text = re.sub(r'~~(.+?)~~', r'<del>\1</del>', text)
+        text = re.sub(r'\x00(\d+)\x00',
+                      lambda m: code_spans[int(m.group(1))], text)
         return text
 
     def split_table_row(row: str) -> list:

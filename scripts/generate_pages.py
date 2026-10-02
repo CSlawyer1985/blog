@@ -156,7 +156,7 @@ def generate_all(articles: list, site_data: dict, articles_index: dict):
 
     # 文章详情页
     print(f"生成 {len(articles)} 个文章详情页...")
-    from scripts.utils import md_to_html
+    from scripts.utils import md_to_html, strip_html_comments
     from scripts.generate_seo import article_meta_head, category_meta_head, all_articles_meta_head
 
     for i, a in enumerate(articles):
@@ -165,10 +165,15 @@ def generate_all(articles: list, site_data: dict, articles_index: dict):
         try:
             with open(a['source_path'], 'r', encoding='utf-8') as f:
                 md_content = f.read()
-            # 去掉第一行标题（已在模板中显示）
+            # 去掉 HTML 注释（如首行 digest），保证标题行判定不被干扰
+            md_content = strip_html_comments(md_content)
+            # 去掉首个标题行（已在模板中显示）；跳过前置空行再判定
             lines = md_content.split('\n')
-            if lines and lines[0].startswith('# '):
-                md_content = '\n'.join(lines[1:])
+            idx = 0
+            while idx < len(lines) and not lines[idx].strip():
+                idx += 1
+            if idx < len(lines) and lines[idx].startswith('# '):
+                md_content = '\n'.join(lines[:idx] + lines[idx + 1:])
             body_html = md_to_html(md_content)
         except Exception as e:
             print(f"  [WARN] 转换失败 {a['title'][:30]}...: {e}")
