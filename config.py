@@ -13,6 +13,7 @@ SITE = {
     "rss_path": "/atom.xml",
     "author": "陈石",
     "github": "https://github.com/CSlawyer1985",
+    "email": "worldmodel@agent.qq.com",  # 首页已公开的联系邮箱
 }
 
 AUTHOR = {

@@ -107,6 +107,14 @@ def _person_entity(author: dict) -> dict:
         person["worksFor"] = {"@type": "Organization", "name": firm}
     if author.get("department"):
         person["department"] = author["department"]
+    if SITE.get("email"):
+        person["email"] = f"mailto:{SITE['email']}"
+        person["contactPoint"] = [{
+            "@type": "ContactPoint",
+            "contactType": "inquiries",
+            "email": SITE["email"],
+            "availableLanguage": ["zh-CN", "en"],
+        }]
 
     honors = author.get("honors") or []
     awards = [h.get("full") or h.get("title") for h in honors if h.get("full") or h.get("title")]
