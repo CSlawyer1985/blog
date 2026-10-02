@@ -6,6 +6,8 @@
   <title>为什么 AI 喜欢 Markdown？ — 陈石 · 法与AI</title>
   <meta name="description" content="上一篇文章讲.docx为什么让AI头疼——段落被样式标签切成一堆碎片，编号不在正文里而是靠属性计算出来的，修订痕迹像透明胶带一样粘在文档底层。几位读者读完问我：那AI到底喜欢什么格式？答案很朴素：Markdown。就是那个用标标题、用列清单、用引内容的纯文本格式。">
       <link rel="canonical" href="https://chenshi.ai/articles/2026-06-04-为什么-AI-喜欢-Markdown/">
+    <link rel="icon" href="/assets/favicon.ico" sizes="32x32">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
     <link rel="alternate" type="application/atom+xml" title="陈石 · 法与AI" href="/atom.xml">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="陈石 · 法与AI">
@@ -13,6 +15,8 @@
     <meta property="og:description" content="上一篇文章讲.docx为什么让AI头疼——段落被样式标签切成一堆碎片，编号不在正文里而是靠属性计算出来的，修订痕迹像透明胶带一样粘在文档底层。几位读者读完问我：那AI到底喜欢什么格式？答案很朴素：Markdown。就是那个用标标题、用列清单、用引内容的纯文本格式。">
     <meta property="og:url" content="https://chenshi.ai/articles/2026-06-04-为什么-AI-喜欢-Markdown/">
     <meta property="og:image" content="https://chenshi.ai/articles/2026-06-04-为什么-AI-喜欢-Markdown/cover.png">
+    <meta property="og:image:width" content="1400">
+    <meta property="og:image:height" content="595">
     <meta property="og:locale" content="zh_CN">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="为什么 AI 喜欢 Markdown？">
@@ -40,7 +44,9 @@
       "description": "上一篇文章讲.docx为什么让AI头疼——段落被样式标签切成一堆碎片，编号不在正文里而是靠属性计算出来的，修订痕迹像透明胶带一样粘在文档底层。几位读者读完问我：那AI到底喜欢什么格式？答案很朴素：Markdown。就是那个用标标题、用列清单、用引内容的纯文本格式。",
       "image": {
         "@type": "ImageObject",
-        "url": "https://chenshi.ai/articles/2026-06-04-为什么-AI-喜欢-Markdown/cover.png"
+        "url": "https://chenshi.ai/articles/2026-06-04-为什么-AI-喜欢-Markdown/cover.png",
+        "width": 1400,
+        "height": 595
       },
       "inLanguage": "zh-CN",
       "author": {
@@ -348,6 +354,10 @@
     .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
     .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
     .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-name{margin-bottom:10px;font-size:15px;line-height:1.5}
+    .article-bio-name a{color:#1A1714;font-weight:600;text-decoration:none;border-bottom:1px solid #C9C0B2;transition:color .2s,border-color .2s}
+    .article-bio-name a:hover{color:#C0392B;border-color:#C0392B}
+    .article-bio-name span{margin-left:8px;font-size:13px;color:#7d756a}
     .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
     .article-bio-links a{color:#C0392B;transition:color .2s}
     .article-bio-links a:hover{color:#1A1714}
@@ -408,7 +418,7 @@
   <div class="sidebar-sticky">
     <a href="/" class="sidebar-back">&larr; 首页</a>
 
-    <h4 class="sidebar-title">分类</h4>
+    <h3 class="sidebar-title">分类</h3>
     <nav class="sidebar-nav">
       <a href="/articles/" class="sidebar-link">全部（213）</a>
       
@@ -425,7 +435,7 @@
     </nav>
 
     
-    <h4 class="sidebar-title" style="margin-top:24px">AI+法律</h4>
+    <h3 class="sidebar-title" style="margin-top:24px">AI+法律</h3>
     <nav class="sidebar-nav">
       
       <a href="/articles/2026-10-01-我用了一天dot-AI把中层做成了产品/" class="sidebar-link">我用了一天dot：AI把中层做成了产品</a>
@@ -520,19 +530,19 @@
         
 
         <div class="article-body">
-          <p>上一篇文章讲 .docx 为什么让 AI 头疼——段落被样式标签切成一堆 <code><w:r></code> 碎片，编号不在正文里而是靠属性计算出来的，修订痕迹像透明胶带一样粘在文档底层。几位读者读完问我：那 AI 到底喜欢什么格式？</p>
+          <p>上一篇文章讲 .docx 为什么让 AI 头疼——段落被样式标签切成一堆 <code>&lt;w:r&gt;</code> 碎片，编号不在正文里而是靠属性计算出来的，修订痕迹像透明胶带一样粘在文档底层。几位读者读完问我：那 AI 到底喜欢什么格式？</p>
 <p>答案很朴素：Markdown。</p>
-<p>就是那个用 <code>#</code> 标标题、用 <code>-</code> 列清单、用 <code>></code> 引内容的纯文本格式。你没听错——AI 最喜欢的格式，恰好也是最简单的格式。</p>
+<p>就是那个用 <code>#</code> 标标题、用 <code>-</code> 列清单、用 <code>&gt;</code> 引内容的纯文本格式。你没听错——AI 最喜欢的格式，恰好也是最简单的格式。</p>
 <h2 id="Markdown的本质纯文本加几个约定">Markdown 的本质：纯文本加几个约定</h2>
-<p>先别把事情想复杂。Markdown 本质上就是一个纯文本文件，里面加了几个轻量标记。<code>#</code> 开头的行是标题，<code>- </code> 开头的行是列表项，<code>> </code> 开头的是引用，<code><a href="链接">文字</a></code> 就是一个超链接。你在编辑器里看到的样子，和你用记事本打开看到的内容，几乎一模一样——不含任何隐藏信息。</p>
+<p>先别把事情想复杂。Markdown 本质上就是一个纯文本文件，里面加了几个轻量标记。<code>#</code> 开头的行是标题，<code>- </code> 开头的行是列表项，<code>&gt; </code> 开头的是引用，<code>[文字](链接)</code> 就是一个超链接。你在编辑器里看到的样子，和你用记事本打开看到的内容，几乎一模一样——不含任何隐藏信息。</p>
 <p>和 .docx 比一下，差异就清楚了。</p>
 <p>一个 .docx 文件本质上是一个 ZIP 压缩包。你把它后缀改成 <code>.zip</code> 解压，会看到一个叫 <code>document.xml</code> 的文件，里面装着文档正文；一个叫 <code>styles.xml</code> 的文件，定义所有样式；还有 <code>numbering.xml</code>（编号规则）、<code>settings.xml</code>（文档设置）、<code>comments.xml</code>（批注）……加起来几十个文件。Word 的工作方式是：打开时把这几十个 XML 拼成你看到的文档，保存时再把你的操作拆回几十个 XML。</p>
-<p>一个"加粗的一级标题"在 Word 里需要经过四层定义：先建一个样式，关联编号规则，指定字体和字号，再标记加粗属性。在 Markdown 里，它就是 <code># <strong>标题</strong></code>，七个字符。</p>
+<p>一个"加粗的一级标题"在 Word 里需要经过四层定义：先建一个样式，关联编号规则，指定字体和字号，再标记加粗属性。在 Markdown 里，它就是 <code># **标题**</code>，七个字符。</p>
 <p>这就是 Markdown 的哲学核心：<strong>所见即所得，所见即所读</strong>。排版交给渲染器去处理，源文件里只留内容和结构。你用眼睛看完整个文件，就真的一行不落地读完了——没有暗箱，没有隐藏层。</p>
 <h2 id="为什么AI喜欢它四个原因">为什么 AI 喜欢它？四个原因</h2>
 <h3 id="一文本连续不被切碎">一、文本连续，不被切碎</h3>
 <p>.docx 里有一个叫"run"（文本运行段）的概念。AI 读 Word 文档时最头疼的就是这个东西。</p>
-<p>什么叫 run？Word 在底层会把一个段落拆成多个 run 来存储。同一个段落里的文字，因为格式不同——比如前几个字加粗，中间几个字正常，后几个字用了不同字体——会被切成三个独立的 run。AI 读到的不是一段话，而是 <code><w:r>甲方应于</w:r></code> + <code><w:r>2024年12月31日</w:r></code> + <code><w:r>前支付工程款</w:r></code> 三块碎片的序列。</p>
+<p>什么叫 run？Word 在底层会把一个段落拆成多个 run 来存储。同一个段落里的文字，因为格式不同——比如前几个字加粗，中间几个字正常，后几个字用了不同字体——会被切成三个独立的 run。AI 读到的不是一段话，而是 <code>&lt;w:r&gt;甲方应于&lt;/w:r&gt;</code> + <code>&lt;w:r&gt;2024年12月31日&lt;/w:r&gt;</code> + <code>&lt;w:r&gt;前支付工程款&lt;/w:r&gt;</code> 三块碎片的序列。</p>
 <p>这就像你读一封信，但每个词写在不同的便利贴上——核心意思分散在若干 XML 标签之间，AI 在提取之前先得"拼图"。哪怕是最简单的句子，解析器也要在 DOM 树里跳来跳去，把属于同一个段落的 run 节点串回来。</p>
 <p>Markdown 没有 run。一段话就是一段话，完完整整。加粗也好、斜体也好，不过是几个 <code>**</code> 符号包在文字外面，文字本身是连续的。AI 读到的是人类写下的原始形态：完整的句子、完整的段落、完整的逻辑流。</p>
 <p>文本连续性是语言模型理解质量的地基。地基碎了，上面盖什么都不稳。</p>
@@ -541,7 +551,7 @@
 <p>这就产生了一个 AI 极难处理的歧义：一个名字叫"标题"的样式，实际渲染出来可能是 14pt 红色仿宋。AI 要通过解析多层 XML 引用关系才能确认"这确实是一个标题"。更麻烦的是，有人可能把一个命名为"标题"的样式用在了正文上——名字叫标题，实际当正文用，AI 根本无从判断。</p>
 <p>而 Markdown 是这样处理标题的：</p>
 <pre class="code-block"><code># 这是一级标题</code></pre>
-<p><code>#</code> 就是标题。这个符号本身携带了完整语义，不依赖外部样式表、不依赖编号规则、不依赖字体定义。列表的 <code>-</code>、引用的 <code>></code>、代码块的三个反引号——每一个标记的语义都是自解释的。</p>
+<p><code>#</code> 就是标题。这个符号本身携带了完整语义，不依赖外部样式表、不依赖编号规则、不依赖字体定义。列表的 <code>-</code>、引用的 <code>&gt;</code>、代码块的三个反引号——每一个标记的语义都是自解释的。</p>
 <p><strong>标记即语义</strong>。你写的是什么，它代表的就是什么。AI 不需要猜。</p>
 <p>这个差异在日常使用中几乎感知不到，但换成大规模文档处理，差距会被急剧放大。用 .docx 做 AI 知识库，你得先写一堆解析脚本——样式映射、编号提取、嵌套层级识别。用 Markdown，直接喂就行。</p>
 <h3 id="三Git友好版本可追溯">三、Git 友好，版本可追溯</h3>
@@ -639,7 +649,7 @@
 
         
         <div class="related-mobile">
-          <h4 class="related-title">同类文章</h4>
+          <h3 class="related-title">同类文章</h3>
           
           <a class="related-link" href="/articles/2026-10-01-我用了一天dot-AI把中层做成了产品/">我用了一天dot：AI把中层做成了产品</a>
           
@@ -652,6 +662,7 @@
 
         <footer class="article-footer">
           <div class="article-bio-card">
+            <p class="article-bio-name"><a href="/about" rel="author">陈石</a><span>浙江海泰律师事务所副主任、高级合伙人</span></p>
             <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
             <div class="article-bio-links">
               <a href="https://legalagi.cn/" target="_blank" rel="noopener">legalAGI.cn</a>
@@ -665,7 +676,7 @@
       
       <nav class="article-toc" aria-label="目录">
         <div class="toc-sticky">
-          <h4 class="toc-title">目录</h4>
+          <h3 class="toc-title">目录</h3>
           
           <a href="#Markdown的本质纯文本加几个约定" class="toc-link toc-l2" data-target="Markdown的本质纯文本加几个约定">Markdown 的本质：纯文本加几个约定</a>
           
