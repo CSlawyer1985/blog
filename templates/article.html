@@ -231,6 +231,10 @@
     .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
     .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
     .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-name{margin-bottom:10px;font-size:15px;line-height:1.5}
+    .article-bio-name a{color:#1A1714;font-weight:600;text-decoration:none;border-bottom:1px solid #C9C0B2;transition:color .2s,border-color .2s}
+    .article-bio-name a:hover{color:#C0392B;border-color:#C0392B}
+    .article-bio-name span{margin-left:8px;font-size:13px;color:#7d756a}
     .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
     .article-bio-links a{color:#C0392B;transition:color .2s}
     .article-bio-links a:hover{color:#1A1714}
@@ -336,7 +340,7 @@
 
         {% if related_articles %}
         <div class="related-mobile">
-          <h4 class="related-title">同类文章</h4>
+          <h3 class="related-title">同类文章</h3>
           {% for r in related_articles %}
           <a class="related-link" href="/articles/{{ r.slug }}/">{{ r.title }}</a>
           {% endfor %}
@@ -345,6 +349,7 @@
 
         <footer class="article-footer">
           <div class="article-bio-card">
+            <p class="article-bio-name"><a href="/about" rel="author">{{ author.name }}</a><span>{{ author.title }}</span></p>
             <p>{{ author.bio_short }}</p>
             <div class="article-bio-links">
               <a href="https://legalagi.cn/" target="_blank" rel="noopener">legalAGI.cn</a>
@@ -358,7 +363,7 @@
       {% if toc %}
       <nav class="article-toc" aria-label="目录">
         <div class="toc-sticky">
-          <h4 class="toc-title">目录</h4>
+          <h3 class="toc-title">目录</h3>
           {% for t in toc %}
           <a href="#{{ t.id }}" class="toc-link toc-l{{ t.level }}" data-target="{{ t.id }}">{{ t.text }}</a>
           {% endfor %}

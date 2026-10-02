@@ -3,7 +3,7 @@
   <div class="sidebar-sticky">
     <a href="/" class="sidebar-back">&larr; 首页</a>
 
-    <h4 class="sidebar-title">分类</h4>
+    <h3 class="sidebar-title">分类</h3>
     <nav class="sidebar-nav">
       <a href="/articles/" class="sidebar-link">全部（{{ stats.total_articles }}）</a>
       {% for cat in all_categories %}
@@ -12,7 +12,7 @@
     </nav>
 
     {% if sidebar_articles %}
-    <h4 class="sidebar-title" style="margin-top:24px">{{ sidebar_articles_title }}</h4>
+    <h3 class="sidebar-title" style="margin-top:24px">{{ sidebar_articles_title }}</h3>
     <nav class="sidebar-nav">
       {% for sa in sidebar_articles %}
       <a href="/articles/{{ sa.slug }}/" class="sidebar-link">{{ sa.title }}</a>
