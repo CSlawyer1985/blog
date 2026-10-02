@@ -199,15 +199,35 @@ def estimate_read_time(char_count: int) -> int:
 
 
 def extract_excerpt(md_text: str, max_chars: int = 120) -> str:
-    """从 Markdown 正文提取摘要（前 max_chars 个中文字符）"""
-    # 去掉 Markdown 语法
-    clean = re.sub(r'[#*\->`\[\]\(\)!]', '', md_text)
+    """从 Markdown 正文提取摘要（保留中英文、数字与标点，句末收尾）
+
+    摘要会进入 meta description、JSON-LD description、atom summary 和 llms.txt，
+    必须保留数字、英文字母（AI、GPT 等）和标点，否则语义残缺、不可被 AI 引用。
+    """
+    if not md_text:
+        return ""
+    # Markdown 链接/图片先替换为纯锚文本，丢弃 URL（需在放宽字符集前处理）
+    clean = re.sub(r'!?\[([^\]]*)\]\([^)]*\)', r'\1', md_text)
+    # 去掉 HTML 标签
+    clean = re.sub(r'<[^>]+>', '', clean)
+    # 去掉 Markdown 语法字符
+    clean = re.sub(r'[#*>`~|]', '', clean)
+    # 逐行去掉封面图说明行（仅匹配行首的"封面"，避免误伤正文中出现的"封面"一词）
+    clean = ''.join(ln for ln in clean.split('\n')
+                    if not ln.strip().startswith('封面'))
     clean = re.sub(r'\s+', '', clean)
-    # 去掉封面图
-    clean = re.sub(r'封面.*', '', clean)
-    chars = re.findall(r'[一-鿿]', clean)
-    excerpt = ''.join(chars[:max_chars])
-    return excerpt
+    # 白名单保留：CJK、数字、拉丁字母、中文标点与常用符号
+    chars = re.findall(r'[一-鿿0-9A-Za-z，。：；、！？“”‘’（）《》〈〉—…·%‰.]', clean)
+    excerpt = ''.join(chars)
+    if len(excerpt) <= max_chars:
+        return excerpt
+    # 超长时优先在句末标点处收尾（回看后 40% 窗口，避免断句过短）
+    cut = excerpt[:max_chars]
+    window_start = int(max_chars * 0.6)
+    sentence_ends = [m.end() for m in re.finditer(r'[。！？；]', cut[window_start:])]
+    if sentence_ends:
+        return cut[:window_start + sentence_ends[-1]]
+    return cut
 
 
 # ── 简易 Markdown → HTML 转换器 ──────────────────
