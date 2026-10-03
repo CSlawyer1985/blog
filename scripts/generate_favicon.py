@@ -1,7 +1,7 @@
 """生成站点 favicon（assets/favicon.ico + assets/apple-touch-icon.png）。
 
-纸底 + 朱红圆点「印章」标：16px 标签页尺寸下字形标（陈）糊成一团，
-单色圆点在小尺寸下识别度最高；纸底延续站点暖纸视觉，朱红取自 --accent。
+透明底 + 朱红圆点：16px 标签页尺寸下字形标（陈）糊成一团，
+单色圆点在小尺寸下识别度最高；朱红取自 --accent，无底色随标签页明暗自适应。
 一次性生成，产物入库；配色变更时重跑本脚本。
 """
 
@@ -11,14 +11,13 @@ from PIL import Image, ImageDraw
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-PAPER = (243, 237, 227, 255)   # --paper #F3EDE3
 ACCENT = (192, 57, 43, 255)    # --accent #C0392B
 MASTER = 256                    # 主画布尺寸，向下缩放抗锯齿
 DOT_RATIO = 0.33                # 圆点半径占比（直径 66%，小尺寸下保持醒目）
 
 
 def build_master() -> Image.Image:
-    img = Image.new("RGBA", (MASTER, MASTER), PAPER)
+    img = Image.new("RGBA", (MASTER, MASTER), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
     r = MASTER * DOT_RATIO
     draw.ellipse([MASTER / 2 - r, MASTER / 2 - r,
