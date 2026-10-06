@@ -2,6 +2,8 @@
 <!--
 已确认的首页设计：J 人物品牌 + A 作品索引；原生 CSS/SVG/Canvas。
 阅读顺序：CS / 介绍 / 查看作品 → 人像 → About；移动端上下重排，正文不缩小。
+微创修正：沿用 J 人物品牌 + A 作品索引和原生 HTML/CSS/JS，仅补齐移动导航、匹配精选封面自然比例、让文章元信息换行；保留现有布局、素材与动效。
+Writing 密度修正：内容类型 A 文章索引 + J 编辑风格；沿用原生 HTML/CSS/JS 的左侧主文、右侧四篇列表，将字号与编号收紧以扩大封面，完整保留标题与元信息；窄屏沿用纵向排列。
 作品沿用暖纸、墨、朱红微缩模型和功能叙事动效；规范见 PORTFOLIO_DESIGN.md。
 Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片尺寸。
 新增 RuleNav 作品卡片反思：内容类型 B 流程/步骤 + C 节点/工具连接；表达形式为三域工作台微缩模型 + 原生 SVG 路径动画；技术栈 L2（HTML/CSS + SVG），阅读路径为事实 → 规则 → 责任依据；构图家族为 process-flow，布局原语为 triptych / path，主轴为横向、焦点为中央规则页；语义理由是产品价值在于沿依据完成定位，而非泛化对话；响应式策略沿用 640/1024px 的单列 → 双列 → 三列；参考来源为现有 portfolio 卡片系统与 rule.chenshi.ai 的三域信息架构，只借鉴结构，不复制页面素材；不使用框架、视频、GIF 或新增 CDN；交互为整卡外链，动画为可见时播放的 8 秒功能叙事循环；移动端自适应并保持标题与用途可读；反 AI 审美检查：无紫蓝渐变、无玻璃态、无通用机器人与装饰粒子。
@@ -117,7 +119,7 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
       <span class="nav__brand-dot" aria-hidden="true"></span>
       CSLawyer
     </a>
-    <nav class="nav__links" aria-label="主导航">
+    <nav class="nav__links" id="primary-navigation" aria-label="主导航">
       <a href="#about"><span lang="zh">关于</span><span lang="en">ABOUT</span></a>
       <span class="sep">/</span>
       <a href="#writing"><span lang="zh">文章</span><span lang="en">WRITING</span></a>
@@ -136,6 +138,10 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
         <button class="nav__lang" data-lang="en" aria-label="English">EN</button>
       </span>
     </nav>
+    <button class="nav__toggle" id="nav-toggle" type="button"
+      aria-label="导航菜单" aria-controls="primary-navigation" aria-expanded="false">
+      <span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
   </header>
 
   <main>
@@ -323,7 +329,7 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
           </div>
         </a>
 
-        <!-- Article list (02, 03, 04) — JS populated -->
+        <!-- Article list (02, 03, 04, 05) — JS populated -->
         <div class="writing__list" id="writing-list"></div>
       </div>
 

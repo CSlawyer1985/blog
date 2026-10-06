@@ -246,12 +246,13 @@ function initWritingList() {
       if (articles.length === 0) return;
       // Feature card: always shows latest article (index 0)
       if (feat) updateFeatureCard(articles[0]);
-      // Writing list: articles 1-3
+      // Writing list: four articles following the featured article
       if (list) renderWritingList(list, articles);
     })
     .catch(function() {
-      if (feat) updateFeatureCard({slug:'2026-07-02-高权限-Agent-上线前-先写三张清单',title:'高权限 Agent 上线前，先写三张清单',category_label:'AI+法律',date:'2026-07-02',read_time:6,excerpt:''});
-      if (list) renderWritingList(list, getFallbackArticles());
+      var fallbackArticles = getFallbackArticles();
+      if (feat) updateFeatureCard(fallbackArticles[0]);
+      if (list) renderWritingList(list, fallbackArticles);
     });
 }
 
@@ -283,7 +284,7 @@ function updateFeatureCard(a) {
 }
 
 function renderWritingList(list, articles) {
-  var listArticles = articles.slice(1, 4);
+  var listArticles = articles.slice(1, 5);
   if (listArticles.length === 0) return;
 
   list.innerHTML = listArticles.map(function(a, i) {
@@ -312,9 +313,11 @@ function renderWritingList(list, articles) {
 
 function getFallbackArticles() {
   return [
-    { slug: '2026-07-01-从防止国有资产流失到国有资本经营判断规则-国资监管制度演进的反向后果', title: '从防止国有资产流失到国有资本经营判断规则', category_label: '法律实务', date: '2026.07.01', read_time: '18', has_cover: false },
-    { slug: '2026-07-01-读懂-DSpark-一个律师外行眼里的-DeepSeek-推理新论文', title: '读懂 DSpark：一个律师外行眼里的 DeepSeek 推理新论文', category_label: 'AI+法律', date: '2026.07.01', read_time: '10', has_cover: true },
-    { slug: '2026-07-01-月入百万的AI中转站-钱到底从哪来', title: '月入百万的AI中转站，钱到底从哪来？', category_label: 'AI+法律', date: '2026.07.01', read_time: '7', has_cover: true },
+    { slug: '2026-10-01-我用了一天dot-AI把中层做成了产品', title: '我用了一天dot：AI把中层做成了产品', category_label: 'AI+法律', date: '2026-10-01', read_time: 4, has_cover: true },
+    { slug: '2026-09-26-AI进法院-最难的不是模型', title: 'AI进法院，最难的不是模型', category_label: 'AI+法律', date: '2026-09-26', read_time: 27, has_cover: true },
+    { slug: '2026-09-20-从会用AI到敢于签名-争议解决人才的成长路径', title: '从会用AI到敢于签名：争议解决人才的成长路径', category_label: 'AI+法律', date: '2026-09-20', read_time: 8, has_cover: true },
+    { slug: '2026-09-18-从提示词到-驾驭工程-让-AI-稳定工作的环境怎么搭', title: '从提示词到“驾驭工程”：让 AI 稳定工作的环境怎么搭', category_label: 'AI+法律', date: '2026-09-18', read_time: 3, has_cover: true },
+    { slug: '2026-09-18-AI-会不会动摇律所的金字塔人才结构', title: 'AI 会不会动摇律所的金字塔人才结构？', category_label: 'AI+法律', date: '2026-09-18', read_time: 5, has_cover: true },
   ];
 }
 
@@ -349,19 +352,24 @@ function initMobileNav() {
   const links = document.querySelector('.nav__links');
   if (!toggle || !links) return;
 
-  toggle.addEventListener('click', () => {
-    const isOpen = links.classList.toggle('is-open');
-    toggle.setAttribute('aria-expanded', isOpen);
+  const setOpen = (isOpen) => {
+    links.classList.toggle('is-open', isOpen);
+    toggle.setAttribute('aria-expanded', String(isOpen));
     toggle.classList.toggle('is-active', isOpen);
-  });
+  };
+
+  toggle.addEventListener('click', () => setOpen(!links.classList.contains('is-open')));
 
   // Close nav on link click (mobile)
   links.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      links.classList.remove('is-open');
-      toggle.setAttribute('aria-expanded', 'false');
-      toggle.classList.remove('is-active');
-    });
+    a.addEventListener('click', () => setOpen(false));
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && links.classList.contains('is-open')) {
+      setOpen(false);
+      toggle.focus();
+    }
   });
 }
 
@@ -374,14 +382,24 @@ function initMobileNav() {
       .nav__links:not(.is-open) { display: none; }
       .nav__links.is-open {
         display: flex; flex-direction: column;
-        position: absolute; top: var(--nav-h); left: 0; right: 0;
+        position: absolute; top: 100%; left: 0; right: 0;
         background: rgba(244,239,230,.95);
         backdrop-filter: blur(12px);
         padding: 24px var(--pad-x);
         border-bottom: 1px solid var(--line);
-        gap: 18px;
+        gap: 16px;
         font-size: 14px;
       }
+      .nav__links.is-open a {
+        display: flex; align-items: center; justify-content: center;
+        min-width: 44px; min-height: 44px;
+      }
+      .nav__links.is-open a:focus-visible,
+      .nav__links.is-open button:focus-visible {
+        outline: 2px solid var(--accent); outline-offset: 2px;
+      }
+      .nav__links.is-open .nav__github { width: 44px; height: 44px; margin-left: 0; }
+      .nav__links.is-open .nav__lang { min-width: 44px; min-height: 44px; }
       .nav__links.is-open .nav__lang-group { margin-left: 0; margin-top: 8px; }
       .nav__toggle.is-active span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
       .nav__toggle.is-active span:nth-child(2) { transform: translateY(-6px) rotate(-45deg); }
