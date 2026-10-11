@@ -75,3 +75,27 @@ Avoid: purple, blue gradients, neon, glassmorphism, generic robots, planets, sta
 
 生成方式：宿主内置 imagegen；Image 1 = `assets/portfolio/skill-hub.webp`（同族材质参考），Image 2 = `assets/portfolio/rulenav.webp`（同族法律工作台参考）。
 ```
+
+## paper-plane · 2026-10-03（首页纸飞机，当前为程序占位稿）
+
+用途：首页全页滚动飞行动画（`js/paper-plane.js`）；网页资产：`assets/paper-plane.webp`（900×600 透明底，机头朝正右，`NOSE_ANGLE=0`）。
+
+**当前状态**：暂用 PIL 程序绘制的折面占位稿（三折面象牙纸 + 朱红后缘折角），待用 imagegen 按下方提示词生成正式素材后原路径替换（替换时无需改代码，保持 900×600 透明底、机头朝右即可）。
+
+正式素材提示词（宿主内置 imagegen，参考图 `assets/portfolio/skill-hub.webp` 同族材质）：
+
+```text
+Use case: stylized-concept.
+Asset type: a single floating object cutout for a personal blog homepage animation (not a card image).
+Primary request: one exquisite miniature folded-paper airplane, handcrafted origami dart, photographed like a museum piece.
+Scene/backdrop: plain warm ivory seamless background (#efe7d8) for clean cutout; no plinth, no table, no other objects.
+Subject: a classic dart paper airplane made of tactile uncoated ivory paper, visible paper grain and crisp fold creases, three readable facets: shaded far wing, lit near wing, darker folded keel. One small vermilion red (#b63c2f) folded tab along the near wing trailing edge as the only color accent. Nose pointing exactly to the right, slight 3/4 top view, gentle banking.
+Style/medium: analog craftsmanship, sophisticated miniature still life, refined realistic materials.
+Composition/framing: landscape 3:2, plane centered in middle 65% with generous clear edges, orthographic near-side view.
+Lighting/mood: soft directional daylight from upper left, crisp but restrained ambient occlusion, quiet, precise, editorial.
+Color palette: warm ivory paper, one vermilion red (#b63c2f) accent; no blue or purple.
+Materials/textures: uncoated paper, realistic paper grain, sharp miniature fold joinery.
+Text (verbatim): none.
+Constraints: no text, no letters, no numbers, no logos, no watermark; single object only; nose axis parallel to the horizontal image edge (points right); keep silhouette readable at 240px width.
+Avoid: purple, blue gradients, neon, glassmorphism, robots, planets, stars, particles, cute cartoon style, glossy plastic, motion blur, multiple planes.
+```

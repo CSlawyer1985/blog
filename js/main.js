@@ -19,6 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ── ③ Speak section dark theme ── */
   initSpeakTheme();
 
+  /* ── ③b Speak video picker ── */
+  initSpeakPlayer();
+
   /* ── ④ Smooth scroll ── */
   initSmoothScroll();
 
@@ -164,6 +167,29 @@ function initScrollSpy() {
 }
 
 /* ─── Speak Dark Theme ─── */
+function initSpeakPlayer() {
+  const player = document.getElementById('speak-player');
+  const picks = document.querySelectorAll('.speak__pick');
+  if (!player || !picks.length) return;
+
+  picks.forEach((pick) => {
+    pick.addEventListener('click', () => {
+      const bvid = pick.dataset.bvid;
+      if (!bvid || pick.classList.contains('is-active')) return;
+      // 用户点击触发，autoplay=1 合规
+      player.src = `//player.bilibili.com/player.html?bvid=${bvid}&page=1&high_quality=1&danmaku=0&autoplay=1`;
+      const title = pick.querySelector('.speak__pick-title');
+      if (title) player.title = `正在播放：${title.textContent.trim()}`;
+      picks.forEach((p) => {
+        const active = p === pick;
+        p.classList.toggle('is-active', active);
+        if (active) p.setAttribute('aria-current', 'true');
+        else p.removeAttribute('aria-current');
+      });
+    });
+  });
+}
+
 function initSpeakTheme() {
   const speakEl = document.getElementById('speak');
   if (!speakEl) return;

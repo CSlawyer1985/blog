@@ -1111,3 +1111,119 @@ a.cbar__item:hover .cbar__arr{transform:translateX(5px);color:var(--accent);}
   .cbar__val{min-width:0;font-size:15px;overflow-wrap:anywhere;}
   .contact__foot{gap:18px;font-size:11.5px;}
 }
+
+/* ─────────────── PAPER PLANE ─────────────── */
+/* 折纸飞机：hero 静态锚点 + JS 驱动的全页滚动飞行。
+   层级契约：飞机与尾迹固定在 body 层 z-index:1（低于 main 的 z-index:2），
+   永远从内容下方穿过，不遮挡任何文字；rail/cross(3) 与 nav(40) 在其上。 */
+/* 停机位：人像持麦手的位置（.portrait 为定位容器），垫在人像下层——
+   起手不可见，滚动时由飞行层从手中淡入掷出 */
+.plane-home{
+  position:absolute;
+  left:40%;
+  top:73%;
+  width:clamp(140px,12.5vw,185px);
+  pointer-events:none;
+  transform:rotate(-10deg);
+  filter:drop-shadow(-9px 20px 10px rgba(26,23,20,.14));
+}
+.plane-home img{width:100%;height:auto;display:block;}
+
+.travelling-plane{
+  position:fixed;left:0;top:0;
+  width:clamp(140px,12.5vw,185px);
+  pointer-events:none;z-index:1;
+  will-change:transform;
+  visibility:hidden;
+  filter:drop-shadow(-8px 18px 9px rgba(26,23,20,.14));
+  transform-origin:center;
+}
+.travelling-plane img{width:100%;height:auto;display:block;transform:scaleY(var(--plane-sy,1));}
+
+.plane-trail{
+  position:fixed;inset:0;
+  width:100%;height:100%;
+  pointer-events:none;z-index:1;
+  display:none;
+}
+.plane-trail path{
+  fill:none;
+  stroke:rgba(26,23,20,.26);
+  stroke-width:1.2;
+  stroke-dasharray:1 8;
+  stroke-linecap:round;
+}
+body.theme-speak .plane-trail path{stroke:rgba(243,237,227,.32);}
+
+/* 飞行接管后隐藏静态锚点；JS 不可用时静态锚点保持展示（优雅降级） */
+body.flight-on .plane-home{visibility:hidden;}
+body.flight-on .travelling-plane{visibility:visible;}
+body.flight-on .plane-trail{display:block;}
+
+@media (max-width:680px){
+  /* 移动端不展示飞机（单列版式遮挡严重，整体移除） */
+  .plane-home,.travelling-plane,.plane-trail{display:none!important;}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .travelling-plane,.plane-trail{display:none!important;}
+}
+
+/* ─────────────── SPEAK VIDEO DECK（主视频 + 侧列预览切换） ─────────────── */
+/* 侧列卡片等宽、均分列高：列随主视频 16:9 高度撑开（align-items:stretch），
+   首卡上沿与主视频上沿齐平，末卡下沿与主视频下沿齐平 */
+.speak__deck{
+  position:relative;z-index:1;
+  display:flex;align-items:stretch;gap:16px;
+}
+.speak__stage{
+  position:relative;flex:1 1 auto;min-width:0;
+  min-height:0;padding:0;
+  aspect-ratio:16/9;overflow:hidden;
+  border:1px solid var(--line);
+  background:#0b0a08;
+}
+.speak__video{position:absolute;inset:0;width:100%;height:100%;border:none;}
+.speak__side{
+  flex:0 0 clamp(216px,17vw,260px);min-height:0;
+  display:flex;flex-direction:column;gap:12px;
+}
+.speak__pick{
+  flex:1 1 0;min-height:52px;
+  display:flex;align-items:center;gap:14px;
+  padding:8px 14px 8px 8px;
+  background:rgba(242,238,230,.04);
+  border:1px solid rgba(242,238,230,.16);
+  color:var(--muted);
+  font:inherit;text-align:left;cursor:pointer;
+  transition:border-color .2s var(--ease),background .2s var(--ease);
+}
+.speak__pick:hover{border-color:rgba(242,238,230,.42);background:rgba(242,238,230,.07);}
+.speak__pick:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.speak__pick.is-active{border-color:var(--accent);background:rgba(192,57,43,.16);}
+.speak__pick-thumb{
+  flex:0 0 auto;width:clamp(88px,7.5vw,110px);
+  aspect-ratio:16/9;overflow:hidden;background:#161511;
+}
+.speak__pick-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.speak__pick-meta{display:flex;flex-direction:column;gap:6px;min-width:0;}
+.speak__pick-title{
+  font-size:13px;font-weight:500;line-height:1.45;color:#f2eee6;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.speak__pick-dur{
+  font-size:10px;letter-spacing:.1em;
+  color:var(--muted);font-variant-numeric:tabular-nums;
+}
+.speak__pick.is-active .speak__pick-dur{color:#e8b7ae;}
+@media (max-width:1100px){
+  .speak__deck{flex-direction:column;}
+  .speak__stage{min-height:0;padding:0;}
+  .speak__side{
+    flex-basis:auto;
+    flex-direction:row;overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .speak__side::-webkit-scrollbar{display:none;}
+  .speak__pick{flex:0 0 250px;min-height:0;}
+}
