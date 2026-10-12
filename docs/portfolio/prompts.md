@@ -99,3 +99,28 @@ Text (verbatim): none.
 Constraints: no text, no letters, no numbers, no logos, no watermark; single object only; nose axis parallel to the horizontal image edge (points right); keep silhouette readable at 240px width.
 Avoid: purple, blue gradients, neon, glassmorphism, robots, planets, stars, particles, cute cartoon style, glossy plastic, motion blur, multiple planes.
 ```
+
+## inkpeg（文夹）· 2026-10-12
+
+用途：portfolio card image（第 10 张）；网页资产：`assets/portfolio/inkpeg.webp`（1200×800）；原始图：`sources/inkpeg.png`。
+
+**当前状态**：暂用 PIL 程序绘制的同族占位稿（石墨立柱 + 悬垂绳 + 木夹挂三件资料：截图卡、文档、朱红小红段便签），待 imagegen 生成正式微缩静物稿后原路径替换。SVG 动效层（绳重绘 → 资料挂上 → 单击复制 → 小红段亮起）与底图 600×400 坐标对齐，替换底图时无需改动。
+
+正式素材提示词（宿主内置 imagegen，参考 `assets/portfolio/skill-hub.webp` 同族材质）：
+
+```text
+Use case: stylized-concept.
+Asset type: portfolio card image for a personal blog project gallery.
+Input images: reference images are for the existing warm paper architectural-maquette visual language only; do not copy their objects or any text.
+Primary request: Create a premium editorial illustration for InkPeg (文夹), a Mac utility that stretches a rope across the top of the screen so screenshots, files, PDFs and notes hang within reach — click to copy, a small vermilion bar for quick notes, everything stays on the device.
+Scene/backdrop: warm parchment seamless studio background (#e9dfcf), shallow ivory rectangular plinth.
+Subject: a precise handcrafted architectural maquette of a peg-rope station. Two small graphite posts stand on the plinth; between them a natural cord sags gently. Three paper items hang from the cord on tiny wooden clothespins: a screenshot card with a graphite title bar, a taller uncoated document sheet, and a small note carrying one vermilion red (#b63c2f) bar as its quick-note mark — the only color accent. Crisp miniature joinery, quiet negative space above and beside the rope.
+Style/medium: analog craftsmanship, tactile uncoated paper, sophisticated miniature still life, refined realistic materials, orthographic near-front 3/4 view.
+Composition/framing: landscape 3:2, subject centered in the middle 65% with generous clear edges, readable at small card size, all structures grounded on the plinth.
+Lighting/mood: soft directional daylight from upper left, restrained contact shadows and ambient occlusion, quiet, precise, editorial.
+Color palette: warm parchment, ivory paper, graphite metal, one vermilion red accent (#b63c2f); no blue or purple.
+Materials/textures: folded-card paper, graphite posts, real cord, subtle paper grain.
+Text (verbatim): none.
+Constraints: no text, no letters, no numbers, no logos, no watermark; single rope scene only; keep the three hanging items and the vermilion bar legible at small card size.
+Avoid: purple, blue gradients, neon, glassmorphism, robots, planets, stars, floating particles, cute cartoon style, glossy plastic, dense UI text, fake branding.
+```

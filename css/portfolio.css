@@ -173,3 +173,11 @@
   .project-link:hover .project-art img { transform: none; }
   .project-link *,.channel *,.art-action { transition: none; }
 }
+
+/* ── inkpeg（文夹）：绳亮相 → 资料挂上 → 单击复制 → 小红段记事 → 收束语 ── */
+.peg-wire { animation-delay: 0s; }
+.peg-drop-line { animation-delay: .9s; }
+.peg-drop { animation-delay: 1.3s; }
+.peg-copy { animation-delay: 2.5s; }
+.peg-note { animation-delay: 3.4s; }
+.peg-caption { animation-delay: 4.2s; }

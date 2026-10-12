@@ -10,9 +10,9 @@ assert(html.includes('Commercial Lawyer × AI Builder'));
 assert(!/noindex|preview-dock|previews\/|data-portrait-preview|AI\+法律先行者/.test(html), 'no preview-only or obsolete identity residue');
 assert(html.includes('<title>陈石 · 法与AI</title>'));
 assert(html.includes('<link rel="canonical" href="https://chenshi.ai/">'));
-assert.equal((html.match(/class="project-item /g) || []).length, 9);
+assert.equal((html.match(/class="project-item /g) || []).length, 10);
 assert.equal((html.match(/class="channel"/g) || []).length, 6);
-assert.equal((about.match(/class="proj-item"/g) || []).length, 11);
+assert.equal((about.match(/class="proj-item"/g) || []).length, 12);
 for (const url of ['https://dsh.chenshi.ai/', 'https://memoball.chenshi.ai/', 'https://skill.chenshi.ai/', 'https://skill.chenshi.ai/legal-meta-skill', 'https://learn-agent.legalagi.cn/', 'https://rule.chenshi.ai/']) {
   assert(html.includes('href="' + url + '"'));
   assert(about.includes('href="' + url + '"'));
