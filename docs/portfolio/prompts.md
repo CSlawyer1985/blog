@@ -124,3 +124,18 @@ Text (verbatim): none.
 Constraints: no text, no letters, no numbers, no logos, no watermark; single rope scene only; keep the three hanging items and the vermilion bar legible at small card size.
 Avoid: purple, blue gradients, neon, glassmorphism, robots, planets, stars, floating particles, cute cartoon style, glossy plastic, dense UI text, fake branding.
 ```
+
+
+## adg · 2026-10-17
+
+用途：首页第 11 张作品卡片。核实入口：https://adg.chenshi.ai/；正式名 ADG · Agent Data Gateway，面向法律人与专业服务者的开源摄取编排层。
+
+生成方式：宿主内置 imagegen；参考 `assets/portfolio/skill-hub.webp` 与 `assets/portfolio/rulenav.webp` 的材质、配色与视角。原始 PNG：`sources/adg.png`；网页资产：`assets/portfolio/adg.webp`（1200×800，质量 84）。
+
+主体：混合材料托盘 → 数据闸门 → 带来源标记的资料；前侧单独保留异常材料。原生 SVG/CSS 叠层：0–2 秒材料入账，2–4 秒解析核对，4–6.4 秒来源关联并显性报告未读项，6.4–8 秒淡出复位。沿用可见播放、离屏暂停和减少动效设置；不代表真实产品运行检测。
+
+实际完整提示词：
+
+```text
+Use case: stylized-concept. Create a premium editorial illustration for a Chinese lawyer and AI builder's portfolio. Landscape 3:2. A precise architectural maquette photographed on a warm parchment seamless studio background (#e9dfcf), ivory paper, graphite metal, one vermilion red (#b63c2f) detail. Analog craftsmanship, tactile uncoated paper, sophisticated miniature still life, refined realistic materials, soft directional daylight from upper left and crisp ambient occlusion, muted warm palette, no purple, no blue gradients, no cute cartoon. Orthographic 3/4 view, subject centered in middle 65% with generous clear edges. NO TEXT, NO letters, NO numbers, NO logos, NO watermark. All structures stand grounded on a shallow rectangular ivory plinth. Subject: ADG (Agent Data Gateway), an open-source ingestion orchestration layer for legal professionals and other professional services. It turns mixed complex material bundles into complete, traceable Agent-readable data and explicitly reports any unreadable material. Represent this as an exquisite small physical document-processing gateway maquette. The central main subject is a substantial ivory rectangular inspection arch with two graphite guide rails passing left-to-right through its base; its broad ivory lintel is blank and one small vermilion slider sits on the right post. On the left, one low input tray holds a visibly varied compact bundle of folded ivory documents, a graph-grid sheet and a small envelope, different shapes without text. On the right, one low output tray holds neatly aligned upright ivory source cards linked by slender graphite rods to small circular source markers on the rail. One separate slightly tilted ivory card with a vermilion edge remains in a small side slot at the front right, to represent explicitly surfaced unresolved items rather than claiming everything succeeds. Keep the core gateway visually simple and unmistakable, exactly two auxiliary trays, no computer monitor, no robot, no text. Leave the lower 18 percent and upper 16 percent of the image mostly clear parchment for later graphic overlay. The supplied images are style-only references for warm tactile paper material, restrained palette and grounded architectural-model photography. Do not copy their subject matter or scales-of-justice icon.
+```

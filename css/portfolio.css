@@ -181,3 +181,28 @@
 .peg-copy { animation-delay: 2.5s; }
 .peg-note { animation-delay: 3.4s; }
 .peg-caption { animation-delay: 4.2s; }
+
+/* ADG: account for materials → inspect → trace sources / surface unread items. */
+.adg-intake { animation-name: adg-intake; }
+.adg-scan { animation-name: adg-scan; }
+.adg-accounted,.adg-parse-label { animation-name: adg-parse; }
+.adg-trace,.adg-result-label { animation-name: adg-result; }
+.adg-warning { animation-name: adg-warning; }
+.adg-input-label { animation-name: adg-input; }
+@keyframes adg-intake {
+  0%,5% { opacity: 0; transform: translate(186px,206px); }
+  12% { opacity: 1; transform: translate(208px,206px); }
+  32% { opacity: 1; transform: translate(290px,206px); }
+  56% { opacity: 1; transform: translate(410px,224px); }
+  65%,100% { opacity: 0; transform: translate(430px,224px); }
+}
+@keyframes adg-scan {
+  0%,22% { opacity: 0; transform: translateY(0); }
+  28% { opacity: .28; transform: translateY(0); }
+  48% { opacity: .28; transform: translateY(84px); }
+  54%,100% { opacity: 0; transform: translateY(84px); }
+}
+@keyframes adg-input { 0%,5%,92%,100% { opacity: 0; } 13%,80% { opacity: 1; } }
+@keyframes adg-parse { 0%,32%,92%,100% { opacity: 0; } 46%,80% { opacity: 1; } }
+@keyframes adg-result { 0%,52%,92%,100% { opacity: 0; } 64%,80% { opacity: 1; } }
+@keyframes adg-warning { 0%,62%,92%,100% { opacity: 0; } 72%,80% { opacity: 1; } }

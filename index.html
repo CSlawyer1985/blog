@@ -8,6 +8,7 @@ Writing 密度修正：内容类型 A 文章索引 + J 编辑风格；沿用原�
 Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片尺寸。
 新增 RuleNav 作品卡片反思：内容类型 B 流程/步骤 + C 节点/工具连接；表达形式为三域工作台微缩模型 + 原生 SVG 路径动画；技术栈 L2（HTML/CSS + SVG），阅读路径为事实 → 规则 → 责任依据；构图家族为 process-flow，布局原语为 triptych / path，主轴为横向、焦点为中央规则页；语义理由是产品价值在于沿依据完成定位，而非泛化对话；响应式策略沿用 640/1024px 的单列 → 双列 → 三列；参考来源为现有 portfolio 卡片系统与 rule.chenshi.ai 的三域信息架构，只借鉴结构，不复制页面素材；不使用框架、视频、GIF 或新增 CDN；交互为整卡外链，动画为可见时播放的 8 秒功能叙事循环；移动端自适应并保持标题与用途可读；反 AI 审美检查：无紫蓝渐变、无玻璃态、无通用机器人与装饰粒子。
 新增法律元 SKILL 作品卡片反思：内容类型 B 流程/步骤 + C 节点/工具连接；表达形式为六阶段法律能力装配台微缩模型 + 原生 SVG 路径动画；技术栈 L2（HTML/CSS + SVG），阅读路径为输入 → 研究/建模 → 封装 → 评测 → 复核通过；构图家族为 process-flow，布局原语为 rail / gate，主轴为横向、焦点为中央封装压制台与右侧复核门；语义理由是产品价值在于把重复法律工作治理成可复用、可评测的 Skill，而非展示单个工具；响应式策略沿用 640/1024px 的单列 → 双列 → 三列；参考来源为现有 portfolio 卡片系统与 skill.chenshi.ai/legal-meta-skill 的六阶段工作流，只借鉴结构，不复制页面素材；不使用框架、视频、GIF 或新增 CDN；交互为整卡外链，动画为可见时播放的 8 秒功能叙事循环；移动端自适应并保持标题与用途可读；反 AI 审美检查：无紫蓝渐变、无玻璃态、无通用机器人与装饰粒子。
+新增 ADG 作品卡片反思：内容类型 B 流程 + C 来源连接；面向法律人与专业服务者，展示材料入账 → 解析核对 → 来源关联 / 未读项显性报告。pattern_family=process-flow；primitive=rail / gate；reading_path=混合材料→数据闸门→可追溯结果；横向主轴，中央闸门为焦点；semantic_reason=体现可靠摄取与显性失败。技术 L2（HTML/CSS + SVG），复用原生 JS 播放管理器；静态图无法表达处理次序，因此增加解释因果的 8 秒动效；无需框架、GIF、视频或新增依赖。主结构为闸门，辅助为两侧材料，朱红标记点缀；整卡外链、键盘可达；responsive_strategy=column-drop，沿用 640/1024px 单/双/三列，移动端标题自然换行；source_refs=现有 portfolio 卡片、adg.chenshi.ai 的真实功能；页面类型为博客作品索引；新增 WebP 约 100KB 内，懒加载；无紫蓝渐变、玻璃态、机器人与装饰粒子。
 -->
 <html lang="zh-CN" data-lang="zh">
 <head>
@@ -117,7 +118,7 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
   <!-- GSAP loaded async — page renders immediately, animations enhance if available -->
   <script async src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script async src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <link rel="stylesheet" href="css/portfolio.css">
+  <link rel="stylesheet" href="css/portfolio.css?v=20261017-adg">
   <link rel="stylesheet" href="css/hero-responsive.css">
 </head>
 <body>
@@ -483,7 +484,7 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
     </section>
 
 <section class="project-gallery" id="project-gallery" aria-labelledby="gallery-heading">
-  <header class="gallery-head"><div><p class="gallery-kicker">THE BUILD INDEX <span>/ 01—10</span></p><h2 id="gallery-heading"><span lang="zh">想法，做成了这些。</span><span lang="en">Ideas, made tangible.</span></h2></div><div class="gallery-aside"><p><span lang="zh">课程、工具与实验，持续建造中。</span><span lang="en">Courses, tools and experiments. Always building.</span></p></div></header>
+  <header class="gallery-head"><div><p class="gallery-kicker">THE BUILD INDEX <span>/ 01—11</span></p><h2 id="gallery-heading"><span lang="zh">想法，做成了这些。</span><span lang="en">Ideas, made tangible.</span></h2></div><div class="gallery-aside"><p><span lang="zh">课程、工具与实验，持续建造中。</span><span lang="en">Courses, tools and experiments. Always building.</span></p></div></header>
   <div class="project-grid"><article class="project-item project-night-school">
   <a class="project-link" href="https://legalagi.cn/" target="_blank" rel="noopener noreferrer">
     <div class="project-art" data-art="night-school">
@@ -702,6 +703,37 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
       </svg>
     </div>
     <div class="project-caption"><span class="project-no">10</span><div><h3><span lang="zh">文夹 InkPeg</span><span lang="en">InkPeg</span></h3><p><span lang="zh">把眼前的资料挂在绳上，伸手就拿。</span><span lang="en">Pin working files on a rope, always in reach.</span></p></div><span class="project-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span></div>
+  </a></article>
+<article class="project-item project-adg">
+  <a class="project-link" href="https://adg.chenshi.ai/" target="_blank" rel="noopener noreferrer">
+    <div class="project-art" data-art="adg">
+      <img src="assets/portfolio/adg.webp" alt="ADG 数据闸门纸质微缩模型：混合材料经过核对，整理为关联来源的资料，异常材料单独留存" width="1200" height="800" loading="lazy">
+      <span class="art-corner art-corner-tl" aria-hidden="true"></span><span class="art-corner art-corner-br" aria-hidden="true"></span>
+      <span class="art-index">11 / DATA GATEWAY</span>
+      <span class="art-action"><span lang="zh">访问项目</span><span lang="en">Visit project</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span>
+      <svg class="art-motion" viewBox="0 0 600 400" fill="none" aria-hidden="true">
+<g class="loop adg-intake" fill="#f5edde" stroke="#665e53" stroke-width="1.4">
+  <path d="M-14-22H7l7 7v34h-28Z"/><path d="M7-22v8h7M-7-7H7M-7 0H7M-7 7H3"/>
+</g>
+<rect class="loop adg-scan" x="252" y="126" width="82" height="6" fill="#b63c2f"/>
+<g class="loop adg-accounted" stroke="#b63c2f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m270 166 6 6 13-15M296 164h23m-49 20 6 6 13-15M296 182h23m-49 20 6 6 13-15M296 200h23"/>
+</g>
+<g class="loop adg-trace" stroke="#b63c2f" stroke-width="1.8" stroke-linecap="round">
+  <path d="M452 219v-24m19 15v-24m20 14v-24"/>
+  <circle cx="452" cy="219" r="5"/><circle cx="471" cy="210" r="5"/><circle cx="491" cy="200" r="5"/>
+</g>
+<g class="loop adg-warning">
+  <rect x="420" y="294" width="153" height="31" rx="2" fill="#f5edde"/>
+  <path d="m431 317 8-15 8 15Zm8-10v4m0 3v.5" stroke="#b63c2f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="455" y="315" font-family="Noto Sans SC, PingFang SC, Microsoft YaHei, sans-serif">未读项显性报告</text>
+</g>
+<g class="loop adg-input-label"><rect x="32" y="341" width="164" height="35" rx="2" fill="#f5edde"/><text x="48" y="365" font-family="Noto Sans SC, PingFang SC, Microsoft YaHei, sans-serif">01 材料逐一入账</text></g>
+<g class="loop adg-parse-label"><rect x="216" y="341" width="164" height="35" rx="2" fill="#f5edde"/><text x="232" y="365" font-family="Noto Sans SC, PingFang SC, Microsoft YaHei, sans-serif">02 解析与核对</text></g>
+<g class="loop adg-result-label"><rect x="400" y="341" width="172" height="35" rx="2" fill="#f5edde"/><text x="416" y="365" font-family="Noto Sans SC, PingFang SC, Microsoft YaHei, sans-serif">03 结果可追溯</text></g>
+      </svg>
+    </div>
+    <div class="project-caption"><span class="project-no">11</span><div><h3><span lang="zh">ADG · Agent 数据网关</span><span lang="en">ADG · Agent Data Gateway</span></h3><p><span lang="zh">让复杂材料成为 Agent 可读、可追溯的数据。</span><span lang="en">Turn complex files into traceable, agent-ready data.</span></p></div><span class="project-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span></div>
   </a></article></div>
   <div class="gallery-foot"><span>MADE WITH CURIOSITY. BUILT IN PUBLIC.</span><a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener noreferrer"><span lang="zh">更多开源探索</span><span lang="en">More on GitHub</span> ↗</a></div>
 </section>

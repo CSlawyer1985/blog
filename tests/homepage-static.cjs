@@ -4,16 +4,18 @@ const assert = require('node:assert/strict');
 const root = path.join(__dirname, '..');
 const read = name => fs.readFileSync(path.join(root, name), 'utf8');
 const html = read('index.html'), about = read('about.html');
-assert.equal(html, read('templates/home.html'), 'first-build fallback matches the approved homepage');
+// SEO is refreshed by generate_seo.py; portfolio and all other content must match.
+const withoutGeneratedSeo = source => source.replace(/<!-- SEO_HEAD_BEGIN -->[\s\S]*?<!-- SEO_HEAD_END -->/, '');
+assert.equal(withoutGeneratedSeo(html), withoutGeneratedSeo(read('templates/home.html')), 'first-build fallback matches homepage outside generated SEO');
 assert(html.includes('商事律师 × AI Builder'));
 assert(html.includes('Commercial Lawyer × AI Builder'));
 assert(!/noindex|preview-dock|previews\/|data-portrait-preview|AI\+法律先行者/.test(html), 'no preview-only or obsolete identity residue');
 assert(html.includes('<title>陈石 · 法与AI</title>'));
 assert(html.includes('<link rel="canonical" href="https://chenshi.ai/">'));
-assert.equal((html.match(/class="project-item /g) || []).length, 10);
+assert.equal((html.match(/class="project-item /g) || []).length, 11);
 assert.equal((html.match(/class="channel"/g) || []).length, 6);
-assert.equal((about.match(/class="proj-item"/g) || []).length, 12);
-for (const url of ['https://dsh.chenshi.ai/', 'https://memoball.chenshi.ai/', 'https://skill.chenshi.ai/', 'https://skill.chenshi.ai/legal-meta-skill', 'https://learn-agent.legalagi.cn/', 'https://rule.chenshi.ai/']) {
+assert.equal((about.match(/class="proj-item"/g) || []).length, 13);
+for (const url of ['https://dsh.chenshi.ai/', 'https://memoball.chenshi.ai/', 'https://skill.chenshi.ai/', 'https://skill.chenshi.ai/legal-meta-skill', 'https://learn-agent.legalagi.cn/', 'https://rule.chenshi.ai/', 'https://inkpeg.chenshi.ai/', 'https://adg.chenshi.ai/']) {
   assert(html.includes('href="' + url + '"'));
   assert(about.includes('href="' + url + '"'));
 }
@@ -28,7 +30,11 @@ for (const [name, source] of [['index.html', html], ['about.html', about]]) {
     if (/^(?:https?:|mailto:|data:|\/\/)/.test(url)) continue;
     if (url.startsWith('#')) { if (url.length > 1) assert(ids.includes(url.slice(1)), name + ': anchor ' + url); continue; }
     const local = decodeURIComponent(url.split(/[?#]/)[0]).replace(/^\//, '');
-    if (local) assert(fs.existsSync(path.join(root, local)), name + ': resource ' + local);
+    if (local) {
+      const file = path.join(root, local);
+      // Cloudflare Pages also serves .html documents at extensionless URLs.
+      assert(fs.existsSync(file) || (!path.extname(local) && fs.existsSync(file + '.html')), name + ': resource ' + local);
+    }
   }
 }
 for (const [, json] of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) JSON.parse(json);
@@ -36,4 +42,4 @@ const data = JSON.parse(read('data/site.json'));
 assert.equal(data.site.description, '商事律师 × AI Builder — 个人博客');
 assert.deepEqual(data.author.dual_identity, ['商事律师', 'AI Builder']);
 assert(!read('css/portfolio.css').includes('preview-dock'));
-console.log('PASS: homepage/template, identity, 9 projects, 6 channels, 11 about entries, preserved repos, local assets, anchors, SEO');
+console.log('PASS: homepage/template, identity, 11 projects, 6 channels, 13 about entries, preserved repos, local assets, anchors, SEO');
