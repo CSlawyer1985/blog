@@ -4,187 +4,187 @@
   <link rel="alternate" type="text/html" hreflang="zh" href="https://chenshi.ai/"/>
   <link rel="self" type="application/atom+xml" href="https://chenshi.ai/atom.xml"/>
   <id>https://chenshi.ai/</id>
-  <updated>2026-10-02T23:22:15+08:00</updated>
+  <updated>2026-10-26T19:59:29+08:00</updated>
   <author><name>陈石</name></author>
   <subtitle>商事律师 × AI Builder — 个人博客</subtitle>
   <entry>
-    <title>我用了一天dot：AI把中层做成了产品</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-01-我用了一天dot-AI把中层做成了产品/"/>
-    <id>https://chenshi.ai/articles/2026-10-01-我用了一天dot-AI把中层做成了产品/</id>
-    <published>2026-10-01T00:00:00+08:00</published>
-    <updated>2026-10-01T00:00:00+08:00</updated>
+    <title>AI 的本事，是怎么记到你自己账上的</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-26-AI-的本事-是怎么记到你自己账上的/"/>
+    <id>https://chenshi.ai/articles/2026-10-26-AI-的本事-是怎么记到你自己账上的/</id>
+    <published>2026-10-26T00:00:00+08:00</published>
+    <updated>2026-10-26T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary>我用了一天ChatGPT里的dot，感觉AI会不会消灭中层还不好说，我已经先学会当老板了。以前一聊AI和组织变革，最痛快的剧本就是：组织扁平化，中层先下岗。理由也很充分。上面的话往下传，下面的事往上报，自己又不干活。这种岗位，听着就很适合被AI替代。结果我用了dot，发现它正在干这份工作。</summary>
+    <summary>先问一个不太好回答的问题：过去半年，你有没有觉得“我越来越强了”？产出快了，文书漂亮了，什么领域的活都敢接了。这种变强的感觉是真实的。但我想请你把一件事和它分开：强的到底是你，还是你工具箱里那个东西？心理学里有个很稳定的发现，叫自利性归因：人天然把成功记在自己的能力账上。</summary>
   </entry>
   <entry>
-    <title>AI进法院，最难的不是模型</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-09-26-AI进法院-最难的不是模型/"/>
-    <id>https://chenshi.ai/articles/2026-09-26-AI进法院-最难的不是模型/</id>
-    <published>2026-09-26T00:00:00+08:00</published>
-    <updated>2026-09-26T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>——《人工智能司法应用的深圳实践》白皮书深度解读文中引用的白皮书内容与数据，均出自2026年9月中共深圳市委政法委员会、深圳市中级人民法院、深圳市政务服务和数据管理局联合发布的《人工智能司法应用的深圳实践》（下称《白皮书》）。深圳系统的运行数据为发布方报告口径，本文在引用时逐一注明。</summary>
+    <title>律师行业迟早要办一场“手搓文书大赛”</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-26-律师行业迟早要办一场-手搓文书大赛/"/>
+    <id>https://chenshi.ai/articles/2026-10-26-律师行业迟早要办一场-手搓文书大赛/</id>
+    <published>2026-10-26T00:00:00+08:00</published>
+    <updated>2026-10-26T00:00:00+08:00</updated>
+    <category term="行业观察"/>
+    <summary>2009年2月25日，土耳其航空1951号航班在阿姆斯特丹进近时坠地，9人遇难。事故链条的起点小得离谱：左侧无线电高度表显示了一个错误的高度，零下8英尺，自动油门据此把收油门当成降落动作，收到了慢车。从失速警告响起，到机组把推力杆推到底，过了9秒。</summary>
   </entry>
   <entry>
-    <title>从会用AI到敢于签名：争议解决人才的成长路径</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-09-20-从会用AI到敢于签名-争议解决人才的成长路径/"/>
-    <id>https://chenshi.ai/articles/2026-09-20-从会用AI到敢于签名-争议解决人才的成长路径/</id>
-    <published>2026-09-20T00:00:00+08:00</published>
-    <updated>2026-09-20T00:00:00+08:00</updated>
+    <title>AI 为什么宁肯编，也不说“不知道”</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-26-AI-为什么宁肯编-也不说-不知道/"/>
+    <id>https://chenshi.ai/articles/2026-10-26-AI-为什么宁肯编-也不说-不知道/</id>
+    <published>2026-10-26T00:00:00+08:00</published>
+    <updated>2026-10-26T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary>本文整理自我在2026年9月20日“AI赋能·智启仲裁”主题论坛上的主旨发言。AI已经可以读材料、抽时间线、做检索、起草文书，而且还会继续变快。我不想再花时间证明它有多强。真正让我在意的是另一个问题：AI开始接手阅卷、检索和初稿以后，未来的律师、仲裁员，究竟怎么长出来？</summary>
+    <summary>我之前写过一篇谈AI幻觉的文章，核心是机制那一层：大模型生成一条正确的法条，和生成一条编造的法条，用的是同一套概率计算，模型内部没有一个“这句是真的”开关。所以幻觉消不掉，只能靠流程管住。今天想往深走一层。就算承认一切都是概率，还有一个问题没回答：为什么它总是猜，而不肯说“我不知道”？</summary>
   </entry>
   <entry>
-    <title>从提示词到“驾驭工程”：让 AI 稳定工作的环境怎么搭</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-09-18-从提示词到-驾驭工程-让-AI-稳定工作的环境怎么搭/"/>
-    <id>https://chenshi.ai/articles/2026-09-18-从提示词到-驾驭工程-让-AI-稳定工作的环境怎么搭/</id>
-    <published>2026-09-18T00:00:00+08:00</published>
-    <updated>2026-09-18T00:00:00+08:00</updated>
+    <title>审批按钮，不等于可审查的推理</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-26-审批按钮-不等于可审查的推理/"/>
+    <id>https://chenshi.ai/articles/2026-10-26-审批按钮-不等于可审查的推理/</id>
+    <published>2026-10-26T00:00:00+08:00</published>
+    <updated>2026-10-26T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary>“AI时代的组织变革”系列之十九两种称赞的落差演示场合常听到两种评价，它们看似相近，实则隔着鸿沟。第一种：“这次效果惊艳。”——某个聪明人现场用一套巧妙的问法，跑出了漂亮结果。第二种：“我们团队每个案件都能达到这个水平。”——后者几乎没人说得出。第一种靠灵感和手感，第二种靠环境。</summary>
+    <summary>过去两个多月，三家厂商接连发布了同一类产品。八月中旬，xAI的GrokBot；九月初，Meta的Muse；九月二十九日，OpenAI的dots。官方话术几乎一个模子：“把活交给它，它给你成果。”更早的Manus连口号都省了：LeaveittoManus，把它交给Manus。</summary>
   </entry>
   <entry>
-    <title>AI 会不会动摇律所的金字塔人才结构？</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-09-18-AI-会不会动摇律所的金字塔人才结构/"/>
-    <id>https://chenshi.ai/articles/2026-09-18-AI-会不会动摇律所的金字塔人才结构/</id>
-    <published>2026-09-18T00:00:00+08:00</published>
-    <updated>2026-09-18T00:00:00+08:00</updated>
+    <title>AI 把复核变成了最贵的环节</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-26-AI-把复核变成了最贵的环节/"/>
+    <id>https://chenshi.ai/articles/2026-10-26-AI-把复核变成了最贵的环节/</id>
+    <published>2026-10-26T00:00:00+08:00</published>
+    <updated>2026-10-26T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary>“AI时代的组织变革”系列之八金字塔首先是一台培养机器聊律所的人才结构，最常见的切入是成本：大量初级律师在塔底支撑，少数资深合伙人塔尖收割，杠杆率决定利润率。AI时代的讨论于是顺理成章——底层工作被机器接走，塔基不需要那么宽了，金字塔会变矮。这个判断大体没错，但它只说了金字塔的一半。</summary>
+    <summary>“AI时代的组织变革”系列之十六先算一笔账，很简单。AI让一份文书初稿的边际成本趋近于零。成本趋零，产出就涨。这条不用论证，看看你自己今年的办案量结构就知道。但另一头，人的复核带宽没有变：一天还是那些小时，能逐字读掉的文书还是那么多。一个在涨，一个没涨，差距只能用一种方式消化：复核从逐件退化为抽检。</summary>
   </entry>
   <entry>
-    <title>AI 协调团队的三步：先透明，再路由，最后才是编排</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-09-18-AI-协调团队的三步-先透明-再路由-最后才是编排/"/>
-    <id>https://chenshi.ai/articles/2026-09-18-AI-协调团队的三步-先透明-再路由-最后才是编排/</id>
-    <published>2026-09-18T00:00:00+08:00</published>
-    <updated>2026-09-18T00:00:00+08:00</updated>
+    <title>复核是怎么悄悄消失的</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-26-复核是怎么悄悄消失的/"/>
+    <id>https://chenshi.ai/articles/2026-10-26-复核是怎么悄悄消失的/</id>
+    <published>2026-10-26T00:00:00+08:00</published>
+    <updated>2026-10-26T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary>“AI时代的组织变革”系列之十七最时髦的采购，最快的烂尾律所的数字化清单上，近几年多了一个新宠：智能项目管理平台。宣传页上，任务自动分配、进度实时看板、风险智能预警，一应俱全。不少团队真金白银买了。半年后回访，最常见的状态是：看板没人更新，任务靠群里喊，平台沦为文件的中转站。</summary>
+    <summary>刚开始用AI的那阵子，你战战兢兢，每份产出逐字核。用了一个月，没出过错，开始抽着核。三个月，觉得它挺靠谱，扫一眼。半年之后，你不核了。我自己用AI一年多，这个过程完整走过一遍。没有哪一天我郑重决定“从今天起不检查了”。它就是慢慢发生的，等你察觉，复核已经没了。如果你的经历也差不多，先别急着自责。</summary>
   </entry>
   <entry>
-    <title>什么才是 AI 时代的"超级律师"</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-09-18-什么才是-AI-时代的-超级律师/"/>
-    <id>https://chenshi.ai/articles/2026-09-18-什么才是-AI-时代的-超级律师/</id>
-    <published>2026-09-18T00:00:00+08:00</published>
-    <updated>2026-09-18T00:00:00+08:00</updated>
+    <title>AI 编的判例进了法庭，中国的第一张罚单还没开出</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-26-AI-编的判例进了法庭-中国的第一张罚单还没开出/"/>
+    <id>https://chenshi.ai/articles/2026-10-26-AI-编的判例进了法庭-中国的第一张罚单还没开出/</id>
+    <published>2026-10-26T00:00:00+08:00</published>
+    <updated>2026-10-26T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary>“AI时代的组织变革”系列之三这个词正在贬值留心一下就会发现，超级律师这个词正在到处出现。产品发布会用它形容目标用户，培训广告用它招揽报名，一些律师的名片和简介里也开始出现类似的表述。按现在的用法，它差不多等于会用AI的律师，再往前一步就是纯粹的修辞。我喜欢这个词，正因为如此才想把它抢救回来。</summary>
+    <summary>先说结论。律师把AI编造的判例、法条提交给法庭，保证其真实、合法的义务一分不会少。这个义务写在现行的《律师执业管理办法》里，跟用什么工具没有关系。过去两年多，全球已经有一串律师因为AI编造的引注被罚款，甚至被赶出法庭。</summary>
   </entry>
   <entry>
-    <title>为什么资深律师可能比年轻律师更难跨过 AI 门槛</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-09-18-为什么资深律师可能比年轻律师更难跨过-AI-门槛/"/>
-    <id>https://chenshi.ai/articles/2026-09-18-为什么资深律师可能比年轻律师更难跨过-AI-门槛/</id>
-    <published>2026-09-18T00:00:00+08:00</published>
-    <updated>2026-09-18T00:00:00+08:00</updated>
+    <title>AI 拿走的是练习题，不是判断力</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-26-AI-拿走的是练习题-不是判断力/"/>
+    <id>https://chenshi.ai/articles/2026-10-26-AI-拿走的是练习题-不是判断力/</id>
+    <published>2026-10-26T00:00:00+08:00</published>
+    <updated>2026-10-26T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary>“AI时代的组织变革”系列之十四培训教室里的两张脸讲AI应用课这些年，我注意到一个稳定的画面。年轻的律师坐在前排，眼睛亮，散场后围上来问的全是这个能怎么用。资深律师多坐后排，听完演示，表情介于礼貌和不以为然之间。其中有人会走过来，说一句场面话，然后补上真正的意思：它写的东西，你还真敢用？</summary>
+    <summary>去年八月，《柳叶刀·胃肠病学》刊了一项研究，主角不是律师，是肠镜医生。波兰四个中心，一千四百四十三例肠镜检查，做前后对照：引入AI辅助之前，医生在没有AI的状态下自己操作，腺瘤检出率百分之二十八点四；引入AI之后，再让他们自己操作，掉到百分之二十二点四。掉了六个百分点。</summary>
   </entry>
   <entry>
-    <title>律所的 AI 变革，是设计出来的，还是长出来的？</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-09-18-律所的-AI-变革-是设计出来的-还是长出来的/"/>
-    <id>https://chenshi.ai/articles/2026-09-18-律所的-AI-变革-是设计出来的-还是长出来的/</id>
-    <published>2026-09-18T00:00:00+08:00</published>
-    <updated>2026-09-18T00:00:00+08:00</updated>
+    <title>Skill 竞赛比的不是技术，是业务能力</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-22-Skill-竞赛比的不是技术-是业务能力/"/>
+    <id>https://chenshi.ai/articles/2026-10-22-Skill-竞赛比的不是技术-是业务能力/</id>
+    <published>2026-10-22T00:00:00+08:00</published>
+    <updated>2026-10-22T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary>“AI时代的组织变革”系列之一散会之后，变化发生在哪里过去一年，不少律所做了几件相似的事：成立AI委员会或者工作组，采购一批账号，安排几场培训，再发一份应用指引。这些动作我都熟悉，有些还是我参与做的。做完之后，管理者心里通常有一个疑问，只是不太好意思问出口：然后呢？我的观察是，答案往往不在会议室里。</summary>
+    <summary>先看三组数字。2026年5月，iCourt第二届全国法律人AI应用大赛总决赛在北京开赛，410支队伍、超过1500名法律人报名。决赛现场，15家律所、10家企业、10家高校同台，直播间累计50万人观看。</summary>
   </entry>
   <entry>
-    <title>AI 转型的第一推动力，是让成果被看见</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-09-18-AI-转型的第一推动力-是让成果被看见/"/>
-    <id>https://chenshi.ai/articles/2026-09-18-AI-转型的第一推动力-是让成果被看见/</id>
-    <published>2026-09-18T00:00:00+08:00</published>
-    <updated>2026-09-18T00:00:00+08:00</updated>
+    <title>红旗法案：当新技术的监管比技术本身跑得更慢</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-21-红旗法案-当新技术的监管比技术本身跑得更慢/"/>
+    <id>https://chenshi.ai/articles/2026-10-21-红旗法案-当新技术的监管比技术本身跑得更慢/</id>
+    <published>2026-10-21T00:00:00+08:00</published>
+    <updated>2026-10-21T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary>“AI时代的组织变革”系列之六转型的钱都花在哪了盘点一下律所AI转型常见的开销，大致三个去处。一笔花在培训：请讲师、办讲座、组织轮训。一笔花在平台：采购账号、部署工具、做统一入口。这两笔都有人管、有预算科目、有总结可写。</summary>
+    <summary>我讲AI讲了这些年，有一个话题每次都会被问到：会不会管得太严，把产业压垮了。十月十六日我在宁波东方理工大学讲课时，把英国一百六十年前的一部法律搬了出来，作为这个问题的参照。演讲结束有位企业家问我：现在AI出的东西，条款会越写越多，会不会有一天也变成这样一部法律。那天我讲完就走了，没有答好。</summary>
   </entry>
   <entry>
-    <title>当十小时工作缩短到一小时，计时收费怎么办？</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-09-18-当十小时工作缩短到一小时-计时收费怎么办/"/>
-    <id>https://chenshi.ai/articles/2026-09-18-当十小时工作缩短到一小时-计时收费怎么办/</id>
-    <published>2026-09-18T00:00:00+08:00</published>
-    <updated>2026-09-18T00:00:00+08:00</updated>
+    <title>法律服务的供给形态正在变</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-21-法律服务的供给形态正在变/"/>
+    <id>https://chenshi.ai/articles/2026-10-21-法律服务的供给形态正在变/</id>
+    <published>2026-10-21T00:00:00+08:00</published>
+    <updated>2026-10-21T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary>“AI时代的组织变革”系列之七一个越来越常见的时刻项目组的活干完了，质量比预期还稳。合伙人合上电脑，看着工时表发愁。十天的工作量，AI介入之后一天干完。工时表上怎么填？照实填，这一项的收入只剩原来的一成，客户的下一句你们怎么收这么贵已经有了答案；</summary>
+    <summary>十月十六日下午，我在宁波东方理工大学给上市和拟上市企业的负责人讲AI，讲到后半段，我提了一个画面。一个智能体跟着我足够长的时间以后，有些方面会比我做得更稳，因为它不会遗漏。同时它复刻了我的经验和方法。所以它有可能成为一个独立的服务供给主体。</summary>
   </entry>
   <entry>
-    <title>AI 红利用来裁员，还是用来增长？这是两种完全不同的律所</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-09-18-AI-红利用来裁员-还是用来增长-这是两种完全不同的律所/"/>
-    <id>https://chenshi.ai/articles/2026-09-18-AI-红利用来裁员-还是用来增长-这是两种完全不同的律所/</id>
-    <published>2026-09-18T00:00:00+08:00</published>
-    <updated>2026-09-18T00:00:00+08:00</updated>
+    <title>同案同判为什么永远解决不了</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-21-同案同判为什么永远解决不了/"/>
+    <id>https://chenshi.ai/articles/2026-10-21-同案同判为什么永远解决不了/</id>
+    <published>2026-10-21T00:00:00+08:00</published>
+    <updated>2026-10-21T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary>“AI时代的组织变革”系列之二十三一笔突然多出来的钱工具上了，流程改了，同样的人干出了过去一点五倍的活。多出来的产能折成钱，是一笔实实在在的红利。钱怎么用，每家所都在悄悄做选择。这个选择很少被摆上台面讨论——它通常以一次次具体决定的形式发生：这个岗位空缺还补不补？这个团队的新需求接不接？</summary>
+    <summary>《中华人民共和国民法典》第四百九十八条第二款写着这么一句话：对格式条款有两种以上解释的，应当作出不利于提供格式条款一方的解释。我一直觉得这句话有点奇怪。一条写进《民法典》的、全国通用的规则，第一句话就是承认“有两种以上解释”。好像立法者早就知道，条款写下来是清楚的，可落到具体的事情上，它会分岔。</summary>
   </entry>
   <entry>
-    <title>律所竞争力公式：人才密度 × AI 杠杆 ÷ 组织摩擦</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-09-18-律所竞争力公式-人才密度-AI-杠杆-组织摩擦/"/>
-    <id>https://chenshi.ai/articles/2026-09-18-律所竞争力公式-人才密度-AI-杠杆-组织摩擦/</id>
-    <published>2026-09-18T00:00:00+08:00</published>
-    <updated>2026-09-18T00:00:00+08:00</updated>
+    <title>我终于要出门散步了</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-21-我终于要出门散步了/"/>
+    <id>https://chenshi.ai/articles/2026-10-21-我终于要出门散步了/</id>
+    <published>2026-10-21T00:00:00+08:00</published>
+    <updated>2026-10-21T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary>“AI时代的组织变革”系列之十一买哪个模型，是个次要问题律所管理层谈AI，讨论最久的往往是一个最不重要的问题：买哪个模型。这个问题不是不该讨论，是它配不上占用的时长。模型是所有变量里变化最快、差异最容易被追平的一个：今年领先的产品，明年未必；别家用的方案，下个季度你也能用。</summary>
+    <summary>这一年半，我在AI上花的时间越来越多，留给散步的时间越来越少。这话有点尴尬。我到处跟人讲，AI能把人从重复劳动里解放出来。回到自己身上，醒来就坐到办公桌前，试一个新工具，等一轮结果，再看一遍有没有问题。事情确实做得更多了，坐着的时间也更长了。至于身材，正在往我不太想看到的方向发展。</summary>
   </entry>
   <entry>
-    <title>律所知识库的下一步，不是更好地搜索，而是直接执行</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-09-18-律所知识库的下一步-不是更好地搜索-而是直接执行/"/>
-    <id>https://chenshi.ai/articles/2026-09-18-律所知识库的下一步-不是更好地搜索-而是直接执行/</id>
-    <published>2026-09-18T00:00:00+08:00</published>
-    <updated>2026-09-18T00:00:00+08:00</updated>
+    <title>AI 时代怎么识人：两道验证，比一份漂亮的报告有用</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-21-AI-时代怎么识人-两道验证-比一份漂亮的报告有用/"/>
+    <id>https://chenshi.ai/articles/2026-10-21-AI-时代怎么识人-两道验证-比一份漂亮的报告有用/</id>
+    <published>2026-10-21T00:00:00+08:00</published>
+    <updated>2026-10-21T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary>“AI时代的组织变革”系列之十知识库的尴尬多数律所都有一座知识库，多数知识库都有相似的处境：投入不小，用的人不多。拆成可见的现象就是：检索做了一轮又一轮，分类改了一版又一版，权限理了一次又一次，年轻律师遇到问题的时候，第一步还是打开微信问同事。</summary>
+    <summary>十月十六日下午在宁波东方理工大学讲课，我讲到一个结论，台下有人没接住。我说的结论是：成果和人的能力会脱钩。AI干得越好，产出物越漂亮，成果和做出它的人之间的关联就越松。这在律师行业是常识。一份法律意见书到底是谁写的、写到几分，报告本身不告诉你。但台下坐的是企业负责人。</summary>
   </entry>
   <entry>
-    <title>法律知识属于个人，还是属于组织？AI 让旧矛盾无法再回避</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-09-18-法律知识属于个人-还是属于组织-AI-让旧矛盾无法再回避/"/>
-    <id>https://chenshi.ai/articles/2026-09-18-法律知识属于个人-还是属于组织-AI-让旧矛盾无法再回避/</id>
-    <published>2026-09-18T00:00:00+08:00</published>
-    <updated>2026-09-18T00:00:00+08:00</updated>
+    <title>加州律师AI新规：可以借助工具，不能交出判断</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-17-加州律师AI新规-可以借助工具-不能交出判断/"/>
+    <id>https://chenshi.ai/articles/2026-10-17-加州律师AI新规-可以借助工具-不能交出判断/</id>
+    <published>2026-10-17T00:00:00+08:00</published>
+    <updated>2026-10-17T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary>“AI时代的组织变革”系列之二十一个所里都遇过的时刻一位做了十几年的骨干律师离职了。交接清单上写着：案卷移交，客户函告，账号回收。清清楚楚。但清单之外流失的东西没人能列——他对这类交易风险的直觉，他跟客户打交道的分寸，他摸索了多年的一套审查习惯。</summary>
+    <summary>一份AI起草的文书，律师已经通读，案例名称也像真的，这就可以提交了吗？加州刚刚签署的SB574给出了更具体的要求：负责提交的律师须亲自核验引用；使用生成式AI的，还涉及保密、纠错和向法院披露等义务。2026年9月30日，加州州长签署SB574，编为2026年第858章。</summary>
   </entry>
   <entry>
-    <title>AI 越快，律师的注意力反而越稀缺</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-09-18-AI-越快-律师的注意力反而越稀缺/"/>
-    <id>https://chenshi.ai/articles/2026-09-18-AI-越快-律师的注意力反而越稀缺/</id>
-    <published>2026-09-18T00:00:00+08:00</published>
-    <updated>2026-09-18T00:00:00+08:00</updated>
+    <title>法律人的对手，从来不是AI</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-14-法律人的对手-从来不是AI/"/>
+    <id>https://chenshi.ai/articles/2026-10-14-法律人的对手-从来不是AI/</id>
+    <published>2026-10-14T00:00:00+08:00</published>
+    <updated>2026-10-14T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary>“AI时代的组织变革”系列之十五省时间的悖论先说一个很多人正在经历、却很少说出口的体验。工具确实快了。过去一周的活——通读材料、整理清单、起草初稿——现在一小时出结果。按理说，省下的时间应该让人轻松。实际感受却相反：比过去更累，而且累得说不清原因。原因不难找。</summary>
+    <summary>亚马逊去年10月宣布了一轮裁员，约1.4万名公司职员。这一万四千人里，没有谁是因为偷懒被裁，也没有谁是因为业绩太差。他们中的很多人是拿着高薪的工程师、产品经理，履历漂亮，绩效合格。公司业绩也没有问题，那个季度的净销售额1677亿美元，同比增长13%。岗位没有了，仅此而已。</summary>
   </entry>
   <entry>
-    <title>未来的律所，拼人数还是拼人机密度？</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-09-18-未来的律所-拼人数还是拼人机密度/"/>
-    <id>https://chenshi.ai/articles/2026-09-18-未来的律所-拼人数还是拼人机密度/</id>
-    <published>2026-09-18T00:00:00+08:00</published>
-    <updated>2026-09-18T00:00:00+08:00</updated>
+    <title>从“能聊法律”到“能交活”：GLM-Legal 发布，法律 AI 换了考场</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-13-从-能聊法律-到-能交活-GLM-Legal-发布-法律-AI-换了考场/"/>
+    <id>https://chenshi.ai/articles/2026-10-13-从-能聊法律-到-能交活-GLM-Legal-发布-法律-AI-换了考场/</id>
+    <published>2026-10-13T00:00:00+08:00</published>
+    <updated>2026-10-13T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary>“AI把律师拉到80分之后”系列之三个人端一季度一个样，组织端还在选平台我是宁波的律师。过去一段时间，从本地市场看AI在律师行业的渗透，会看到两种温度。个人端很热。智能体产品一波接一波，律师今天刚学会一种用法，过一个季度，工作方式可能已经变了。有人拿它整理案卷，有人写初稿，有人搭自己的工作流程。</summary>
+    <summary>一份软件服务合同摆在桌上。客户是服务接收方，打算换供应商，要看终止和交接条款怎么改。通用大模型的回答挑不出错：建议缩短通知期，要求返还客户数据，加一条交接配合义务。但没法直接用：通知期改成多少天？配合义务写到什么程度？没有一个数字。谈判桌上没人接受“建议考虑”。</summary>
   </entry>
   <entry>
-    <title>律师行业需要的，不是再买一个 AI 平台</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-09-18-律师行业需要的-不是再买一个-AI-平台/"/>
-    <id>https://chenshi.ai/articles/2026-09-18-律师行业需要的-不是再买一个-AI-平台/</id>
-    <published>2026-09-18T00:00:00+08:00</published>
-    <updated>2026-09-18T00:00:00+08:00</updated>
+    <title>流量榜之外，AI的付费价值藏在哪里</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-07-流量榜之外-AI的付费价值藏在哪里/"/>
+    <id>https://chenshi.ai/articles/2026-10-07-流量榜之外-AI的付费价值藏在哪里/</id>
+    <published>2026-10-07T00:00:00+08:00</published>
+    <updated>2026-10-07T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary>“AI把律师拉到80分之后”系列治理篇最容易完成的动作，往往不解决最难的问题面对AI，协会和律所管理者都需要有所行动。采购一个平台是很自然的选择。产品可以展示，账号可以发放，使用人数也可以统计。再安排几场讲座，发布一份应用指引，一套动作看上去就完整了。</summary>
+    <summary>一份AI榜单，如果按访问量排，读到的是人们去哪里；如果按消费支出排，读到的是人们把钱留在哪里。两张榜单未必讲同一个故事。a16z第七版消费AI榜单增加美国消费者观察支出后，出现了一个值得停下来看一眼的数字：支出榜前50个供应商中，有29个没有出现在其web或mobile榜上。</summary>
   </entry>
   <entry>
-    <title>当客户也到了 80 分，律师还能卖什么？</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-09-18-当客户也到了-80-分-律师还能卖什么/"/>
-    <id>https://chenshi.ai/articles/2026-09-18-当客户也到了-80-分-律师还能卖什么/</id>
-    <published>2026-09-18T00:00:00+08:00</published>
-    <updated>2026-09-18T00:00:00+08:00</updated>
+    <title>律所买了AI，下一张表该记什么</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-07-律所买了AI-下一张表该记什么/"/>
+    <id>https://chenshi.ai/articles/2026-10-07-律所买了AI-下一张表该记什么/</id>
+    <published>2026-10-07T00:00:00+08:00</published>
+    <updated>2026-10-07T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary>“AI把律师拉到80分之后”系列之二律师提效，只看到了故事的一半律师行业谈AI，最常见的问题是：它能替律师做多少工作，能节省多少时间。这个问题只看了供给的一边。律师在用智能体写初稿、查资料、整理材料，企业法务和业务部门也在使用同样的工具。律师的效率提高了，客户内部完成常规法律工作的成本也在下降。</summary>
+    <summary>设想一次律所的AI应用汇报：账号已经采购，培训已经举行，调用次数也在增加。会议结束前，还有一个问题需要回答：下一次工作交付，究竟改善在哪里？负责管理的人可能没有看过完整的工作过程。账号记录证明工具被打开过，培训人数证明人参加过，调用次数证明系统收到过请求。</summary>
   </entry>
   <entry>
-    <title>个人效率提高十倍，团队为什么可能一点没变</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-09-18-个人效率提高十倍-团队为什么可能一点没变/"/>
-    <id>https://chenshi.ai/articles/2026-09-18-个人效率提高十倍-团队为什么可能一点没变/</id>
-    <published>2026-09-18T00:00:00+08:00</published>
-    <updated>2026-09-18T00:00:00+08:00</updated>
+    <title>AI的重度买家：把订阅费看成一笔生产投入</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-07-AI的重度买家-把订阅费看成一笔生产投入/"/>
+    <id>https://chenshi.ai/articles/2026-10-07-AI的重度买家-把订阅费看成一笔生产投入/</id>
+    <published>2026-10-07T00:00:00+08:00</published>
+    <updated>2026-10-07T00:00:00+08:00</updated>
     <category term="AI+法律"/>
-    <summary>“AI时代的组织变革”系列之二十五一个尴尬的真相很多律师最近都有一种说不清的失落：工具明明快了那么多，日子却没见松快，收入没见变化，团队的产出也没见多。真相有点尴尬：工具省下来的时间，你根本没有拿到手。它在组织的管道里飘走了。</summary>
+    <summary>设想月底整理账单时，几个AI订阅排在一起。每个工具都有自己的强项，也都曾让人眼前一亮。到了续费那天，问题变得具体：上个月究竟用它完成了什么？这比“哪个模型最强”难回答。试用时得到一个漂亮答案，很容易记住；准备材料、来回沟通、核对出处和修改结果花了多少时间，却未必留下记录。</summary>
   </entry>
 </feed>

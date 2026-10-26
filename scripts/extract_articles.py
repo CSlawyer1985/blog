@@ -21,6 +21,12 @@ from scripts.utils import (
     extract_excerpt, slugify
 )
 
+# 非正文的附属 md——交付说明、为公众号拆分的附件等工作产物，不作为独立博客文章发布
+NON_ARTICLE_MD = {
+    '交付说明.md',
+    'SB574_完整双语法案附件.md',
+}
+
 
 def scan_articles(workspace: str = None) -> list:
     """扫描文章工作区，返回 Article dict 列表（按日期倒序）"""
@@ -47,9 +53,10 @@ def scan_articles(workspace: str = None) -> list:
         if not os.path.isdir(output_dir):
             continue
 
-        # 查找 .md 文件
+        # 查找 .md 文件（排除公众号版与附属工作产物）
         md_files = [f for f in os.listdir(output_dir)
-                    if f.endswith('.md') and not f.endswith('_wechat.md')]
+                    if f.endswith('.md') and not f.endswith('_wechat.md')
+                    and f not in NON_ARTICLE_MD]
 
         for mdfile in md_files:
             md_path = os.path.join(output_dir, mdfile)
