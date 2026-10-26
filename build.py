@@ -19,6 +19,7 @@ import os
 import re
 import shutil
 import subprocess
+import filecmp
 
 # 确保项目根目录在 path 中
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -85,8 +86,8 @@ def build():
 
     # Phase 4: 复制文章封面图
     print("\n[4/5] 复制文章封面图...")
-    cover_count = copy_cover_images(articles)
-    print(f"  已复制 {cover_count} 张封面图")
+    cover_count, cover_unchanged = copy_cover_images(articles)
+    print(f"  已复制 {cover_count} 张封面图，跳过 {cover_unchanged} 张（内容相同）")
 
     # Phase 5: 生成 SEO/GEO 文件 + 注入首页 SEO head
     print("\n[5/5] 生成 SEO/GEO 文件...")
@@ -125,10 +126,42 @@ def check_assets():
             print(f"  ⚠️  缺失: {path}")
 
 
-def copy_cover_images(articles: list) -> int:
+def copy_if_changed(src: str, dest: str) -> bool:
+    """内容不同才写入。每次重写都会触发 iCloud 生成冲突副本（cover N.png）。"""
+    if os.path.isfile(dest) and filecmp.cmp(src, dest, shallow=False):
+        return False
+    shutil.copy2(src, dest)
+    return True
+
+
+def process_cover(src: str, dest: str) -> str:
+    """将 src 缩放/压缩后与现有 dest 比较，内容相同则不落盘。
+
+    返回 'written' 或 'unchanged'。压缩管线是确定性的，构建产物
+    与已有文件逐字节一致时跳过写入，避免 iCloud 冲突副本。
+    """
+    # 临时文件保留原扩展名：PIL/pngquant 按扩展名识别格式
+    tmp = dest + '.building' + os.path.splitext(dest)[1]
+    shutil.copy2(src, tmp)
+    try:
+        if dest.lower().endswith('.png'):
+            resize_image(tmp, COVER_MAX_WIDTH)
+            compress_image(tmp, COVER_QUALITY)
+        if os.path.isfile(dest) and filecmp.cmp(tmp, dest, shallow=False):
+            os.remove(tmp)
+            return 'unchanged'
+        os.replace(tmp, dest)
+        return 'written'
+    except Exception:
+        if os.path.isfile(tmp):
+            os.remove(tmp)
+        raise
+
+
+def copy_cover_images(articles: list) -> tuple:
     """从文章工作区复制封面图到博客输出目录，并自动压缩"""
     count = 0
-    compressed = 0
+    unchanged = 0
     project_root = os.path.dirname(__file__)
     workspace = ARTICLE_WORKSPACE
 
@@ -146,25 +179,15 @@ def copy_cover_images(articles: list) -> int:
             if os.path.isfile(src):
                 os.makedirs(dest_dir, exist_ok=True)
                 dest = os.path.join(dest_dir, f'cover{ext}')
-                shutil.copy2(src, dest)
-                count += 1
-
-                # 先缩放到合理尺寸，再压缩
-                if ext == '.png':
-                    before = os.path.getsize(dest)
-                    resize_image(dest, COVER_MAX_WIDTH)
-                    if compress_image(dest, COVER_QUALITY):
-                        after = os.path.getsize(dest)
-                        saved = (before - after) / before * 100
-                        print(f"  📷 {a['slug'][:50]}... 压缩: {before//1024}KB → {after//1024}KB ({saved:.0f}%)")
-                        compressed += 1
+                if process_cover(src, dest) == 'written':
+                    count += 1
+                else:
+                    unchanged += 1
                 break
 
         copy_referenced_images(a, dest_dir)
 
-    if compressed:
-        print(f"  ✅ 已压缩 {compressed} 张封面图")
-    return count
+    return count, unchanged
 
 
 def copy_referenced_images(article: dict, dest_dir: str) -> int:
@@ -197,8 +220,8 @@ def copy_referenced_images(article: dict, dest_dir: str) -> int:
         if os.path.commonpath([dest, dest_dir]) != os.path.normpath(dest_dir):
             continue
         os.makedirs(os.path.dirname(dest), exist_ok=True)
-        shutil.copy2(source, dest)
-        copied += 1
+        if copy_if_changed(source, dest):
+            copied += 1
 
     return copied
 
