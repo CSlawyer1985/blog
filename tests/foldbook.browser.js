@@ -1,0 +1,73 @@
+async (page) => {
+  const base='http://127.0.0.1:8765', checks=[];
+  const check=(name,ok)=>{checks.push({name,pass:!!ok});if(!ok)throw new Error(name);};
+  const browser=page.context().browser();
+  const context=await browser.newContext({viewport:{width:740,height:900},reducedMotion:'reduce'});
+  await context.addInitScript(()=>{
+    const posture=new EventTarget();posture.type='continuous';
+    Object.defineProperty(navigator,'devicePosture',{value:posture,configurable:true});
+    const viewport=new EventTarget();viewport.segments=[{left:0,top:0,width:740,height:900}];
+    Object.defineProperty(window,'viewport',{value:viewport,configurable:true});
+    window.changeFold=(type,segments)=>{posture.type=type;viewport.segments=segments;posture.dispatchEvent(new Event('change'));viewport.dispatchEvent(new Event('change'));};
+  });
+  const p=await context.newPage();
+  await p.goto(base,{waitUntil:'domcontentloaded'});
+  await p.waitForFunction(()=>!!document.querySelector('script[src^="/js/foldbook-entry.js"]'));
+  check('continuous: no desktop',await p.locator('#foldbook').count()===0);
+  check('ordinary: no desktop stylesheet requested',!(await p.evaluate(()=>performance.getEntriesByType('resource').some(r=>r.name.includes('/css/foldbook')))));
+  const original=await p.locator('body > *').count();
+  await p.evaluate(()=>window.changeFold('folded',[{left:0,top:0,width:360,height:900},{left:380,top:0,width:360,height:900}]));
+  check('book posture: no desktop',await p.locator('#foldbook').count()===0);
+  await p.evaluate(()=>window.changeFold('folded',[{left:0,top:0,width:740,height:470},{left:0,top:480,width:740,height:420}]));
+  await p.waitForSelector('#foldbook');
+  check('laptop posture: desktop',await p.locator('.fb-active').count()===1);
+  await p.locator('[data-open="notes"]').first().click();
+  const note=p.locator('[aria-label="便签内容"]');await note.click();await note.fill('');
+  const key=async k=>p.locator(`[data-key="${k}"]`).click();
+  await key('中 / EN');for(const k of ['n','i','h','a','o','Space'])await key(k);
+  check('pinyin phrase insertion',await note.inputValue()==='你好');
+  await key('Backspace');check('backspace',await note.inputValue()==='你');
+  await key('中 / EN');await key('Shift');await key('a');await key('Space');await key('Enter');
+  check('shift space enter',await note.inputValue()==='你A \n');
+  await note.evaluate(el=>el.setSelectionRange(0,1));await key('b');
+  check('selection replacement',await note.inputValue()==='BA \n');
+  await p.locator('[aria-label="最小化 便签"]').click();check('minimize',await p.locator('.fb-notes').isHidden());
+  await p.locator('[data-open="notes"]').first().click();check('dock restore',await p.locator('.fb-notes').isVisible());
+  await p.locator('[aria-label="最大化 便签"]').click();check('maximize',await p.locator('.fb-notes').evaluate(el=>el.classList.contains('fb-max')));await p.locator('[aria-label="最大化 便签"]').click();
+  const title=p.locator('.fb-notes .fb-title');const r=await title.boundingBox();
+  const before=await p.locator('.fb-notes').evaluate(el=>el.offsetLeft);
+  await p.mouse.move(r.x+r.width/2,r.y+15);await p.mouse.down();await p.mouse.move(r.x+r.width/2+35,r.y+30);await p.mouse.up();
+  check('window drag',await p.locator('.fb-notes').evaluate(el=>el.offsetLeft)>before);
+  await p.locator('[data-open="browser"]').click();
+  // Send real pointer IDs through the trackpad handler; cursor starts at 120,100.
+  const pad=p.locator('.fb-trackpad');const pr=await pad.boundingBox();
+  await p.mouse.move(pr.x+20,pr.y+20);await p.mouse.down();await p.mouse.move(pr.x+40,pr.y+35);await p.mouse.up();
+  check('trackpad cursor moved',await p.locator('.fb-cursor').evaluate(el=>el.style.transform.includes('150px')));
+  await p.locator('.fb-content').evaluate(el=>el.scrollTop=300);
+  const y=await p.locator('.fb-content').evaluate(el=>el.scrollTop);
+  await p.evaluate(()=>window.changeFold('continuous',[{left:0,top:0,width:740,height:900}]));
+  await p.waitForSelector('#foldbook',{state:'detached'});
+  check('unfold restores DOM',await p.locator('body > *').count()===original);
+  check('unfold restores reading position',Math.abs(await p.evaluate(()=>scrollY)-y)<3);
+  await p.evaluate(()=>window.changeFold('folded',[{left:0,top:0,width:740,height:470},{left:0,top:480,width:740,height:420}]));await p.waitForSelector('#foldbook');
+  await p.locator('.fb-exit').click();await p.evaluate(()=>dispatchEvent(new Event('resize')));
+  check('manual exit does not reenter',await p.locator('#foldbook').count()===0);
+  await context.close();
+  // Preview route and full static-page navigation.
+  await page.setViewportSize({width:740,height:900});
+  await page.goto(base+'/?foldbook=preview',{waitUntil:'domcontentloaded'});await page.waitForSelector('#foldbook');
+  await page.locator('[data-open="search"]').first().click();await page.locator('.fb-results a').first().waitFor();
+  await page.locator('input[aria-label="搜索文章"]').fill('法律');
+  check('search filters real articles',await page.locator('.fb-results a').count()>0);
+  await page.locator('.fb-results a').first().click({noWaitAfter:true});await page.waitForURL('**/articles/**');await page.waitForSelector('#foldbook');
+  check('article navigation retains preview',page.url().includes('foldbook=preview'));
+  check('real article visible',await page.locator('.fb-content h1').count()===1);
+  await page.locator('[data-open="browser"]').click();
+  await page.screenshot({path:'/tmp/foldbook-article.png'});
+  await page.goto(base+'/articles/?foldbook=preview',{waitUntil:'domcontentloaded'});await page.waitForSelector('#foldbook');
+  check('article list direct load',await page.locator('.fb-content .article-row').count()>0);
+  await page.goto(base+'/?foldbook=preview',{waitUntil:'domcontentloaded'});await page.waitForSelector('#foldbook');await page.locator('[data-open="browser"]').click();
+  await page.screenshot({path:'/tmp/foldbook-home.png'});
+  for(const width of [375,1440]){await page.setViewportSize({width,height:900});await page.goto(base,{waitUntil:'domcontentloaded'});check('normal '+width+': no desktop',await page.locator('#foldbook').count()===0);await page.screenshot({path:'/tmp/foldbook-normal-'+width+'.png'});}
+  return checks;
+}

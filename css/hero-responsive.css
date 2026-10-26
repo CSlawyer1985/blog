@@ -116,6 +116,25 @@
   .hero-responsive .hero__cta .btn { font-size: 16px; }
   .hero-responsive .portrait__cross { width: 36px; height: 36px; }
 }
+/* 621–1099px: compact desktop composition, approved 2026-10-26.
+   Keep the original portrait aspect ratio and readable text; no page scaling. */
+@media (min-width: 621px) and (max-width: 1099px) {
+  .hero.hero-responsive {
+    padding: calc(var(--nav-h) + 40px) 24px 48px;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    column-gap: 20px;
+    align-items: end;
+  }
+  .hero-responsive .hero__wordmark { font-size: clamp(112px, 18vw, 196px); }
+  .hero-responsive .hero__lower { margin-top: 24px; }
+  .hero-responsive .hero__kicker { font-size: 14px; gap: 8px; }
+  .hero-responsive .hero__slogan { font-size: 18px; line-height: 1.7; margin-bottom: 20px; }
+  .hero-responsive .hero__cta { gap: 8px; }
+  .hero-responsive .hero__cta .btn { flex-basis: 112px; height: 48px; font-size: 13px; padding-inline: 8px; gap: 6px; }
+  .hero-responsive .hero__right { align-self: end; }
+  .hero-responsive .portrait { width: 100%; }
+  .hero-responsive .portrait__cross { width: 24px; height: 24px; }
+}
 @media (min-width: 1100px) {
   .hero.hero-responsive {
     padding: calc(var(--nav-h) + 48px) clamp(48px, 5vw, 88px) 72px calc(var(--rail-x) + 56px);

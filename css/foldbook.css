@@ -1,0 +1,148 @@
+/* Foldbook is opt-in. The ordinary blog has no matching selectors. */
+html.fb-active{overflow:hidden}
+.fb-active body{overflow:hidden}
+#foldbook{font:14px/1.5 system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:#202c30;position:fixed;inset:0;z-index:2147483000;isolation:isolate}
+#foldbook *{box-sizing:border-box}
+#foldbook button{font:inherit;cursor:pointer;border:0;color:inherit;letter-spacing:0}
+#foldbook button:focus-visible,#foldbook input:focus-visible,#foldbook textarea:focus-visible,#foldbook [tabindex]:focus-visible{outline:2px solid #a9432e;outline-offset:2px}
+#foldbook [hidden]{display:none}
+.fb-screen{position:absolute;overflow:hidden;background:radial-gradient(ellipse at 24% 115%,#d7bca3 0 30%,transparent 31%),radial-gradient(ellipse at 90% 120%,#809d9b 0 52%,transparent 53%),linear-gradient(145deg,#25484b,#5f8582);container-type:inline-size}
+.fb-menubar{height:32px;display:flex;align-items:center;gap:16px;padding:0 16px;background:#e9efebdc;backdrop-filter:blur(20px);position:absolute;inset:0 0 auto;z-index:1000;white-space:nowrap}
+.fb-menubar b{font-family:Georgia,serif;font-size:19px}.fb-menubar button{background:none;font-size:12px}.fb-menubar time{margin-left:auto;font-size:12px}
+.fb-wallmark{position:absolute;right:28px;top:65px;color:#edf1e6ab;font:32px/1.4 Georgia,serif;letter-spacing:3px}.fb-wallmark span{display:block;font:12px/2 system-ui;letter-spacing:2px}
+.fb-window{position:absolute;left:3%;top:44px;width:94%;height:calc(100% - 112px);min-height:100px;background:#f9f8f4;border:1px solid #ffffff80;border-radius:10px;box-shadow:0 14px 38px #14262d55;overflow:hidden;display:flex;flex-direction:column;container-type:inline-size}
+.fb-window.fb-search,.fb-window.fb-notes{left:15%;top:56px;width:70%;height:calc(100% - 126px)}
+.fb-window.fb-max{left:0;top:32px;width:100%;height:calc(100% - 32px);border-radius:0}
+.fb-title{height:34px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#e7e7e2;border-bottom:1px solid #c8ceca;position:relative;user-select:none;touch-action:none;cursor:grab}.fb-title strong{font-size:12px;font-weight:500;pointer-events:none}.fb-traffic{position:absolute;left:12px;display:flex;gap:8px}.fb-traffic button{width:12px;height:12px;border-radius:50%;background:#ed695d;border:1px solid #b75b50}.fb-traffic button:nth-child(2){background:#edbf53;border-color:#b48e36}.fb-traffic button:nth-child(3){background:#62ba67;border-color:#438949}
+.fb-content{overflow:auto;flex:1;min-height:0;position:relative;transform:translateZ(0);isolation:isolate;overscroll-behavior:contain;scroll-behavior:auto;background:var(--bg,#f8f6f0)}
+.fb-active .fb-content .nav{position:sticky;top:0}.fb-active .fb-content .rail,.fb-active .fb-content .cross{display:none}.fb-active .fb-content [data-reveal]{opacity:1;visibility:visible;transform:none}.fb-active .fb-content .hero{min-height:500px}.fb-active .fb-content .reading-progress{position:sticky;top:0}.fb-active .fb-content .article-toc{position:sticky;top:12px}
+.fb-appbody{overflow:auto;padding:16px;flex:1;min-height:0}.fb-appbody label{display:block;font-size:12px;font-weight:600}.fb-appbody input,.fb-appbody textarea{display:block;width:100%;font:16px/1.7 system-ui,"PingFang SC",sans-serif;color:#26312f;background:#fffefa;border:1px solid #bcc9c3;border-radius:6px;padding:8px;margin:8px 0}.fb-appbody textarea{min-height:110px;resize:vertical;background:#fff9df}.fb-appbody small{color:#586660;font-size:12px}.fb-results a{display:block;color:#284b48;padding:10px 0;border-bottom:1px solid #dddcd4;font-size:15px}.fb-results small{display:block}
+.fb-dock{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:12px;padding:7px 14px;border-radius:16px;background:#eff1e8a8;backdrop-filter:blur(20px);border:1px solid #ffffff80;z-index:900}.fb-dock button{display:flex;align-items:center;gap:5px;background:transparent;font-size:11px}.fb-dock svg{width:32px;height:32px;background:#f8faf3;border-radius:9px;padding:4px;color:#2b6467}.fb-dock button:hover svg{transform:translateY(-3px);transition:transform 160ms ease-out}
+.fb-base{position:absolute;background:linear-gradient(110deg,#bac0c0,#e5e7e5 46%,#c3c9c9);padding:8px 4%;display:flex;flex-direction:column;border-top:1px solid #f4f5f0;border-radius:0 0 16px 16px;box-shadow:inset 0 0 0 1px #889494;overflow:hidden;gap:6px}
+.fb-candidates{min-height:28px;display:flex;align-items:center;gap:8px;overflow-x:auto;white-space:nowrap;font-size:12px;flex-shrink:0}.fb-candidates button{background:#f5f6ee;border-radius:4px;padding:3px 8px}.fb-candidates span{color:#354b4d}
+.fb-keys{display:flex;flex-direction:column;gap:4px;flex:1;min-height:115px;max-height:58%}.fb-keyrow{display:flex;gap:4px;flex:1;min-height:0;justify-content:center}.fb-keyrow button{min-width:0;flex:1;background:#263134;color:#f0f1e9;border-radius:4px;box-shadow:0 2px 0 #121d20,inset 0 1px 0 #536063;font-size:clamp(10px,1.7vw,15px);line-height:1;padding:3px;transition:transform 80ms ease-out,background 80ms ease-out;touch-action:manipulation}.fb-keyrow button:active{transform:translateY(2px);background:#526865;box-shadow:none}.fb-keyrow button[aria-pressed=true]{background:#536b5b}.fb-keyrow .fb-space{flex:5}
+.fb-palm{flex:1;min-height:48px;display:flex;align-items:center;justify-content:center;gap:20px}.fb-palm>span{font:9px/1.8 system-ui;color:#45585a;letter-spacing:1px;flex:1;text-align:center}.fb-trackpad{width:44%;height:90%;max-height:150px;border:1px solid #8d9b9c;border-radius:7px;background:#c4cdcc;box-shadow:inset 0 1px 2px #ffffff66;touch-action:none;user-select:none}
+.fb-cursor{position:absolute;left:0;top:0;width:18px;height:24px;pointer-events:none;z-index:2000;filter:drop-shadow(0 1px 1px #12282c80)}.fb-cursor svg{width:100%;height:100%}.fb-context{position:absolute;z-index:1500;width:148px;padding:5px;background:#f0f2e9f0;border:1px solid #b2bdb6;border-radius:6px;box-shadow:0 6px 16px #12282c50}.fb-context button{display:block;width:100%;text-align:left;padding:6px;background:none;font-size:12px}.fb-context button:hover{background:#d2dfd7}
+.fb-boot{position:absolute;inset:32px 0 0;background:#202a2c;color:#f4f4ec;z-index:1800;display:flex;align-items:center;justify-content:center;flex-direction:column;animation:fb-boot 1.1s ease-in-out forwards;pointer-events:none}.fb-boot b{font:64px Georgia,serif}.fb-boot span{font-size:12px;letter-spacing:4px}.fb-boot i{width:100px;height:3px;background:#b4c8c4;margin-top:24px;transform-origin:left;animation:fb-load 900ms ease-out}
+@keyframes fb-boot{0%,70%{opacity:1}100%{opacity:0}}@keyframes fb-load{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media(prefers-reduced-motion:reduce){#foldbook *,#foldbook *::before,#foldbook *::after{animation:none;transition:none}.fb-boot{display:none}}
+@media(max-height:500px){.fb-base{padding:3px 4%;gap:3px}.fb-candidates{min-height:20px}.fb-keys{min-height:85px}.fb-palm{min-height:28px}.fb-palm>span{display:none}}
+
+#foldbook .fb-keyrow button{color:#f0f1e9}
+.fb-active .fb-content .hero{padding-top:24px;min-height:420px}
+.fb-active .fb-content .hero__wordmark{font-size:clamp(70px,15cqw,140px)}
+.fb-active .fb-content .hero__lower{margin-top:16px}
+.fb-active .fb-content .progress-bar{position:sticky;top:0}
+.fb-active .fb-content .sidebar-sticky{top:16px}
+@container (max-width:700px){.fb-content .hero__right{display:none}.fb-content .hero{display:block}.fb-content .article-sidebar{display:none}.fb-content .article-layout{display:block}}
+/* A laptop screen keeps the full navigation even at a phone-sized width. */
+html.fb-active .fb-content .nav__toggle{display:none}
+html.fb-active .fb-content .nav__links{display:flex;flex-direction:row;position:static;align-items:center;gap:8px;padding:0;background:none;backdrop-filter:none;border:0;font-size:10px;white-space:nowrap}
+html.fb-active .fb-content .nav__links a{display:flex;min-width:0;min-height:0}
+html.fb-active .fb-content .nav__links .sep{display:inline}
+html.fb-active .fb-content .nav__lang-group{margin:0}
+html.fb-active .fb-content .nav{padding-left:16px;padding-right:16px;gap:12px;overflow-x:auto;min-height:64px;flex-shrink:0}
+html.fb-active .fb-content .nav__brand{font-size:20px;flex-shrink:0}
+html.fb-active .fb-content .nav__links.is-open .nav__github{width:20px;height:20px;margin:0}
+html.fb-active .fb-content .nav__links.is-open .nav__lang{min-width:0;min-height:0}
+/* macOS-inspired icon shelf; labels appear above rather than beside each icon. */
+.fb-dock{gap:12px;padding:8px 12px 12px;border-radius:18px;background:#dbe5dfab;box-shadow:0 5px 18px #14262d35,inset 0 1px 0 #ffffff70;align-items:end;overflow:visible}
+#foldbook .fb-dock button{position:relative;display:block;flex:none;width:44px;height:44px;transform-origin:center bottom;transition:width 100ms ease-out;background:none;padding:0}
+.fb-dock svg{display:block;width:44px;height:44px;border-radius:11px;padding:7px;transform:scale(var(--fb-magnify,1));transform-origin:center bottom;transition:transform 100ms ease-out;box-shadow:0 2px 4px #17343935,inset 0 1px 0 #ffffff90;background:linear-gradient(#48bce9,#1470b9);color:#fafcf7;stroke-width:1.5}
+.fb-dock button[data-open=search] svg{background:linear-gradient(#466475,#233e55);color:#f8fbfc}
+.fb-dock button[data-open=notes] svg{background:linear-gradient(#f4cf56 0 29%,#fff9df 30%);color:#786132}
+.fb-dock button:hover svg{transform:scale(var(--fb-magnify,1))}
+.fb-dock button::after{content:'';position:absolute;bottom:-7px;left:calc(50% - 2px);width:4px;height:4px;border-radius:50%;background:#314e50}
+.fb-dock button span{position:absolute;bottom:calc(100% * var(--fb-magnify,1) + 10px);left:50%;transform:translateX(-50%);padding:3px 9px;border:1px solid #d9e1da;border-radius:5px;background:#f2f4ebee;white-space:nowrap;font-size:12px;opacity:0;pointer-events:none;transition:opacity 100ms ease-out}
+.fb-dock button.fb-dock-near span,.fb-dock button:focus-visible span{opacity:1}
+/* Larger usable trackpad, a compact key bed, and clear uninterrupted palm rests. */
+.fb-base{display:grid;grid-template-rows:28px minmax(100px,.95fr) minmax(90px,1fr);gap:10px;padding:8px 3% 12px}
+.fb-keys{width:88%;justify-self:center;min-height:0;max-height:none;padding:6px;background:#8a9597;border-radius:8px;box-shadow:inset 0 1px 3px #52646666;gap:5px}
+.fb-palm{min-height:0;gap:0;display:grid;grid-template-columns:1fr minmax(0,1.35fr) 1fr;align-items:center;justify-items:stretch}
+.fb-palm>span{display:block}
+.fb-trackpad{width:100%;height:100%;max-height:none;border-radius:8px;background:linear-gradient(125deg,#cbd2d0,#c1cac8);border-color:#8b9999;box-shadow:inset 0 1px 1px #f9fcf280,0 1px 0 #f2f6ef88}
+@media(max-height:500px){.fb-base{grid-template-rows:20px minmax(70px,.95fr) minmax(40px,1fr);gap:5px;padding:4px 3% 6px}.fb-keys{min-height:0;gap:3px;padding:4px}.fb-palm{min-height:0}.fb-palm>span{display:block}}
+@media(prefers-reduced-motion:reduce){#foldbook .fb-dock button,.fb-dock svg,.fb-dock button span{transition:none}}
+.fb-palm{grid-template-columns:1fr minmax(0,2.5fr) 1fr}
+.fb-keyrow button{white-space:nowrap}
+#foldbook .fb-keyrow:last-child button{font-size:11px}
+/* Hardware geometry derived from Apple 14-inch top-down reference:
+   keyboard ≈89% of chassis width, trackpad ≈42%, trackpad ratio ≈1.62.
+   Segment height remains hardware-driven; proportions adapt in short regions. */
+.fb-screen { border-radius:12px 12px 0 0; }
+.fb-screen::after {
+  content:'';position:absolute;inset:0;border:5px solid #151718;
+  border-top-width:7px;border-bottom-width:12px;border-radius:12px 12px 0 0;
+  box-shadow:inset 0 0 0 1px #050606,0 1px 0 #727777;
+  pointer-events:none;z-index:2100;
+}
+.fb-base {
+  display:grid;grid-template-rows:minmax(0,1.4fr) minmax(0,1fr);
+  padding:28px 0 12px;gap:10px;overflow:visible;
+  background:linear-gradient(100deg,#b1b4b5,#c3c5c6 45%,#b6b9ba);
+  border:1px solid #8e9395;border-top:0;border-radius:0 0 16px 16px;
+  box-shadow:inset 0 1px 0 #e5e7e8,0 2px 1px #72787a;
+}
+.fb-base::before {
+  content:'';position:absolute;top:-8px;left:12%;right:12%;height:12px;
+  border-radius:0 0 3px 3px;
+  background:linear-gradient(90deg,#85898b 0 5%,#17191a 5% 95%,#85898b 95%);
+  box-shadow:inset 0 3px 2px #080a0bcc,inset 0 -1px 0 #d2d5d566,0 2px 2px #1c23264d;
+  pointer-events:none;z-index:1;
+}
+.fb-base::after {
+  content:'';position:absolute;bottom:0;left:41%;right:41%;height:4px;
+  background:#9c9fa1;border-radius:6px 6px 0 0;box-shadow:inset 0 1px 1px #7e8385;
+  pointer-events:none;
+}
+.fb-keys {
+  width:89%;height:100%;min-height:0;max-height:none;padding:4px;gap:3px;
+  position:relative;background:#242627;border:1px solid #7c8082;border-radius:7px;
+  box-shadow:inset 0 1px 3px #0f1112,0 1px 0 #e0e3e4;
+}
+.fb-keys::before,.fb-keys::after {
+  content:'';position:absolute;top:2px;bottom:2px;width:3.8%;
+  background-image:radial-gradient(#515657 0.6px,transparent .9px);
+  background-size:3px 3px;opacity:.65;pointer-events:none;
+}
+.fb-keys::before{right:calc(100% + 5px)}.fb-keys::after{left:calc(100% + 5px)}
+.fb-keyrow{gap:3px;flex:1;min-height:0;}
+.fb-keyrow:first-child{flex:.75}
+#foldbook .fb-keyrow button {
+  background:linear-gradient(#252829,#1d2021);color:#e2e4e4;border:1px solid #373b3d;
+  border-radius:4px;box-shadow:0 1px 1px #050708,inset 0 .5px 0 #4c5153;
+  padding:2px;font-size:clamp(9px,1.65vw,12px);font-weight:400;white-space:nowrap;
+}
+#foldbook .fb-keyrow:first-child button{font-size:9px}
+#foldbook .fb-keyrow:last-child button{font-size:clamp(7px,1.25vw,10px)}
+#foldbook .fb-keyrow button:active{background:#4c5254;transform:translateY(1px);box-shadow:none}
+#foldbook .fb-keyrow button[aria-pressed=true]{background:#4d5d52}
+.fb-keyrow [data-key=Backspace],.fb-keyrow [data-key=Enter]{flex:1.6}
+.fb-keyrow [data-key=Tab]{flex:1.4}
+.fb-keyrow [data-key=CapsLock]{flex:1.7}
+.fb-keyrow [data-key=Shift],.fb-keyrow [data-key=ShiftRight]{flex:2.1}
+.fb-keyrow .fb-space{flex:6}
+.fb-palm{display:grid;grid-template-columns:1fr minmax(0,1.45fr) 1fr;align-items:stretch;min-height:0;gap:0}
+.fb-trackpad{
+  width:100%;height:100%;max-height:none;min-height:0;border:1px solid #969b9e;
+  border-radius:6px;background:linear-gradient(115deg,#bfc2c4,#b9bdc0);
+  box-shadow:inset 0 1px 1px #a2a7aa,0 1px 0 #d7dadb;
+}
+.fb-palm>span{display:block}
+.fb-candidates{
+  position:absolute;top:3px;left:6%;right:6%;height:22px;min-height:0;
+  padding:0;gap:6px;font-size:10px;z-index:2;
+}
+.fb-candidates:has(button){background:#e3e5df;border:1px solid #a1aaa8;border-radius:4px;padding:0 4px}
+.fb-candidates button{font-size:11px;padding:0 4px}
+.fb-candidates:not(:has(button))>span{opacity:.65;font-size:9px}
+@media(max-height:500px){
+  .fb-base{padding-top:22px;padding-bottom:7px;gap:6px;grid-template-rows:minmax(0,1.4fr) minmax(0,1fr)}
+  .fb-keys{padding:3px;gap:2px}.fb-keyrow{gap:2px}.fb-palm{min-height:0}
+  #foldbook .fb-keyrow button{font-size:8px;border-radius:3px;padding:1px}
+  #foldbook .fb-keyrow:first-child button,#foldbook .fb-keyrow:last-child button{font-size:6px}
+  .fb-candidates{height:18px;top:2px}
+}
+
+.fb-screen::before{content:'';position:absolute;top:5px;left:43%;right:43%;height:7px;background:#151718;border-radius:0 0 4px 4px;pointer-events:none;z-index:2101}
+.fb-candidates[data-composing=false]>span{visibility:hidden}
