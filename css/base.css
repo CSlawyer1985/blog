@@ -134,12 +134,16 @@ html[data-lang="zh"] [lang="zh"].btn { display: inline-flex; }
 }
 
 /* ───── Responsive baseline ───── */
+/* 移动/桌面结构边界为 620px：折叠屏展开竖屏（≈626px）及以上保持桌面布局 */
 @media (max-width:860px){
   .nav__links{gap:10px;font-size:9.5px;letter-spacing:.04em;}
+  .rail,.cross{display:none;}
+}
+
+@media (max-width:620px){
   .nav__links .sep,.nav__stat{display:none;}
   .nav__links a:nth-of-type(3),
   .nav__links a:nth-of-type(4){display:none;}
-  .rail,.cross{display:none;}
 }
 
 @media (max-width:600px){

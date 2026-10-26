@@ -15,6 +15,8 @@
     <meta property="og:description" content="先看三组数字。2026年5月，iCourt第二届全国法律人AI应用大赛总决赛在北京开赛，410支队伍、超过1500名法律人报名。决赛现场，15家律所、10家企业、10家高校同台，直播间累计50万人观看。">
     <meta property="og:url" content="https://chenshi.ai/articles/2026-10-22-Skill-竞赛比的不是技术-是业务能力/">
     <meta property="og:image" content="https://chenshi.ai/articles/2026-10-22-Skill-竞赛比的不是技术-是业务能力/cover.png">
+    <meta property="og:image:width" content="1400">
+    <meta property="og:image:height" content="595">
     <meta property="og:locale" content="zh_CN">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Skill 竞赛比的不是技术，是业务能力">
@@ -42,7 +44,9 @@
       "description": "先看三组数字。2026年5月，iCourt第二届全国法律人AI应用大赛总决赛在北京开赛，410支队伍、超过1500名法律人报名。决赛现场，15家律所、10家企业、10家高校同台，直播间累计50万人观看。",
       "image": {
         "@type": "ImageObject",
-        "url": "https://chenshi.ai/articles/2026-10-22-Skill-竞赛比的不是技术-是业务能力/cover.png"
+        "url": "https://chenshi.ai/articles/2026-10-22-Skill-竞赛比的不是技术-是业务能力/cover.png",
+        "width": 1400,
+        "height": 595
       },
       "inLanguage": "zh-CN",
       "author": {
@@ -384,15 +388,17 @@
     .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
 
     /* Responsive */
+    /* 移动/桌面结构边界为 620px：折叠屏展开竖屏（≈626px）及以上保持双栏桌面布局 */
     @media (max-width:860px){
-      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
-      .article-sidebar{display:none}
+      .article-layout{grid-template-columns:176px minmax(0,1fr);padding:96px 24px 60px;gap:32px}
       .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:16px;line-height:1.8}
+    }
+    @media (max-width:620px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 48px;gap:24px}
+      .article-sidebar{display:none}
       .article-body{font-size:15px;line-height:1.8}
       .related-mobile{display:block}
-    }
-    @media (max-width:600px){
-      .article-layout{padding:80px 20px 48px}
       .article-meta-top{font-size:10px;gap:8px}
       .article-cover{margin-bottom:28px}
       .article-prevnext{grid-template-columns:1fr;gap:16px}

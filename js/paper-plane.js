@@ -8,7 +8,7 @@
   'use strict';
 
   const preference = matchMedia('(prefers-reduced-motion: reduce)');
-  const mobileMQ = matchMedia('(max-width: 680px)');
+  const mobileMQ = matchMedia('(max-width: 620px)');
   const home = document.querySelector('.plane-home');
   const needs = ['#about', '#writing', '#speak', '#build', '#project-gallery', '#contact']
     .map(sel => document.querySelector(sel));
@@ -97,7 +97,7 @@
   };
 
   function measure() {
-    const W = document.documentElement.clientWidth, H = innerHeight, mobile = W <= 680;
+    const W = document.documentElement.clientWidth, H = innerHeight, mobile = W <= 620;
     const [about, writing, speak, build, gallery] = needs.map(box);
     const zhTalk = document.querySelector('.contact__title a[lang="zh"]');
     const ruler = document.querySelector('.build__ruler');
@@ -158,7 +158,7 @@
     lastTime = time;
     currentY = currentY === null ? target : mix(currentY, target, 1 - Math.exp(-dt / 85));
     const p = sampleFlightPath(segments, currentY);
-    const mobile = innerWidth <= 680;
+    const mobile = innerWidth <= 620;
 
     plane.style.opacity = String(clamp(scrollY / 140)); // 从手里掷出：起手隐藏，滚动淡入；滚回顶部则收回手中
     const scale = mix(1, mobile ? .56 : .72, clamp(currentY / (route[route.length - 1].at || 1)) * .3);

@@ -15,6 +15,8 @@
     <meta property="og:description" content="十月十六日下午，我在宁波东方理工大学给上市和拟上市企业的负责人讲AI，讲到后半段，我提了一个画面。一个智能体跟着我足够长的时间以后，有些方面会比我做得更稳，因为它不会遗漏。同时它复刻了我的经验和方法。所以它有可能成为一个独立的服务供给主体。">
     <meta property="og:url" content="https://chenshi.ai/articles/2026-10-21-法律服务的供给形态正在变/">
     <meta property="og:image" content="https://chenshi.ai/articles/2026-10-21-法律服务的供给形态正在变/cover.png">
+    <meta property="og:image:width" content="1400">
+    <meta property="og:image:height" content="595">
     <meta property="og:locale" content="zh_CN">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="法律服务的供给形态正在变">
@@ -42,7 +44,9 @@
       "description": "十月十六日下午，我在宁波东方理工大学给上市和拟上市企业的负责人讲AI，讲到后半段，我提了一个画面。一个智能体跟着我足够长的时间以后，有些方面会比我做得更稳，因为它不会遗漏。同时它复刻了我的经验和方法。所以它有可能成为一个独立的服务供给主体。",
       "image": {
         "@type": "ImageObject",
-        "url": "https://chenshi.ai/articles/2026-10-21-法律服务的供给形态正在变/cover.png"
+        "url": "https://chenshi.ai/articles/2026-10-21-法律服务的供给形态正在变/cover.png",
+        "width": 1400,
+        "height": 595
       },
       "inLanguage": "zh-CN",
       "author": {
@@ -384,15 +388,17 @@
     .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
 
     /* Responsive */
+    /* 移动/桌面结构边界为 620px：折叠屏展开竖屏（≈626px）及以上保持双栏桌面布局 */
     @media (max-width:860px){
-      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
-      .article-sidebar{display:none}
+      .article-layout{grid-template-columns:176px minmax(0,1fr);padding:96px 24px 60px;gap:32px}
       .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:16px;line-height:1.8}
+    }
+    @media (max-width:620px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 48px;gap:24px}
+      .article-sidebar{display:none}
       .article-body{font-size:15px;line-height:1.8}
       .related-mobile{display:block}
-    }
-    @media (max-width:600px){
-      .article-layout{padding:80px 20px 48px}
       .article-meta-top{font-size:10px;gap:8px}
       .article-cover{margin-bottom:28px}
       .article-prevnext{grid-template-columns:1fr;gap:16px}

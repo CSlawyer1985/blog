@@ -15,6 +15,8 @@
     <meta property="og:description" content="亚马逊去年10月宣布了一轮裁员，约1.4万名公司职员。这一万四千人里，没有谁是因为偷懒被裁，也没有谁是因为业绩太差。他们中的很多人是拿着高薪的工程师、产品经理，履历漂亮，绩效合格。公司业绩也没有问题，那个季度的净销售额1677亿美元，同比增长13%。岗位没有了，仅此而已。">
     <meta property="og:url" content="https://chenshi.ai/articles/2026-10-14-法律人的对手-从来不是AI/">
     <meta property="og:image" content="https://chenshi.ai/articles/2026-10-14-法律人的对手-从来不是AI/cover.png">
+    <meta property="og:image:width" content="1400">
+    <meta property="og:image:height" content="595">
     <meta property="og:locale" content="zh_CN">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="法律人的对手，从来不是AI">
@@ -42,7 +44,9 @@
       "description": "亚马逊去年10月宣布了一轮裁员，约1.4万名公司职员。这一万四千人里，没有谁是因为偷懒被裁，也没有谁是因为业绩太差。他们中的很多人是拿着高薪的工程师、产品经理，履历漂亮，绩效合格。公司业绩也没有问题，那个季度的净销售额1677亿美元，同比增长13%。岗位没有了，仅此而已。",
       "image": {
         "@type": "ImageObject",
-        "url": "https://chenshi.ai/articles/2026-10-14-法律人的对手-从来不是AI/cover.png"
+        "url": "https://chenshi.ai/articles/2026-10-14-法律人的对手-从来不是AI/cover.png",
+        "width": 1400,
+        "height": 595
       },
       "inLanguage": "zh-CN",
       "author": {
@@ -384,15 +388,17 @@
     .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
 
     /* Responsive */
+    /* 移动/桌面结构边界为 620px：折叠屏展开竖屏（≈626px）及以上保持双栏桌面布局 */
     @media (max-width:860px){
-      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
-      .article-sidebar{display:none}
+      .article-layout{grid-template-columns:176px minmax(0,1fr);padding:96px 24px 60px;gap:32px}
       .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:16px;line-height:1.8}
+    }
+    @media (max-width:620px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 48px;gap:24px}
+      .article-sidebar{display:none}
       .article-body{font-size:15px;line-height:1.8}
       .related-mobile{display:block}
-    }
-    @media (max-width:600px){
-      .article-layout{padding:80px 20px 48px}
       .article-meta-top{font-size:10px;gap:8px}
       .article-cover{margin-bottom:28px}
       .article-prevnext{grid-template-columns:1fr;gap:16px}

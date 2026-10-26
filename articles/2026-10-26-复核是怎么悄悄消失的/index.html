@@ -15,6 +15,8 @@
     <meta property="og:description" content="刚开始用AI的那阵子，你战战兢兢，每份产出逐字核。用了一个月，没出过错，开始抽着核。三个月，觉得它挺靠谱，扫一眼。半年之后，你不核了。我自己用AI一年多，这个过程完整走过一遍。没有哪一天我郑重决定“从今天起不检查了”。它就是慢慢发生的，等你察觉，复核已经没了。如果你的经历也差不多，先别急着自责。">
     <meta property="og:url" content="https://chenshi.ai/articles/2026-10-26-复核是怎么悄悄消失的/">
     <meta property="og:image" content="https://chenshi.ai/articles/2026-10-26-复核是怎么悄悄消失的/cover.png">
+    <meta property="og:image:width" content="1400">
+    <meta property="og:image:height" content="595">
     <meta property="og:locale" content="zh_CN">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="复核是怎么悄悄消失的">
@@ -42,7 +44,9 @@
       "description": "刚开始用AI的那阵子，你战战兢兢，每份产出逐字核。用了一个月，没出过错，开始抽着核。三个月，觉得它挺靠谱，扫一眼。半年之后，你不核了。我自己用AI一年多，这个过程完整走过一遍。没有哪一天我郑重决定“从今天起不检查了”。它就是慢慢发生的，等你察觉，复核已经没了。如果你的经历也差不多，先别急着自责。",
       "image": {
         "@type": "ImageObject",
-        "url": "https://chenshi.ai/articles/2026-10-26-复核是怎么悄悄消失的/cover.png"
+        "url": "https://chenshi.ai/articles/2026-10-26-复核是怎么悄悄消失的/cover.png",
+        "width": 1400,
+        "height": 595
       },
       "inLanguage": "zh-CN",
       "author": {
@@ -384,15 +388,17 @@
     .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
 
     /* Responsive */
+    /* 移动/桌面结构边界为 620px：折叠屏展开竖屏（≈626px）及以上保持双栏桌面布局 */
     @media (max-width:860px){
-      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
-      .article-sidebar{display:none}
+      .article-layout{grid-template-columns:176px minmax(0,1fr);padding:96px 24px 60px;gap:32px}
       .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:16px;line-height:1.8}
+    }
+    @media (max-width:620px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 48px;gap:24px}
+      .article-sidebar{display:none}
       .article-body{font-size:15px;line-height:1.8}
       .related-mobile{display:block}
-    }
-    @media (max-width:600px){
-      .article-layout{padding:80px 20px 48px}
       .article-meta-top{font-size:10px;gap:8px}
       .article-cover{margin-bottom:28px}
       .article-prevnext{grid-template-columns:1fr;gap:16px}

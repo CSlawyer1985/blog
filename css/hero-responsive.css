@@ -106,7 +106,7 @@
   outline-offset: 5px;
 }
 .hero-responsive + .about { padding-top: 56px; }
-@media (min-width: 680px) {
+@media (min-width: 620px) {
   .hero.hero-responsive {
     padding: calc(var(--nav-h) + 40px) 48px 56px;
     gap: 40px;

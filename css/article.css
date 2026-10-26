@@ -233,18 +233,24 @@ body {
 .article-row:hover .article-row__arr { transform: translateX(5px); color: #C0392B; }
 
 /* ── Responsive ── */
+/* 620–860px：紧凑桌面——保留双栏（侧栏收窄），不再隐藏侧栏 */
 @media (max-width: 860px) {
   .article-layout {
+    grid-template-columns: 176px minmax(0, 1fr);
+    padding: 96px var(--pad-x, 24px) 60px;
+    gap: 32px;
+  }
+  .article-title { font-size: clamp(24px, 5vw, 32px); }
+  .article-body { font-size: 16px; line-height: 1.8; }
+}
+@media (max-width: 620px) {
+  .article-layout {
     grid-template-columns: 1fr;
-    padding: 88px var(--pad-x, 20px) 60px;
+    padding: 88px var(--pad-x, 20px) 48px;
     gap: 24px;
   }
   .article-sidebar { display: none; }
-  .article-title { font-size: clamp(24px, 5vw, 32px); }
   .article-body { font-size: 15px; line-height: 1.8; }
-}
-@media (max-width: 600px) {
-  .article-layout { padding: 80px var(--pad-x, 20px) 48px; }
   .article-meta-top { font-size: 10px; gap: 8px; }
   .article-cover { margin-bottom: 28px; }
   .article-row { gap: 12px; padding: 18px 0; }

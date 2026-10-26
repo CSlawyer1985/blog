@@ -561,7 +561,8 @@
     }
 
     /* ===== 17. Responsive: Stack on mobile ===== */
-    @media (max-width:860px){
+    /* 结构分栏边界 620px：与全站一致，折叠屏展开竖屏（≈626px）保持双栏 */
+    @media (max-width:620px){
       html,body{overflow:auto;height:auto;}
       .split{
         grid-template-columns:1fr;

@@ -965,7 +965,7 @@ a.cbar__item:hover .cbar__arr{transform:translateX(5px);color:var(--accent);}
   .portrait__cross--br{right:60px;bottom:-10px;}
 }
 
-@media (max-width:680px){
+@media (max-width:620px){
   .hero{
     grid-template-columns:1fr;
     padding:calc(var(--nav-h) + 3vh) var(--pad-x) 24px var(--pad-x);
@@ -1160,7 +1160,7 @@ body.flight-on .plane-home{visibility:hidden;}
 body.flight-on .travelling-plane{visibility:visible;}
 body.flight-on .plane-trail{display:block;}
 
-@media (max-width:680px){
+@media (max-width:620px){
   /* 移动端不展示飞机（单列版式遮挡严重，整体移除） */
   .plane-home,.travelling-plane,.plane-trail{display:none!important;}
 }

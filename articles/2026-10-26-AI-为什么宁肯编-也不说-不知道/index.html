@@ -15,6 +15,8 @@
     <meta property="og:description" content="我之前写过一篇谈AI幻觉的文章，核心是机制那一层：大模型生成一条正确的法条，和生成一条编造的法条，用的是同一套概率计算，模型内部没有一个“这句是真的”开关。所以幻觉消不掉，只能靠流程管住。今天想往深走一层。就算承认一切都是概率，还有一个问题没回答：为什么它总是猜，而不肯说“我不知道”？">
     <meta property="og:url" content="https://chenshi.ai/articles/2026-10-26-AI-为什么宁肯编-也不说-不知道/">
     <meta property="og:image" content="https://chenshi.ai/articles/2026-10-26-AI-为什么宁肯编-也不说-不知道/cover.png">
+    <meta property="og:image:width" content="1400">
+    <meta property="og:image:height" content="595">
     <meta property="og:locale" content="zh_CN">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="AI 为什么宁肯编，也不说“不知道”">
@@ -42,7 +44,9 @@
       "description": "我之前写过一篇谈AI幻觉的文章，核心是机制那一层：大模型生成一条正确的法条，和生成一条编造的法条，用的是同一套概率计算，模型内部没有一个“这句是真的”开关。所以幻觉消不掉，只能靠流程管住。今天想往深走一层。就算承认一切都是概率，还有一个问题没回答：为什么它总是猜，而不肯说“我不知道”？",
       "image": {
         "@type": "ImageObject",
-        "url": "https://chenshi.ai/articles/2026-10-26-AI-为什么宁肯编-也不说-不知道/cover.png"
+        "url": "https://chenshi.ai/articles/2026-10-26-AI-为什么宁肯编-也不说-不知道/cover.png",
+        "width": 1400,
+        "height": 595
       },
       "inLanguage": "zh-CN",
       "author": {
@@ -384,15 +388,17 @@
     .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
 
     /* Responsive */
+    /* 移动/桌面结构边界为 620px：折叠屏展开竖屏（≈626px）及以上保持双栏桌面布局 */
     @media (max-width:860px){
-      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
-      .article-sidebar{display:none}
+      .article-layout{grid-template-columns:176px minmax(0,1fr);padding:96px 24px 60px;gap:32px}
       .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:16px;line-height:1.8}
+    }
+    @media (max-width:620px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 48px;gap:24px}
+      .article-sidebar{display:none}
       .article-body{font-size:15px;line-height:1.8}
       .related-mobile{display:block}
-    }
-    @media (max-width:600px){
-      .article-layout{padding:80px 20px 48px}
       .article-meta-top{font-size:10px;gap:8px}
       .article-cover{margin-bottom:28px}
       .article-prevnext{grid-template-columns:1fr;gap:16px}

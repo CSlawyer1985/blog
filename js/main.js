@@ -403,7 +403,7 @@ function initMobileNav() {
 (function() {
   const style = document.createElement('style');
   style.textContent = `
-    @media (max-width: 860px) {
+    @media (max-width: 620px) {
       .nav__toggle { display: flex; }
       .nav__links:not(.is-open) { display: none; }
       .nav__links.is-open {

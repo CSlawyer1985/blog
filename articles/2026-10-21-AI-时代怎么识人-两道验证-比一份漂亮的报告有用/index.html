@@ -15,6 +15,8 @@
     <meta property="og:description" content="十月十六日下午在宁波东方理工大学讲课，我讲到一个结论，台下有人没接住。我说的结论是：成果和人的能力会脱钩。AI干得越好，产出物越漂亮，成果和做出它的人之间的关联就越松。这在律师行业是常识。一份法律意见书到底是谁写的、写到几分，报告本身不告诉你。但台下坐的是企业负责人。">
     <meta property="og:url" content="https://chenshi.ai/articles/2026-10-21-AI-时代怎么识人-两道验证-比一份漂亮的报告有用/">
     <meta property="og:image" content="https://chenshi.ai/articles/2026-10-21-AI-时代怎么识人-两道验证-比一份漂亮的报告有用/cover.png">
+    <meta property="og:image:width" content="1400">
+    <meta property="og:image:height" content="595">
     <meta property="og:locale" content="zh_CN">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="AI 时代怎么识人：两道验证，比一份漂亮的报告有用">
@@ -42,7 +44,9 @@
       "description": "十月十六日下午在宁波东方理工大学讲课，我讲到一个结论，台下有人没接住。我说的结论是：成果和人的能力会脱钩。AI干得越好，产出物越漂亮，成果和做出它的人之间的关联就越松。这在律师行业是常识。一份法律意见书到底是谁写的、写到几分，报告本身不告诉你。但台下坐的是企业负责人。",
       "image": {
         "@type": "ImageObject",
-        "url": "https://chenshi.ai/articles/2026-10-21-AI-时代怎么识人-两道验证-比一份漂亮的报告有用/cover.png"
+        "url": "https://chenshi.ai/articles/2026-10-21-AI-时代怎么识人-两道验证-比一份漂亮的报告有用/cover.png",
+        "width": 1400,
+        "height": 595
       },
       "inLanguage": "zh-CN",
       "author": {
@@ -384,15 +388,17 @@
     .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
 
     /* Responsive */
+    /* 移动/桌面结构边界为 620px：折叠屏展开竖屏（≈626px）及以上保持双栏桌面布局 */
     @media (max-width:860px){
-      .article-layout{grid-template-columns:1fr;padding:88px 20px 60px;gap:24px}
-      .article-sidebar{display:none}
+      .article-layout{grid-template-columns:176px minmax(0,1fr);padding:96px 24px 60px;gap:32px}
       .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:16px;line-height:1.8}
+    }
+    @media (max-width:620px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 48px;gap:24px}
+      .article-sidebar{display:none}
       .article-body{font-size:15px;line-height:1.8}
       .related-mobile{display:block}
-    }
-    @media (max-width:600px){
-      .article-layout{padding:80px 20px 48px}
       .article-meta-top{font-size:10px;gap:8px}
       .article-cover{margin-bottom:28px}
       .article-prevnext{grid-template-columns:1fr;gap:16px}
