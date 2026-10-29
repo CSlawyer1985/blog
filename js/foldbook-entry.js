@@ -5,9 +5,10 @@
   const preview = params.get('foldbook') === 'preview';
   const folded = matchMedia('(device-posture: folded)');
   const vertical = matchMedia('(vertical-viewport-segments: 2)');
-  /* 手动入口的设备特征：折叠屏内屏横向展开（如 Pura X ≈1064×660）。
-     仅决定是否显示入口按钮，不自动进入——展平/半折在无铰链 API 的浏览器中不可区分。 */
-  const manualSig = matchMedia('(min-width: 621px) and (max-width: 1099px) and (min-height: 480px) and (min-aspect-ratio: 6/5) and (pointer: coarse) and (hover: none)');
+  /* 手动入口的设备特征：触屏 + 粗指针 + 中大屏（≥621px，含 iPad 各姿态与折叠屏展开态）。
+     仅决定是否显示入口按钮，不自动进入——展平/半折在无铰链 API 的浏览器中不可区分。
+     手机竖屏（宽 <621）与手机横屏（高 <480）不显示；电脑指针精细不显示。 */
+  const manualSig = matchMedia('(min-width: 621px) and (min-height: 480px) and (pointer: coarse) and (hover: none)');
   function cssSegments() {
     if (!vertical.matches) return null;
     const probe = document.createElement('div');
