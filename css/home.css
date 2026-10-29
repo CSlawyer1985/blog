@@ -1023,6 +1023,33 @@ a.cbar__item:hover .cbar__arr{transform:translateX(5px);color:var(--accent);}
   .cbar__item + .cbar__item{border-left:0;border-top:1px solid var(--line);}
 }
 
+/* 621–1099px（compact）：统一各板块左右页边距为 24px，与 hero、project-gallery 对齐。
+   桌面版的左轨（rail-x+56/72）只保留给 ≥1100px。2026-10-29 折叠屏真机反馈。 */
+@media (min-width:621px) and (max-width:1099px){
+  .about,
+  .writing,
+  .speak,
+  .build,
+  .contact,
+  section.project-gallery{padding-left:24px;padding-right:24px;}
+}
+
+/* 621–959px：About 右列宽度容不下三圆环流程（min-content 364px），
+   降为上下堆叠；≥960px 恢复双列。 */
+@media (min-width:621px) and (max-width:959px){
+  .about{grid-template-columns:1fr;}
+  .about__right{padding-top:0;}
+  .blueprint{height:auto;aspect-ratio:1.34;}
+  .bp__anno--tl{left:20px;}
+  .bp__anno--spec{left:20px;}
+  .bp__anno--ver{left:20px;}
+  .bp__anno--tr{right:20px;}
+  .bp__anno--cat{right:20px;}
+  .bp__anno--focus{right:20px;}
+  .bp__anno--est{right:20px;}
+  .signal{margin-left:0;}
+}
+
 @media (max-width:600px){
   .hero{
     padding:calc(var(--nav-h) + 22px) var(--pad-x) 16px;
