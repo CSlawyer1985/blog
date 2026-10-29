@@ -1032,6 +1032,10 @@ a.cbar__item:hover .cbar__arr{transform:translateX(5px);color:var(--accent);}
   .build,
   .contact,
   section.project-gallery{padding-left:24px;padding-right:24px;}
+  /* iPad 等中等宽度：联系栏改移动版堆叠；≥1100px 恢复一行四列，邮箱格内换行可接受 */
+  .contact__bar{grid-template-columns:1fr;}
+  .cbar__item{min-height:auto;padding:24px 0;}
+  .cbar__item + .cbar__item{border-left:0;border-top:1px solid var(--line);}
 }
 
 /* 621–959px：About 右列宽度容不下三圆环流程（min-content 364px），

@@ -137,6 +137,11 @@ html[data-lang="zh"] [lang="zh"].btn { display: inline-flex; }
 /* 移动/桌面结构边界为 620px：折叠屏展开竖屏（≈626px）及以上保持桌面布局 */
 @media (max-width:860px){
   .nav__links{gap:10px;font-size:9.5px;letter-spacing:.04em;}
+}
+
+/* 左侧三条竖线只属于 ≥1100px 的桌面左轨排版；compact 区间（621–1099）
+   内容边距 24px 会与 fixed 在 48px 的竖线重叠，故一并隐藏 */
+@media (max-width:1099px){
   .rail,.cross{display:none;}
 }
 
