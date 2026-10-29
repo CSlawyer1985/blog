@@ -4,7 +4,7 @@ import {trackpad} from './trackpad.mjs';
 const storage={get(key,fallback){try{return JSON.parse(sessionStorage.getItem(key))??fallback;}catch{return fallback;}},set(key,value){try{sessionStorage.setItem(key,JSON.stringify(value));}catch{}}};
 const icon=(kind)=>`<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">${kind==='browser'?'<circle cx="12" cy="12" r="9"/><path d="m16 8-3 5-5 3 3-5Z"/>':kind==='search'?'<circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/>':'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/>'}</svg>`;
 export async function mount(regions, exit) {
-  if(!document.querySelector('#foldbook-style'))await new Promise((resolve,reject)=>{const link=document.createElement('link');link.id='foldbook-style';link.rel='stylesheet';link.href='/css/foldbook.css?v=20261026-hardware';link.onload=resolve;link.onerror=()=>{link.remove();reject(new Error('Foldbook stylesheet failed'));};document.head.append(link);});
+  if(!document.querySelector('#foldbook-style'))await new Promise((resolve,reject)=>{const link=document.createElement('link');link.id='foldbook-style';link.rel='stylesheet';link.href='/css/foldbook.css?v=20261029-laptop';link.onload=resolve;link.onerror=()=>{link.remove();reject(new Error('Foldbook stylesheet failed'));};document.head.append(link);});
   const abort=new AbortController(), {signal}=abort;
   const root=document.createElement('section');root.id='foldbook';root.setAttribute('aria-label','折叠屏桌面');
   root.innerHTML=`<!-- 视觉表达方案：K 交互模拟 + L 阅读；L3 原生 JS/CSS/SVG；构图家族 workspace；布局原语 split；阅读路径 桌面→博客→键盘；主轴 vertical，焦点真实博客；上下分区对应屏幕和操作面；响应式 segment-driven；参考 macOS 窗口惯例，不复制品牌资产；不用框架与 iframe；拖拽/输入/点击；开机与按键动效；普通模式零布局改动；系统 CJK 字体，毛玻璃按用户要求。 -->

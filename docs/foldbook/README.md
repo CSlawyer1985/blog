@@ -2,6 +2,18 @@
 
 日期：2026-10-26。分支：`codex/foldable-macbook`，基线 `1a9b59d`。未提交、推送或部署。
 
+## 2026-10-29 华为真机反馈修复
+
+用户在华为 Pura X 真机（多个浏览器）实测发现两个问题，本次修复：
+
+1. **首页 About me 板块在折叠屏宽度错位**。根因有二：621–1099px 区间各板块页边距不一致（hero 24px、About 沿用桌面左轨 104px）；且 621–959px 时 About 右列宽度容不下三圆环流程的 min-content（3×92px+2×44px=364px），第三个圆环被 `.about` 的 overflow:hidden 裁切。修复：compact 区间（621–1099px）统一 about/writing/speak/build/contact/project-gallery 左右边距为 24px，与 hero、project-gallery 原有 24px 对齐；621–959px 时 About 降为上下堆叠（沿用 ≤620px 的 blueprint 比例与标注偏移），≥960px 恢复双列，≥1100px 桌面左轨不变。已验证 669/1064/1440/375 四档。
+
+2. **无铰链 API 设备永远不出现 Mac 桌面**。华为浏览器（ArkWeb 系）及实测的多个浏览器均不暴露 Device Posture API 与 Viewport Segments API，原自动进入条件（posture folded + 两段式分区）永不满足。用户明确需求：180° 展平不加载桌面样式，仅铰链角度 <180°（半折）呈现；且手动进入后应呈现笔记本形态（上屏+键盘触控板）。但在无 API 的浏览器里平放与半折完全不可区分，无法自动实现"只认半折"。经用户确认改为：该类设备（触屏 + coarse pointer + 621–1099px 横向视口，`(pointer:coarse) and (hover:none) and (min-aspect-ratio:6/5)`）显示"桌面模式"悬浮按钮，点击即切到 `?foldbook=preview` 笔记本形态（53/47 模拟分区）；平放状态不自动加载任何桌面样式。有 API 的浏览器（Chrome 129+ posture / 139+ segments）仍走原自动路径。曾实现过单屏 `fb-single` 形态与 `?foldbook=flat` 参数，用户确认不需要，已移除。
+
+配套改动：入口脚本新增手动入口 pill；全站 247 个 HTML 入口脚本版本号升至 `20261029-laptop`。验证：`node tests/foldbook.cjs`、`node tests/homepage-static.cjs`、python 27 项、`scratch/foldbook-flat-verify.mjs` Playwright 13 项（触控回归/pill→preview 全链路含退出后重复进入/鼠标与手机环境无 pill）全部通过。真机（Pura X 各浏览器）待用户复测。
+
+铰链 API 支持现状（2026-10 查证）：仅 Chromium 系，Chrome 125 起 origin trial、129 起 Device Posture 默认开启、139 起 Viewport Segments 默认开启（安卓折叠屏真机）；Firefox/Safari 无实现信号；华为 ArkWeb、鸿蒙 NEXT 均不支持。Web 平台无原始铰链角度传感器 API（安卓原生 TYPE_HINGE_ANGLE 不暴露给 Web）。
+
 ## 体验
 
 项目目录运行 `python3 -m http.server 8765`，访问 `http://127.0.0.1:8765/?foldbook=preview`。触控板：单指移动，轻点点击，双指滚动，双指轻点右键；光标移到窗口标题栏后按住 350ms 再滑动可拖动窗口。上屏也保留直接触摸和鼠标操作。程序坞打开博客、搜索、便签。
