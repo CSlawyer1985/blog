@@ -1,5 +1,7 @@
 /* Foldbook: capability detection only. Desktop resources are loaded on demand. */
 (() => {
+  /* 桌面模拟窗口内的 iframe 页面不挂载桌面（sessionStorage 同源共享，否则形成嵌套桌面） */
+  if (window.top !== window.self) return;
   let instance, busy = false, dismissed = false, pending = false, pill = null;
   const params = new URLSearchParams(location.search);
   const preview = params.get('foldbook') === 'preview';
@@ -28,6 +30,9 @@
     probe.remove();
     return result;
   }
+  function manualMode() {
+    try { return sessionStorage.getItem('foldbook-manual') === '1'; } catch { return false; }
+  }
   function showPill() {
     if (pill || !document.body) return;
     pill = document.createElement('button');
@@ -37,10 +42,13 @@
     pill.textContent = '桌面模式';
     pill.style.cssText = 'position:fixed;right:14px;bottom:14px;z-index:2147483000;min-height:44px;padding:0 18px;border:1px solid rgba(23,33,36,.15);border-radius:22px;background:rgba(244,244,236,.85);color:#172124;font:600 13px/1.2 system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;letter-spacing:.06em;box-shadow:0 2px 10px rgba(20,38,45,.15);backdrop-filter:blur(8px);cursor:pointer;';
     pill.addEventListener('click', () => {
-      const url = new URL(location.href);
-      url.searchParams.set('foldbook', 'preview');
-      if (url.href !== location.href) location.href = url.href;
-      else { dismissed = false; hidePill(); update(); }
+      try { sessionStorage.setItem('foldbook-manual', '1'); } catch {}
+      dismissed = false; hidePill();
+      /* 全屏必须与点击同一手势：原位挂载，不跳转 URL */
+      const el = document.documentElement;
+      const fn = el.requestFullscreen || el.webkitRequestFullscreen;
+      try { const r = fn?.call(el); r?.catch?.(() => {}); } catch {}
+      update();
     });
     document.body.append(pill);
   }
@@ -51,18 +59,25 @@
     busy = true;
     try {
       const posture = navigator.devicePosture?.type || (folded.matches ? 'folded' : 'continuous');
-      if (posture !== 'folded' && !preview) dismissed = false;
-      const raw = preview ? [{left:0,top:0,width:innerWidth,height:Math.floor(innerHeight*.53)}, {left:0,top:Math.floor(innerHeight*.53)+8,width:innerWidth,height:innerHeight-Math.floor(innerHeight*.53)-8}] : (window.viewport?.segments || cssSegments());
+      const manual = manualMode();
+      const sim = preview || manual;
+      if (posture !== 'folded' && !sim) dismissed = false;
+      const raw = sim ? [{left:0,top:0,width:innerWidth,height:Math.floor(innerHeight*.53)}, {left:0,top:Math.floor(innerHeight*.53)+8,width:innerWidth,height:innerHeight-Math.floor(innerHeight*.53)-8}] : (window.viewport?.segments || cssSegments());
       const {laptopSegments} = await import('./foldbook/geometry.mjs');
-      const regions = (preview || posture === 'folded') ? laptopSegments(preview ? 'folded' : posture, raw) : null;
+      const regions = (sim || posture === 'folded') ? laptopSegments(sim ? 'folded' : posture, raw) : null;
       if (!instance && manualSig.matches && navigator.maxTouchPoints > 0) showPill();
       else if (!instance) hidePill();
       if (!regions || dismissed) { instance?.destroy(); instance = null; return; }
       if (instance) instance.layout(regions);
       else {
         hidePill();
-        const {mount} = await import('./foldbook/desktop.mjs?v=20261029-laptop');
-        instance = await mount(regions, () => { dismissed = true; manualEntry = false; instance?.destroy(); instance = null; update(); });
+        const {mount} = await import('./foldbook/desktop.mjs?v=20261029-fs');
+        instance = await mount(regions, () => {
+          dismissed = true;
+          try { sessionStorage.removeItem('foldbook-manual'); } catch {}
+          try { const d = document; if (d.fullscreenElement || d.webkitFullscreenElement) (d.exitFullscreen || d.webkitExitFullscreen)?.call(d); } catch {}
+          instance?.destroy(); instance = null; update();
+        });
       }
     } catch (error) {
       instance?.destroy(); instance = null;

@@ -10,7 +10,11 @@
 
 2. **无铰链 API 设备永远不出现 Mac 桌面**。华为浏览器（ArkWeb 系）及实测的多个浏览器均不暴露 Device Posture API 与 Viewport Segments API，原自动进入条件（posture folded + 两段式分区）永不满足。用户明确需求：180° 展平不加载桌面样式，仅铰链角度 <180°（半折）呈现；且手动进入后应呈现笔记本形态（上屏+键盘触控板）。但在无 API 的浏览器里平放与半折完全不可区分，无法自动实现"只认半折"。经用户确认改为：触屏 + coarse pointer + 中大屏（≥621×480，含 iPad 各姿态与折叠屏展开态；手机竖屏宽 <621、手机横屏高 <480、电脑指针精细均排除）显示"桌面模式"悬浮按钮，点击即切到 `?foldbook=preview` 笔记本形态（53/47 模拟分区）；平放状态不自动加载任何桌面样式。有 API 的浏览器（Chrome 129+ posture / 139+ segments）仍走原自动路径。曾实现过单屏 `fb-single` 形态与 `?foldbook=flat` 参数，用户确认不需要，已移除。
 
-配套改动：入口脚本新增手动入口 pill；全站 247 个 HTML 入口脚本版本号升至 `20261029-tablet`。iPad 反馈追加两项：左侧三条竖线（`.rail`，fixed 48px）在 861–1099px 与 24px 边距的内容重叠，隐藏断点从 860px 提至 1099px（≥1100px 桌面左轨 104px 中正常显示）；联系栏仅保留两种形态——621–1099px 移动版堆叠、≥1100px 一行四列（邮箱格内换行可接受，用户明确不采用中间宽度的两列田字格方案，曾实现后移除）（home.css 版本号升至 `20261029-cbar`，base.css 升至 `20261029-rail`）。验证：`node tests/foldbook.cjs`、`node tests/homepage-static.cjs`、python 27 项、`scratch/foldbook-flat-verify.mjs` Playwright 21 项（触控回归/pill→preview 全链路/iPad 横竖屏/rail 显隐/contact 栏堆叠与四列/鼠标与手机环境无 pill）全部通过。真机（Pura X、iPad）待用户复测。
+配套改动：入口脚本新增手动入口 pill；全站 247 个 HTML 入口脚本版本号升至 `20261029-nav`。iPad 反馈追加两项：左侧三条竖线（`.rail`，fixed 48px）在 861–1099px 与 24px 边距的内容重叠，隐藏断点从 860px 提至 1099px（≥1100px 桌面左轨 104px 中正常显示）；联系栏仅保留两种形态——621–1099px 移动版堆叠、≥1100px 一行四列（邮箱格内换行可接受，用户明确不采用中间宽度的两列田字格方案，曾实现后移除）（home.css 版本号升至 `20261029-cbar`，base.css 升至 `20261029-rail`）。
+
+真机反馈追加三项（2026-10-29 晚）：① 点击"桌面模式"需同时全屏浏览器——全屏依赖用户手势，改为 pill 原位挂载（sessionStorage `foldbook-manual` 标记会话，站内导航保持）并在同一手势内 requestFullscreen；菜单栏新增全屏/退出全屏开关（后续页面手势失效时可手动补开），退出时清标记并退出全屏。② 站内链接整页跳转导致"闪现普通模式再变桌面"——桌面内容区拦截同源跨页链接，以 iframe 在博客窗口内打开（窗口标题同步、新增"首页"按钮回到原视图），零跳转零闪现；同页锚点（顶部菜单、查看文章/作品）一律原生滚动不进 iframe。③ iframe 内页面因 sessionStorage 同源共享读取 manual 标记而在窗口内再挂桌面（嵌套）——入口脚本加顶层窗口守卫，`window.top !== window.self` 直接不运行。曾实现过单屏 `fb-single` 形态与 `?foldbook=flat` 参数，用户确认不需要，已移除。
+
+验证：`node tests/foldbook.cjs`、`node tests/homepage-static.cjs`、python 27 项、`scratch/foldbook-flat-verify.mjs` Playwright 30 项（触控回归/全屏进入与退出/pill 无跳转进入/iframe 打开文章且无嵌套/菜单锚点原位滚动/iPad 横竖屏/rail 显隐/contact 栏堆叠与四列/鼠标与手机环境无 pill）全部通过。真机（Pura X、iPad）由用户实测确认 pill 与进入流程正常。
 
 铰链 API 支持现状（2026-10 查证）：仅 Chromium 系，Chrome 125 起 origin trial、129 起 Device Posture 默认开启、139 起 Viewport Segments 默认开启（安卓折叠屏真机）；Firefox/Safari 无实现信号；华为 ArkWeb、鸿蒙 NEXT 均不支持。Web 平台无原始铰链角度传感器 API（安卓原生 TYPE_HINGE_ANGLE 不暴露给 Web）。
 
