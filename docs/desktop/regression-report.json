@@ -1,0 +1,123 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "name": "232 articles and 11 projects available",
+      "status": "passed"
+    },
+    {
+      "name": "Full article is readable in Notes",
+      "status": "passed"
+    },
+    {
+      "name": "Notes search filters articles",
+      "status": "passed"
+    },
+    {
+      "name": "Minimize preserves window state",
+      "status": "passed"
+    },
+    {
+      "name": "Dock restores article view",
+      "status": "passed"
+    },
+    {
+      "name": "Application hiding separate from minimizing",
+      "status": "passed"
+    },
+    {
+      "name": "Dock restores hidden application",
+      "status": "passed"
+    },
+    {
+      "name": "Show desktop is a transient state",
+      "status": "passed"
+    },
+    {
+      "name": "Green button enters in-desktop fullscreen",
+      "status": "passed"
+    },
+    {
+      "name": "Fullscreen restores normal geometry",
+      "status": "passed"
+    },
+    {
+      "name": "Titlebar dragging changes geometry",
+      "status": "passed"
+    },
+    {
+      "name": "Window edge resizes content",
+      "status": "passed"
+    },
+    {
+      "name": "Own project HTML opens in Safari shell",
+      "status": "passed"
+    },
+    {
+      "name": "Browser has independent tabs",
+      "status": "passed"
+    },
+    {
+      "name": "In-frame navigation is handled by own browser",
+      "status": "passed"
+    },
+    {
+      "name": "Browser history returns to prior own page",
+      "status": "passed"
+    },
+    {
+      "name": "Photo album retains 11 project references",
+      "status": "passed"
+    },
+    {
+      "name": "Photos browse within current album",
+      "status": "passed"
+    },
+    {
+      "name": "Photo detail returns to album",
+      "status": "passed"
+    },
+    {
+      "name": "Calendar uses actual publication dates",
+      "status": "passed"
+    },
+    {
+      "name": "Calendar opens the same article identity",
+      "status": "passed"
+    },
+    {
+      "name": "Wallpaper and theme are applied",
+      "status": "passed"
+    },
+    {
+      "name": "Preference and windows restore on reload",
+      "status": "passed"
+    },
+    {
+      "name": "App overview searches registered apps",
+      "status": "passed"
+    },
+    {
+      "name": "Launcher restores application and closes",
+      "status": "passed"
+    },
+    {
+      "name": "Menu keyboard dismissal restores focus",
+      "status": "passed"
+    },
+    {
+      "name": "Rapid minimize and restore leaves no shield",
+      "status": "passed"
+    },
+    {
+      "name": "No uncaught JavaScript errors",
+      "status": "passed"
+    }
+  ],
+  "pageErrors": [],
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scope": "real-browser-desktop-interaction"
+}

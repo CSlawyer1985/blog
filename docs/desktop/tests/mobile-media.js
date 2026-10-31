@@ -1,0 +1,67 @@
+async (page) => {
+  const results = [], out = '/Users/CS/Documents/AI Builder/工作空间/网页制作/blog/docs/desktop';
+  const check = (name, condition) => { if (!condition) throw new Error(name); results.push({ name, status: 'passed' }); };
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.reload(); await page.waitForFunction(() => window.desktopStatus?.().articleCount === 232);
+  await page.locator('#dock [data-app="music"]').click();
+  const music = page.locator('.window[data-app="music"]');
+  check('No fabricated published music tracks', await music.locator('.empty-state').innerText().then(x => x.includes('博客暂未发布音频作品')));
+  await page.locator('#local-audio-picker').setInputFiles('/Users/CS/Documents/AI Builder/工作空间/网页制作/blog/docs/desktop/tests/fixtures/合成音频样本.wav');
+  await music.locator('.track-row').waitFor();
+  check('Local audio chooser populates queue', await music.locator('.track-row').count() === 1);
+  await music.getByRole('button', { name: '播放或暂停', exact: true }).click();
+  await page.waitForFunction(() => document.querySelector('.window[data-app="music"] .music-play-controls button[title="暂停"]'));
+  await page.waitForFunction(() => document.querySelector('.window[data-app="music"] .music-progress span').textContent !== '0:00');
+  check('Actual audio playback advances time', true);
+  await music.getByRole('button', { name: '播放或暂停', exact: true }).click();
+  await page.waitForFunction(() => document.querySelector('.window[data-app="music"] .music-play-controls button[title="播放"]'));
+  check('Pause is reflected by real media events', await music.locator('.music-play-controls button[title="播放"]').count() === 1);
+  await music.getByRole('button', { name: '切换迷你播放器', exact: true }).click();
+  check('Mini player shares same track', await music.locator('.music-mini-view').count() === 1 && await music.locator('.music-track-label').innerText().then(x => x.includes('合成音频')));
+  await page.screenshot({ path: out + '/06-music-mini.png' });
+  await music.getByRole('button', { name: '返回音乐资料库', exact: true }).click();
+  await music.getByRole('button', { name: '播放或暂停', exact: true }).click();
+  await page.waitForFunction(() => document.querySelector('.window[data-app="music"] .music-play-controls button[title="暂停"]'));
+  await music.getByRole('button', { name: '关闭音乐窗口', exact: true }).click();
+  await music.waitFor({ state: 'detached' });
+  await page.locator('#dock [data-app="music"]').click();
+  check('Reopening music retains queue and position', await music.locator('.track-row').count() === 1 && await music.locator('.music-progress span').first().innerText() !== '0:00');
+  check('Music continues playing across window close', await music.locator('.music-play-controls button[title="暂停"]').count() === 1);
+  await page.locator('#dock [data-app="music"]').click({ button: 'right' });
+  await page.getByRole('menuitem', { name: '退出音乐', exact: true }).click();
+  const context = await page.context().browser().newContext({ viewport: { width: 375, height: 812 }, deviceScaleFactor: 1, isMobile: true, hasTouch: true,
+    userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1' });
+  const mobile = await context.newPage(); const errors = []; mobile.on('pageerror', e => errors.push(e.message));
+  try {
+    await mobile.goto('http://127.0.0.1:8336/desktop/', {waitUntil:'domcontentloaded'});
+    await mobile.waitForFunction(() => window.desktopStatus?.().articleCount === 232);
+    await mobile.locator('#startup').waitFor({ state: 'detached' });
+    check('Fresh touch context initializes correctly', await mobile.evaluate(() => window.desktopStatus().windows.every(w => w.rect.width <= innerWidth && w.rect.x >= 0)));
+    await mobile.screenshot({ path: out + '/07-mobile-desktop.png' });
+    const mobileNotes = mobile.locator('.window[data-app="notes"]');
+    await mobileNotes.getByRole('button', { name: '显示或隐藏笔记列表', exact: true }).tap();
+    await mobileNotes.locator('.note-item[data-article-id]').first().tap();
+    await mobileNotes.locator('.article-body p').first().waitFor();
+    check('Touch can reach article list and full text', await mobileNotes.locator('.note-title').innerText().then(x => x.includes('AI 的本事')));
+    await mobile.screenshot({ path: out + '/08-mobile-article.png' });
+    await mobile.getByRole('button', { name: '搜索文章', exact: true }).tap();
+    await mobile.getByRole('textbox', { name: '搜索文章标题与摘要', exact: true }).fill('手搓文书');
+    await mobile.locator('.mobile-search-results .note-item').first().tap();
+    check('Mobile search opens matching article', await mobileNotes.locator('.note-title').innerText().then(x => x.includes('手搓文书')));
+    await mobile.locator('#dock [data-app="photos"]').tap();
+    const mobilePhotos = mobile.locator('.window[data-app="photos"]');
+    await mobilePhotos.locator('.album-card').first().tap();
+    await mobilePhotos.locator('.photo-thumb').first().tap();
+    check('Single touch opens photo detail', await mobilePhotos.locator('.photo-large img').count() === 1);
+    await mobilePhotos.getByRole('button', { name: '返回相簿', exact: true }).tap();
+    await mobile.locator('#dock [data-app="calendar"]').tap();
+    const mobileCalendar = mobile.locator('.window[data-app="calendar"]');
+    check('Narrow calendar defaults to readable agenda', await mobileCalendar.locator('.agenda-item').count() > 0);
+    const title = await mobileCalendar.locator('.agenda-item').first().innerText();
+    await mobileCalendar.locator('.agenda-item').first().tap();
+    check('Touch calendar opens corresponding article', await mobileNotes.locator('.note-title').innerText() === title);
+    check('No horizontal document overflow', await mobile.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+    check('No uncaught mobile JavaScript errors', errors.length === 0);
+  } finally { await context.close(); }
+  return { status: 'passed', checks: results, mobileEngine: 'Chromium with fresh touch/mobile emulation, not physical Safari', audioFixture: 'synthetic 3-second WAV, not published content' };
+}

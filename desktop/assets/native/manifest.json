@@ -1,0 +1,992 @@
+{
+  "assets" : [
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "finder-128.png",
+      "id" : "finder",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 128,
+      "sha256" : "370d433674ae537d8e544d57e99a130707f10785ad89a13d6f4c55b3b5d17e43",
+      "source" : "\/System\/Library\/CoreServices\/Finder.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "finder-256.png",
+      "id" : "finder",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 256,
+      "sha256" : "93e78ab970cb01f5b195f71f5d9ac8a61d6a33e436048ba6a4c1110e71e22e5b",
+      "source" : "\/System\/Library\/CoreServices\/Finder.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "finder-512.png",
+      "id" : "finder",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 512,
+      "sha256" : "c71c384352d1814fb2160c6349e59389c797f9ec78eebeb7628225f1a8b7e5d5",
+      "source" : "\/System\/Library\/CoreServices\/Finder.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "safari-128.png",
+      "id" : "safari",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 128,
+      "sha256" : "b29b733bbd280b84bbc1d3d07fb3579828f1def0e480c8cf7acb19bc71eaeec3",
+      "source" : "\/System\/Volumes\/Preboot\/Cryptexes\/App\/System\/Applications\/Safari.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "safari-256.png",
+      "id" : "safari",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 256,
+      "sha256" : "529e88675218810f0783f57b570c8e636fa978f24e912af85a542dc8ca392529",
+      "source" : "\/System\/Volumes\/Preboot\/Cryptexes\/App\/System\/Applications\/Safari.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "safari-512.png",
+      "id" : "safari",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 512,
+      "sha256" : "7fd85a4bca62bcbf040b9c9292d7ee81630c2909ef26de929a3cd0c0478a393c",
+      "source" : "\/System\/Volumes\/Preboot\/Cryptexes\/App\/System\/Applications\/Safari.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "preview-128.png",
+      "id" : "preview",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 128,
+      "sha256" : "d1ab41d90fbed052de00b4ba138edc19654d8ed547ee8c24eae62478e6901a08",
+      "source" : "\/System\/Applications\/Preview.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "preview-256.png",
+      "id" : "preview",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 256,
+      "sha256" : "576fe4a6ca8e192f4833de47a933a809e0b9859fef4b804abb3b2a1e6e7684f4",
+      "source" : "\/System\/Applications\/Preview.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "preview-512.png",
+      "id" : "preview",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 512,
+      "sha256" : "4d5edc8b46bc4b98128c8b205d80d1d07e1c628051ea965419faea5f3720d29d",
+      "source" : "\/System\/Applications\/Preview.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "quicktime-128.png",
+      "id" : "quicktime",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 128,
+      "sha256" : "ba5e997acaea89ad0d269adc890da1ca2c429245e7cb3a170a2b468fd9b51b0f",
+      "source" : "\/System\/Applications\/QuickTime Player.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "quicktime-256.png",
+      "id" : "quicktime",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 256,
+      "sha256" : "c5b2d00add13b86846c2ebc956b6e3a0e3af0fcb507f5a2bd929a0236a44908c",
+      "source" : "\/System\/Applications\/QuickTime Player.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "quicktime-512.png",
+      "id" : "quicktime",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 512,
+      "sha256" : "a66b3858da54dc215c2e2a0678f3ae089be8875b2ba3b29e6c7a9b47eafe4d34",
+      "source" : "\/System\/Applications\/QuickTime Player.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "settings-128.png",
+      "id" : "settings",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 128,
+      "sha256" : "29f0853a231038eb6e2c002654c61fbaa60eaa6570e7f0b432532fbeca955a76",
+      "source" : "\/System\/Applications\/System Settings.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "settings-256.png",
+      "id" : "settings",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 256,
+      "sha256" : "8c24f6ff5c7929954db5e11006b7fcdd65ed1d710d96edcfdae1438ad417eebe",
+      "source" : "\/System\/Applications\/System Settings.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "settings-512.png",
+      "id" : "settings",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 512,
+      "sha256" : "35005b7b4efb6d0957066fb7b11de5ff501ab4d07b4743bbf49df1d69a72f4c4",
+      "source" : "\/System\/Applications\/System Settings.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "notes-128.png",
+      "id" : "notes",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 128,
+      "sha256" : "944fca5b0293a0554bcd3b331a6ed5b71c9909ce43e3613fddffdc766d46089f",
+      "source" : "\/System\/Applications\/Notes.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "notes-256.png",
+      "id" : "notes",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 256,
+      "sha256" : "591f517dd96633cbcb0564df52fb89221b83e80c10f84974e07a89c503ae03b4",
+      "source" : "\/System\/Applications\/Notes.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "notes-512.png",
+      "id" : "notes",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 512,
+      "sha256" : "33f7fbfa87d4314f0c760828a09d6b2928528dcd22bea7b41bbcf9bba1226970",
+      "source" : "\/System\/Applications\/Notes.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "calendar-128.png",
+      "id" : "calendar",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 128,
+      "sha256" : "99605619b263a7a04fc051e8a9225cc4c3ec516fc608651990a0bf80249ddcf6",
+      "source" : "\/System\/Applications\/Calendar.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "calendar-256.png",
+      "id" : "calendar",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 256,
+      "sha256" : "742541ddb0f5b864189a2b25dfe183a274f9e7890511e2f5ad54cf64b07a806d",
+      "source" : "\/System\/Applications\/Calendar.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "calendar-512.png",
+      "id" : "calendar",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 512,
+      "sha256" : "59b86dcf91faccc0b053b4695aa15266c2646221f26ca88f4f2b7f2c298fac8e",
+      "source" : "\/System\/Applications\/Calendar.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "music-128.png",
+      "id" : "music",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 128,
+      "sha256" : "bab5dcc056ad42f9651b6bef449d84874a0143ff70f6faf32ce398408738d5ed",
+      "source" : "\/System\/Applications\/Music.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "music-256.png",
+      "id" : "music",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 256,
+      "sha256" : "014c5c96ab33499bea98e4893ce94a53145b10cfa0fb5aba8125af3d2b08da40",
+      "source" : "\/System\/Applications\/Music.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "music-512.png",
+      "id" : "music",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 512,
+      "sha256" : "e8add41401bbbde6ad62fafecdbb682f6b26a27f4c67107eb631fabd630b31cc",
+      "source" : "\/System\/Applications\/Music.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "photos-128.png",
+      "id" : "photos",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 128,
+      "sha256" : "4f912bdb56422744c16e54d5434a822a62017138c6de31cfa1be4113e7099632",
+      "source" : "\/System\/Applications\/Photos.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "photos-256.png",
+      "id" : "photos",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 256,
+      "sha256" : "f7b79124f54d684f51c7d8b4e7ca7485022ff5be8bd761561f348676965ff808",
+      "source" : "\/System\/Applications\/Photos.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "photos-512.png",
+      "id" : "photos",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 512,
+      "sha256" : "04cc3081f8afa66b59d29402ba60839323dc0f7b404238ec272cc2c0718ea354",
+      "source" : "\/System\/Applications\/Photos.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "apps-128.png",
+      "id" : "apps",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 128,
+      "sha256" : "60801cd46b4cc818b236687be7db05262cc836bd86f4ddd1959fcd9573c0c960",
+      "source" : "\/System\/Applications\/Apps.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "apps-256.png",
+      "id" : "apps",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 256,
+      "sha256" : "c14c55a48d353531d7225f77efa5118a205e795e7c8a2b7f66dff9cfe2fdf7af",
+      "source" : "\/System\/Applications\/Apps.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "apps-512.png",
+      "id" : "apps",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 512,
+      "sha256" : "31b9bcf03082c38a774a2cb40024ad1cc0128a7b51c65ed4446fe1c9e2d0f4b5",
+      "source" : "\/System\/Applications\/Apps.app",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "folder-128.png",
+      "id" : "folder",
+      "kind" : "CoreTypes.icns",
+      "pixelSize" : 128,
+      "sha256" : "e5b20521c70cf7c537ffcef163c4f3119e9208693b366fc9af658ea721376157",
+      "source" : "\/System\/Library\/CoreServices\/CoreTypes.bundle\/Contents\/Resources\/GenericFolderIcon.icns",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "folder-256.png",
+      "id" : "folder",
+      "kind" : "CoreTypes.icns",
+      "pixelSize" : 256,
+      "sha256" : "1968a5f5074f1bb28a3cd15429a8e1d94c9556310ccd1f0c852fe2a38dc0f8f2",
+      "source" : "\/System\/Library\/CoreServices\/CoreTypes.bundle\/Contents\/Resources\/GenericFolderIcon.icns",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "folder-512.png",
+      "id" : "folder",
+      "kind" : "CoreTypes.icns",
+      "pixelSize" : 512,
+      "sha256" : "f64e7389dddec145e59cfd72804558c95c782626678a1c0ec77227ba0b9616ea",
+      "source" : "\/System\/Library\/CoreServices\/CoreTypes.bundle\/Contents\/Resources\/GenericFolderIcon.icns",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "document-128.png",
+      "id" : "document",
+      "kind" : "CoreTypes.icns",
+      "pixelSize" : 128,
+      "sha256" : "7dee6929daa2de2817978bdf1ab1a8f984e81c5d5ba120a19c096d284ee5a46a",
+      "source" : "\/System\/Library\/CoreServices\/CoreTypes.bundle\/Contents\/Resources\/GenericDocumentIcon.icns",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "document-256.png",
+      "id" : "document",
+      "kind" : "CoreTypes.icns",
+      "pixelSize" : 256,
+      "sha256" : "1ed306273c8d3d0f5a0b9604d535539a6e446e18e9ed70f80dc1259030afaf46",
+      "source" : "\/System\/Library\/CoreServices\/CoreTypes.bundle\/Contents\/Resources\/GenericDocumentIcon.icns",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "document-512.png",
+      "id" : "document",
+      "kind" : "CoreTypes.icns",
+      "pixelSize" : 512,
+      "sha256" : "0fb46095cfbade91333bdbfa14a088e5f2e4ba2b8620b15403e75d5c134f78bd",
+      "source" : "\/System\/Library\/CoreServices\/CoreTypes.bundle\/Contents\/Resources\/GenericDocumentIcon.icns",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "trash-empty-128.png",
+      "id" : "trash-empty",
+      "kind" : "CoreTypes.icns",
+      "pixelSize" : 128,
+      "sha256" : "7e59b60a4fbafc8bc6310bdb967b9a09eff2a05bfd14cd24e658fe8a0f350a85",
+      "source" : "\/System\/Library\/CoreServices\/CoreTypes.bundle\/Contents\/Resources\/TrashIcon.icns",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "trash-empty-256.png",
+      "id" : "trash-empty",
+      "kind" : "CoreTypes.icns",
+      "pixelSize" : 256,
+      "sha256" : "a953e03eb6518fc03af3e24da8afa15653dc066a0ffeb45192cddd97150d601a",
+      "source" : "\/System\/Library\/CoreServices\/CoreTypes.bundle\/Contents\/Resources\/TrashIcon.icns",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "trash-empty-512.png",
+      "id" : "trash-empty",
+      "kind" : "CoreTypes.icns",
+      "pixelSize" : 512,
+      "sha256" : "773c8f42933a5bbea03801fb7def96a55c2b8311540022be3e7a6f2870cc1673",
+      "source" : "\/System\/Library\/CoreServices\/CoreTypes.bundle\/Contents\/Resources\/TrashIcon.icns",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "trash-full-128.png",
+      "id" : "trash-full",
+      "kind" : "CoreTypes.icns",
+      "pixelSize" : 128,
+      "sha256" : "26a3526f0c4e3a76638ca2b965bcf9f57a12b690574deb9420e5fda53376fb3c",
+      "source" : "\/System\/Library\/CoreServices\/CoreTypes.bundle\/Contents\/Resources\/FullTrashIcon.icns",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "trash-full-256.png",
+      "id" : "trash-full",
+      "kind" : "CoreTypes.icns",
+      "pixelSize" : 256,
+      "sha256" : "52703b05b56ed110f3482542f0dfbb4852b13d2210a30fae11b275a9fc5516ed",
+      "source" : "\/System\/Library\/CoreServices\/CoreTypes.bundle\/Contents\/Resources\/FullTrashIcon.icns",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "trash-full-512.png",
+      "id" : "trash-full",
+      "kind" : "CoreTypes.icns",
+      "pixelSize" : 512,
+      "sha256" : "b626aaf5af28d5f06b5c3219d41ebb49cd1397e925aea977a68d50e13d1c7ed4",
+      "source" : "\/System\/Library\/CoreServices\/CoreTypes.bundle\/Contents\/Resources\/FullTrashIcon.icns",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-apple.logo-64.png",
+      "id" : "symbol-apple.logo",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "da85fdff1e101b8f4e341cf99ceecc486081ef7a72c9a8bdac2b28da4603056b",
+      "source" : "apple.logo",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-arrow.left-64.png",
+      "id" : "symbol-arrow.left",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "35684d3c90b06d60d693c5eca199cb147cd7f8c146ac7746d9ce9e52ed167eda",
+      "source" : "arrow.left",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-arrow.right-64.png",
+      "id" : "symbol-arrow.right",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "b3f38306577855a22a6c31b7a6e4a2715599f34f8f23604c8fc365bfc89987be",
+      "source" : "arrow.right",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-arrow.clockwise-64.png",
+      "id" : "symbol-arrow.clockwise",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "1d4a004e89498b8dfbb8f47f9154aa94c611c60756d3d0afb81760542f72c541",
+      "source" : "arrow.clockwise",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-magnifyingglass-64.png",
+      "id" : "symbol-magnifyingglass",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "92c2f00ea7f37d53d5aa772d95bf03b0790c051a1ed47d2d6f19916fc4fc1be9",
+      "source" : "magnifyingglass",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-sidebar.left-64.png",
+      "id" : "symbol-sidebar.left",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "2b0f4f521c14cd6dd28cba011e814900646857f0597ad698803efcd2249563c8",
+      "source" : "sidebar.left",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-square.grid.2x2-64.png",
+      "id" : "symbol-square.grid.2x2",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "469c8a783d24d41e9de6b09f9382edd05021ef68b3d296c5a77a57e48ffb1d11",
+      "source" : "square.grid.2x2",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-list.bullet-64.png",
+      "id" : "symbol-list.bullet",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "a47fd487edd780ce697dbb9d5a49c599473fbe6e16e61b4f550b9dfc1f384327",
+      "source" : "list.bullet",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-rectangle.split.3x1-64.png",
+      "id" : "symbol-rectangle.split.3x1",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "f96ae0a8c524dfc54c5b11bddfdd4b15568c890c62e05559e9610022a1d8f1ae",
+      "source" : "rectangle.split.3x1",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-rectangle.on.rectangle-64.png",
+      "id" : "symbol-rectangle.on.rectangle",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "b8e8ec819a6f17dc71c09cbb436d10b6af121b374353df090d628b0782b0e04c",
+      "source" : "rectangle.on.rectangle",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-plus-64.png",
+      "id" : "symbol-plus",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "ffcef506253c57e16dd8ff08514825c67a3f06a6b40a39f3038bc40905b16328",
+      "source" : "plus",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-xmark-64.png",
+      "id" : "symbol-xmark",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "4869f18c8228c56517dbe997e8e0ec81d9afa2f1258173af6d15b03bdb7ab900",
+      "source" : "xmark",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-minus-64.png",
+      "id" : "symbol-minus",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "b517fc95db07835a6f1c66fd2d3ba498f7f7ed65270c078fb4c4538504bc74c5",
+      "source" : "minus",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-arrow.up.left.and.arrow.down.right-64.png",
+      "id" : "symbol-arrow.up.left.and.arrow.down.right",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "acad36cd0f8aac07e34ffc9ee134449dce84000f9b1a315e309fc037111f445d",
+      "source" : "arrow.up.left.and.arrow.down.right",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-chevron.right-64.png",
+      "id" : "symbol-chevron.right",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "f5d7647bd5915521688cf406782c8c0b4785b13d16bbdc13d51821e20a66d65b",
+      "source" : "chevron.right",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-chevron.down-64.png",
+      "id" : "symbol-chevron.down",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "729cd5b20b8bff85f948eedb0d8f520fc1d7c28dff3b623d33c733aaefb404e3",
+      "source" : "chevron.down",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-ellipsis-64.png",
+      "id" : "symbol-ellipsis",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "25a4a79e67a7cb4b0bf51c2206b00b79e59dcc2750ce583eed1ea81c7661863a",
+      "source" : "ellipsis",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-square.and.arrow.up-64.png",
+      "id" : "symbol-square.and.arrow.up",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "88ba796191023e874362a060855d59d8859a1fa787a9364241cbd1f73dd6e101",
+      "source" : "square.and.arrow.up",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-play.fill-64.png",
+      "id" : "symbol-play.fill",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "0d16ce97c175d9d990f2b5f42e6f5d2c23645c57e4e4870ab8041a5b375383aa",
+      "source" : "play.fill",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-pause.fill-64.png",
+      "id" : "symbol-pause.fill",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "9c00bc0909369f40c2df6adf7c879ade3ce982eb06e786d453dd773a21b65558",
+      "source" : "pause.fill",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-speaker.wave.2.fill-64.png",
+      "id" : "symbol-speaker.wave.2.fill",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "9ae98ae501fb23f7ed868639dcaf8c28e55ed800705e97cb5fc925a733312d33",
+      "source" : "speaker.wave.2.fill",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-gearshape-64.png",
+      "id" : "symbol-gearshape",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "00b5884660040841e0ae6ed0c989f050cb7052f3ddc921c79449930390d8c362",
+      "source" : "gearshape",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-globe-64.png",
+      "id" : "symbol-globe",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "3559266eff0be39d42dbc303714c1c3fa9ce2b90e6aa4f6d1fbbaa7715d108dd",
+      "source" : "globe",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-folder-64.png",
+      "id" : "symbol-folder",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "40f639f8d4ff490cb87da25be105c89adc4266f899435827992d82e954e17878",
+      "source" : "folder",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-doc-64.png",
+      "id" : "symbol-doc",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "6868c14396651a93a224667e2321d38f1c87847e32fd031ba72aef695de6ed8b",
+      "source" : "doc",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-photo-64.png",
+      "id" : "symbol-photo",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "26d456145f3924d5236cd4ea01e458bda8fab63005d00fed5e0fdd24ec5d24f8",
+      "source" : "photo",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-film-64.png",
+      "id" : "symbol-film",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "279424a401d1ad767e84ab39b28a1d5914b15a516d35c3b04cc9e951ac302777",
+      "source" : "film",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-trash-64.png",
+      "id" : "symbol-trash",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "743fa86e4b39fbb79264731543e1b22891c8b674265d50806038c20fc0f8cbf6",
+      "source" : "trash",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-checkmark-64.png",
+      "id" : "symbol-checkmark",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "af58a19b8244895509ba6f9f0043ec394dbeda70111b1750f4890f7961b98ec6",
+      "source" : "checkmark",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-info.circle-64.png",
+      "id" : "symbol-info.circle",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "aad74188202e4800d72575f3acef6f6712ad797a552bf5ca1e5a226eda0bdb5d",
+      "source" : "info.circle",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-arrow.down.to.line-64.png",
+      "id" : "symbol-arrow.down.to.line",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "4afe2b2ae793e91145df143d1e34eabfe2d7007bd5dc0c8325397ae2cdd04fff",
+      "source" : "arrow.down.to.line",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-note.text-64.png",
+      "id" : "symbol-note.text",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "d4106b519a80e09d79b7502d41590aa3c1891f7ae5a846c1e6e08daa067eb91d",
+      "source" : "note.text",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-square.and.pencil-64.png",
+      "id" : "symbol-square.and.pencil",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "5cf6425fcab1ea54bd7d801ebe108fee36d49717cbb344c1c2e8db87eaeecabb",
+      "source" : "square.and.pencil",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-pin.fill-64.png",
+      "id" : "symbol-pin.fill",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "34056340a6f47c638bd0d87a8d6c2cabf746f63e49e9ddc98b287bdfc1c3e8c0",
+      "source" : "pin.fill",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-checklist-64.png",
+      "id" : "symbol-checklist",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "148c4d97678593ab05cf2ad69aedc14bed9cdba7d4432776f7effc60645555e4",
+      "source" : "checklist",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-tablecells-64.png",
+      "id" : "symbol-tablecells",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "6ce6c5137d52f05474f9f739d1039b23a1221ac7f9ac467c25e88ad640b5a2de",
+      "source" : "tablecells",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-paperclip-64.png",
+      "id" : "symbol-paperclip",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "4771f1ded02f8dfca6042ff2aac895bedf6b536418388108174e49071bf51eb8",
+      "source" : "paperclip",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-calendar-64.png",
+      "id" : "symbol-calendar",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "eae40c5ec2edc28a6238fbe91bd02132e528de608bac8550b77367026e0059ee",
+      "source" : "calendar",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-calendar.day.timeline.left-64.png",
+      "id" : "symbol-calendar.day.timeline.left",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "52431eb6b3aa516d6f0920a4af5b804cd580a0439b82448bd38f3b87c3f02c0d",
+      "source" : "calendar.day.timeline.left",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-chevron.left-64.png",
+      "id" : "symbol-chevron.left",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "c19fd6fbb3cbbf0fe1e4b53c23b2cb823142f544aed70f704f7b301cac8cd640",
+      "source" : "chevron.left",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-music.note-64.png",
+      "id" : "symbol-music.note",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "1354ce14d1ac848255934370faa16957a84d502204f1d9097a695b075040fd3c",
+      "source" : "music.note",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-music.note.list-64.png",
+      "id" : "symbol-music.note.list",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "14807a7037deff218e4438a81b4f26cfc23a69b83ad219e788161c6ea6bed7ca",
+      "source" : "music.note.list",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-backward.end.fill-64.png",
+      "id" : "symbol-backward.end.fill",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "e0e9115558de6a2ebe4169837d576453ad36f283e4bcc0f4b45b79b1d6578ede",
+      "source" : "backward.end.fill",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-forward.end.fill-64.png",
+      "id" : "symbol-forward.end.fill",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "834588479dce673f22e460041b347b0df426df9102825d2f27e530039ca1327c",
+      "source" : "forward.end.fill",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-shuffle-64.png",
+      "id" : "symbol-shuffle",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "00b1aa04a420fd78c260cf886b508fa185c714625c675a8e705091a6f0dc9112",
+      "source" : "shuffle",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-repeat-64.png",
+      "id" : "symbol-repeat",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "bb531ea1c07b434112a1627bb030f1d88979641885349289d4ac3480841549e7",
+      "source" : "repeat",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-repeat.1-64.png",
+      "id" : "symbol-repeat.1",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "32b470ff40a66aa27cfd357b2ae5d3755c180c935a865c6289ff27ee5a3bde99",
+      "source" : "repeat.1",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-heart-64.png",
+      "id" : "symbol-heart",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "a7ed3b537372012c0eb1dfeba3993c5bb42e9b2a27944fff09bd9526d6d79608",
+      "source" : "heart",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-heart.fill-64.png",
+      "id" : "symbol-heart.fill",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "a879181ae9897a3b831c993c4e65b3910aad0cfb0962e4c8defa03889af395d9",
+      "source" : "heart.fill",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-slider.horizontal.3-64.png",
+      "id" : "symbol-slider.horizontal.3",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "4ab8a1e229a84275d0cbddd98d05f2ee980fe94af7c2bc5f0bdc8a15ee8e0234",
+      "source" : "slider.horizontal.3",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-photo.on.rectangle-64.png",
+      "id" : "symbol-photo.on.rectangle",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "28d1533530dfd9fd343be5512d03190d70e12e9c674a103aa264fd87ab1830a6",
+      "source" : "photo.on.rectangle",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-rectangle.stack-64.png",
+      "id" : "symbol-rectangle.stack",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "45d374a46422b03ad94f3c4a21eec5b748dda9afd2e0828730de56e574ec44ce",
+      "source" : "rectangle.stack",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-square.grid.3x3-64.png",
+      "id" : "symbol-square.grid.3x3",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "f7390ed259cc7f8c37c3b8d7815cb5f8d67b58ca00cec82181b79cbcb9551cb9",
+      "source" : "square.grid.3x3",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-apps.iphone-64.png",
+      "id" : "symbol-apps.iphone",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "23bc5a6b06bdef648e811b3c97f4dce3600c1d8b24c3ed1c3e3ea1982d31c7e4",
+      "source" : "apps.iphone",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-star-64.png",
+      "id" : "symbol-star",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "79b1b1057f38c7dcc9c211a81490a749f0a1ed7fdf10f7e900e38315959bb200",
+      "source" : "star",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "symbol-star.fill-64.png",
+      "id" : "symbol-star.fill",
+      "kind" : "NSImage.SFSymbol",
+      "pixelSize" : 64,
+      "sha256" : "fada7f35306eb92c210a69a0bd206469fca53fd987e48a0634e0567c148c59d7",
+      "source" : "star.fill",
+      "status" : "native-export"
+    }
+  ],
+  "createdAt" : "2026-10-30T16:09:42Z",
+  "missing" : [
+
+  ],
+  "platform" : "macOS",
+  "schemaVersion" : "1.0",
+  "scope" : "allowlisted-system-resources-only; no private data",
+  "systemVersion" : "26.6.2"
+}

@@ -1,0 +1,65 @@
+[
+  {
+    "id": "blue",
+    "label": "Mac 蓝色",
+    "file": "blue.jpg",
+    "source": "/System/Library/Desktop Pictures/Mac Blue.heic",
+    "kind": "native-system-wallpaper",
+    "distributionReview": "not-reviewed",
+    "sha256": "a639dfe0caed2f91fdc92b1d393af15c9fd3db8c0bcf6659cb8ec0fe3a2910c3"
+  },
+  {
+    "id": "gold",
+    "label": "Mac 金色",
+    "file": "gold.jpg",
+    "source": "/System/Library/Desktop Pictures/Mac Yellow.heic",
+    "kind": "native-system-wallpaper",
+    "distributionReview": "not-reviewed",
+    "sha256": "8f1977310e9b92fca5db227117e2e9f919c7b49dcf0f746c44d897d839dcdc62"
+  },
+  {
+    "id": "sonoma",
+    "label": "Sonoma",
+    "file": "sonoma.jpg",
+    "source": "/System/Library/Desktop Pictures/Sonoma.heic",
+    "kind": "native-system-wallpaper",
+    "distributionReview": "not-reviewed",
+    "sha256": "45eda8ae1dd7a728aaf7c856850aebe577757793d5b2629e85e355b3ba6e5844"
+  },
+  {
+    "id": "pink",
+    "label": "Mac 粉色",
+    "file": "pink.jpg",
+    "source": "/System/Library/Desktop Pictures/Mac Pink.heic",
+    "kind": "native-system-wallpaper",
+    "distributionReview": "not-reviewed",
+    "sha256": "9c2ed7892d5c6eab97fc67bc9077247423b97d2f3edc70d4dbff05133f8c2a21"
+  },
+  {
+    "id": "green",
+    "label": "iMac 绿色",
+    "file": "green.jpg",
+    "source": "/System/Library/Desktop Pictures/iMac Green.heic",
+    "kind": "native-system-wallpaper",
+    "distributionReview": "not-reviewed",
+    "sha256": "0b41fa6620247185ea02328dcba7923a1716c7411cff4c4d9015b15800f44c5b"
+  },
+  {
+    "id": "orange",
+    "label": "iMac 橙色",
+    "file": "orange.jpg",
+    "source": "/System/Library/Desktop Pictures/iMac Orange.heic",
+    "kind": "native-system-wallpaper",
+    "distributionReview": "not-reviewed",
+    "sha256": "992b70bcba60d323074e91ddadcb2ff4180d2a22f2be7c749cd41962dcbf80f5"
+  },
+  {
+    "id": "sky",
+    "label": "天空蓝",
+    "file": "sky.jpg",
+    "source": "/System/Library/Desktop Pictures/Radial Sky Blue.heic",
+    "kind": "native-system-wallpaper",
+    "distributionReview": "not-reviewed",
+    "sha256": "cdf0a7d1dfea18ed14922db7705da8506ea7a8c187d76a51590adf91c6aee522"
+  }
+]

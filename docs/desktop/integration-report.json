@@ -1,0 +1,105 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "name": "Normal homepage remains the default URL",
+      "status": "passed"
+    },
+    {
+      "name": "Original 11 portfolio cards remain present",
+      "status": "passed"
+    },
+    {
+      "name": "Normal homepage entry opens /desktop",
+      "status": "passed"
+    },
+    {
+      "name": "Shared 232 articles load",
+      "status": "passed"
+    },
+    {
+      "name": "New visitors default to Sonoma",
+      "status": "passed"
+    },
+    {
+      "name": "Profile uses the current About page role",
+      "status": "passed"
+    },
+    {
+      "name": "Seven wallpaper choices are available",
+      "status": "passed"
+    },
+    {
+      "name": "Added pink wallpaper applies",
+      "status": "passed"
+    },
+    {
+      "name": "Added green wallpaper applies",
+      "status": "passed"
+    },
+    {
+      "name": "Added orange wallpaper applies",
+      "status": "passed"
+    },
+    {
+      "name": "Added sky wallpaper applies",
+      "status": "passed"
+    },
+    {
+      "name": "New wallpaper persists across reload",
+      "status": "passed"
+    },
+    {
+      "name": "Same-origin headers allow About inside the browser",
+      "status": "passed"
+    },
+    {
+      "name": "About breadcrumb follows the shared ordinary homepage",
+      "status": "passed"
+    },
+    {
+      "name": "Browser back restores About history",
+      "status": "passed"
+    },
+    {
+      "name": "Updated shared article index appears without a desktop copy",
+      "status": "passed"
+    },
+    {
+      "name": "Updated original homepage introduction appears",
+      "status": "passed"
+    },
+    {
+      "name": "Updated original About role appears",
+      "status": "passed"
+    },
+    {
+      "name": "Updated original portfolio appears",
+      "status": "passed"
+    },
+    {
+      "name": "Project detail reads the same updated homepage source",
+      "status": "passed"
+    },
+    {
+      "name": "Published sources have no newly missing resources",
+      "status": "passed"
+    },
+    {
+      "name": "No uncaught app errors during integration flows",
+      "status": "passed"
+    },
+    {
+      "name": "Shared data failure offers the ordinary homepage",
+      "status": "passed"
+    },
+    {
+      "name": "Desktop menu returns to the default homepage",
+      "status": "passed"
+    }
+  ],
+  "pageErrors": [],
+  "failedResources": [],
+  "headerScope": "SAMEORIGIN reproduced locally; production headers not yet deployed",
+  "mutationScope": "network fixtures only; no published content changed"
+}

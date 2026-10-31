@@ -1,0 +1,47 @@
+<!doctype html>
+<!--
+视觉表达方案：K（桌面交互模拟）＋L（文章阅读）＋J（个人主页）。
+表达形式：macOS 窗口式桌面，原生应用图标；内容来自 Blog 项目。
+技术：L3，HTML/CSS/原生 ES modules，无框架和 CDN 依赖。
+composition: pattern_family=desktop-workspace; primitive=layered-windows;
+reading_path=关于陈石→文章与作品→完整内容; dominant_axis=spatial;
+focal_point=备忘录中的个人介绍; responsive_strategy=window-fit-and-pane-collapse;
+semantic_reason=内容以文件和应用打开，多窗口保留探索上下文。
+source_refs=macos-desktop-web Skill、本机 macOS 26 原生资源、blog 公开内容。
+交互：选择、双击、窗口拖动/缩放/最小化/隐藏/恢复、菜单、相簿、日历。
+动画：窗口开合、Dock 邻近放大、最小化收拢；响应减少动态效果。
+移动端：窗口适配视口，分栏折叠，提供可见返回入口。
+AI 审美例外：用户明确要求原生 macOS，因此使用原生圆角、阴影与导航玻璃。
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <base href="/desktop/">
+  <link rel="canonical" href="https://chenshi.ai/desktop">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#252d3b">
+  <meta name="description" content="陈石的桌面。商事律师与 AI Builder 的文章、作品和公开资料。">
+  <title>陈石的桌面 · 法与 AI</title>
+  <link rel="icon" href="/assets/favicon.ico">
+  <link rel="stylesheet" href="css/desktop.css">
+  <link rel="stylesheet" href="css/apps.css">
+</head>
+<body data-theme="dark">
+  <a class="skip-link" href="#windows">跳到内容窗口</a>
+  <div id="wallpaper" class="wallpaper" aria-hidden="true"></div>
+  <header id="menubar" class="menubar" aria-label="桌面菜单栏"></header>
+  <main id="desktop" class="desktop" aria-label="陈石的桌面">
+    <h1 class="sr-only">陈石的桌面</h1>
+    <div id="desktop-icons" class="desktop-icons" aria-label="桌面内容"></div>
+    <div id="windows" class="windows" tabindex="-1" aria-label="应用窗口"></div>
+    <div id="drag-shield" class="drag-shield" hidden></div>
+  </main>
+  <nav id="dock" class="dock" aria-label="程序坞"></nav>
+  <div id="menu-layer" class="menu-layer"></div>
+  <div id="overlay-layer" class="overlay-layer"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="startup" class="startup" role="status"><img src="assets/native/symbol-apple.logo-64.png" alt="" width="44" height="44"><span>正在打开陈石的桌面</span></div>
+  <noscript><div class="noscript"><p>桌面需要 JavaScript。你也可以直接阅读完整博客。</p><a href="/">打开文章与作品</a></div></noscript>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

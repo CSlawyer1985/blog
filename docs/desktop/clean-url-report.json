@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "name": "Shared adapter survives /index.html redirect to /",
+      "status": "passed"
+    },
+    {
+      "name": "Clean project route loads and updates browser title",
+      "status": "passed"
+    },
+    {
+      "name": "Clean route retains actual project image",
+      "status": "passed"
+    },
+    {
+      "name": "Clean About route is bound in same-origin browser",
+      "status": "passed"
+    },
+    {
+      "name": "Browser back works across clean URL redirects",
+      "status": "passed"
+    }
+  ],
+  "scope": "Local HTTP clean-URL and SAMEORIGIN emulation; not a production deployment"
+}

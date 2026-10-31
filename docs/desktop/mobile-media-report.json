@@ -1,0 +1,67 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "name": "No fabricated published music tracks",
+      "status": "passed"
+    },
+    {
+      "name": "Local audio chooser populates queue",
+      "status": "passed"
+    },
+    {
+      "name": "Actual audio playback advances time",
+      "status": "passed"
+    },
+    {
+      "name": "Pause is reflected by real media events",
+      "status": "passed"
+    },
+    {
+      "name": "Mini player shares same track",
+      "status": "passed"
+    },
+    {
+      "name": "Reopening music retains queue and position",
+      "status": "passed"
+    },
+    {
+      "name": "Music continues playing across window close",
+      "status": "passed"
+    },
+    {
+      "name": "Fresh touch context initializes correctly",
+      "status": "passed"
+    },
+    {
+      "name": "Touch can reach article list and full text",
+      "status": "passed"
+    },
+    {
+      "name": "Mobile search opens matching article",
+      "status": "passed"
+    },
+    {
+      "name": "Single touch opens photo detail",
+      "status": "passed"
+    },
+    {
+      "name": "Narrow calendar defaults to readable agenda",
+      "status": "passed"
+    },
+    {
+      "name": "Touch calendar opens corresponding article",
+      "status": "passed"
+    },
+    {
+      "name": "No horizontal document overflow",
+      "status": "passed"
+    },
+    {
+      "name": "No uncaught mobile JavaScript errors",
+      "status": "passed"
+    }
+  ],
+  "mobileEngine": "Chromium with fresh touch/mobile emulation, not physical Safari",
+  "audioFixture": "synthetic 3-second WAV, not published content"
+}
