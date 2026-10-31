@@ -206,3 +206,28 @@
 @keyframes adg-parse { 0%,32%,92%,100% { opacity: 0; } 46%,80% { opacity: 1; } }
 @keyframes adg-result { 0%,52%,92%,100% { opacity: 0; } 64%,80% { opacity: 1; } }
 @keyframes adg-warning { 0%,62%,92%,100% { opacity: 0; } 72%,80% { opacity: 1; } }
+
+/* macos-desktop-web-skill: page hands off → windows cascade → menubar/dock ready → caption. */
+.dsk-travel { animation-name: dsk-travel; }
+.dsk-menubar { animation-name: dsk-menubar; }
+.dsk-win-a { animation-name: dsk-win-a; }
+.dsk-win-b { animation-name: dsk-win-b; }
+.dsk-win-c { animation-name: dsk-win-c; }
+.dsk-dock { animation-name: dsk-dock; }
+.art-motion .dsk-tile { transform-box: fill-box; transform-origin: center; }
+.dsk-tile-a { animation-name: dsk-tile-a; }
+.dsk-tile-b { animation-name: dsk-tile-b; }
+.dsk-tile-c { animation-name: dsk-tile-c; }
+.dsk-tile-red { animation-name: dsk-tile-red; }
+.dsk-caption { animation-name: dsk-caption; }
+@keyframes dsk-travel { 0%,3% { transform: translate(152px,151px); opacity: 0; } 6% { transform: translate(152px,151px); opacity: 1; } 12% { transform: translate(244px,182px); opacity: 1; } 17%,100% { transform: translate(244px,182px); opacity: 0; } }
+@keyframes dsk-menubar { 0%,14%,90%,100% { opacity: 0; } 20%,84% { opacity: 1; } }
+@keyframes dsk-win-a { 0%,15% { opacity: 0; transform: translateY(9px); } 22%,84% { opacity: 1; transform: translateY(0); } 90%,100% { opacity: 0; transform: translateY(0); } }
+@keyframes dsk-win-b { 0%,20% { opacity: 0; transform: translateY(9px); } 27%,84% { opacity: 1; transform: translateY(0); } 90%,100% { opacity: 0; transform: translateY(0); } }
+@keyframes dsk-win-c { 0%,25% { opacity: 0; transform: translateY(9px); } 32%,84% { opacity: 1; transform: translateY(0); } 90%,100% { opacity: 0; transform: translateY(0); } }
+@keyframes dsk-dock { 0%,34% { opacity: 0; transform: translateY(14px); } 41%,84% { opacity: 1; transform: translateY(0); } 90%,100% { opacity: 0; transform: translateY(0); } }
+@keyframes dsk-tile-a { 0%,38% { opacity: 0; transform: scale(.8); } 44%,84% { opacity: 1; transform: scale(1); } 90%,100% { opacity: 0; transform: scale(1); } }
+@keyframes dsk-tile-b { 0%,41% { opacity: 0; transform: scale(.8); } 47%,84% { opacity: 1; transform: scale(1); } 90%,100% { opacity: 0; transform: scale(1); } }
+@keyframes dsk-tile-c { 0%,44% { opacity: 0; transform: scale(.8); } 50%,84% { opacity: 1; transform: scale(1); } 90%,100% { opacity: 0; transform: scale(1); } }
+@keyframes dsk-tile-red { 0%,47% { opacity: 0; transform: scale(.8); } 53%,84% { opacity: 1; transform: scale(1); } 90%,100% { opacity: 0; transform: scale(1); } }
+@keyframes dsk-caption { 0%,60% { opacity: 0; transform: translateY(9px); } 66%,82% { opacity: 1; transform: translateY(0); } 89%,100% { opacity: 0; transform: translateY(0); } }

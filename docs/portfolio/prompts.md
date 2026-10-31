@@ -139,3 +139,31 @@ Avoid: purple, blue gradients, neon, glassmorphism, robots, planets, stars, floa
 ```text
 Use case: stylized-concept. Create a premium editorial illustration for a Chinese lawyer and AI builder's portfolio. Landscape 3:2. A precise architectural maquette photographed on a warm parchment seamless studio background (#e9dfcf), ivory paper, graphite metal, one vermilion red (#b63c2f) detail. Analog craftsmanship, tactile uncoated paper, sophisticated miniature still life, refined realistic materials, soft directional daylight from upper left and crisp ambient occlusion, muted warm palette, no purple, no blue gradients, no cute cartoon. Orthographic 3/4 view, subject centered in middle 65% with generous clear edges. NO TEXT, NO letters, NO numbers, NO logos, NO watermark. All structures stand grounded on a shallow rectangular ivory plinth. Subject: ADG (Agent Data Gateway), an open-source ingestion orchestration layer for legal professionals and other professional services. It turns mixed complex material bundles into complete, traceable Agent-readable data and explicitly reports any unreadable material. Represent this as an exquisite small physical document-processing gateway maquette. The central main subject is a substantial ivory rectangular inspection arch with two graphite guide rails passing left-to-right through its base; its broad ivory lintel is blank and one small vermilion slider sits on the right post. On the left, one low input tray holds a visibly varied compact bundle of folded ivory documents, a graph-grid sheet and a small envelope, different shapes without text. On the right, one low output tray holds neatly aligned upright ivory source cards linked by slender graphite rods to small circular source markers on the rail. One separate slightly tilted ivory card with a vermilion edge remains in a small side slot at the front right, to represent explicitly surfaced unresolved items rather than claiming everything succeeds. Keep the core gateway visually simple and unmistakable, exactly two auxiliary trays, no computer monitor, no robot, no text. Leave the lower 18 percent and upper 16 percent of the image mostly clear parchment for later graphic overlay. The supplied images are style-only references for warm tactile paper material, restrained palette and grounded architectural-model photography. Do not copy their subject matter or scales-of-justice icon.
 ```
+
+## desktop-skill（macOS 桌面网页 Skill）· 2026-10-31
+
+用途：首页第 12 张作品卡片。核实入口：https://github.com/CSlawyer1985/macos-desktop-web-skill ；正式名 macOS Desktop Web Skill，开源的 macOS 仿真桌面网页设计 Skill（原生窗口、Dock、菜单与内容应用），实站案例为本站 `/desktop`。
+
+**当前状态**：本会话宿主无内置 imagegen，按 inkpeg 先例暂用 PIL 程序绘制的同族占位稿（生成脚本 `scratch/desktop-skill-placeholder-20261031.py`：折页网页立牌带朱红页签 → 石墨导轨 → 炭面微缩桌面屏），底图与 600×400 SVG 动效层按 2 倍坐标对齐（屏面 472–798 × 232–514），替换底图时无需改动动效层。原始图 `sources/desktop-skill.png`；网页资产 `assets/portfolio/desktop-skill.webp`（1200×800）。
+
+动效叙事（8 秒循环）：网页页签飞出托付 → 菜单栏与三扇窗口级联打开 → Dock 升起、应用块依次就位（朱红块收尾）→ 字幕“把网站，开成一张桌面”→ 原位淡出复位。不代表真实产品运行检测。
+
+正式素材提示词（宿主内置 imagegen，参考 `assets/portfolio/skill-hub.webp` 与 `assets/portfolio/dsh-desktop.webp` 同族材质；与 DSH 区分：本图主体是“网页托付给桌面屏”的交接关系，屏幕保持空屏，不加键盘、鼠标、主机或盆栽）：
+
+```text
+Use case: stylized-concept.
+Asset type: portfolio card image for a personal blog project gallery.
+Input images: reference images are for the existing warm paper architectural-maquette visual language only; do not copy their objects or any text.
+Primary request: Create a premium editorial illustration for “macOS Desktop Web Skill”, an open-source design skill that turns a personal website into an interactive macOS-style desktop with native windows, a Dock and a menu bar. The image should communicate a website being handed over to a desktop screen, not a generic computer product.
+Scene/backdrop: warm parchment seamless studio background (#e9dfcf), shallow ivory rectangular plinth.
+Subject: a precise handcrafted architectural maquette of a hand-off between a webpage and a desktop. On the left, one upright folded-paper webpage card with subtle debossed text lines and a single vermilion red (#b63c2f) browser-tab shape on its top edge. A slender graphite rail with two small junction beads runs from the card's base to the base of the main subject: a miniature ivory desktop display with a warm charcoal blank screen, slim ivory bezel and a tiny vermilion dot on the chin, standing on a small ivory foot. The screen stays completely blank because windows, a menu-bar strip and a dock of small app tiles are drawn later as graphic overlays. No keyboard, no mouse, no computer tower, no plants, no second screen.
+Style/medium: analog craftsmanship, tactile uncoated paper, sophisticated miniature still life, refined realistic materials, orthographic near-front 3/4 view.
+Composition/framing: landscape 3:2, subject centered in the middle 65% with generous clear edges, readable at small card size, all structures grounded on the plinth.
+Lighting/mood: soft directional daylight from upper left, restrained contact shadows and ambient occlusion, quiet, precise, editorial.
+Color palette: warm parchment, ivory paper, graphite metal, one vermilion red accent (#b63c2f); no blue or purple.
+Materials/textures: folded-card paper, graphite rail, subtle paper grain, crisp miniature joinery.
+Text (verbatim): none.
+Constraints: no text, no letters, no numbers, no logos, no watermark; the charcoal screen must stay blank and free of interface graphics; keep the folded webpage card, the connecting rail and the blank desktop display visibly distinct; leave the lower 18 percent and upper 16 percent of the image mostly clear parchment for later graphic overlay.
+Avoid: purple, blue gradients, neon, glassmorphism, generic robots, planets, stars, floating particles, cute cartoon style, glossy plastic, dense UI text, fake branding.
+```
+

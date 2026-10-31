@@ -12,14 +12,14 @@ assert(html.includes('Commercial Lawyer × AI Builder'));
 assert(!/noindex|preview-dock|previews\/|data-portrait-preview|AI\+法律先行者/.test(html), 'no preview-only or obsolete identity residue');
 assert(html.includes('<title>陈石 · 法与AI</title>'));
 assert(html.includes('<link rel="canonical" href="https://chenshi.ai/">'));
-assert.equal((html.match(/class="project-item /g) || []).length, 11);
+assert.equal((html.match(/class="project-item /g) || []).length, 12);
 assert.equal((html.match(/class="channel"/g) || []).length, 6);
-assert.equal((about.match(/class="proj-item"/g) || []).length, 13);
-for (const url of ['https://dsh.chenshi.ai/', 'https://memoball.chenshi.ai/', 'https://skill.chenshi.ai/', 'https://skill.chenshi.ai/legal-meta-skill', 'https://learn-agent.legalagi.cn/', 'https://rule.chenshi.ai/', 'https://inkpeg.chenshi.ai/', 'https://adg.chenshi.ai/']) {
+assert.equal((about.match(/class="proj-item"/g) || []).length, 14);
+for (const url of ['https://dsh.chenshi.ai/', 'https://memoball.chenshi.ai/', 'https://skill.chenshi.ai/', 'https://skill.chenshi.ai/legal-meta-skill', 'https://learn-agent.legalagi.cn/', 'https://rule.chenshi.ai/', 'https://inkpeg.chenshi.ai/', 'https://adg.chenshi.ai/', 'https://github.com/CSlawyer1985/macos-desktop-web-skill']) {
   assert(html.includes('href="' + url + '"'));
   assert(about.includes('href="' + url + '"'));
 }
-for (const repo of ['claude-for-legal-ZH','contract-review-pro','china-lawyer-analyst','excellent-judgment-doc-skill','legalwiki']) {
+for (const repo of ['claude-for-legal-ZH','contract-review-pro','china-lawyer-analyst','excellent-judgment-doc-skill','legalwiki','macos-desktop-web-skill']) {
   assert(about.includes('href="https://github.com/CSlawyer1985/' + repo + '"'), 'retain original repo ' + repo);
 }
 for (const [name, source] of [['index.html', html], ['about.html', about]]) {
@@ -42,4 +42,4 @@ const data = JSON.parse(read('data/site.json'));
 assert.equal(data.site.description, '商事律师 × AI Builder — 个人博客');
 assert.deepEqual(data.author.dual_identity, ['商事律师', 'AI Builder']);
 assert(!read('css/portfolio.css').includes('preview-dock'));
-console.log('PASS: homepage/template, identity, 11 projects, 6 channels, 13 about entries, preserved repos, local assets, anchors, SEO');
+console.log('PASS: homepage/template, identity, 12 projects, 6 channels, 14 about entries, preserved repos, local assets, anchors, SEO');

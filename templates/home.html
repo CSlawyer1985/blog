@@ -9,6 +9,7 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
 新增 RuleNav 作品卡片反思：内容类型 B 流程/步骤 + C 节点/工具连接；表达形式为三域工作台微缩模型 + 原生 SVG 路径动画；技术栈 L2（HTML/CSS + SVG），阅读路径为事实 → 规则 → 责任依据；构图家族为 process-flow，布局原语为 triptych / path，主轴为横向、焦点为中央规则页；语义理由是产品价值在于沿依据完成定位，而非泛化对话；响应式策略沿用 640/1024px 的单列 → 双列 → 三列；参考来源为现有 portfolio 卡片系统与 rule.chenshi.ai 的三域信息架构，只借鉴结构，不复制页面素材；不使用框架、视频、GIF 或新增 CDN；交互为整卡外链，动画为可见时播放的 8 秒功能叙事循环；移动端自适应并保持标题与用途可读；反 AI 审美检查：无紫蓝渐变、无玻璃态、无通用机器人与装饰粒子。
 新增法律元 SKILL 作品卡片反思：内容类型 B 流程/步骤 + C 节点/工具连接；表达形式为六阶段法律能力装配台微缩模型 + 原生 SVG 路径动画；技术栈 L2（HTML/CSS + SVG），阅读路径为输入 → 研究/建模 → 封装 → 评测 → 复核通过；构图家族为 process-flow，布局原语为 rail / gate，主轴为横向、焦点为中央封装压制台与右侧复核门；语义理由是产品价值在于把重复法律工作治理成可复用、可评测的 Skill，而非展示单个工具；响应式策略沿用 640/1024px 的单列 → 双列 → 三列；参考来源为现有 portfolio 卡片系统与 skill.chenshi.ai/legal-meta-skill 的六阶段工作流，只借鉴结构，不复制页面素材；不使用框架、视频、GIF 或新增 CDN；交互为整卡外链，动画为可见时播放的 8 秒功能叙事循环；移动端自适应并保持标题与用途可读；反 AI 审美检查：无紫蓝渐变、无玻璃态、无通用机器人与装饰粒子。
 新增 ADG 作品卡片反思：内容类型 B 流程 + C 来源连接；面向法律人与专业服务者，展示材料入账 → 解析核对 → 来源关联 / 未读项显性报告。pattern_family=process-flow；primitive=rail / gate；reading_path=混合材料→数据闸门→可追溯结果；横向主轴，中央闸门为焦点；semantic_reason=体现可靠摄取与显性失败。技术 L2（HTML/CSS + SVG），复用原生 JS 播放管理器；静态图无法表达处理次序，因此增加解释因果的 8 秒动效；无需框架、GIF、视频或新增依赖。主结构为闸门，辅助为两侧材料，朱红标记点缀；整卡外链、键盘可达；responsive_strategy=column-drop，沿用 640/1024px 单/双/三列，移动端标题自然换行；source_refs=现有 portfolio 卡片、adg.chenshi.ai 的真实功能；页面类型为博客作品索引；新增 WebP 约 100KB 内，懒加载；无紫蓝渐变、玻璃态、机器人与装饰粒子。
+新增 macOS 桌面网页 Skill 作品卡片反思：内容类型 B 流程 + J 界面具象；表达形式为"折页网页立牌 → 微缩桌面屏"静物 + 原生 SVG 窗口级联动效；技术栈 L2（HTML/CSS + SVG），复用播放管理器；阅读路径为网页页签 → 石墨导轨托付 → 窗口级联 / 菜单栏 / Dock 就绪 → 字幕收束；pattern_family=process-flow，primitive=handoff / cascade，焦点为屏面窗口级联；semantic_reason=该开源 Skill 的价值在于把静态网页托付成可交互桌面，动效表达"开成桌面"的因果而非通用缩放；responsive_strategy=column-drop，沿用 640/1024px 单/双/三列，移动端标题与用途自然换行；source_refs=现有 portfolio 卡片与本站 /desktop 实装，只借鉴结构；整卡外链 GitHub 仓库，键盘可达；占位底图按 inkpeg 先例以 PIL 同族绘制并与 600×400 动效层对齐，正式提示词记录于 prompts.md 待 imagegen 原路径替换；无紫蓝渐变、玻璃态、机器人与装饰粒子。
 -->
 <html lang="zh-CN" data-lang="zh">
 <head>
@@ -104,7 +105,7 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
   <!-- GSAP loaded async — page renders immediately, animations enhance if available -->
   <script async src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script async src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <link rel="stylesheet" href="css/portfolio.css?v=20261026-fold">
+  <link rel="stylesheet" href="css/portfolio.css?v=20261031-desktop">
   <link rel="stylesheet" href="css/hero-responsive.css?v=20261026-compact">
 </head>
 <body>
@@ -472,7 +473,7 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
     </section>
 
 <section class="project-gallery" id="project-gallery" aria-labelledby="gallery-heading">
-  <header class="gallery-head"><div><p class="gallery-kicker">THE BUILD INDEX <span>/ 01—11</span></p><h2 id="gallery-heading"><span lang="zh">想法，做成了这些。</span><span lang="en">Ideas, made tangible.</span></h2></div><div class="gallery-aside"><p><span lang="zh">课程、工具与实验，持续建造中。</span><span lang="en">Courses, tools and experiments. Always building.</span></p></div></header>
+  <header class="gallery-head"><div><p class="gallery-kicker">THE BUILD INDEX <span>/ 01—12</span></p><h2 id="gallery-heading"><span lang="zh">想法，做成了这些。</span><span lang="en">Ideas, made tangible.</span></h2></div><div class="gallery-aside"><p><span lang="zh">课程、工具与实验，持续建造中。</span><span lang="en">Courses, tools and experiments. Always building.</span></p></div></header>
   <div class="project-grid"><article class="project-item project-night-school">
   <a class="project-link" href="https://legalagi.cn/" target="_blank" rel="noopener noreferrer">
     <div class="project-art" data-art="night-school">
@@ -722,6 +723,29 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
       </svg>
     </div>
     <div class="project-caption"><span class="project-no">11</span><div><h3><span lang="zh">ADG · Agent 数据网关</span><span lang="en">ADG · Agent Data Gateway</span></h3><p><span lang="zh">让复杂材料成为 Agent 可读、可追溯的数据。</span><span lang="en">Turn complex files into traceable, agent-ready data.</span></p></div><span class="project-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span></div>
+  </a></article>
+<article class="project-item project-desktop-skill">
+  <a class="project-link" href="https://github.com/CSlawyer1985/macos-desktop-web-skill" target="_blank" rel="noopener noreferrer">
+    <div class="project-art" data-art="desktop-skill">
+      <img src="assets/portfolio/desktop-skill.webp" alt="macOS 桌面网页 Skill 微缩静物：折页网页立牌经石墨导轨连向待开窗口的微缩桌面屏" width="1200" height="800" loading="lazy">
+      <span class="art-corner art-corner-tl" aria-hidden="true"></span><span class="art-corner art-corner-br" aria-hidden="true"></span>
+      <span class="art-index">12 / DESIGN SKILL</span>
+      <span class="art-action"><span lang="zh">访问项目</span><span lang="en">Visit project</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span>
+      <svg class="art-motion" viewBox="0 0 600 400" fill="none" aria-hidden="true">
+<circle class="loop dsk-travel" r="4" fill="#b63c2f"/>
+<g class="loop dsk-menubar"><rect x="238" y="118" width="159" height="10" rx="2" fill="#f5edde"/><circle cx="245" cy="123" r="2.2" fill="#b63c2f"/><path d="M254 123h16m8 0h14m8 0h12M372 123h16" stroke="#b3a58c" stroke-width="1.6" stroke-linecap="round"/></g>
+<g class="loop dsk-win-a"><rect x="250" y="130" width="104" height="74" rx="3" fill="#f5edde" stroke="#c2ae93"/><path d="M250 143h104" stroke="#e0d4bd"/><circle cx="258" cy="136.5" r="1.7" fill="#c9bda6"/><circle cx="264" cy="136.5" r="1.7" fill="#c9bda6"/><path d="M258 156h52M258 168h64M258 180h44" stroke="#d8ccb6" stroke-width="2.4" stroke-linecap="round"/></g>
+<g class="loop dsk-win-b"><rect x="264" y="144" width="104" height="74" rx="3" fill="#f5edde" stroke="#c2ae93"/><path d="M264 157h104" stroke="#e0d4bd"/><circle cx="272" cy="150.5" r="1.7" fill="#c9bda6"/><circle cx="278" cy="150.5" r="1.7" fill="#c9bda6"/><path d="M272 172h58M272 184h48" stroke="#d8ccb6" stroke-width="2.4" stroke-linecap="round"/></g>
+<g class="loop dsk-win-c"><rect x="278" y="158" width="104" height="74" rx="3" fill="#f5edde" stroke="#c2ae93"/><path d="M278 171h104" stroke="#e0d4bd"/><circle cx="286" cy="164.5" r="1.7" fill="#c9bda6"/><circle cx="292" cy="164.5" r="1.7" fill="#c9bda6"/><path d="M286 186h60M286 198h46M286 210h52" stroke="#d8ccb6" stroke-width="2.4" stroke-linecap="round"/></g>
+<g class="loop dsk-dock"><rect x="262" y="237" width="92" height="20" rx="5" fill="#f5edde" stroke="#c2ae93"/></g>
+<rect class="loop dsk-tile dsk-tile-a" x="270" y="240" width="14" height="14" rx="3" fill="#e4d8c4"/>
+<rect class="loop dsk-tile dsk-tile-b" x="289" y="240" width="14" height="14" rx="3" fill="#e4d8c4"/>
+<rect class="loop dsk-tile dsk-tile-c" x="308" y="240" width="14" height="14" rx="3" fill="#e4d8c4"/>
+<rect class="loop dsk-tile dsk-tile-red" x="327" y="240" width="14" height="14" rx="3" fill="#b63c2f"/>
+<g class="loop dsk-caption"><rect x="28" y="330" width="192" height="37" rx="2" fill="#f5edde"/><circle cx="46" cy="349" r="4" fill="#b63c2f"/><text x="58" y="354">把网站，开成一张桌面</text></g>
+      </svg>
+    </div>
+    <div class="project-caption"><span class="project-no">12</span><div><h3><span lang="zh">macOS 桌面网页 Skill</span><span lang="en">macOS Desktop Web Skill</span></h3><p><span lang="zh">把网站做成 macOS 风格的可交互桌面。</span><span lang="en">Turn a website into an interactive macOS-style desktop.</span></p></div><span class="project-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span></div>
   </a></article></div>
   <div class="gallery-foot"><span>MADE WITH CURIOSITY. BUILT IN PUBLIC.</span><a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener noreferrer"><span lang="zh">更多开源探索</span><span lang="en">More on GitHub</span> ↗</a></div>
 </section>
