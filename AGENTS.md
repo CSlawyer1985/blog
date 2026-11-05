@@ -29,6 +29,13 @@
 
 `course.legalagi.cn` 已停用并从 Cloudflare Pages 与 DNS 中移除。不得恢复或写入新的页面、导航、文章、模板及 SEO 数据；夜校入口统一使用 `https://legalagi.cn/`。
 
+## 内容同步更新默认（2026-11-06 用户确认）
+
+用户要求"更新"博客内容时，默认**两个版本一起更新**，不得只更新其一：
+
+1. **博客（本仓库）**：`python3 build.py` 从文章工作区扫描构建 → 提交推送 `main`（推送授权仍按当次向用户确认）。
+2. **桌面版 `../chenshi-desktop`**：替换式更新——旧快照 `content/blog/` 整体移入其 `scratch/` 归档（沙箱限制不能进系统废纸篓时如实标注 `trash_verification_unknown`）→ `python3 scripts/import_blog.py` 重新导入 → `python3 scripts/verify_content.py` 校验 → 同步其 README 的篇数与作品数。
+
 ## 修改约束
 
 1. 博客中的“AI 夜校”链接统一指向 `https://legalagi.cn/`。
