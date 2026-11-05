@@ -170,19 +170,24 @@ def copy_cover_images(articles: list) -> tuple:
         if not source_path:
             continue
 
-        # 封面图在文章 md 同目录下
+        # 封面图在文章 md 同目录下（兼容 assets/ 子目录）
         src_dir = os.path.dirname(source_path)
         dest_dir = os.path.join(project_root, 'articles', a['slug'])
 
-        for ext in ['.png', '.jpg', '.jpeg', '.webp']:
-            src = os.path.join(src_dir, f'cover{ext}')
-            if os.path.isfile(src):
-                os.makedirs(dest_dir, exist_ok=True)
-                dest = os.path.join(dest_dir, f'cover{ext}')
-                if process_cover(src, dest) == 'written':
-                    count += 1
-                else:
-                    unchanged += 1
+        for cover_dir in (src_dir, os.path.join(src_dir, 'assets')):
+            found = False
+            for ext in ['.png', '.jpg', '.jpeg', '.webp']:
+                src = os.path.join(cover_dir, f'cover{ext}')
+                if os.path.isfile(src):
+                    os.makedirs(dest_dir, exist_ok=True)
+                    dest = os.path.join(dest_dir, f'cover{ext}')
+                    if process_cover(src, dest) == 'written':
+                        count += 1
+                    else:
+                        unchanged += 1
+                    found = True
+                    break
+            if found:
                 break
 
         copy_referenced_images(a, dest_dir)

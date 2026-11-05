@@ -56,6 +56,7 @@ def scan_articles(workspace: str = None) -> list:
         # 查找 .md 文件（排除公众号版与附属工作产物）
         md_files = [f for f in os.listdir(output_dir)
                     if f.endswith('.md') and not f.endswith('_wechat.md')
+                    and not f.endswith('_公众号.md')
                     and f not in NON_ARTICLE_MD]
 
         for mdfile in md_files:
@@ -115,7 +116,7 @@ def process_article(md_path: str, dirname: str) -> dict:
         for f in os.listdir(os.path.dirname(md_path))
     )
 
-    # 查找封面图
+    # 查找封面图（约定在 output 根目录；仅当正文自身引用封面时，回退到 assets/ 子目录）
     cover_path = None
     output_dir = os.path.dirname(md_path)
     for ext in ['.png', '.jpg', '.jpeg', '.webp']:
@@ -123,6 +124,12 @@ def process_article(md_path: str, dirname: str) -> dict:
         if os.path.isfile(candidate):
             cover_path = candidate
             break
+    if cover_path is None and has_cover:
+        for ext in ['.png', '.jpg', '.jpeg', '.webp']:
+            candidate = os.path.join(output_dir, 'assets', f'cover{ext}')
+            if os.path.isfile(candidate):
+                cover_path = candidate
+                break
 
     # has_cover 综合判定：md 正文引用了封面图，或 output 目录存在 cover 文件
     # 后者覆盖正文未引用图片但实际有封面文件的情况（如 WorkBuddy 文章正文以摘要引用开头）

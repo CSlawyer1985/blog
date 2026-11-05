@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh" class="is-ready">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>拆开元典脱敏：从一份1.69GB安装包，看本地脱敏系统怎样工作 — 陈石 · 法与AI</title>
+  <meta name="description" content="第三期四明山法师AI夜校讲到资料脱敏时，我把常见办法拆成了四类：正则规则、词典匹配、专用识别模型，以及大语言模型。课上还留了一个设想：能不能让本地模型先提炼词典，再让脚本处理整包材料？最近，我让AI协助拆解了元典脱敏的安装包，又在本机跑了一组虚构文本。这个具体产品，刚好可以把课上那些概念接起来。">
+      <link rel="canonical" href="https://chenshi.ai/articles/2026-10-30-拆开元典脱敏-从一份1-69GB安装包-看本地脱敏系统怎样工作/">
+    <link rel="icon" href="/assets/favicon.ico" sizes="32x32">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <link rel="alternate" type="application/atom+xml" title="陈石 · 法与AI" href="/atom.xml">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="陈石 · 法与AI">
+    <meta property="og:title" content="拆开元典脱敏：从一份1.69GB安装包，看本地脱敏系统怎样工作">
+    <meta property="og:description" content="第三期四明山法师AI夜校讲到资料脱敏时，我把常见办法拆成了四类：正则规则、词典匹配、专用识别模型，以及大语言模型。课上还留了一个设想：能不能让本地模型先提炼词典，再让脚本处理整包材料？最近，我让AI协助拆解了元典脱敏的安装包，又在本机跑了一组虚构文本。这个具体产品，刚好可以把课上那些概念接起来。">
+    <meta property="og:url" content="https://chenshi.ai/articles/2026-10-30-拆开元典脱敏-从一份1-69GB安装包-看本地脱敏系统怎样工作/">
+    <meta property="og:image" content="https://chenshi.ai/articles/2026-10-30-拆开元典脱敏-从一份1-69GB安装包-看本地脱敏系统怎样工作/cover.png">
+    <meta property="og:image:width" content="1400">
+    <meta property="og:image:height" content="595">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="拆开元典脱敏：从一份1.69GB安装包，看本地脱敏系统怎样工作">
+    <meta name="twitter:description" content="第三期四明山法师AI夜校讲到资料脱敏时，我把常见办法拆成了四类：正则规则、词典匹配、专用识别模型，以及大语言模型。课上还留了一个设想：能不能让本地模型先提炼词典，再让脚本处理整包材料？最近，我让AI协助拆解了元典脱敏的安装包，又在本机跑了一组虚构文本。这个具体产品，刚好可以把课上那些概念接起来。">
+    <meta name="twitter:image" content="https://chenshi.ai/articles/2026-10-30-拆开元典脱敏-从一份1-69GB安装包-看本地脱敏系统怎样工作/cover.png">
+    <meta property="article:published_time" content="2026-10-30">
+    <meta property="article:author" content="陈石">
+    <meta property="article:section" content="AI+法律">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://chenshi.ai/articles/2026-10-30-拆开元典脱敏-从一份1-69GB安装包-看本地脱敏系统怎样工作/#article",
+      "headline": "拆开元典脱敏：从一份1.69GB安装包，看本地脱敏系统怎样工作",
+      "name": "拆开元典脱敏：从一份1.69GB安装包，看本地脱敏系统怎样工作",
+      "url": "https://chenshi.ai/articles/2026-10-30-拆开元典脱敏-从一份1-69GB安装包-看本地脱敏系统怎样工作/",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://chenshi.ai/articles/2026-10-30-拆开元典脱敏-从一份1-69GB安装包-看本地脱敏系统怎样工作/"
+      },
+      "datePublished": "2026-10-30",
+      "dateModified": "2026-10-30",
+      "description": "第三期四明山法师AI夜校讲到资料脱敏时，我把常见办法拆成了四类：正则规则、词典匹配、专用识别模型，以及大语言模型。课上还留了一个设想：能不能让本地模型先提炼词典，再让脚本处理整包材料？最近，我让AI协助拆解了元典脱敏的安装包，又在本机跑了一组虚构文本。这个具体产品，刚好可以把课上那些概念接起来。",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://chenshi.ai/articles/2026-10-30-拆开元典脱敏-从一份1-69GB安装包-看本地脱敏系统怎样工作/cover.png",
+        "width": 1400,
+        "height": 595
+      },
+      "inLanguage": "zh-CN",
+      "author": {
+        "@id": "https://chenshi.ai/#person"
+      },
+      "publisher": {
+        "@id": "https://chenshi.ai/#person"
+      },
+      "articleSection": "AI+法律",
+      "timeRequired": "PT16M"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://chenshi.ai/#person",
+      "name": "陈石",
+      "url": "https://chenshi.ai/about",
+      "image": "https://chenshi.ai/assets/portrait.png",
+      "description": "陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。",
+      "jobTitle": "副主任、高级合伙人",
+      "knowsAbout": [
+        "商事律师",
+        "AI Builder",
+        "建设工程",
+        "房地产法律",
+        "AI 法律应用",
+        "法律科技"
+      ],
+      "nationality": {
+        "@type": "Country",
+        "name": "中国"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "宁波",
+        "addressRegion": "浙江",
+        "addressCountry": "CN"
+      },
+      "sameAs": [
+        "https://github.com/CSlawyer1985",
+        "https://legalagi.cn/"
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "浙江海泰律师事务所"
+      },
+      "department": "房地产与建设工程部主任",
+      "email": "mailto:worldmodel@agent.qq.com",
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "contactType": "inquiries",
+          "email": "worldmodel@agent.qq.com",
+          "availableLanguage": [
+            "zh-CN",
+            "en"
+          ]
+        }
+      ],
+      "award": [
+        "律新社 2025 年度管理合伙人 20 佳（华东）",
+        "LegalOne 实务先锋45强（建工及房地产）中国区",
+        "《商法》(China Business Law Journal) The A-List 法律精英 2024-25：中国业务律师新星",
+        "ALB China 区域市场十五佳长三角地区律师新星",
+        "律新社 2024 年度并购领域品牌之星：匠心律师",
+        "宁波市律协第三届诉讼/仲裁文书大赛一等奖"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://chenshi.ai/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "首页",
+          "item": "https://chenshi.ai/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "AI+法律",
+          "item": "https://chenshi.ai/categories/ai-law/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "拆开元典脱敏：从一份1.69GB安装包，看本地脱敏系统怎样工作",
+          "item": "https://chenshi.ai/articles/2026-10-30-拆开元典脱敏-从一份1-69GB安装包-看本地脱敏系统怎样工作/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <style>
+    /* === Article Page CSS — self-contained, zero external dependency === */
+
+    /* Reset */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+
+    /* Body */
+    html{scroll-behavior:smooth}
+    html,body{overflow-x:hidden;overflow-x:clip}
+    body{
+      background:#F3EDE3;
+      background-image:radial-gradient(rgba(26,23,20,.02) 1px,transparent 1px);
+      background-size:3px 3px;
+      color:#1A1714;
+      font-family:'Inter','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;line-height:1.7;
+    }
+
+    /* Nav */
+    .nav{
+      position:fixed;top:0;left:0;right:0;z-index:40;
+      height:78px;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(20px,5vw,72px);
+      border-bottom:1px solid #C9C0B2;
+      background:rgba(243,237,227,.88);
+      backdrop-filter:blur(8px);
+    }
+    .nav__brand{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;
+      font-size:24px;font-weight:600;letter-spacing:-.02em;
+      display:flex;align-items:center;gap:8px;
+    }
+    .nav__brand-dot{width:6px;height:6px;border-radius:50%;background:#C0392B;display:inline-block}
+    .nav__links{
+      display:flex;align-items:center;gap:14px;
+      font-size:12px;font-weight:600;letter-spacing:.08em;
+    }
+    .nav__links a{color:#1A1714;transition:color .25s}
+    .nav__links a:hover{color:#C0392B}
+    .nav__links .sep{color:#C9C0B2;font-weight:300}
+
+    /* Progress bar */
+    .progress-bar{position:fixed;top:0;left:0;width:100%;height:3px;z-index:50}
+    .progress-bar-fill{height:100%;width:0;background:#C0392B;transform-origin:0 50%}
+
+    /* Layout */
+    .article-layout{
+      display:grid;
+      grid-template-columns:240px minmax(0,720px);
+      justify-content:center;
+      gap:56px;
+      padding:110px clamp(20px,5vw,72px) 80px;
+      max-width:1160px;
+      margin:0 auto;
+    }
+    /* ≥1200px 扩展为三栏（右栏 TOC） */
+    @media (min-width:1200px){
+      .article-layout{grid-template-columns:240px minmax(0,720px) minmax(0,200px);max-width:1296px}
+    }
+
+    /* Sidebar */
+    .article-sidebar{position:relative}
+    .sidebar-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto;padding-right:8px}
+    .sidebar-back{
+      display:inline-flex;align-items:center;gap:6px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px;transition:color .2s
+    }
+    .sidebar-back:hover{color:#C0392B}
+    .sidebar-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .sidebar-nav{display:flex;flex-direction:column}
+    .sidebar-link{
+      display:block;padding:7px 0;
+      font-family:'Noto Sans SC','PingFang SC',sans-serif;font-size:13px;line-height:1.45;
+      color:#7d756a;border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .sidebar-link:hover{color:#1A1714}
+    .sidebar-link.is-active{color:#C0392B;font-weight:600}
+
+    /* Article main */
+    .article-main{min-width:0}
+    .article-header{margin-bottom:40px}
+    .article-meta-top{
+      display:flex;align-items:center;gap:12px;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.06em;
+      color:#7d756a;margin-bottom:20px
+    }
+    .article-category{color:#C0392B;font-weight:600}
+    .dotsep{width:3px;height:3px;border-radius:50%;background:#C9C0B2;display:inline-block;flex:none}
+    .article-title{
+      font-family:'Playfair Display','Noto Serif SC',Georgia,serif;font-weight:600;
+      font-size:clamp(28px,3.5vw,42px);line-height:1.2;color:#1A1714;letter-spacing:-.01em
+    }
+
+    /* Cover */
+    .article-cover{margin-bottom:40px;border:1px solid #C9C0B2}
+    .article-cover img{width:100%;height:auto;display:block}
+
+    /* Body typography */
+    .article-body{
+      font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+      font-size:16px;line-height:1.85;color:#3a342d
+    }
+    .article-body h2{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:700;font-size:24px;color:#1A1714;margin:48px 0 16px;line-height:1.3
+    }
+    .article-body h3{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-weight:600;font-size:20px;color:#1A1714;margin:36px 0 12px;line-height:1.35
+    }
+    .article-body p{margin-bottom:1.4em}
+    .article-body a{color:#C0392B;text-decoration:underline;text-underline-offset:3px}
+    .article-body a:hover{color:#1A1714}
+    .article-body strong{color:#1A1714;font-weight:700}
+    .article-body blockquote{border-left:3px solid #C0392B;padding:4px 20px;margin:28px 0;color:#7d756a}
+    .article-body ul,.article-body ol{padding-left:1.5em;margin-bottom:1.4em}
+    .article-body li{margin-bottom:.4em}
+    .article-body pre,pre.code-block{background:#1a1a2e;color:#e8e3d8;padding:20px 24px;border-radius:4px;overflow-x:auto;margin:24px 0;font-family:ui-monospace,'SF Mono',monospace;font-size:13px;line-height:1.6}
+    .article-body code{font-family:ui-monospace,'SF Mono',monospace;font-size:.9em;background:rgba(201,192,178,.25);padding:1px 5px;border-radius:2px}
+    .article-body pre code,pre.code-block code{background:none;padding:0;font-size:inherit;color:inherit}
+    .article-body hr{border:none;border-top:1px solid #C9C0B2;margin:40px 0}
+    .article-body table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .article-body th{padding:10px 12px;text-align:left;font-weight:600;color:#7d756a;border-bottom:2px solid #C9C0B2}
+    .article-body td{padding:10px 12px;border-bottom:1px solid #C9C0B2;color:#3a342d}
+
+    /* Anchor offset for fixed nav */
+    .article-body h2,.article-body h3{scroll-margin-top:96px}
+
+    /* SVG figures (```svg blocks rendered inline) */
+    .article-svg{
+      margin:28px 0;padding:20px;
+      border:1px solid #C9C0B2;background:#fff;
+      overflow-x:auto;text-align:center;
+    }
+    .article-svg svg{max-width:100%;height:auto;display:inline-block}
+
+    /* Right-rail TOC (desktop ≥1200px) */
+    .article-toc{display:none;position:relative}
+    .toc-sticky{position:sticky;top:96px;max-height:calc(100vh - 120px);overflow-y:auto}
+    .toc-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .toc-link{
+      display:block;padding:5px 0 5px 12px;
+      font-size:12.5px;line-height:1.45;color:#7d756a;
+      border-left:2px solid transparent;transition:color .2s,border-color .2s
+    }
+    .toc-link:hover{color:#1A1714}
+    .toc-link.toc-l3{padding-left:26px;font-size:12px}
+    .toc-link.is-active{color:#C0392B;border-left-color:#C0392B;font-weight:600}
+    @media (min-width:1200px){.article-toc{display:block}}
+
+    /* Mobile TOC (<1200px, collapsible) */
+    .toc-mobile{
+      margin:0 0 32px;padding:16px 20px;
+      border:1px solid #C9C0B2;background:rgba(243,237,227,.5)
+    }
+    .toc-mobile summary{
+      cursor:pointer;font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.1em;color:#C0392B;text-transform:uppercase;user-select:none
+    }
+    .toc-mobile .toc-link{margin-top:8px}
+    @media (min-width:1200px){.toc-mobile{display:none}}
+
+    /* Code copy button */
+    pre.code-block{position:relative}
+    .code-copy{
+      position:absolute;top:8px;right:8px;
+      padding:4px 10px;border:1px solid rgba(232,227,216,.25);border-radius:3px;
+      background:rgba(232,227,216,.08);color:#e8e3d8;
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;letter-spacing:.04em;
+      cursor:pointer;opacity:0;transition:opacity .2s,background .2s
+    }
+    pre.code-block:hover .code-copy{opacity:1}
+    .code-copy:hover{background:rgba(232,227,216,.18)}
+    .code-copy.is-done{color:#7ac28a;border-color:rgba(122,194,138,.4)}
+    @media (hover:none){.code-copy{opacity:1}}
+
+    /* Prev / Next navigation */
+    .article-prevnext{
+      display:grid;grid-template-columns:1fr 1fr;gap:20px;
+      margin-top:56px;padding-top:28px;border-top:1px solid #C9C0B2
+    }
+    .prevnext-link{display:flex;flex-direction:column;gap:6px;min-width:0}
+    .prevnext-link.next{text-align:right;align-items:flex-end}
+    .prevnext-link.next:only-child{grid-column:2}
+    .prevnext-label{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:11px;
+      letter-spacing:.06em;color:#7d756a
+    }
+    .prevnext-title{
+      font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+      font-size:16px;font-weight:600;color:#1A1714;line-height:1.4;
+      transition:color .25s
+    }
+    .prevnext-link:hover .prevnext-title{color:#C0392B}
+
+    /* Related articles (mobile only — sidebar hidden below 860px) */
+    .related-mobile{display:none;margin-top:32px}
+    .related-title{
+      font-family:ui-monospace,'SF Mono',monospace;font-size:10px;letter-spacing:.12em;
+      color:#C0392B;text-transform:uppercase;margin-bottom:12px;padding-bottom:10px;
+      border-bottom:1px solid #C9C0B2
+    }
+    .related-link{
+      display:block;padding:8px 0;font-size:14px;color:#3a342d;
+      border-bottom:1px solid rgba(201,192,178,.3);transition:color .2s
+    }
+    .related-link:hover{color:#C0392B}
+
+    /* Footer */
+    .article-footer{margin-top:64px;padding-top:32px;border-top:1px solid #C9C0B2}
+    .article-bio-card{padding:24px;border:1px solid #C9C0B2;background:rgba(243,237,227,.5)}
+    .article-bio-card p{font-size:14px;line-height:1.7;color:#7d756a;margin-bottom:12px}
+    .article-bio-name{margin-bottom:10px;font-size:15px;line-height:1.5}
+    .article-bio-name a{color:#1A1714;font-weight:600;text-decoration:none;border-bottom:1px solid #C9C0B2;transition:color .2s,border-color .2s}
+    .article-bio-name a:hover{color:#C0392B;border-color:#C0392B}
+    .article-bio-name span{margin-left:8px;font-size:13px;color:#7d756a}
+    .article-bio-links{display:flex;align-items:center;gap:12px;font-family:ui-monospace,'SF Mono',monospace;font-size:12px;letter-spacing:.04em}
+    .article-bio-links a{color:#C0392B;transition:color .2s}
+    .article-bio-links a:hover{color:#1A1714}
+
+    /* Category rows */
+    .category-articles{display:flex;flex-direction:column}
+    .article-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:22px 0;border-bottom:1px solid #C9C0B2;transition:padding-left .3s cubic-bezier(.22,.61,.36,1);color:inherit}
+    .article-row:hover{padding-left:12px}
+    .article-row__body{min-width:0}
+    .article-row__title{font-family:'Noto Serif SC','Source Han Serif SC',Georgia,serif;font-weight:600;font-size:20px;color:#1A1714;line-height:1.3;transition:color .25s}
+    .article-row:hover .article-row__title{color:#C0392B}
+    .article-row__meta{display:flex;align-items:center;gap:12px;margin-top:8px;font-size:13px;color:#7d756a}
+    .article-row__tag{color:#1A1714;font-weight:500}
+    .article-row__date{font-variant-numeric:tabular-nums}
+    .article-row__arr{color:#1A1714;font-size:18px;transition:transform .3s cubic-bezier(.22,.61,.36,1),color .3s}
+    .article-row:hover .article-row__arr{transform:translateX(5px);color:#C0392B}
+
+    /* Responsive */
+    /* 移动/桌面结构边界为 620px：折叠屏展开竖屏（≈626px）及以上保持双栏桌面布局 */
+    @media (max-width:860px){
+      .article-layout{grid-template-columns:176px minmax(0,1fr);padding:96px 24px 60px;gap:32px}
+      .article-title{font-size:clamp(24px,5vw,32px)}
+      .article-body{font-size:16px;line-height:1.8}
+    }
+    @media (max-width:620px){
+      .article-layout{grid-template-columns:1fr;padding:88px 20px 48px;gap:24px}
+      .article-sidebar{display:none}
+      .article-body{font-size:15px;line-height:1.8}
+      .related-mobile{display:block}
+      .article-meta-top{font-size:10px;gap:8px}
+      .article-cover{margin-bottom:28px}
+      .article-prevnext{grid-template-columns:1fr;gap:16px}
+      .prevnext-link.next{text-align:left;align-items:flex-start}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"><div class="progress-bar-fill"></div></div>
+
+  <header class="nav" role="banner">
+    <a href="/" class="nav__brand" aria-label="回到首页">
+      <span class="nav__brand-dot" aria-hidden="true"></span>CSLawyer
+    </a>
+    <nav class="nav__links" aria-label="导航">
+      <a href="/#writing">Writing</a>
+      <span class="sep">/</span>
+      <a href="/#about">About</a>
+      <span class="sep">/</span>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <div class="article-layout">
+      <!-- Shared sidebar: article / category / all-articles pages -->
+<aside class="article-sidebar" aria-label="导航">
+  <div class="sidebar-sticky">
+    <a href="/" class="sidebar-back">&larr; 首页</a>
+
+    <h3 class="sidebar-title">分类</h3>
+    <nav class="sidebar-nav">
+      <a href="/articles/" class="sidebar-link">全部（242）</a>
+      
+      <a href="/categories/ai-law/" class="sidebar-link">AI+法律（213）</a>
+      
+      <a href="/categories/legal-practice/" class="sidebar-link">法律实务（23）</a>
+      
+      <a href="/categories/industry/" class="sidebar-link">行业观察（3）</a>
+      
+      <a href="/categories/methodology/" class="sidebar-link">方法论/思维（1）</a>
+      
+      <a href="/categories/data-analysis/" class="sidebar-link">裁判数据分析（2）</a>
+      
+    </nav>
+
+    
+    <h3 class="sidebar-title" style="margin-top:24px">AI+法律</h3>
+    <nav class="sidebar-nav">
+      
+      <a href="/articles/2026-11-05-为什么-等-AI-成熟了再抄后路-是律师最大的认知陷阱/" class="sidebar-link">为什么“等 AI 成熟了再抄后路”，是律师最大的认知陷阱？</a>
+      
+      <a href="/articles/2026-11-05-对方又拖欠货款了-要不要起诉-穿透大模型逻辑的执业实务/" class="sidebar-link">“对方又拖欠货款了，要不要起诉？”——穿透大模型逻辑的执业实务</a>
+      
+      <a href="/articles/2026-11-05-律所的-AI-培训-为什么第一站必须打给合伙人-而不是青年律师/" class="sidebar-link">律所的 AI 培训，为什么第一站必须打给合伙人，而不是青年律师？</a>
+      
+      <a href="/articles/2026-11-05-律师买-Agent-产品-必须警惕的-四大黑箱陷阱/" class="sidebar-link">律师买 Agent 产品，必须警惕的“四大黑箱陷阱”</a>
+      
+      <a href="/articles/2026-11-05-别被-全量法律数据库-忽悠了-为什么办好案更需要-小而权威的私有库/" class="sidebar-link">别被“全量法律数据库”忽悠了：为什么办好案更需要“小而权威的私有库”？</a>
+      
+      <a href="/articles/2026-11-04-AI-有意识吗-从证据研究到理性审慎/" class="sidebar-link">AI 有意识吗？——从证据研究到理性审慎</a>
+      
+      <a href="/articles/2026-11-03-为什么是语言-当机器破译了人类文明的操作系统/" class="sidebar-link">为什么是语言？——当机器破译了人类文明的操作系统</a>
+      
+      <a href="/articles/2026-11-02-Agent-输出不可靠-可能才是律师的真正红利/" class="sidebar-link">Agent 输出不可靠，可能才是律师的真正红利</a>
+      
+      <a href="/articles/2026-10-31-我把个人主页做成了-Mac-桌面-设计-Skill-也开源了/" class="sidebar-link">我把个人主页做成了 Mac 桌面，设计 Skill 也开源了</a>
+      
+      <a href="/articles/2026-10-30-拆开元典脱敏-从一份1-69GB安装包-看本地脱敏系统怎样工作/" class="sidebar-link">拆开元典脱敏：从一份1.69GB安装包，看本地脱敏系统怎样工作</a>
+      
+      <a href="/articles/2026-10-26-AI-的本事-是怎么记到你自己账上的/" class="sidebar-link">AI 的本事，是怎么记到你自己账上的</a>
+      
+      <a href="/articles/2026-10-26-AI-为什么宁肯编-也不说-不知道/" class="sidebar-link">AI 为什么宁肯编，也不说“不知道”</a>
+      
+      <a href="/articles/2026-10-26-审批按钮-不等于可审查的推理/" class="sidebar-link">审批按钮，不等于可审查的推理</a>
+      
+      <a href="/articles/2026-10-26-AI-把复核变成了最贵的环节/" class="sidebar-link">AI 把复核变成了最贵的环节</a>
+      
+      <a href="/articles/2026-10-26-复核是怎么悄悄消失的/" class="sidebar-link">复核是怎么悄悄消失的</a>
+      
+      <a href="/articles/2026-10-26-AI-编的判例进了法庭-中国的第一张罚单还没开出/" class="sidebar-link">AI 编的判例进了法庭，中国的第一张罚单还没开出</a>
+      
+      <a href="/articles/2026-10-26-AI-拿走的是练习题-不是判断力/" class="sidebar-link">AI 拿走的是练习题，不是判断力</a>
+      
+      <a href="/articles/2026-10-22-Skill-竞赛比的不是技术-是业务能力/" class="sidebar-link">Skill 竞赛比的不是技术，是业务能力</a>
+      
+      <a href="/articles/2026-10-21-红旗法案-当新技术的监管比技术本身跑得更慢/" class="sidebar-link">红旗法案：当新技术的监管比技术本身跑得更慢</a>
+      
+      <a href="/articles/2026-10-21-法律服务的供给形态正在变/" class="sidebar-link">法律服务的供给形态正在变</a>
+      
+    </nav>
+    
+  </div>
+</aside>
+
+
+      <article class="article-main">
+        <header class="article-header">
+          <div class="article-meta-top">
+            <span class="article-category">AI+法律</span>
+            <span class="dotsep"></span>
+            <time datetime="2026-10-30">2026年10月30日</time>
+            <span class="dotsep"></span>
+            <span>16 分钟阅读</span>
+          </div>
+          <h1 class="article-title">拆开元典脱敏：从一份1.69GB安装包，看本地脱敏系统怎样工作</h1>
+        </header>
+
+        
+        <details class="toc-mobile">
+          <summary>本文目录</summary>
+          
+          <a href="#课上讲的四种方法分别在解决什么" class="toc-link toc-l2">课上讲的四种方法，分别在解决什么</a>
+          
+          <a href="#课程中的组合设想与元典的执行顺序有差别" class="toc-link toc-l2">课程中的组合设想，与元典的执行顺序有差别</a>
+          
+          <a href="#第一层桌面图标打开的是本机服务的界面" class="toc-link toc-l2">第一层：桌面图标打开的，是本机服务的界面</a>
+          
+          <a href="#第二层文件里的文字要先被完整读出来" class="toc-link toc-l2">第二层：文件里的文字，要先被完整读出来</a>
+          
+          <a href="#第三层完整界面里规则和模型各有分工" class="toc-link toc-l2">第三层：完整界面里，规则和模型各有分工</a>
+          
+          <a href="#第四层专用模型怎样找出人物机构和地点" class="toc-link toc-l2">第四层：专用模型怎样找出人物、机构和地点</a>
+          
+          <a href="#第五层同一个名字怎样一直叫人物1" class="toc-link toc-l2">第五层：同一个名字怎样一直叫“人物1”</a>
+          
+          <a href="#第六层界面变了下载文件也必须真改了" class="toc-link toc-l2">第六层：界面变了，下载文件也必须真改了</a>
+          
+          <a href="#长段落实测暴露了配置数字以外的限制" class="toc-link toc-l2">长段落实测，暴露了配置数字以外的限制</a>
+          
+          <a href="#回到法律人的使用场景应该怎样评价这条路线" class="toc-link toc-l2">回到法律人的使用场景，应该怎样评价这条路线</a>
+          
+          <a href="#材料与技术出处" class="toc-link toc-l3">材料与技术出处</a>
+          
+        </details>
+        
+
+        
+        <figure class="article-cover">
+          <img src="cover.png" alt="拆开元典脱敏：从一份1.69GB安装包，看本地脱敏系统怎样工作封面图" loading="lazy">
+        </figure>
+        
+
+        <div class="article-body">
+          <p>第三期四明山法师AI夜校讲到资料脱敏时，我把常见办法拆成了四类：正则规则、词典匹配、专用识别模型，以及大语言模型。课上还留了一个设想：能不能让本地模型先提炼词典，再让脚本处理整包材料？</p>
+<p>最近，我让AI协助拆解了元典脱敏的安装包，又在本机跑了一组虚构文本。这个具体产品，刚好可以把课上那些概念接起来。</p>
+<p>它把专门识别人名、机构、地点的模型放在本机，由Java服务调用，再接上正则、替换字典、人工复核和文件导出。浏览器负责交互，也承担部分流程编排与文件处理；模型推理在本地Java服务中完成。</p>
+<p>整套系统可以先放进下面这张图。六层是为了讲清职责，具体请求会有不同分支，黑白名单等策略也会跨阶段生效。</p>
+<p><img src="assets/architecture.png" alt="图1：元典脱敏的本机六层架构" loading="lazy"></p>
+<h2 id="课上讲的四种方法分别在解决什么">课上讲的四种方法，分别在解决什么</h2>
+<p>第三期第六节，我比较完整地讲过这四种方法；第五节的作业回顾中，也讨论了脚本、网页界面和本地模型的组合。[1]</p>
+<p>正则表达式（Regular Expression），可以理解成描述文字结构的一套规则。比如连续十一位数字，第一位为1、第二位在3到9之间，就很像常见的中国大陆手机号。用规则遍历文本，找到符合结构的片段，再做替换。</p>
+<p>下面只是一个教学用的候选匹配式：</p>
+<pre class="code-block"><code class="language-regex">(?&lt;![0-9])1[3-9][0-9]{9}(?![0-9])</code></pre>
+<p>它能减少从更长数字中截取十一位的误报，但不证明号码真实存在，也覆盖不了所有空格、连字符或国际号码写法。身份证号、银行卡号同样需要考虑边界、校验和上下文。规则的确定性，指相同输入与配置能按相同逻辑执行，不等于这条规则已经写得足够准确。</p>
+<p>词典匹配处理的是已知对象。先列出“张明”“星河示例科技有限公司”“某个项目代号”，再规定分别替换成什么。它不必猜词语的含义，按表执行即可。难处是维护：新案子换一批名字，简称和别名也要补进去；同样叫张明的两个人，还可能被合并。</p>
+<p>命名实体识别（Named Entity Recognition，NER）把部分找词工作交给专用模型。它结合上下文，判断哪些片段像人物、机构、地点。这样就能发现词典里尚未出现的名称。不过，“被识别为机构”与“这份材料中的这家机构是否需要隐藏”，仍然是两个判断。</p>
+<p>大语言模型能参与更复杂的语义提取。比如一段话没有写姓名，却把任职、经历和项目背景组合得足以让熟人对号入座。这类问题较难只靠格式规则解决。但模型也会漏、会误判，直接让它重写全文，还要防止改动原意。部署在哪里、处理多少材料、怎样保留位置和证据，也都要考虑。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>它主要依靠什么</th>
+<th>容易遇到的边界</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>正则规则</td>
+<td>字符格式、上下文规则和校验</td>
+<td>非标准写法、形似字段、规则遗漏</td>
+</tr>
+<tr>
+<td>词典匹配</td>
+<td>已知名称与对应关系</td>
+<td>新名称、别称、同名异人</td>
+</tr>
+<tr>
+<td>专用NER</td>
+<td>训练得到的实体识别能力</td>
+<td>领域差异、实体范围、未训练的类别</td>
+</tr>
+<tr>
+<td>大语言模型</td>
+<td>更广泛的语义理解与指令执行</td>
+<td>漏判、改写、成本和结果稳定性</td>
+</tr>
+</tbody>
+</table>
+<p>这几种方法可以混用。课件中的分类是一张选型地图，不能据此给所有模型排能力高低。专用NER在明确任务上可以很合适；大模型的通用理解能力，也不自动转化成更可靠的文件处理。</p>
+<p>还有一个经常混在一起的问题：找到信息之后，怎么处理？</p>
+<p>“138****0000”是部分遮盖；“人物1”是代称；删掉一整段是删除；把精确住址改成城市或区域是泛化；对数字加扰动更常见于统计发布；哈希、加密则有各自的用途和威胁条件。识别技术与处理动作，应当分开选择。Presidio的技术文档也把识别器和替换操作分成两个模块。[2] 这里借它说明通用设计，并不表示元典采用了Presidio。</p>
+<p>我在课上强调过本地处理。这个前提要说准确：<strong>如果目标是原稿不出本机，把原稿上传公网服务后再脱敏，就无法满足这个目标。</strong>经批准的内网、受控云环境或其他使用目的，应另行判断，不能只凭“云端”两个字下结论。</p>
+<h2 id="课程中的组合设想与元典的执行顺序有差别">课程中的组合设想，与元典的执行顺序有差别</h2>
+<p>第六节我提出过：给本地模型少量代表性材料，让它提炼词典，再用脚本的正则和词典处理剩余文件。回看逐字稿，那时我说得很清楚：“我自己还没有试。”这是一条建议探索的路线。[1]</p>
+<p>元典本机版体现了另一种组合。它对文档提取文字，先运行规则，再把相应文本送入NER，得到实体位置后生成替换和映射。模型会参与分段识别，不是只看一两份代表文件，然后全部依赖预先生成的词典。</p>
+<p>两条路线的共同点，是把语义识别与确定性的替换分开。差别在于模型介入多少材料，以及词典从哪里来。</p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>课堂提出的组合设想</th>
+<th>本次查到的元典路线</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>模型主要读什么</td>
+<td>少量代表性材料</td>
+<td>待处理文本的相应分段</td>
+</tr>
+<tr>
+<td>新实体从哪里发现</td>
+<td>先从代表材料提取，之后补充</td>
+<td>NER继续从当前文本发现</td>
+</tr>
+<tr>
+<td>词典的作用</td>
+<td>作为批量替换的重要输入</td>
+<td>还承担结果一致化与跨文件复用</td>
+</tr>
+<tr>
+<td>需要防什么</td>
+<td>代表材料没覆盖的新名称</td>
+<td>模型漏识别、分块截断及实体边界错误</td>
+</tr>
+</tbody>
+</table>
+<p>没有做同一批资料的对照评测，我不会据此说哪条更快、更准。对准备自建工具的同行，这个比较更实际的用处，是先想清楚：新文件里出现的新名字，准备在哪一步被发现？</p>
+<h2 id="第一层桌面图标打开的是本机服务的界面">第一层：桌面图标打开的，是本机服务的界面</h2>
+<p>这次安装包有1,688,222,984字节，按十进制换算约1.69GB。看到这个体积，我最初的判断就是里面可能放了模型。拆开之后，这个方向得到了证据支持。</p>
+<p>但桌面的“元典脱敏.app”很小，整个入口约134KB，主启动脚本只有619字节。它调用启动脚本，唤起由macOS后台服务管理机制launchd管理的Java进程，然后让浏览器打开本地页面。</p>
+<p>实际观察到的服务地址是<code>127.0.0.1:8080</code>。127.0.0.1是回环地址，请求指向这台电脑自己。浏览器中的页面通过同源<code>/api</code>访问后端。前端使用Vue、Pinia和Vue Router，后端是Spring Boot与嵌入式Tomcat，并随包提供Java 21运行环境。</p>
+<p>这解释了为什么它看起来像网站，又能使用本地模型。网页是一种界面形态，计算位置还要继续看请求去了哪里。</p>
+<p>安装目录的主要结构如下，省略了无关文件：</p>
+<pre class="code-block"><code class="language-text">Desensitization/
+├── backend.jar                Java服务与业务依赖
+├── jre/                       Java运行环境
+├── web/                       网页、脚本、字体与预览资源
+├── ydner_onnx/
+│   ├── model.onnx.enc          加密模型资源
+│   ├── tokenizer.json.enc      加密分词资源
+│   ├── config.json.enc         模型配置
+│   └── ner_metadata.json.enc   标签与CRF信息
+├── scripts/                   启动和服务管理
+└── data/                      随包数据目录</code></pre>
+<p>运行时的历史、缓存等还涉及应用支持目录，不能只检查这个树就认定所有资料都在其中。</p>
+<table>
+<thead>
+<tr>
+<th>组成</th>
+<th style="text-align:right">常规文件大小，约</th>
+<th style="text-align:right">安装目录占比</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>模型和分词资源</td>
+<td style="text-align:right">1243.3MB</td>
+<td style="text-align:right">67.21%</td>
+</tr>
+<tr>
+<td>Java后端及依赖</td>
+<td style="text-align:right">385.5MB</td>
+<td style="text-align:right">20.84%</td>
+</tr>
+<tr>
+<td>Java运行环境</td>
+<td style="text-align:right">157.6MB</td>
+<td style="text-align:right">8.52%</td>
+</tr>
+<tr>
+<td>网页资源</td>
+<td style="text-align:right">62.2MB</td>
+<td style="text-align:right">3.36%</td>
+</tr>
+</tbody>
+</table>
+<p>单个<code>model.onnx.enc</code>就有约1.23GB。包大，在这里确实主要与模型有关；它仍然不能直接回答参数量、量化精度或训练水平。本次还把安装包载荷与已安装程序的八个关键文件做了哈希比对，模型、后端和主要前端文件均一致，避免分析到另一个版本。</p>
+<h2 id="第二层文件里的文字要先被完整读出来">第二层：文件里的文字，要先被完整读出来</h2>
+<p>TXT已经接近模型需要的输入。Word和PDF要复杂得多。</p>
+<p>DOCX本质上是一个装着XML和其他资源的ZIP容器。你看见的一个姓名，可能被Word拆到几个文本片段里；页面上的名字，也可能出现在页眉、页脚、批注、脚注或修订记录中。软件需要先找到这些内容，再保留它与原文件位置的关系。</p>
+<p>后端的文档提取服务可以追到正文、页眉页脚、批注、脚注尾注和超链接等处理分支。旧DOC格式先转换成DOCX。部分解析异常还会进入ZIP/XML兜底路径。这些工作发生在实体识别之前，漏读了哪一块，后面的模型再好也看不到。</p>
+<p>PDF又要先区分文字层与扫描图。文字层可以提取字符，扫描件只有像素，需要光学字符识别（Optical Character Recognition，OCR）把图像转成文字及位置。</p>
+<p>OCR与NER解决不同的问题。OCR回答图上写着什么，NER回答这段文字中哪些片段像人名、机构和地点。这次查到的1.23GB资源是NER模型，不能因为软件支持某些PDF处理，就把它叫作OCR模型。</p>
+<p>本机桌面默认配置关闭OCR，随包说明也区分了单机版与服务端的图片、扫描件能力。后端代码中存在OCR分支，不等于这台电脑当前就能用该功能。选择工具时，应拿自己的文件类型测试，不能只看一个“支持PDF”的标签。</p>
+<h2 id="第三层完整界面里规则和模型各有分工">第三层：完整界面里，规则和模型各有分工</h2>
+<p>为了看清实际效果，我创建了一份全部虚构的TXT，放入张明、李华、示例公司、住址、手机号、邮箱、金额，以及一段英文。选择快速处理、不使用空间，沿用默认方案，然后在本地界面运行。</p>
+<p><img src="assets/ui-demo.jpg" alt="图2：本地界面处理虚构样例，左侧原文，中间结果，右侧识别清单" loading="lazy"></p>
+<p>界面显示12项、18处。右侧进一步区分为系统预置规则3项、模型识别9项。手机号、邮箱、金额来自规则；中英文人名、公司和地点来自模型。张明出现四次，使用同一个代称；重复公司名和Alice也保持一致。</p>
+<p>这一点值得和前一轮接口测试放在一起看。当时单独调用AI脱敏入口，张明被替换，手机号和邮箱保持原样。若只看那次输出，很容易写成“软件漏掉了电话号码”。完整文件流程的这张图，说明正则是另一条处理路径。测试边界不写清，结论就会错位。</p>
+<p>前端主流程能追到：先保护白名单词语，执行正则，再调用AI；之后过滤未选中的AI类型、恢复保护词、强制处理黑名单，最后归并同原文的代称和编号。文件后端入口同样存在规则先行、AI补充的流程。不同入口的编排细节应分别看，不能把一个接口当作整套产品。</p>
+<p>白名单的技术做法，是把需要保护的字串临时改成特殊标记，末尾恢复。黑名单则在后处理阶段强制处理指定内容。遇到重叠实体，还要确定取哪一个范围；替换时从后向前做，可以避免前面的字数变化破坏后续位置。</p>
+<p>这些听上去都是小事，但它们决定了一个脱敏工具遇到真实材料时，会不会把同一个名字换出几种编号，或者把一个公司名切成几段各自替换。</p>
+<h2 id="第四层专用模型怎样找出人物机构和地点">第四层：专用模型怎样找出人物、机构和地点</h2>
+<p>本地模型配置中的架构名称是<code>GteCrfNerModel</code>。查到的主要信息包括：12层、768维隐藏表示、12个注意力头，以及250048的词表规模。标签只有人物PER、机构ORG、地点LOC三类，加上BIO标记，组成七标签。</p>
+<p>BIO可以这样理解：B是一个实体的开头，I是实体内部，O是实体之外。下面按片段作标签示意，不是这句话的真实分词日志：</p>
+<table>
+<thead>
+<tr>
+<th>片段</th>
+<th>标签示意</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>星河</td>
+<td>B-ORG</td>
+<td>机构开头</td>
+</tr>
+<tr>
+<td>示例、科技、有限公司</td>
+<td>I-ORG</td>
+<td>继续属于同一个机构</td>
+</tr>
+<tr>
+<td>签订合同</td>
+<td>O</td>
+<td>不属于这组三类实体</td>
+</tr>
+</tbody>
+</table>
+<p>真正执行时，先由分词器tokenizer把文字编码为token编号，并记录它们对应的原文字符范围。Java准备<code>input_ids</code>和<code>attention_mask</code>两个输入；后者用于说明批次中的哪些位置是有效内容、哪些是补齐位置。</p>
+<p>模型由ONNX Runtime调用。ONNX是一种模型交换格式，ONNX Runtime负责执行相应计算；本包会话选项明确使用CPU。本次没有建立CoreML、GPU或Apple神经网络引擎已启用的证据。[3]</p>
+<p>模型运行后，Java取出每个token对各标签的分数，再进行条件随机场（Conditional Random Field，CRF）解码。这里使用Viterbi动态规划：结合当前位置得分与前后标签转移关系，寻找整条序列的标签路径，然后回溯。它能考虑标签之间的关系，但不保证结果一定正确。</p>
+<p><img src="assets/ner-pipeline.png" alt="图3：从分词、模型分数、CRF解码，到实体位置和代称" loading="lazy"></p>
+<p>这条路径中的模型没有生成一篇改写后的文章。它先给出可用于判断实体类别的分数，Java再解码、合并原文片段，交给替换逻辑。原文位置能被保留下来，也就有条件在界面上逐项标注和撤销。</p>
+<p>本地配置与Alibaba-NLP公开的<code>gte-multilingual-base</code>在层数、维度、词表及位置配置等方面高度相似，后者官方模型卡列示为305M的编码器模型。[4] 这使它成为很有根据的候选基座，但配置相似还不是权重身份的证明。确切checkpoint、训练语料、是否做过法律领域微调，本次没有查明。</p>
+<p>我也不会把分词器名<code>XLMRobertaTokenizerFast</code>直接写成“采用XLM-R模型”。分词器类型与编码器基座身份，不能这么一一对应。</p>
+<p>模型文件采用加密封装，代码设计为在内存中解密权重并建立推理会话，小型配置和分词资源还有临时文件加载路径。本次只解析了小型配置，没有恢复大模型权重。模型资源加密，与用户文档、历史数据库或备份是否加密，是不同的问题。</p>
+<h2 id="第五层同一个名字怎样一直叫人物1">第五层：同一个名字怎样一直叫“人物1”</h2>
+<p>识别出张明以后，系统还要记住它已经分配过什么代称。这是词典再次发挥作用的地方。</p>
+<p>实际界面的“字典”弹窗中，可以看到这样的对应关系：</p>
+<pre class="code-block"><code class="language-json">{
+  "&lt;人物1&gt;": "张明",
+  "&lt;人物2&gt;": "李华",
+  "&lt;单位1&gt;": "星河示例科技有限公司",
+  "&lt;手机1&gt;": "13800000000"
+}</code></pre>
+<p>这份字典的方向是代称到原文。保留它，就有恢复原始文字的条件。所谓可还原脱敏，至少在这条路径上依赖对应关系，并没有凭空让原文消失。</p>
+<p>空间字典还可以把同一套编号延伸到多个文件。对一包合同、函件和往来记录，这比每份文件都从“人物1”重新开始更容易复核。</p>
+<p>但字串一致与身份一致要分开。“张明”在所有位置都替换成同一代称，只能说明相同原文被复用；“张总”是不是同一个人，两位同名人物是不是应分开，还涉及实体消歧和业务判断。本次没有验证产品能自动解决这些问题。</p>
+<p>界面提供取消误报、补充漏报、按特定出现位置处理等交互，说明人工复核本来就在产品流程中。模型漏掉项目别称，可以补进规则或字典；错误隐藏了不应隐藏的词，也应能撤销，而不是只能接受一篇已经整体改写的结果。</p>
+<p>NIST关于去标识的技术指南也提醒，只有遮盖功能的工具未必完成了充分的去标识，评价还应考虑分享目标和再识别风险。[5] 对这类可还原文档而言，原件、代称表、历史记录分别由谁保存，至少值得和正文替换放在一起考虑。</p>
+<h2 id="第六层界面变了下载文件也必须真改了">第六层：界面变了，下载文件也必须真改了</h2>
+<p>这是我这次拆解中觉得最值得同行关注的一层。识别结果已经显示出来，距离拿到一个处理正确的文件，还有一段路。</p>
+<p>Word导出需要把原文位置映射回原文件。浏览器代码与Java后端都有相应的XML替换实现，不同入口会走不同路径。代码中可以追到跨多个<code>w:t</code>文本节点拼接索引、定位命中范围，再从后往前替换的逻辑；还涉及页眉页脚、批注、脚注尾注，以及删除修订、域指令和超链接目标。</p>
+<p>脱敏导出路径有清理作者、修订者、时间、文档属性和嵌入对象的实现。它的价值在于：一个人的名字可能已经从正文消失，却仍留在批注作者、修订记录或文档属性里。</p>
+<p>不过，代码也有匹配失败的告警：“该处不会脱敏。”保留原版式的路径失败后，还可能回退成由正文新生成的Word。部分无映射调用路径会直接返回原字节，因此也不能只因为存在清理函数，就认定每次导出都执行过全部清理。</p>
+<p>PDF至少要分三条路径看。</p>
+<p>一条是改写文字内容流。PDFBox解析文字绘制操作符，修改字符串或数组，并处理字体编码和位置补偿。这涉及底层文字载荷。</p>
+<p>另一条是标密导出。代码会先尝试擦除文字，再做几何检查、清理隐藏信息和绘制黑框；部分页面可回退为栅格图。这里也存在擦除未命中后继续清理并画框的降级分支，所以不能把“导出了黑框”当作底层文字一定已清除的证明。</p>
+<p>还有一条是把页面渲染成图，修改目标区域的像素，再重新建立PDF；必要时补充跳过打码区域的文字层。它要依靠OCR坐标或人工框选，把需要处理的内容准确落到页面上。</p>
+<p>这些路径不能混为一谈。本机默认还关闭了OCR和原PDF内容流替换导出的一些开关，界面也存在单机能力限制。通用后端具备某段代码，与当前桌面入口允许使用它，是两回事。本次没有对复杂Word及上述各类PDF成品做全面验证。</p>
+<p>我实际验证了一条较小但完整的路径：从界面导出刚才那份虚构样例为TXT，再直接读取下载文件的字节。输入中的12个已知实体字符串均未检出，代称重复一致。这证明该TXT的真实输出与界面结果相符，不能外推为所有文件都没有残留。</p>
+<p>实际使用时，可以在副本上处理，保留原件；下载后搜索已知名称，检查批注与属性，再视格式提取全文或查看内容流。搜索不到一个名字，只能回答这一次搜索的问题，仍不能替代对组合身份线索和隐藏内容的检查。</p>
+<h2 id="长段落实测暴露了配置数字以外的限制">长段落实测，暴露了配置数字以外的限制</h2>
+<p>本地模型配置里有8192，分词器配置里还有32768。如果只读到这里，很容易把它们写成产品支持的上下文长度。</p>
+<p>继续沿Java调用链看，问题出在实际分词器加载方式。应用使用捆绑DJL的默认入口，没有传自己的长度选项；这条路径默认采用512 token截断，没有看到对溢出token的恢复处理。外层另有按字符分块与并行机制，内层则分句、按批次补齐。这些限制是叠在一起的。</p>
+<p>先做纯分词器探针：给同一分词器加载路径4800字的无句末标点字符串，返回512个token，字符范围只覆盖到约第741字。741只对应这一串文字，不能换算成统一的中文字数上限。</p>
+<p>再做本机真实API对照。两组输入都在开头放“张明在北京工作”，中间重复200次虚构教学说明，尾部放“李华在上海工作”。区别是第二组加上了句号。</p>
+<table>
+<thead>
+<tr>
+<th>样本</th>
+<th style="text-align:right">实际字符数</th>
+<th>开头</th>
+<th>尾部</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>无分句长段落</td>
+<td style="text-align:right">3814</td>
+<td>张明、北京得到替换</td>
+<td>李华、上海保留原样</td>
+</tr>
+<tr>
+<td>加句号长段落</td>
+<td style="text-align:right">4016</td>
+<td>张明、北京得到替换</td>
+<td>李华、上海得到替换</td>
+</tr>
+</tbody>
+</table>
+<p>这个现象与分句、截断机制吻合。外层把长文按字符切成块，并不保证块内的每个长句编码后都在512 token以内。加了句号，内层才更容易把它分成适合处理的句子。</p>
+<p>样例还出现了另一种不理想结果：模型把“在北京”整体当作地址片段，而没有只取“北京”。漏识别和范围偏移，都是复核时要看的东西。</p>
+<p>这组反例发生在最小AI接口路径，不能直接说所有UI文件入口、所有方案都会如此；更不能用它计算产品的总体召回率。但它足以提醒我：讨论模型长度，要沿着产品实际加载、分块和截断的方式看，不能停在配置文件的一个数字上。</p>
+<h2 id="回到法律人的使用场景应该怎样评价这条路线">回到法律人的使用场景，应该怎样评价这条路线</h2>
+<p>经过这次拆解，我会把“专用模型+规则+字典”视作一条值得理解的本地处理路线。它让模型承担相对明确的语义识别任务，再用程序管理位置、编号和文件结构。它能否适合具体材料，仍要拿材料类型和处理目标来验证。</p>
+<p>所谓本地，也需要沿路径继续看。当前观察到的是回环监听与本地NER，所查本地NER分支失败时直接报错，没有自动转远程。通用后端同时存在远程NER、OCR、对象存储、登录及版本配套代码，另有默认关闭的可选语义扩展。这些代码不能证明桌面当前全部启用，也不能因此保证程序从不联网。本次没有做持续出站流量审计，或通过断网测试覆盖全部功能。</p>
+<p>如果准备选用或自己搭一套系统，我更愿意先拿一份虚构材料，把这几个问题跑一遍：文件是否完整读出；固定号码与语义实体各由谁识别；重复原文是否一致；漏掉的别称能否补充；导出后载荷和元数据是否处理；原文、字典、历史又存在哪里。</p>
+<p>这里面任何一个答案含糊，都不宜用一句“用了AI模型”带过去。</p>
+<p>课上那条“模型提炼词典、脚本处理全包”的设想，也可以放到同样的检查中。代表材料里没有出现的人名，后续文件怎样发现？词典替换跨过Word格式片段时怎么办？只在正文中搜索过，能否说明批注里也处理了？这些问题决定了一个脚本距离可复用工具还有多少工作。</p>
+<p>作为律师，我最终关心的是，工具处理后的材料是否仍表达原来的关系，是否按预定范围隐藏了信息，以及出了问题能不能对回原件和处理记录。这次的虚构TXT能把18处替换落到下载文件里；长段落测试又留下了一个需要继续追查的尾部漏识别。把成功路径和边界一起保留下来，比只展示一张看起来很干净的结果截图，更适合带回夜校讨论。</p>
+<hr>
+<h3 id="材料与技术出处">材料与技术出处</h3>
+<p>[1] 四明山法师AI夜校第三期：第五节课堂实录00:26:36—00:29:35；第六节课堂实录01:21:19—01:30:37，及第六节课件“数据治理的第一步：脱敏”。课程内容按实际实录校订转述，口头设想与本次实测分别表述。</p>
+<p>[2] <a href="https://presidio.dataprivacystack.org/text_anonymization/">Presidio：Text anonymization</a>。仅用于说明识别与操作分层的通用设计。</p>
+<p>[3] <a href="https://onnxruntime.ai/docs/get-started/with-java">ONNX Runtime Java官方文档</a>。产品的CPU选择依据本机字节码调用链。</p>
+<p>[4] Alibaba-NLP：<a href="https://huggingface.co/Alibaba-NLP/gte-multilingual-base/blob/main/config.json">gte-multilingual-base公开配置</a>、<a href="https://huggingface.co/Alibaba-NLP/gte-multilingual-base">官方模型卡</a>。候选基座对照不等于权重身份确认。</p>
+<p>[5] <a href="https://csrc.nist.gov/pubs/sp/800/188/final">NIST SP800-188公开摘要</a>。本文将其作为去标识技术参考，不作中国法律适用依据。</p>
+<p>产品分析依据：元典脱敏2.2.12.0安装包、相同关键文件的已安装程序、REA前端静态观察、Java字节码、非敏感模型配置与虚构样本。本次未建立训练集、法律领域微调、总体准确率、全部网络行为及所有文档导出安全性的结论。复核定位与样例另附技术材料。</p>
+<hr>
+<p><strong>作者简介：</strong> 陈石律师（主页 chenshi.ai），浙江海泰律师事务所副主任、高级合伙人、房地产与建设工程部主任，第十届宁波市律师协会常务理事、第七届宁波仲裁委员会仲裁员，聚焦建筑房地产、投融资、并购重组及商事争议解决。曾获多家法律媒体与专业机构认可，荣登 LegalOne 2025 中国区建工及房地产实务先锋 45 强、律新社 2025 年度管理合伙人 20 佳（华东），入选《商法》The A-List 法律精英，获评 ALB China 区域市场十五佳长三角地区律师新星，并获律新社 2024 年度并购领域品牌之星。长期为万科、华润置地、信达地产、保利置业、招商蛇口、中海地产等企业提供法律服务，承办“首宗百亿地王”“长春第一高楼”“台州第一高楼”等代表性项目，累计服务项目投资额超千亿。近年来持续推动 AI 与法律实务融合，强调以结构化方法打通技术逻辑、法律判断与商业场景；著有《赋能法律人：AI 底层思维与应用范式》，并在多地开展相关主题讲座与分享。</p>
+        </div>
+
+        <nav class="article-prevnext" aria-label="上一篇/下一篇">
+          
+          <a class="prevnext-link prev" href="/articles/2026-10-31-我把个人主页做成了-Mac-桌面-设计-Skill-也开源了/">
+            <span class="prevnext-label">&larr; 上一篇</span>
+            <span class="prevnext-title">我把个人主页做成了 Mac 桌面，设计 Skill 也开源了</span>
+          </a>
+          
+          
+          <a class="prevnext-link next" href="/articles/2026-10-26-AI-的本事-是怎么记到你自己账上的/">
+            <span class="prevnext-label">下一篇 &rarr;</span>
+            <span class="prevnext-title">AI 的本事，是怎么记到你自己账上的</span>
+          </a>
+          
+        </nav>
+
+        
+        <div class="related-mobile">
+          <h3 class="related-title">同类文章</h3>
+          
+          <a class="related-link" href="/articles/2026-11-05-为什么-等-AI-成熟了再抄后路-是律师最大的认知陷阱/">为什么“等 AI 成熟了再抄后路”，是律师最大的认知陷阱？</a>
+          
+          <a class="related-link" href="/articles/2026-11-05-对方又拖欠货款了-要不要起诉-穿透大模型逻辑的执业实务/">“对方又拖欠货款了，要不要起诉？”——穿透大模型逻辑的执业实务</a>
+          
+          <a class="related-link" href="/articles/2026-11-05-律所的-AI-培训-为什么第一站必须打给合伙人-而不是青年律师/">律所的 AI 培训，为什么第一站必须打给合伙人，而不是青年律师？</a>
+          
+        </div>
+        
+
+        <footer class="article-footer">
+          <div class="article-bio-card">
+            <p class="article-bio-name"><a href="/about" rel="author">陈石</a><span>浙江海泰律师事务所副主任、高级合伙人</span></p>
+            <p>陈石，浙江海泰律师事务所副主任、高级合伙人，房地产与建设工程部主任。15年深耕建筑房地产与投融资领域，累计服务项目投资额超千亿。著有《赋能法律人：AI底层思维与应用范式》，创办「四明山法师 AI 夜校」（legalAGI.cn），推动法律人的AI能力建设。</p>
+            <div class="article-bio-links">
+              <a href="https://legalagi.cn/" target="_blank" rel="noopener">legalAGI.cn</a>
+              <span>·</span>
+              <a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+        </footer>
+      </article>
+
+      
+      <nav class="article-toc" aria-label="目录">
+        <div class="toc-sticky">
+          <h3 class="toc-title">目录</h3>
+          
+          <a href="#课上讲的四种方法分别在解决什么" class="toc-link toc-l2" data-target="课上讲的四种方法分别在解决什么">课上讲的四种方法，分别在解决什么</a>
+          
+          <a href="#课程中的组合设想与元典的执行顺序有差别" class="toc-link toc-l2" data-target="课程中的组合设想与元典的执行顺序有差别">课程中的组合设想，与元典的执行顺序有差别</a>
+          
+          <a href="#第一层桌面图标打开的是本机服务的界面" class="toc-link toc-l2" data-target="第一层桌面图标打开的是本机服务的界面">第一层：桌面图标打开的，是本机服务的界面</a>
+          
+          <a href="#第二层文件里的文字要先被完整读出来" class="toc-link toc-l2" data-target="第二层文件里的文字要先被完整读出来">第二层：文件里的文字，要先被完整读出来</a>
+          
+          <a href="#第三层完整界面里规则和模型各有分工" class="toc-link toc-l2" data-target="第三层完整界面里规则和模型各有分工">第三层：完整界面里，规则和模型各有分工</a>
+          
+          <a href="#第四层专用模型怎样找出人物机构和地点" class="toc-link toc-l2" data-target="第四层专用模型怎样找出人物机构和地点">第四层：专用模型怎样找出人物、机构和地点</a>
+          
+          <a href="#第五层同一个名字怎样一直叫人物1" class="toc-link toc-l2" data-target="第五层同一个名字怎样一直叫人物1">第五层：同一个名字怎样一直叫“人物1”</a>
+          
+          <a href="#第六层界面变了下载文件也必须真改了" class="toc-link toc-l2" data-target="第六层界面变了下载文件也必须真改了">第六层：界面变了，下载文件也必须真改了</a>
+          
+          <a href="#长段落实测暴露了配置数字以外的限制" class="toc-link toc-l2" data-target="长段落实测暴露了配置数字以外的限制">长段落实测，暴露了配置数字以外的限制</a>
+          
+          <a href="#回到法律人的使用场景应该怎样评价这条路线" class="toc-link toc-l2" data-target="回到法律人的使用场景应该怎样评价这条路线">回到法律人的使用场景，应该怎样评价这条路线</a>
+          
+          <a href="#材料与技术出处" class="toc-link toc-l3" data-target="材料与技术出处">材料与技术出处</a>
+          
+        </div>
+      </nav>
+      
+    </div>
+  </main>
+
+  <script>
+    /* Progress bar */
+    (function(){
+      var bar=document.querySelector('.progress-bar-fill');
+      if(bar){window.addEventListener('scroll',function(){var t=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;bar.style.width=(h>0?Math.min(t/h*100,100):0)+'%'},{passive:true})}
+    })();
+
+    /* TOC scrollspy — 当前阅读章节在目录中高亮 */
+    (function(){
+      var links=document.querySelectorAll('.article-toc .toc-link');
+      if(!links.length||!('IntersectionObserver' in window)){return}
+      var map={};
+      links.forEach(function(l){map[l.getAttribute('data-target')]=l});
+      var headings=document.querySelectorAll('.article-body h2[id],.article-body h3[id]');
+      if(!headings.length){return}
+      var visible={};
+      var observer=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){visible[e.target.id]=e.isIntersecting});
+        var current=null;
+        for(var i=0;i<headings.length;i++){
+          if(visible[headings[i].id]){current=headings[i].id;break}
+        }
+        if(!current){
+          for(var j=headings.length-1;j>=0;j--){
+            if(headings[j].getBoundingClientRect().top<100){current=headings[j].id;break}
+          }
+        }
+        links.forEach(function(l){l.classList.remove('is-active')});
+        if(current&&map[current]){map[current].classList.add('is-active')}
+      },{rootMargin:'-80px 0px -70% 0px',threshold:0});
+      headings.forEach(function(h){observer.observe(h)});
+    })();
+
+    /* Code block copy button */
+    (function(){
+      function copyText(text,done){
+        if(navigator.clipboard&&window.isSecureContext){
+          navigator.clipboard.writeText(text).then(done,done);
+        }else{
+          var ta=document.createElement('textarea');
+          ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+          document.body.appendChild(ta);ta.select();
+          try{document.execCommand('copy')}catch(e){}
+          document.body.removeChild(ta);done();
+        }
+      }
+      document.querySelectorAll('pre.code-block').forEach(function(pre){
+        var btn=document.createElement('button');
+        btn.type='button';btn.className='code-copy';btn.textContent='复制';
+        btn.addEventListener('click',function(){
+          var code=pre.querySelector('code');
+          copyText(code?code.innerText:pre.innerText,function(){
+            btn.textContent='已复制';btn.classList.add('is-done');
+            setTimeout(function(){btn.textContent='复制';btn.classList.remove('is-done')},1500);
+          });
+        });
+        pre.appendChild(btn);
+      });
+    })();
+  </script>
+<script src="/js/foldbook-entry.js?v=20261029-nav" defer></script>
+</body>
+</html>
