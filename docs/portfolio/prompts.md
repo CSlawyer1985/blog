@@ -167,3 +167,30 @@ Constraints: no text, no letters, no numbers, no logos, no watermark; the charco
 Avoid: purple, blue gradients, neon, glassmorphism, generic robots, planets, stars, floating particles, cute cartoon style, glossy plastic, dense UI text, fake branding.
 ```
 
+## tuxiuxiu（图修修）· 2026-11-05
+
+用途：首页第 13 张作品卡片。核实入口：https://img.chenshi.ai/ ；正式名图修修 · TuxiuXiu，活动照片本地批量处理 Skill：归档原片 → 逐批选样 → 确认方案、参数与水印 → 批量处理逐张另存；照片留在本机，原片保留。
+
+**当前状态**：本会话宿主无内置 imagegen，按 desktop-skill 先例暂用 PIL 程序绘制的同族占位稿（生成脚本 `scratch/tuxiuxiu-placeholder-20261105.py`：归档原片叠 → 选样比对板带朱红选样夹 → 石墨导轨 → 另存输出托盘），底图与 600×400 SVG 动效层按 2 倍坐标对齐（比对板板面留空区 472–716 × 274–596），替换底图时无需改动动效层。原始图 `sources/tuxiuxiu.png`；网页资产 `assets/portfolio/tuxiuxiu.webp`（1200×800）。
+
+动效叙事（8 秒循环）：三张样片依次上比对板 → 朱红选样标记逐一点选 → 水印章落下、朱红印记留存 → 三张成品卡批量飞落输出托盘成叠 → 字幕“先选样，后批量”→ 原位淡出复位。不代表真实产品运行检测。
+
+正式素材提示词（宿主内置 imagegen，参考 `assets/portfolio/skill-hub.webp` 与 `assets/portfolio/rulenav.webp` 同族材质；板面保持空，样片卡、选样标记、水印章与批量成品由 SVG 层绘制）：
+
+```text
+Use case: stylized-concept.
+Asset type: portfolio card image for a personal blog project gallery.
+Input images: reference images are for the existing warm paper architectural-maquette visual language only; do not copy their objects or any text.
+Primary request: Create a premium editorial illustration for “图修修 TuxiuXiu”, a local Skill that batch-retouches event photos in groups: archive the originals, pick sample shots batch by batch, confirm the look and watermark, then process the whole batch into separately saved copies. The image should communicate sample-then-batch photo processing, not a generic camera or photo app.
+Scene/backdrop: warm parchment seamless studio background (#e9dfcf), shallow ivory rectangular plinth.
+Subject: a precise handcrafted architectural maquette of a photo proofing station. The main subject is an upright ivory comparison board with subtle debossed inner frame and one small vermilion red (#b63c2f) clip on its top edge; its board face stays blank because sample photo cards, vermilion pick marks and a stamped watermark seal are drawn later as graphic overlays. On the left, one compact stack of archival photo prints with visible paper edges resting on the plinth. On the right, a low ivory output tray holding a neat stack of finished prints, connected from the board base by a slender graphite rail with two junction beads, suggesting confirmed samples become a saved batch. No camera, no computer monitor, no screen, no robot.
+Style/medium: analog craftsmanship, tactile uncoated paper, sophisticated miniature still life, refined realistic materials, orthographic near-front 3/4 view.
+Composition/framing: landscape 3:2, subject centered in the middle 65% with generous clear edges, readable at small card size, all structures grounded on the plinth.
+Lighting/mood: soft directional daylight from upper left, restrained contact shadows and ambient occlusion, quiet, precise, editorial.
+Color palette: warm parchment, ivory paper, graphite metal, one vermilion red accent (#b63c2f); no blue or purple.
+Materials/textures: folded-card paper, graphite rail, subtle paper grain, crisp miniature joinery.
+Text (verbatim): none.
+Constraints: no text, no letters, no numbers, no logos, no watermark symbols; the comparison board face must stay blank and free of photo cards; keep the archival print stack, the blank comparison board and the output tray visibly distinct; leave the lower 18 percent and upper 16 percent of the image mostly clear parchment for later graphic overlay.
+Avoid: purple, blue gradients, neon, glassmorphism, generic robots, planets, stars, floating particles, cute cartoon style, glossy plastic, dense UI text, fake branding.
+```
+

@@ -231,3 +231,30 @@
 @keyframes dsk-tile-c { 0%,44% { opacity: 0; transform: scale(.8); } 50%,84% { opacity: 1; transform: scale(1); } 90%,100% { opacity: 0; transform: scale(1); } }
 @keyframes dsk-tile-red { 0%,47% { opacity: 0; transform: scale(.8); } 53%,84% { opacity: 1; transform: scale(1); } 90%,100% { opacity: 0; transform: scale(1); } }
 @keyframes dsk-caption { 0%,60% { opacity: 0; transform: translateY(9px); } 66%,82% { opacity: 1; transform: translateY(0); } 89%,100% { opacity: 0; transform: translateY(0); } }
+
+/* tuxiuxiu (图修修): samples line up → pick marks → watermark stamped → batch lands in tray. */
+.txx-sample-a { animation-name: txx-in-a; }
+.txx-sample-b { animation-name: txx-in-b; }
+.txx-sample-c { animation-name: txx-in-c; }
+.art-motion .txx-pick { transform-box: fill-box; transform-origin: center; }
+.txx-pick-a { animation-name: txx-pick-a; }
+.txx-pick-b { animation-name: txx-pick-b; }
+.txx-pick-c { animation-name: txx-pick-c; }
+.txx-stamp { animation-name: txx-stamp; }
+.txx-seal { animation-name: txx-seal; }
+.txx-out-a { animation-name: txx-out-a; }
+.txx-out-b { animation-name: txx-out-b; }
+.txx-out-c { animation-name: txx-out-c; }
+.txx-caption { animation-name: txx-caption; }
+@keyframes txx-in-a { 0%,2%,94%,100% { opacity: 0; transform: translateY(7px); } 9%,84% { opacity: 1; transform: translateY(0); } 90% { opacity: 0; transform: translateY(-4px); } }
+@keyframes txx-in-b { 0%,5%,94%,100% { opacity: 0; transform: translateY(7px); } 12%,84% { opacity: 1; transform: translateY(0); } 90% { opacity: 0; transform: translateY(-4px); } }
+@keyframes txx-in-c { 0%,8%,94%,100% { opacity: 0; transform: translateY(7px); } 15%,84% { opacity: 1; transform: translateY(0); } 90% { opacity: 0; transform: translateY(-4px); } }
+@keyframes txx-pick-a { 0%,9%,94%,100% { opacity: 0; transform: scale(.4); } 15%,84% { opacity: 1; transform: scale(1); } 90% { opacity: 0; } }
+@keyframes txx-pick-b { 0%,13%,94%,100% { opacity: 0; transform: scale(.4); } 19%,84% { opacity: 1; transform: scale(1); } 90% { opacity: 0; } }
+@keyframes txx-pick-c { 0%,17%,94%,100% { opacity: 0; transform: scale(.4); } 23%,84% { opacity: 1; transform: scale(1); } 90% { opacity: 0; } }
+@keyframes txx-stamp { 0%,22%,34%,100% { opacity: 0; transform: translateY(-26px); } 25% { opacity: 1; transform: translateY(-26px); } 28%,31% { opacity: 1; transform: translateY(0); } }
+@keyframes txx-seal { 0%,31%,94%,100% { opacity: 0; } 37%,86% { opacity: 1; } }
+@keyframes txx-out-a { 0%,40%,94%,100% { opacity: 0; transform: translate(-150px,-55px); } 43% { opacity: 1; transform: translate(-150px,-55px); } 48%,84% { opacity: 1; transform: translate(0,0); } 90% { opacity: 0; transform: translate(0,0); } }
+@keyframes txx-out-b { 0%,44%,94%,100% { opacity: 0; transform: translate(-150px,-55px); } 47% { opacity: 1; transform: translate(-150px,-55px); } 52%,84% { opacity: 1; transform: translate(0,0); } 90% { opacity: 0; transform: translate(0,0); } }
+@keyframes txx-out-c { 0%,48%,94%,100% { opacity: 0; transform: translate(-150px,-55px); } 51% { opacity: 1; transform: translate(-150px,-55px); } 56%,84% { opacity: 1; transform: translate(0,0); } 90% { opacity: 0; transform: translate(0,0); } }
+@keyframes txx-caption { 0%,60%,96%,100% { opacity: 0; transform: translateY(9px); } 66%,86% { opacity: 1; transform: translateY(0); } 91% { opacity: 0; transform: translateY(-4px); } }
