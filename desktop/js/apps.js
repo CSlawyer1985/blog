@@ -354,7 +354,7 @@ export function registerApps(os) {
   };
   const gameCover = game => {
     const cover = el('span', { class: 'game-cover' });
-    if (game.image) { cover.append(el('img', { src: new URL(game.image, '/desktop/games/').href, alt: '', loading: 'lazy' })); return cover; }
+    if (game.image) { cover.append(el('img', { src: new URL(game.image, location.origin + '/desktop/games/').href, alt: '', loading: 'lazy' })); return cover; }
     const hue = Number.isFinite(Number(game.hue)) ? Number(game.hue) : 210;
     cover.style.setProperty('--hue', String(hue));
     cover.append(
