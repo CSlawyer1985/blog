@@ -20,6 +20,12 @@
       "id": "professionals-ai-practice",
       "title": "专业人士的 AI 应用实践",
       "file": "professionals-ai-practice.html"
+    },
+    {
+      "id": "understanding-agent",
+      "title": "看懂 Agent：原理、产品与认知框架",
+      "venue": "律所主任 AI 赋能培训 · 第六课",
+      "file": "understanding-agent.html"
     }
   ]
 }
