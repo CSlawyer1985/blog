@@ -347,25 +347,44 @@ export function registerApps(os) {
       .catch(error => { os.gamesPromise = null; throw error; });
     return os.gamesPromise;
   };
-  const openGame = game => os.browse(`/desktop/games/${game.file}`, game.title);
+  const launchGame = game => {
+    // 在线游戏（external/url）交给真实浏览器新标签页；本地源文件在本站仿 Safari 打开。
+    if (game.external && game.url) { window.open(game.url, '_blank', 'noopener,noreferrer'); os.toast('已在新标签页打开在线游戏。'); return; }
+    os.browse(`/desktop/games/${game.file}`, game.title);
+  };
+  const gameCover = game => {
+    const cover = el('span', { class: 'game-cover' });
+    if (game.image) { cover.append(el('img', { src: new URL(game.image, '/desktop/games/').href, alt: '', loading: 'lazy' })); return cover; }
+    const hue = Number.isFinite(Number(game.hue)) ? Number(game.hue) : 210;
+    cover.style.setProperty('--hue', String(hue));
+    cover.append(
+      el('span', { class: 'game-cover-art', 'aria-hidden': 'true' }, el('span', { class: 'game-cover-glyph', text: (game.title || '游').trim().charAt(0) })),
+      el('img', { class: 'game-cover-badge', src: icon('games'), alt: '', width: 22, height: 22 }));
+    return cover;
+  };
   os.renderers.games = w => {
-    w.setTitle('游戏', '本机游戏');
-    const list = el('div', { class: 'deck-list', 'aria-label': '游戏列表' }, el('p', { class: 'deck-loading', text: '正在读取游戏列表…' }));
-    w.content.replaceChildren(list);
+    w.setTitle('游戏', '游戏机');
+    const scroll = el('div', { class: 'games-scroll' }, el('p', { class: 'deck-loading', text: '正在读取游戏列表…' }));
+    w.content.replaceChildren(scroll);
     os.loadGames().then(data => {
-      if (!list.isConnected) return;
+      if (!scroll.isConnected) return;
       const games = Array.isArray(data.games) ? data.games : [];
-      if (!games.length) { list.replaceChildren(emptyState('games', '还没有游戏', '把单文件 HTML 游戏放入 desktop/games，并在 index.json 里登记后就会显示在这里。')); return; }
+      if (!games.length) { scroll.replaceChildren(emptyState('games', '还没有游戏', '把单文件 HTML 游戏放入 desktop/games，或在 index.json 里登记在线链接。')); return; }
       w.setTitle('游戏', `${games.length} 个游戏`);
-      list.replaceChildren(...games.map(game => {
-        const row = el('button', { class: 'deck-row', title: game.title }, el('strong', { text: game.title }), game.desc ? el('span', { class: 'deck-meta', text: game.desc }) : null);
-        row.addEventListener('click', () => openGame(game));
-        row.addEventListener('contextmenu', e => { e.preventDefault(); os.showMenu([{ label: '玩游戏', action: () => openGame(game) }, { label: '复制游戏链接', action: () => os.copy(new URL(`/desktop/games/${game.file}`, location.origin).href) }, { label: '在新窗口打开', action: () => openGame(game) }], e.clientX, e.clientY); });
-        return row;
+      const grid = el('div', { class: 'game-grid', role: 'list' }, ...games.map(game => {
+        const card = el('button', { class: 'game-card', role: 'listitem', 'aria-label': `玩游戏：${game.title}` }, gameCover(game), el('span', { class: 'game-name', text: game.title }), game.external ? el('span', { class: 'game-kind', text: '在线 · 新标签页打开' }) : null);
+        card.addEventListener('click', () => launchGame(game));
+        card.addEventListener('contextmenu', e => {
+          e.preventDefault();
+          const link = game.external ? game.url : new URL(`/desktop/games/${game.file}`, location.origin).href;
+          os.showMenu([{ label: `玩「${game.title}」`, action: () => launchGame(game) }, { label: '复制游戏链接', action: () => os.copy(link) }], e.clientX, e.clientY);
+        });
+        return card;
       }));
+      scroll.replaceChildren(grid);
     }).catch(() => {
-      if (!list.isConnected) return;
-      list.replaceChildren(emptyState('games', '暂时无法读取游戏列表', '请稍后重试。', el('button', { class: 'soft-button', text: '重试', onclick: () => w.refresh() })));
+      if (!scroll.isConnected) return;
+      scroll.replaceChildren(emptyState('games', '暂时无法读取游戏列表', '请稍后重试。', el('button', { class: 'soft-button', text: '重试', onclick: () => w.refresh() })));
     });
   };
 

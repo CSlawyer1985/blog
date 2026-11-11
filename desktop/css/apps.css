@@ -55,6 +55,18 @@
 .deck-row strong{display:block;font-size:13px;font-weight:600;line-height:1.55}
 .deck-meta{display:block;margin-top:4px;color:var(--secondary);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .deck-meta .note-date{font-variant-numeric:tabular-nums}
+.games-scroll{height:100%;overflow:auto;padding:20px 22px 24px;background:var(--content)}
+.game-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:20px 18px;align-content:start}
+.game-card{padding:0;text-align:left;display:flex;flex-direction:column;gap:7px;border-radius:10px}
+.game-card:hover .game-cover{filter:brightness(1.1)}
+.game-card:active .game-cover{filter:brightness(.94)}
+.game-cover{position:relative;display:block;aspect-ratio:16/9;border-radius:9px;overflow:hidden;background:var(--surface);box-shadow:inset 0 0 0 1px #ffffff14}
+.game-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.game-cover-art{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(130% 100% at 18% 0%,hsl(var(--hue,210) 62% 34% / .92),hsl(var(--hue,210) 52% 15%))}
+.game-cover-glyph{font-size:44px;font-weight:700;color:#ffffffd9;letter-spacing:.02em}
+.game-cover-badge{position:absolute;right:10px;bottom:8px;opacity:.92}
+.game-name{font-size:12px;font-weight:600;line-height:1.5;color:var(--text);padding:0 2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.game-kind{font-size:10px;color:var(--muted);padding:0 2px;margin-top:-3px}
 .photo-large img{width:100%;height:100%;object-fit:contain}.photo-large.is-zoomed img{width:auto;height:auto}
 .music-mini-view .music-volume{display:none}
 .profile-header{display:flex;align-items:center;gap:20px;margin:0 0 26px}.profile-header .profile-portrait{width:72px;height:72px;margin:0}.profile-header .profile-name{font-size:31px;margin:0 0 8px}.profile-header .profile-identity{font-size:14px;margin:0}
