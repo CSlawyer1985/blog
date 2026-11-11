@@ -1,0 +1,11 @@
+{
+  "updated": "2026-11-11",
+  "note": "桌面版「游戏」文件夹的公开目录。新增游戏：把单文件 HTML 游戏放入本目录（ASCII 文件名，单个文件须小于 25 MiB），并在 games 中追加一条。",
+  "games": [
+    {
+      "id": "jimao-3a",
+      "title": "几猫国产 3A 大作",
+      "file": "jimao-3a.html"
+    }
+  ]
+}

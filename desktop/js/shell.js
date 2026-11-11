@@ -242,7 +242,7 @@ export class DesktopOS {
   organizeDesktop() { this.preferences.iconPositions = {}; this.savePreferences(); this.buildDesktop(); }
   selectDesktop() { for (const node of this.elements['desktop-icons'].children) node.classList.toggle('is-selected', node.dataset.contentId === this.selected); }
   renderDock() {
-    const ids = ['launcher', 'finder', 'notes', 'browser', 'photos', 'calendar', 'music', 'appearance', 'trash'];
+    const ids = ['launcher', 'finder', 'notes', 'browser', 'photos', 'calendar', 'music', 'games', 'appearance', 'trash'];
     this.elements.dock.replaceChildren(...ids.flatMap(id => {
       const meta = id === 'launcher' ? { name: '应用', icon: 'apps' } : APPS[id];
       const running = [...this.windows.values()].filter(w => w.app === id);

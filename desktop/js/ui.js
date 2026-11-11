@@ -45,6 +45,7 @@ export const APPS = {
   photos: { name: '照片', icon: 'photos', width: 900, height: 620 },
   calendar: { name: '日历', icon: 'calendar', width: 870, height: 630 },
   music: { name: '音乐', icon: 'music', width: 760, height: 510 },
+  games: { name: '游戏', icon: 'games', width: 760, height: 560 },
   appearance: { name: '外观', icon: 'settings', width: 690, height: 530 },
   presentations: { name: '演示文稿', icon: 'folder', width: 720, height: 560 },
   trash: { name: '废纸篓', icon: 'trash-empty', width: 600, height: 440 },

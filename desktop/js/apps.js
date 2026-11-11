@@ -174,7 +174,8 @@ export function registerApps(os) {
       if (url.origin !== location.origin) return null;
       const allowed = /^\/(?:index\.html)?$/.test(url.pathname) || /^\/(?:about|privacy)(?:\.html)?\/?$/.test(url.pathname)
         || /^\/(?:articles|categories)(?:\/|$)/.test(url.pathname) || /^\/desktop\/project(?:\.html)?\/?$/.test(url.pathname)
-        || /^\/desktop\/presentations\/[^/]+(?:\.html)?$/i.test(url.pathname);
+        || /^\/desktop\/presentations\/[^/]+(?:\.html)?$/i.test(url.pathname)
+        || /^\/desktop\/games\/[^/]+(?:\.html)?$/i.test(url.pathname);
       return allowed ? url.href : null;
     } catch { return null; }
   }
@@ -193,7 +194,7 @@ export function registerApps(os) {
       const close = el('button', { class: 'tab-close', 'aria-label': `关闭标签页：${t.title}`, onclick: e => { e.stopPropagation(); w.props.tabs.splice(index, 1); if (!w.props.tabs.length) return os.close(w); w.props.activeTab = Math.min(w.props.activeTab, w.props.tabs.length - 1); w.refresh(); } }, symbol('xmark'));
       tabs.append(el('div', { class: `browser-tab${index === w.props.activeTab ? ' is-active' : ''}`, role: 'tab', tabindex: '0', 'aria-selected': index === w.props.activeTab, onclick: () => { w.props.activeTab = index; w.refresh(); }, onkeydown: e => { if (e.key === 'Enter') { w.props.activeTab = index; w.refresh(); } } }, close, symbol('globe'), el('span', { text: t.title })));
     });
-    const loader = el('div', { class: 'browser-loading' }), iframe = el('iframe', { class: 'browser-content', src: tab.url, title: tab.title, referrerPolicy: 'same-origin' });
+    const loader = el('div', { class: 'browser-loading' }), iframe = el('iframe', { class: 'browser-content', src: tab.url, title: tab.title, referrerPolicy: 'same-origin', allow: 'fullscreen; autoplay' });
     let frameCleanup = () => {}, boundDocument = null;
     const bindFrame = () => {
       try { if (!iframe.contentDocument || iframe.contentDocument === boundDocument) return; } catch { return; }
@@ -337,6 +338,34 @@ export function registerApps(os) {
     }).catch(() => {
       if (!list.isConnected) return;
       list.replaceChildren(emptyState('folder', '暂时无法读取课件列表', '请稍后重试。', el('button', { class: 'soft-button', text: '重试', onclick: () => w.refresh() })));
+    });
+  };
+
+  os.loadGames = () => {
+    if (!os.gamesPromise) os.gamesPromise = fetch('/desktop/games/index.json', { cache: 'no-cache' })
+      .then(response => { if (!response.ok) throw new Error('无法读取游戏列表'); return response.json(); })
+      .catch(error => { os.gamesPromise = null; throw error; });
+    return os.gamesPromise;
+  };
+  const openGame = game => os.browse(`/desktop/games/${game.file}`, game.title);
+  os.renderers.games = w => {
+    w.setTitle('游戏', '本机游戏');
+    const list = el('div', { class: 'deck-list', 'aria-label': '游戏列表' }, el('p', { class: 'deck-loading', text: '正在读取游戏列表…' }));
+    w.content.replaceChildren(list);
+    os.loadGames().then(data => {
+      if (!list.isConnected) return;
+      const games = Array.isArray(data.games) ? data.games : [];
+      if (!games.length) { list.replaceChildren(emptyState('games', '还没有游戏', '把单文件 HTML 游戏放入 desktop/games，并在 index.json 里登记后就会显示在这里。')); return; }
+      w.setTitle('游戏', `${games.length} 个游戏`);
+      list.replaceChildren(...games.map(game => {
+        const row = el('button', { class: 'deck-row', title: game.title }, el('strong', { text: game.title }), game.desc ? el('span', { class: 'deck-meta', text: game.desc }) : null);
+        row.addEventListener('click', () => openGame(game));
+        row.addEventListener('contextmenu', e => { e.preventDefault(); os.showMenu([{ label: '玩游戏', action: () => openGame(game) }, { label: '复制游戏链接', action: () => os.copy(new URL(`/desktop/games/${game.file}`, location.origin).href) }, { label: '在新窗口打开', action: () => openGame(game) }], e.clientX, e.clientY); });
+        return row;
+      }));
+    }).catch(() => {
+      if (!list.isConnected) return;
+      list.replaceChildren(emptyState('games', '暂时无法读取游戏列表', '请稍后重试。', el('button', { class: 'soft-button', text: '重试', onclick: () => w.refresh() })));
     });
   };
 

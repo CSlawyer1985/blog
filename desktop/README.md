@@ -10,6 +10,7 @@
 | 文章正文与封面 | `/articles/{slug}/` | 阅读、下载、照片 |
 | 作品 | 正式 `/index.html` 的 `.project-link` | Finder、作品相簿、仿浏览器详情 |
 | 演示文稿 | `presentations/index.json` + 本目录内的单文件课件 HTML | 桌面「演示文稿」加密文件夹（仅桌面，不进 Finder/程序坞/应用总览） |
+| 游戏 | `games/index.json` + 本目录内的单文件 HTML 游戏 | 程序坞「游戏」图标 → 游戏列表窗口 → 仿浏览器打开（公开，无密码） |
 | 简介与身份 | 正式首页 `.hero__kicker`、`.hero__slogan`，关于页 `.pos-item`、`.book-meta`、`.ns-card` | 备忘录个人介绍 |
 | 完整关于页 | `/about.html` | 仿浏览器直接打开原页面 |
 | 站点资料 | `/data/site.json` | 名称、联系方式与通用资料 |
@@ -28,6 +29,14 @@
 - 保护边界：密码只是桌面上的进门闸（源码内是 SHA-256 校验，非明文），课件文件本身是静态资源，知道直达链接（`/desktop/presentations/<文件名>`）的访客可以不经密码打开单个文件；不适合放真正保密的内容。
 - 入口只有桌面图标；Finder、程序坞、应用总览与“内容”菜单都不出现，渲染器在未解锁时也只显示加密提示。
 - 仿浏览器白名单已放行 `/desktop/presentations/<文件>`（`js/apps.js` 的 `localPage`），`.html` 与无扩展名两种形式都接受。
+
+## 游戏（程序坞）
+
+程序坞「游戏」图标（macOS 原生 Games.app 图标，`assets/native/games-*.png`，sha256 记录在 `assets/native/manifest.json`）打开游戏列表窗口，点击即在本站仿 Safari 中打开游玩；仿浏览器 iframe 已加 `allow="fullscreen; autoplay"` 支持游戏全屏与自动播放。
+
+- 游戏登记：`games/index.json`，游戏本体是 `games/` 下的自包含单文件 HTML（ASCII 文件名，<25 MiB）。
+- 仿浏览器白名单已放行 `/desktop/games/<文件>`（`.html` 与无扩展名两种形式）。
+- 游戏为公开内容，不设密码；列表窗口不入桌面图标。
 
 
 

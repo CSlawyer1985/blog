@@ -979,6 +979,36 @@
       "sha256" : "fada7f35306eb92c210a69a0bd206469fca53fd987e48a0634e0567c148c59d7",
       "source" : "star.fill",
       "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "games-128.png",
+      "id" : "games",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 128,
+      "sha256" : "10ed6ade8ba3b0c4f1b9fe1100e9742225e0d03e8d16e93d72ebf0dc059af209",
+      "source" : "/System/Applications/Games.app/Contents/Resources/AppIcon.icns",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "games-256.png",
+      "id" : "games",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 256,
+      "sha256" : "5814764a34bba19e3c1bc8a655134867287bade7d0a1172aab9e4062257da4cb",
+      "source" : "/System/Applications/Games.app/Contents/Resources/AppIcon.icns",
+      "status" : "native-export"
+    },
+    {
+      "distributionReview" : "not-reviewed",
+      "file" : "games-512.png",
+      "id" : "games",
+      "kind" : "NSWorkspace.application",
+      "pixelSize" : 512,
+      "sha256" : "e29d37b976b9bc40afb843aefd8dfe08ebdb6729306f7919dbadcdb9bd3c4c0c",
+      "source" : "/System/Applications/Games.app/Contents/Resources/AppIcon.icns",
+      "status" : "native-export"
     }
   ],
   "createdAt" : "2026-10-30T16:09:42Z",
