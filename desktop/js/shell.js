@@ -1,6 +1,10 @@
 import { WALLPAPERS, DEFAULT_WALLPAPER } from './wallpapers.js';
 import { el, icon, symbol, tool, APPS, clamp, reducedMotion } from './ui.js';
 
+// 文件夹密码“cs”的 SHA-256，避免明文出现在源码里；属于进门闸而非真正加密。
+const PRESENTATIONS_STORE = 'chenshi.blog.desktop.presentations.v1';
+const PRESENTATIONS_HASH = '3b8b91c75627bee566dcb88f4805901b20a3eab2520bcff8d26c87157a035026';
+
 export class DesktopOS {
   constructor(data) {
     this.data = data;
@@ -174,18 +178,58 @@ export class DesktopOS {
     w.toolbar.addEventListener('contextmenu', e => { e.preventDefault(); this.showMenu([{ label: '最小化', action: () => this.minimize(w) }, { label: '缩放／还原', action: () => this.toggleGeometry(w) }, { label: '关闭窗口', action: () => this.close(w) }], e.clientX, e.clientY); });
     for (const direction of ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw']) w.node.append(el('div', { class: `resize-handle resize-${direction}`, onpointerdown: e => start(e, direction) }));
   }
+  // 演示文稿加密文件夹。密码校验只做一道进门闸：源码公开，属于“防路过”级别，
+  // 不等于对课件文件本身的访问控制（直达链接仍可打开单个课件）。
+  lockBadge() {
+    const badge = el('span', { class: 'icon-badge', 'aria-hidden': 'true' });
+    badge.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 10V7.5a4 4 0 0 1 8 0V10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><rect x="5.5" y="10" width="13" height="9.5" rx="2.6" fill="currentColor"/></svg>';
+    return badge;
+  }
+  get presentationsUnlocked() { try { return sessionStorage.getItem(PRESENTATIONS_STORE) === 'unlocked'; } catch { return false; } }
+  markPresentationsUnlocked() { try { sessionStorage.setItem(PRESENTATIONS_STORE, 'unlocked'); } catch { /* 会话级解锁，重开标签页重新输入即可。 */ } }
+  openPresentations(options = {}) {
+    if (!this.presentationsUnlocked) return this.promptPresentationsPassword(options);
+    // 解锁可能发生在已打开的锁定窗口里，空 props 不会触发 open() 的刷新，这里显式 refresh。
+    const existing = [...this.windows.values()].find(w => w.app === 'presentations');
+    if (existing && !options.newInstance) { this.restore(existing); existing.refresh(); return existing; }
+    return this.open('presentations', {}, options);
+  }
+  promptPresentationsPassword(options = {}) {
+    if (this.elements['overlay-layer'].querySelector('.password-card')) return;
+    const error = el('p', { class: 'password-error', role: 'alert' });
+    const input = el('input', { class: 'password-input', type: 'password', placeholder: '输入密码', 'aria-label': '演示文稿文件夹密码', autocomplete: 'off', autocapitalize: 'off' });
+    const lock = el('span', { class: 'password-lock', 'aria-hidden': 'true' });
+    lock.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 10V7.5a4 4 0 0 1 8 0V10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="5" y="10" width="14" height="10" rx="2.8" fill="currentColor"/></svg>';
+    const submit = async () => {
+      let hex = '';
+      try {
+        const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(input.value));
+        hex = [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, '0')).join('');
+      } catch { /* 非安全上下文没有 WebCrypto，弹层保持原样。 */ }
+      if (hex === PRESENTATIONS_HASH) { this.markPresentationsUnlocked(); this.dismissOverlay(); this.openPresentations(options); }
+      else {
+        error.textContent = '密码不正确，请再试一次。';
+        input.value = ''; input.focus();
+        if (!reducedMotion()) card.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-8px)' }, { transform: 'translateX(7px)' }, { transform: 'translateX(-3px)' }, { transform: 'translateX(0)' }], { duration: 240, easing: 'ease-out' });
+      }
+    };
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+    const card = el('div', { class: 'password-card' }, lock, el('h2', { text: '演示文稿' }), el('p', { class: 'password-sub', text: '这个文件夹已加密，仅供陈石本人讲课使用。' }), input, error, el('div', { class: 'password-actions' }, el('button', { class: 'soft-button', text: '取消', onclick: () => this.dismissOverlay() }), el('button', { class: 'soft-button primary', text: '打开', onclick: submit })));
+    this.showOverlay(card, '打开加密的演示文稿文件夹');
+  }
   buildDesktop() {
     const items = [{ id: 'articles', title: '文章', meta: `${this.data.articles.length} 篇`, icon: 'folder', action: () => this.open('finder', { folder: 'articles' }) },
       { id: 'works', title: '作品', meta: `${this.data.projects.length} 个项目`, icon: 'folder', action: () => this.open('finder', { folder: 'works' }) },
+      { id: 'presentations', title: '演示文稿', meta: '加密文件夹', icon: 'folder', locked: true, action: () => this.openPresentations() },
       { id: 'about', title: '关于陈石', meta: '从这里开始', icon: 'safari', action: () => this.browse('/about.html', '关于陈石') },
       { id: 'photos', title: '公开相簿', meta: '文章与作品配图', icon: 'photos', action: () => this.open('photos') }];
     this.elements['desktop-icons'].replaceChildren(...items.map(item => {
-      const node = el('button', { class: 'desktop-item', title: `双击打开${item.title}`, dataset: { contentId: item.id }, 'aria-label': `${item.title}，${item.meta}` }, el('img', { src: icon(item.icon), alt: '', width: 62, height: 62 }), el('span', {}, item.title, el('small', { text: item.meta })));
+      const node = el('button', { class: 'desktop-item', title: `双击打开${item.title}`, dataset: { contentId: item.id }, 'aria-label': `${item.title}，${item.meta}` }, el('img', { src: icon(item.icon), alt: '', width: 62, height: 62 }), item.locked ? this.lockBadge() : null, el('span', {}, item.title, el('small', { text: item.meta })));
       const pos = this.preferences.iconPositions[item.id] || { x: 0, y: 0 }; node.style.transform = `translate(${clamp(Number(pos.x) || 0, -innerWidth + 130, 0)}px,${clamp(Number(pos.y) || 0, -100, Math.max(0, innerHeight - 440))}px)`;
       node.addEventListener('click', event => { this.selected = item.id; this.selectDesktop(); if (event.pointerType === 'touch') item.action(); });
       node.addEventListener('dblclick', () => { if (performance.now() - (this.lastIconDrag || 0) > 400) item.action(); });
       node.addEventListener('keydown', e => { if (e.key === 'Enter') item.action(); });
-      node.addEventListener('contextmenu', e => { e.preventDefault(); e.stopPropagation(); this.showMenu([{ label: '打开', action: item.action }, { label: '在新窗口打开', action: () => item.id === 'about' ? this.browse('/about.html', '关于陈石') : this.open(item.id === 'photos' ? 'photos' : 'finder', { folder: item.id }, { newInstance: true }) }, null, { label: '整理桌面图标', action: () => this.organizeDesktop() }], e.clientX, e.clientY); });
+      node.addEventListener('contextmenu', e => { e.preventDefault(); e.stopPropagation(); this.showMenu([{ label: '打开', action: item.action }, { label: '在新窗口打开', action: () => item.id === 'presentations' ? this.openPresentations({ newInstance: true }) : item.id === 'about' ? this.browse('/about.html', '关于陈石') : this.open(item.id === 'photos' ? 'photos' : 'finder', { folder: item.id }, { newInstance: true }) }, null, { label: '整理桌面图标', action: () => this.organizeDesktop() }], e.clientX, e.clientY); });
       node.addEventListener('pointerdown', e => {
         if (e.button !== 0) return; const startX = e.clientX, startY = e.clientY, old = this.preferences.iconPositions[item.id] || { x: 0, y: 0 }; let dragging = false;
         const move = event => { const dx = event.clientX - startX, dy = event.clientY - startY; if (Math.abs(dx) + Math.abs(dy) > 5) dragging = true; if (dragging) { const x = clamp(old.x + dx, -innerWidth + 130, 0), y = clamp(old.y + dy, -node.offsetTop, innerHeight - 200 - node.offsetTop); node.style.transform = `translate(${x}px,${y}px)`; this.preferences.iconPositions[item.id] = { x, y }; } };
@@ -257,7 +301,7 @@ export class DesktopOS {
   launcher() {
     if (this.elements['overlay-layer'].querySelector('.app-launcher')) return this.dismissOverlay();
     const grid = el('div', { class: 'launcher-grid' }), search = el('input', { class: 'launcher-search', placeholder: '搜索应用', 'aria-label': '搜索站内应用' });
-    const fill = () => grid.replaceChildren(...Object.entries(APPS).filter(([id, a]) => id !== 'trash' && a.name.includes(search.value.trim())).map(([id, a]) => el('button', { class: 'launcher-app', onclick: () => { this.dismissOverlay(); this.showApp(id); } }, el('img', { src: icon(a.icon), alt: '', width: 64, height: 64 }), a.name)));
+    const fill = () => grid.replaceChildren(...Object.entries(APPS).filter(([id, a]) => id !== 'trash' && id !== 'presentations' && a.name.includes(search.value.trim())).map(([id, a]) => el('button', { class: 'launcher-app', onclick: () => { this.dismissOverlay(); this.showApp(id); } }, el('img', { src: icon(a.icon), alt: '', width: 64, height: 64 }), a.name)));
     search.addEventListener('input', fill); search.addEventListener('keydown', e => { if (e.key === 'Enter') grid.querySelector('button')?.click(); }); fill();
     this.showOverlay(el('div', { class: 'app-launcher' }, el('div', { class: 'launcher-heading' }, el('h2', { text: '应用' }), tool('xmark', '关闭应用总览', () => this.dismissOverlay())), search, grid), '应用总览');
   }

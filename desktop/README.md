@@ -9,6 +9,7 @@
 | 文章目录 | `/data/articles.json`，由原 `build.py` 更新 | 备忘录、Finder、搜索、日历 |
 | 文章正文与封面 | `/articles/{slug}/` | 阅读、下载、照片 |
 | 作品 | 正式 `/index.html` 的 `.project-link` | Finder、作品相簿、仿浏览器详情 |
+| 演示文稿 | `presentations/index.json` + 本目录内的单文件课件 HTML | 桌面「演示文稿」加密文件夹（仅桌面，不进 Finder/程序坞/应用总览） |
 | 简介与身份 | 正式首页 `.hero__kicker`、`.hero__slogan`，关于页 `.pos-item`、`.book-meta`、`.ns-card` | 备忘录个人介绍 |
 | 完整关于页 | `/about.html` | 仿浏览器直接打开原页面 |
 | 站点资料 | `/data/site.json` | 名称、联系方式与通用资料 |
@@ -17,6 +18,18 @@
 入口 `js/data.js` 每次打开桌面并行读取上述公开来源，使用 `cache: no-cache` 重新验证缓存。更新 Blog 后，下次刷新或进入桌面即可读取新内容；已经打开的桌面不提供服务器推送。作品详情 `project.html?id=...` 也读取同一个适配器，没有单独维护的作品文案。
 
 保持原更新工作流即可。原生成器会保留手工首页；回退模板 `templates/home.html` 已同步“桌面版”入口。没有改动 `build.py` 或新建桌面文章索引，也没有复制上一版独立站的 `content/blog` 快照。
+
+## 演示文稿（加密文件夹）
+
+桌面上的「演示文稿」文件夹收录讲课用 HTML 课件。双击图标先输密码（初始 `cs`，桌面会话内记住，新标签页需重输），解锁后列出课件，点击即在本站仿 Safari 中打开放映。
+
+- 课件登记：`presentations/index.json`（标题、日期、场合、文件名），课件本体是 `presentations/` 下的自包含单文件 HTML（ASCII 文件名）。
+- 新增课件：把 HTML 复制进 `presentations/`，在 `index.json` 的 `decks` 追加一条。单个文件必须小于 25 MiB（Cloudflare Pages 硬限制，超限会导致整个部署失败）。
+- 保护边界：密码只是桌面上的进门闸（源码内是 SHA-256 校验，非明文），课件文件本身是静态资源，知道直达链接（`/desktop/presentations/<文件名>`）的访客可以不经密码打开单个文件；不适合放真正保密的内容。
+- 入口只有桌面图标；Finder、程序坞、应用总览与“内容”菜单都不出现，渲染器在未解锁时也只显示加密提示。
+- 仿浏览器白名单已放行 `/desktop/presentations/<文件>`（`js/apps.js` 的 `localPage`），`.html` 与无扩展名两种形式都接受。
+
+
 
 如果日后重构首页／关于页的 HTML 类名，需要同步 `js/data.js` 中的选择器，并运行集成检查。不要为适配失败悄悄塞入过期内容副本。
 

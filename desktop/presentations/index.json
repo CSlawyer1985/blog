@@ -1,0 +1,25 @@
+{
+  "updated": "2026-11-11",
+  "note": "桌面版「演示文稿」加密文件夹的公开目录。仅收录元数据；课件正文本身是静态 HTML，知道直达链接的访客可以不经密码打开单个文件。新增课件：把单文件 HTML 放入本目录（ASCII 文件名，单个文件须小于 25 MiB，Cloudflare Pages 硬限制），并在 decks 中追加一条。",
+  "decks": [
+    {
+      "id": "ai-draft-lawyer-judgment",
+      "title": "AI 出草稿，律师出判断",
+      "date": "2026-11-15",
+      "venue": "丽水、金华、衢州、温州律协 · 青年律师联合训练营",
+      "file": "ai-draft-lawyer-judgment.html"
+    },
+    {
+      "id": "when-ai-answers-whom-to-trust",
+      "title": "当 AI 什么都能“答”，律师凭什么被信任",
+      "date": "2026-10-25",
+      "venue": "杭州律师学院 · 杭律学院第四十八期青训班（三道站）",
+      "file": "when-ai-answers-whom-to-trust.html"
+    },
+    {
+      "id": "professionals-ai-practice",
+      "title": "专业人士的 AI 应用实践",
+      "file": "professionals-ai-practice.html"
+    }
+  ]
+}

@@ -173,7 +173,8 @@ export function registerApps(os) {
       const url = new URL(raw, location.href);
       if (url.origin !== location.origin) return null;
       const allowed = /^\/(?:index\.html)?$/.test(url.pathname) || /^\/(?:about|privacy)(?:\.html)?\/?$/.test(url.pathname)
-        || /^\/(?:articles|categories)(?:\/|$)/.test(url.pathname) || /^\/desktop\/project(?:\.html)?\/?$/.test(url.pathname);
+        || /^\/(?:articles|categories)(?:\/|$)/.test(url.pathname) || /^\/desktop\/project(?:\.html)?\/?$/.test(url.pathname)
+        || /^\/desktop\/presentations\/[^/]+(?:\.html)?$/i.test(url.pathname);
       return allowed ? url.href : null;
     } catch { return null; }
   }
@@ -305,6 +306,38 @@ export function registerApps(os) {
       main.append(grid);
     }
     w.content.replaceChildren(el('div', { class: 'calendar-app' }, aside, main));
+  };
+
+  os.loadPresentations = () => {
+    if (!os.presentationsPromise) os.presentationsPromise = fetch('/desktop/presentations/index.json', { cache: 'no-cache' })
+      .then(response => { if (!response.ok) throw new Error('无法读取课件列表'); return response.json(); })
+      .catch(error => { os.presentationsPromise = null; throw error; });
+    return os.presentationsPromise;
+  };
+  const openDeck = deck => os.browse(`/desktop/presentations/${deck.file}`, deck.title);
+  os.renderers.presentations = w => {
+    w.setTitle('演示文稿', '加密 · 讲课课件');
+    if (!os.presentationsUnlocked) {
+      w.content.replaceChildren(emptyState('folder', '文件夹已加密', '这里的课件只对陈石本人开放，输入密码后即可查看。', el('button', { class: 'soft-button primary', text: '输入密码…', onclick: () => os.promptPresentationsPassword() })));
+      return;
+    }
+    const list = el('div', { class: 'deck-list', 'aria-label': '课件列表' }, el('p', { class: 'deck-loading', text: '正在读取课件列表…' }));
+    w.content.replaceChildren(list);
+    os.loadPresentations().then(data => {
+      if (!list.isConnected) return;
+      const decks = (Array.isArray(data.decks) ? data.decks : []).slice().sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+      if (!decks.length) { list.replaceChildren(emptyState('folder', '还没有课件', '把讲课用的单文件 HTML 放入 desktop/presentations，并在 index.json 里登记后就会显示在这里。')); return; }
+      w.setTitle('演示文稿', `加密 · ${decks.length} 个课件`);
+      list.replaceChildren(...decks.map(deck => {
+        const row = el('button', { class: 'deck-row', title: deck.title }, el('strong', { text: deck.title }), el('span', { class: 'deck-meta' }, deck.date ? el('span', { class: 'note-date', text: `${deck.date} · ` }) : null, deck.venue || '讲课课件'));
+        row.addEventListener('click', () => openDeck(deck));
+        row.addEventListener('contextmenu', e => { e.preventDefault(); os.showMenu([{ label: '打开课件', action: () => openDeck(deck) }, { label: '复制课件链接', action: () => os.copy(new URL(`/desktop/presentations/${deck.file}`, location.origin).href) }, { label: '在新窗口打开', action: () => openDeck(deck) }], e.clientX, e.clientY); });
+        return row;
+      }));
+    }).catch(() => {
+      if (!list.isConnected) return;
+      list.replaceChildren(emptyState('folder', '暂时无法读取课件列表', '请稍后重试。', el('button', { class: 'soft-button', text: '重试', onclick: () => w.refresh() })));
+    });
   };
 
   os.renderers.appearance = w => {

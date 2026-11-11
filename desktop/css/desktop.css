@@ -137,11 +137,23 @@ button:focus:not(:focus-visible) { outline: none; }
 .startup img { filter: invert(1); object-fit: contain; }
 .startup.is-finished { opacity: 0; pointer-events: none; transition: opacity 240ms var(--ease); }
 .noscript { position: fixed; inset: 0; z-index: 10000; display: grid; place-content: center; background: #f5f5f3; color: #222; padding: 24px; }
+.icon-badge { position: absolute; top: 44px; left: calc(50% + 7px); width: 26px; height: 26px; display: grid; place-items: center; color: #f7c94e; }
+.icon-badge svg { width: 17px; height: 17px; filter: drop-shadow(0 1px 2px #0007); }
+.password-card { width: min(380px, calc(100% - 32px)); padding: 30px 28px 24px; display: flex; flex-direction: column; align-items: center; gap: 10px; border: 1px solid #ffffff45; border-radius: 20px; background: var(--glass); box-shadow: var(--shadow); backdrop-filter: blur(42px); text-align: center; }
+.password-lock { color: var(--accent); }
+.password-lock svg { width: 34px; height: 34px; }
+.password-card h2 { margin: 2px 0 0; font-size: 18px; font-weight: 600; }
+.password-sub { margin: 0; font-size: 12px; line-height: 1.6; color: var(--secondary); }
+.password-input { width: 100%; margin-top: 8px; padding: 11px 14px; border: 1px solid var(--line); border-radius: 11px; background: var(--selection); color: var(--text); font-size: 16px; outline-offset: 2px; text-align: center; }
+.password-error { min-height: 16px; margin: 0; font-size: 11px; color: #ff8a80; }
+.password-actions { display: flex; gap: 8px; justify-content: center; margin-top: 8px; }
+.password-actions .soft-button { min-width: 104px; justify-content: center; }
 @media (max-width: 700px) {
   .menubar { padding: 0 8px; }.menu-trigger{padding:0 8px}.menu-optional{display:none}.status-hint{display:none}.menu-status{gap:7px}.status-time{font-size:11px}
   .menu-trigger[data-menu="view"]{display:none}
   .dock { height: 64px; gap: 1px; bottom: 8px; border-radius: 18px; padding: 7px 6px 10px; max-width: calc(100% - 12px); }.dock-item,.dock-item img{width:40px;height:40px}.dock-separator{margin:0 3px;height:32px}.dock-item[data-app="music"],.dock-item[data-app="trash"]{display:none}
   .desktop-icons{right:8px;top:16px;gap:12px}.window-toolbar{height:52px;padding:0 12px;gap:10px}.toolbar-tools{gap:0}.toolbar-divider{margin:0 3px}.tool-button{width:30px}.window{border-radius:12px}
+  .icon-badge{top:42px;left:calc(50% + 5px);width:23px;height:23px}.icon-badge svg{width:15px;height:15px}
   .launcher-grid{grid-template-columns:repeat(3,1fr);gap:12px}.app-launcher{padding:20px}.launcher-app img{width:56px;height:56px}
   .traffic{width:13px;height:13px}.traffic-lights{gap:9px;min-width:63px}
 }

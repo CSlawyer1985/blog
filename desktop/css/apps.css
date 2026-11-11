@@ -47,6 +47,14 @@
 @container (max-width: 650px){.app-sidebar{display:none}.notes-list{width:210px;flex-basis:210px}.note-prose{padding:24px}.photos-scroll{padding:0 16px 20px}.calendar-grid{grid-auto-rows:minmax(70px,1fr)}.calendar-heading{padding:18px 16px}.calendar-heading h2{font-size:24px}.calendar-event{font-size:9px;padding:2px}.calendar-weekdays{font-size:9px}.browser-toolbar .toolbar-tools{display:none}.browser-address{width:auto;flex:1}.app-search input{width:100px}}
 @container (max-width: 460px){.notes-list{display:none}.notes-layout.is-showing-list .notes-list{display:block;flex:1;width:100%}.notes-layout.is-showing-list .note-reader{display:none}.note-prose{padding:22px}.note-prose h2.note-title{font-size:22px}.profile-name{font-size:30px}.profile-portrait{width:80px;height:80px}.app-search{display:none}.calendar-heading h2{font-size:22px}.calendar-grid{padding:0 5px}.calendar-weekdays{padding:0 5px}.calendar-day{padding:5px 2px}.calendar-number{font-size:11px}.calendar-event{font-size:8px;border-left-width:1px}.calendar-today{padding:6px 8px}.settings-main{padding:24px 18px}.wallpaper-options{gap:8px}.photos-heading{padding:20px 18px 16px}.photo-grid{grid-template-columns:repeat(3,1fr)}.toolbar-title{font-size:12px}.notes-toolbar .tool-group>.tool-button:nth-child(2){display:none}}
 .mobile-search-results{max-height:50dvh;overflow:auto;margin-top:16px}
+.deck-list{height:100%;overflow:auto;padding:10px 9px 24px;background:var(--content)}
+.deck-loading{padding:48px 20px;text-align:center;color:var(--muted);font-size:12px}
+.deck-row{width:100%;text-align:left;padding:13px 16px 12px;border-radius:8px;position:relative;display:block}
+.deck-row::after{content:"";position:absolute;left:16px;right:16px;bottom:0;height:1px;background:var(--line)}
+.deck-row:hover,.deck-row:focus-visible{background:var(--hover)}
+.deck-row strong{display:block;font-size:13px;font-weight:600;line-height:1.55}
+.deck-meta{display:block;margin-top:4px;color:var(--secondary);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.deck-meta .note-date{font-variant-numeric:tabular-nums}
 .photo-large img{width:100%;height:100%;object-fit:contain}.photo-large.is-zoomed img{width:auto;height:auto}
 .music-mini-view .music-volume{display:none}
 .profile-header{display:flex;align-items:center;gap:20px;margin:0 0 26px}.profile-header .profile-portrait{width:72px;height:72px;margin:0}.profile-header .profile-name{font-size:31px;margin:0 0 8px}.profile-header .profile-identity{font-size:14px;margin:0}
