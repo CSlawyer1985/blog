@@ -16,6 +16,13 @@
       "external": true,
       "image": "cover-tidreite.jpg",
       "hue": 210
+    },
+    {
+      "id": "night-school-gp",
+      "title": "夜校 GP · 四明山法师卡丁",
+      "file": "night-school-gp.html",
+      "image": "cover-night-school-gp.jpg",
+      "hue": 12
     }
   ]
 }
