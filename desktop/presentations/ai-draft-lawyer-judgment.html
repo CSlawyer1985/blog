@@ -529,6 +529,352 @@ aside.notes{display:none}
 .mode-narrow .back-wechat{height:auto;width:calc(400*var(--u));max-width:100%}
 .mode-narrow .back-sources .refs{border:0;padding:0}
 
+
+/* 两个本地教学交互：沿用稿纸、靛蓝、朱红与现有字体变量。 */
+.new-demo .demo-body{gap:calc(16*var(--u));justify-content:center}
+.new-demo .demo-label{font:600 calc(15*var(--u))/1.5 var(--sans);letter-spacing:.08em;color:var(--mute)}
+.new-demo .demo-btn{font:500 calc(16*var(--u))/1.35 var(--sans);border:1px solid var(--line2);border-radius:calc(3*var(--u));padding:calc(8*var(--u)) calc(13*var(--u));color:var(--ink2);background:var(--card);cursor:pointer;white-space:nowrap}
+.new-demo .demo-btn:hover{border-color:var(--ind);color:var(--ind)}
+.new-demo .demo-btn.primary,.new-demo .demo-btn.selected{background:var(--ind);border-color:var(--ind);color:#fff}
+.new-demo .demo-btn:disabled{opacity:.4;cursor:default}
+.new-demo button:focus-visible,.new-demo input:focus-visible,.new-demo [tabindex]:focus-visible{outline:2px solid var(--cin);outline-offset:3px}
+.demo-actions{display:flex;gap:calc(10*var(--u));flex-wrap:wrap}
+.demo-takeaway{display:flex;gap:calc(22*var(--u));align-items:center;border-top:2px solid var(--ind);padding:calc(15*var(--u)) 0 calc(4*var(--u))}
+.demo-takeaway b{font:700 calc(24*var(--u))/1.4 var(--serif);color:var(--ind);flex:none}
+.demo-takeaway span{font:400 calc(18*var(--u))/1.5 var(--sans);color:var(--ink2)}
+.new-demo .src a{color:var(--ind);text-underline-offset:.2em}
+.prob-grid{display:grid;grid-template-columns:1.18fr 1fr;gap:calc(24*var(--u));min-height:0}
+.prob-left{padding:calc(22*var(--u));display:flex;flex-direction:column;gap:calc(14*var(--u));min-width:0}
+.prob-context-options{display:flex;gap:calc(8*var(--u))}
+.prob-context{font:500 calc(19*var(--u))/1.6 var(--sans);color:var(--ink2);border-left:3px solid var(--indT);padding-left:calc(14*var(--u));min-height:calc(61*var(--u))}
+.prob-reading{font:500 calc(15*var(--u))/1.5 var(--sans);color:var(--mute);display:flex;gap:calc(14*var(--u));align-items:center;flex-wrap:wrap}
+.prob-reading span{color:var(--cin);font-family:var(--mono)}
+.prob-output{font:600 calc(33*var(--u))/1.65 var(--serif);min-height:calc(108*var(--u));color:var(--ink);overflow-wrap:anywhere}
+.prob-placeholder{font:400 calc(22*var(--u))/1.6 var(--sans);color:var(--faint)}
+.prob-token{display:inline;border-bottom:2px solid var(--indT);padding:0 calc(3*var(--u)) calc(4*var(--u));margin-right:calc(7*var(--u))}
+.prob-token:last-child{color:var(--cin);border-color:var(--cin)}
+.prob-status{font:400 calc(16*var(--u))/1.6 var(--sans);color:var(--mute);min-height:calc(51*var(--u));margin-top:auto}
+.prob-status.risk{color:var(--cin)}
+.prob-right{display:flex;flex-direction:column;gap:calc(14*var(--u));min-width:0}
+.prob-candidates{padding:calc(18*var(--u)) calc(22*var(--u));flex:1}
+#prob-candidates{display:flex;flex-direction:column;gap:calc(10*var(--u));margin:calc(16*var(--u)) 0}
+.prob-row{display:grid;grid-template-columns:calc(168*var(--u)) 1fr calc(65*var(--u));gap:calc(12*var(--u));align-items:center;font:500 calc(18*var(--u))/1.4 var(--sans)}
+.prob-row.chosen{color:var(--cin)}
+.prob-bar{height:calc(12*var(--u));background:var(--indS);position:relative}
+.prob-bar i{display:block;height:100%;background:var(--ind2);transition:width .25s var(--ease)}
+.prob-row.chosen .prob-bar i{background:var(--cin)}
+.prob-percent{font:500 calc(14*var(--u))/1 var(--mono);color:var(--mute);text-align:right}
+.prob-distribution-note{font:400 calc(14*var(--u))/1.5 var(--sans);color:var(--mute);min-height:calc(21*var(--u))}
+.prob-temperature{padding:calc(16*var(--u)) calc(22*var(--u))}
+.prob-temperature .demo-label{display:flex;justify-content:space-between;align-items:center}
+#prob-temperature-value{font:600 calc(21*var(--u))/1 var(--mono);color:var(--cin)}
+#prob-temperature{display:block;width:100%;accent-color:var(--cin);height:calc(28*var(--u));margin:calc(10*var(--u)) 0}
+.prob-temperature-scale{display:flex;justify-content:space-between;font:500 calc(15*var(--u))/1.4 var(--sans);color:var(--mute)}
+.prob-math{font:400 calc(13*var(--u))/1.5 var(--mono);color:var(--faint);margin-top:calc(9*var(--u))}
+.tape-demo .lede{font-size:calc(20*var(--u))}
+.demo-title-row{display:flex;align-items:flex-end;justify-content:space-between;gap:calc(22*var(--u))}
+.demo-title-row h1.t{min-width:0}.demo-site-link{flex:none;margin-bottom:calc(6*var(--u))}
+.tape-demo .demo-body{margin-top:calc(16*var(--u));gap:calc(8*var(--u))}
+.tape-topline{display:flex;align-items:center;justify-content:space-between;gap:calc(15*var(--u))}
+.tape-view-tabs{display:flex;align-items:center;gap:calc(8*var(--u))}
+#tape-count{font:500 calc(15*var(--u))/1.4 var(--sans);color:var(--ind);margin-left:calc(10*var(--u))}
+.tape-model{display:flex;gap:calc(12*var(--u));align-items:center;border-left:2px solid var(--line2);padding-left:calc(16*var(--u))}
+.tape-model b{font:600 calc(18*var(--u))/1.4 var(--serif);color:var(--ink2)}
+.tape-model span{font:400 calc(14*var(--u))/1.4 var(--sans);color:var(--mute)}
+.tape-paper-wrap{background:var(--paper2);border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);position:relative;padding:calc(9*var(--u)) calc(12*var(--u))}
+.tape-paper-wrap:before,.tape-paper-wrap:after{content:"";position:absolute;left:0;right:0;height:calc(5*var(--u));background:radial-gradient(circle,var(--paper) 2px,transparent 2.5px) 0 0/calc(19*var(--u)) calc(5*var(--u));pointer-events:none}
+.tape-paper-wrap:before{top:calc(4*var(--u))}.tape-paper-wrap:after{bottom:calc(4*var(--u))}
+.tape-paper{display:flex;gap:calc(12*var(--u));overflow-x:auto;overflow-y:hidden;padding:calc(13*var(--u)) 0;min-height:calc(171*var(--u));scrollbar-width:thin;scrollbar-color:var(--indT) transparent}
+.tape-segment{flex:0 0 calc(218*var(--u));padding:calc(12*var(--u));background:var(--card);border:1px solid var(--line2);border-top:3px solid var(--ind);position:relative;display:flex;flex-direction:column;gap:calc(6*var(--u));cursor:pointer;min-width:0}
+.tape-segment:after{content:"→";position:absolute;right:calc(-13*var(--u));top:45%;color:var(--mute);font:400 calc(14*var(--u))/1 var(--mono)}
+.tape-segment:last-child:after{display:none}
+.tape-segment.rule-tone{border-top-color:var(--cin)}
+.tape-segment.material-tone{border-top-color:var(--jade)}
+.tape-segment.assistant-tone{border-top-color:var(--faint)}
+.tape-segment.excluded{opacity:.48;background:transparent;border-style:dashed}
+.tape-segment.focused{box-shadow:inset 0 0 0 1px var(--ind)}
+.tape-segment .tape-segment-kind{display:flex;justify-content:space-between;gap:calc(5*var(--u));font:500 calc(12*var(--u))/1.4 var(--sans);color:var(--mute)}
+.tape-segment h3{font:600 calc(18*var(--u))/1.4 var(--serif);color:var(--ink)}
+.tape-segment p{font:400 calc(15*var(--u))/1.5 var(--sans);color:var(--ink2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tape-segment .tape-segment-toggle{font:500 calc(12*var(--u))/1.4 var(--sans);align-self:flex-start;margin-top:auto;border:0;border-bottom:1px solid var(--line2);background:transparent;color:var(--ind);cursor:pointer}
+.tape-segment .tape-fixed{font:400 calc(12*var(--u))/1.4 var(--sans);color:var(--faint);margin-top:auto}
+.tape-paper.folded .tape-segment p{display:none}
+.tape-paper.folded .tape-segment{flex-basis:calc(180*var(--u))}
+.tape-scrollbar{display:flex;justify-content:space-between;gap:calc(16*var(--u));align-items:center}
+.tape-legend{display:flex;gap:calc(14*var(--u));font:400 calc(13*var(--u))/1.4 var(--sans);color:var(--mute)}
+.tape-legend span:before{content:"";display:inline-block;width:calc(8*var(--u));height:calc(8*var(--u));background:var(--ind);margin-right:calc(5*var(--u))}
+.tape-legend .rule-tone:before{background:var(--cin)}.tape-legend .material-tone:before{background:var(--jade)}.tape-legend .assistant-tone:before{background:var(--faint)}
+.demo-text-btn{font:400 calc(13*var(--u))/1.5 var(--sans);border:0;background:transparent;color:var(--ind);cursor:pointer;margin-left:calc(12*var(--u));text-decoration:underline;text-underline-offset:3px}
+.tape-bottom{display:grid;grid-template-columns:1.05fr 1fr;gap:calc(18*var(--u))}
+.tape-management,.tape-reply{padding:calc(14*var(--u)) calc(18*var(--u));min-width:0}
+.tape-management-actions{display:flex;flex-wrap:wrap;gap:calc(8*var(--u));margin-top:calc(11*var(--u))}
+.tape-inspector{margin-top:calc(10*var(--u));border-top:1px solid var(--line);padding-top:calc(8*var(--u));max-height:calc(95*var(--u));overflow-y:auto;font:400 calc(15*var(--u))/1.5 var(--sans);color:var(--ink2)}
+.tape-inspector b{font-weight:600;color:var(--ind)}.tape-inspector p{margin-top:calc(4*var(--u))}
+.tape-reply-head{display:flex;align-items:center;justify-content:space-between;gap:calc(10*var(--u))}
+.tape-response{font:400 calc(18*var(--u))/1.65 var(--sans);color:var(--ink2);margin:calc(12*var(--u)) 0;white-space:pre-line;min-height:calc(89*var(--u))}
+.tape-status{font:400 calc(13*var(--u))/1.4 var(--sans);color:var(--mute)}
+.tape-status.warn{color:var(--cin)}
+.tape-demo .demo-takeaway{padding-top:calc(10*var(--u))}
+.tape-demo .demo-takeaway b{font-size:calc(22*var(--u))}.tape-demo .demo-takeaway span{font-size:calc(17*var(--u))}
+.mode-narrow .prob-grid,.mode-narrow .tape-bottom{grid-template-columns:1fr}
+.mode-narrow .new-demo .lede{font-size:calc(22*var(--u))}
+.mode-narrow .new-demo .demo-body{gap:calc(20*var(--u))}
+.mode-narrow .demo-takeaway{flex-direction:column;align-items:flex-start;gap:calc(8*var(--u))}
+.mode-narrow .prob-row{grid-template-columns:calc(142*var(--u)) 1fr calc(60*var(--u))}
+.mode-narrow .tape-topline{align-items:flex-start;flex-direction:column}
+.mode-narrow .demo-title-row{align-items:flex-start;flex-direction:column;gap:calc(12*var(--u))}
+.mode-narrow .tape-view-tabs{flex-wrap:wrap}
+.mode-narrow .tape-model{padding-left:0;border-left:0}
+.mode-narrow .tape-inspector{max-height:none}
+.mode-narrow .tape-scrollbar{align-items:flex-start;flex-direction:column;gap:calc(8*var(--u))}
+.mode-narrow .demo-text-btn{margin-left:0;margin-right:calc(14*var(--u));font-size:calc(15*var(--u))}
+.mode-narrow .tape-demo .demo-takeaway b{font-size:calc(25*var(--u))}
+/* 实际BPE分词：一个边框对应一个已核对的Token。 */
+.prob-demo .prob-output{font-size:calc(27*var(--u));line-height:2;min-height:calc(110*var(--u))}
+.prob-demo .prob-left{gap:calc(10*var(--u));padding:calc(18*var(--u))}
+.prob-demo .prob-candidates{padding:calc(14*var(--u)) calc(18*var(--u))}
+.prob-demo .prob-token{display:inline-block;border:1px solid var(--indT);border-radius:calc(3*var(--u));padding:0 calc(5*var(--u));margin:calc(3*var(--u));line-height:1.55;color:var(--ind)}
+.prob-demo .prob-token.future{color:var(--mute);border-color:var(--line);opacity:.75}
+.prob-demo .prob-token.generated{background:var(--indS)}
+.prob-demo .prob-token.current{color:var(--cin);border-color:var(--cin)}
+.prob-row>span:first-child small{display:inline;font:400 calc(11*var(--u))/1.3 var(--mono);color:var(--faint);margin-left:calc(5*var(--u))}
+.prob-demo .prob-row{grid-template-columns:calc(105*var(--u)) 1fr calc(65*var(--u));font-size:calc(22*var(--u));min-height:calc(36*var(--u))}
+.prob-demo #prob-candidates{min-height:calc(212*var(--u));gap:calc(8*var(--u));margin:calc(8*var(--u)) 0}
+.prob-demo .prob-status{min-height:calc(44*var(--u))}
+.harness-demo .lede{font-size:calc(20*var(--u))}
+.harness-body{margin-top:calc(18*var(--u));gap:calc(10*var(--u));justify-content:center}
+.harness-controls,.harness-progress{display:flex;justify-content:space-between;align-items:center;gap:calc(14*var(--u))}
+.harness-controls .demo-btn{font-size:calc(15*var(--u))}
+.harness-model{display:flex;gap:calc(12*var(--u));align-items:center;color:var(--mute)}
+.harness-model b{font:600 calc(17*var(--u))/1.3 var(--serif);color:var(--ind)}.harness-model span{font:400 calc(13*var(--u))/1.4 var(--sans)}
+.harness-progress{font:500 calc(14*var(--u))/1.4 var(--sans);color:var(--mute)}
+#harness-phase{color:var(--cin)}
+.harness-selection{display:flex;gap:calc(18*var(--u));align-items:center;white-space:nowrap}
+.harness-selection input{accent-color:var(--ind);margin-right:calc(5*var(--u))}
+.harness-paper-wrap{padding:calc(10*var(--u));border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);background:var(--paper2);position:relative}
+.harness-paper-wrap:before,.harness-paper-wrap:after{content:"";position:absolute;left:0;right:0;height:calc(4*var(--u));background:radial-gradient(circle,var(--paper) 2px,transparent 2.3px) 0 0/calc(18*var(--u)) calc(4*var(--u));pointer-events:none}
+.harness-paper-wrap:before{top:3px}.harness-paper-wrap:after{bottom:3px}
+.harness-paper{display:flex;gap:calc(12*var(--u));height:calc(164*var(--u));overflow-x:auto;overflow-y:hidden;padding:calc(8*var(--u)) 0;scrollbar-width:thin;scrollbar-color:var(--indT) transparent}
+.harness-segment{flex:0 0 calc(214*var(--u));background:var(--card);border:1px solid var(--line2);border-top:3px solid var(--ind);padding:calc(10*var(--u));display:flex;flex-direction:column;gap:calc(5*var(--u));cursor:pointer;animation:harness-load .45s var(--ease) both}
+.harness-segment.skills,.harness-segment.memory{border-top-color:var(--cin)}.harness-segment.materials{border-top-color:var(--jade)}.harness-segment.records{border-top-color:var(--faint)}
+.harness-segment.excluded{opacity:.4;border-style:dashed;background:transparent}
+.harness-segment>span,.harness-segment small{font:400 calc(12*var(--u))/1.4 var(--sans);color:var(--mute)}
+.harness-segment h3{font:600 calc(18*var(--u))/1.4 var(--serif);color:var(--ink)}
+.harness-segment p{font:400 calc(14*var(--u))/1.5 var(--sans);color:var(--ink2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.harness-segment small{margin-top:auto;color:var(--ind)}
+.harness-await{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:calc(14*var(--u));width:100%;color:var(--mute)}
+.harness-await b{font:600 calc(28*var(--u))/1.4 var(--serif);color:var(--ind)}.harness-await span{font:400 calc(17*var(--u))/1.5 var(--sans)}
+@keyframes harness-load{from{opacity:0;transform:translateX(calc(24*var(--u)))}to{opacity:1;transform:none}}
+.harness-rail{display:grid;grid-template-columns:repeat(6,1fr);gap:calc(9*var(--u))}
+.harness-rail button{cursor:pointer;text-align:left;background:transparent;border:0;border-top:2px solid var(--line2);padding:calc(7*var(--u)) calc(8*var(--u));color:var(--mute)}
+.harness-rail button.loaded{border-top-color:var(--ind2)}.harness-rail button.active{background:var(--indS);border-color:var(--cin)}
+.harness-rail b{display:block;font:600 calc(18*var(--u))/1.4 var(--serif);color:var(--ink2)}
+.harness-rail span{display:block;font:400 calc(13*var(--u))/1.45 var(--sans);margin-top:calc(3*var(--u))}
+.harness-bottom{display:grid;grid-template-columns:.85fr 1.3fr;gap:calc(18*var(--u))}
+.harness-log-panel,.harness-comparison{padding:calc(13*var(--u)) calc(17*var(--u));min-width:0;min-height:calc(167*var(--u))}
+.harness-current{font:500 calc(16*var(--u))/1.45 var(--sans);color:var(--ind);margin-top:calc(7*var(--u))}
+#harness-log{padding-left:calc(18*var(--u));font:400 calc(13*var(--u))/1.4 var(--sans);color:var(--mute);margin-top:calc(5*var(--u))}
+.harness-inspector{font:400 calc(13*var(--u))/1.45 var(--sans);color:var(--mute);border-top:1px solid var(--line);padding-top:calc(6*var(--u));margin-top:calc(6*var(--u));max-height:calc(46*var(--u));overflow-y:auto}
+.harness-answers{display:grid;grid-template-columns:1fr 1fr;gap:calc(18*var(--u));margin-top:calc(10*var(--u))}
+.harness-answers>div+div{border-left:1px solid var(--line);padding-left:calc(18*var(--u))}
+.harness-answers h3{font:600 calc(16*var(--u))/1.4 var(--sans);color:var(--cin);margin-bottom:calc(8*var(--u))}
+.harness-answers>div+div h3{color:var(--ind)}
+.harness-answers p{font:400 calc(16*var(--u))/1.6 var(--sans);color:var(--ink2);white-space:pre-line}
+.harness-takeaway{display:flex;gap:calc(20*var(--u));align-items:center;border-top:2px solid var(--ind);padding-top:calc(12*var(--u))}
+.harness-takeaway b{font:600 calc(21*var(--u))/1.4 var(--serif);color:var(--ind);flex:none}
+.harness-takeaway span{font:400 calc(16*var(--u))/1.5 var(--sans);color:var(--ink2)}
+.harness-demo .src a{color:var(--ind)}
+.cycle-body{gap:calc(20*var(--u))}
+.cycle-grid{display:grid;grid-template-columns:1fr 1.03fr;gap:calc(50*var(--u));align-items:center}
+.cycle-story h2{font:700 calc(33*var(--u))/1.4 var(--serif);color:var(--ind);margin:calc(10*var(--u)) 0}
+.cycle-story>p{font:400 calc(21*var(--u))/1.6 var(--sans);color:var(--ink2);min-height:calc(80*var(--u))}
+.cycle-roles{display:grid;gap:calc(10*var(--u));margin:calc(16*var(--u)) 0}
+.cycle-roles>div{display:flex;gap:calc(15*var(--u));font:400 calc(18*var(--u))/1.6 var(--sans);color:var(--ink2)}
+.cycle-roles b{font:600 calc(24*var(--u))/1.3 var(--serif);color:var(--cin);flex:none}
+.cycle-example{border-top:1px solid var(--line2);padding-top:calc(14*var(--u));margin-bottom:calc(20*var(--u))}
+.cycle-example>span{font:600 calc(14*var(--u))/1.5 var(--sans);color:var(--faint)}
+.cycle-example p{font:400 calc(18*var(--u))/1.6 var(--sans);color:var(--ink2);margin-top:calc(6*var(--u));min-height:calc(58*var(--u))}
+.cycle-figure svg{display:block;width:100%;height:auto;max-height:calc(420*var(--u))}
+.cycle-center{font:700 29px var(--serif);fill:var(--ind)}.cycle-center-small{font:400 16px var(--sans);fill:var(--mute)}
+.cycle-node{cursor:pointer}.cycle-node rect{fill:var(--card);stroke:var(--line2);stroke-width:1.5}
+.cycle-node text{font:600 22px var(--serif);text-anchor:middle;fill:var(--ink2)}.cycle-node .cycle-node-small{font:400 14px var(--sans);fill:var(--mute)}
+.cycle-node.on rect{fill:var(--ind);stroke:var(--ind)}.cycle-node.on text,.cycle-node.on .cycle-node-small{fill:var(--paper)}
+.cycle-flow{animation:cycle-flow 22s linear infinite}@keyframes cycle-flow{to{stroke-dashoffset:-280}}
+.cycle-assets{display:grid;grid-template-columns:1fr 1fr;gap:calc(20*var(--u));margin-top:calc(14*var(--u))}
+.cycle-assets>div{border-top:2px solid var(--line2);padding-top:calc(9*var(--u))}
+.cycle-assets b{font:600 calc(20*var(--u))/1.4 var(--serif);color:var(--ind)}.cycle-assets span{display:block;font:400 calc(16*var(--u))/1.5 var(--sans);color:var(--mute);margin-top:calc(5*var(--u))}
+.cycle-demo .demo-takeaway{flex-direction:row;align-items:center;gap:calc(22*var(--u))}
+.mode-narrow .harness-controls,.mode-narrow .harness-progress{flex-direction:column;align-items:flex-start}
+.mode-narrow .harness-controls .demo-actions{flex-wrap:wrap}
+.mode-narrow .harness-rail{grid-template-columns:repeat(3,1fr)}
+.mode-narrow .harness-bottom,.mode-narrow .harness-answers,.mode-narrow .cycle-grid{grid-template-columns:1fr}
+.mode-narrow .harness-answers>div+div{border-left:0;border-top:1px solid var(--line);padding:calc(12*var(--u)) 0 0}
+.mode-narrow .harness-takeaway{flex-direction:column;align-items:flex-start;gap:calc(8*var(--u))}
+.mode-narrow .harness-inspector{max-height:none}
+.mode-narrow .harness-model{flex-wrap:wrap}
+.mode-narrow .harness-rail span{font-size:calc(14*var(--u))}
+.mode-narrow .cycle-grid{gap:calc(20*var(--u))}
+.mode-narrow .prob-demo .prob-output{font-size:calc(25*var(--u))}
+.rm .harness-segment,.rm .cycle-flow{animation:none}
+
+.mode-narrow .cycle-demo .demo-takeaway{flex-direction:column;align-items:flex-start}
+
+
+.ref-tok{min-height:0}
+.ref-tok-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:calc(24*var(--u));align-items:stretch;min-height:0}
+.ref-tok-gen{position:relative;border:1px solid var(--line2);background:rgba(255,255,255,.4);padding:calc(150*var(--u)) calc(34*var(--u)) calc(56*var(--u));min-height:calc(330*var(--u));display:flex;align-items:center}
+.ref-tok-tag{position:absolute;left:calc(24*var(--u));top:calc(18*var(--u))}
+#ref-gen-text{position:relative;z-index:1;font:700 calc(58*var(--u))/1.3 var(--serif);color:var(--ink);letter-spacing:.05em;min-height:1.3em}
+#ref-gen-text .ref-cur{color:var(--cin);animation:ref-tokPop .32s var(--ease)}
+#ref-gen-text .ref-cursor{display:inline-block;width:calc(4*var(--u));height:.85em;background:var(--cin);margin-left:calc(3*var(--u));vertical-align:middle;animation:ref-tokBlink .75s steps(1) infinite}
+@keyframes tokPop{from{transform:translateY(calc(-12*var(--u)));opacity:.2}}
+#ref-attn-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:0}
+.ref-tok-leg{position:absolute;left:calc(24*var(--u));bottom:calc(14*var(--u))}
+.ref-tok-side{display:flex;flex-direction:column;gap:calc(14*var(--u));min-height:0}
+.ref-tok-side .ref-panel{padding:calc(14*var(--u)) calc(18*var(--u))}
+#ref-cand-list{margin:calc(8*var(--u)) 0;display:flex;flex-direction:column;gap:calc(6*var(--u));min-height:calc(190*var(--u))}
+.ref-cr{display:grid;grid-template-columns:calc(42*var(--u)) 1fr calc(48*var(--u));gap:calc(10*var(--u));align-items:center}
+.ref-cr .ref-cc{font:700 calc(28*var(--u))/1.2 var(--serif);color:var(--ink);text-align:center}
+.ref-cr .ref-cb{height:calc(10*var(--u));background:var(--line);position:relative}
+.ref-cr .ref-cb i{position:absolute;left:0;top:0;bottom:0;background:var(--line2);transition:width .4s var(--ease)}
+.ref-cr:first-child .ref-cb i{background:var(--ind2)}.ref-cr:last-child .ref-cb i{background:var(--ind2)}
+.ref-cr .ref-cp{font:500 calc(14*var(--u)) var(--mono);color:var(--mute);text-align:right}
+.ref-tmp-row{display:flex;align-items:center;gap:calc(10*var(--u));margin-top:calc(10*var(--u))}
+.ref-tmp-row input{flex:1;accent-color:var(--cin);height:calc(24*var(--u))}
+.ref-tmp-e{font-size:calc(14*var(--u));color:var(--mute);white-space:nowrap}
+.ref-mand{color:var(--mand)}
+.ref-tmp-cap{display:flex;justify-content:space-between;gap:calc(8*var(--u));margin-top:calc(6*var(--u));font-size:calc(12.5*var(--u));color:var(--faint)}
+.ref-tmp-cap #ref-temp-val{color:var(--cin);font-weight:600}
+.mode-narrow .ref-tok-grid{grid-template-columns:1fr}
+.mode-narrow .ref-tok-gen{min-height:calc(260*var(--u));padding:calc(120*var(--u)) calc(22*var(--u)) calc(60*var(--u))}
+.mode-narrow #ref-gen-text{font-size:calc(40*var(--u))}
+.mode-narrow .ref-tmp-e,.mode-narrow .ref-tmp-cap{font-size:calc(15*var(--u))}
+.mode-narrow .ref-tmp-cap{flex-wrap:wrap}
+.mode-narrow .ref-cr .ref-cp{font-size:calc(15*var(--u))}
+
+@keyframes ref-tokPop{from{transform:translateY(calc(-12*var(--u)));opacity:.2}}
+@keyframes ref-tokBlink{50%{opacity:0}}
+
+.prob-reference .ref-k{font:600 calc(16*var(--u))/1.4 var(--sans);letter-spacing:.16em;color:var(--cin)}
+.prob-reference .ref-src{font:400 calc(14*var(--u))/1.55 var(--sans);color:var(--faint)}
+.prob-reference .ref-lbl{font:600 calc(15*var(--u))/1.4 var(--sans);letter-spacing:.12em;color:var(--cin)}
+.prob-reference .ref-panel{background:var(--indS);border:1px solid var(--line);padding:calc(18*var(--u)) calc(22*var(--u))}
+.prob-reference .ref-callout{flex:none;border-left:calc(5*var(--u)) solid var(--cin);background:var(--cinS);padding:calc(14*var(--u)) calc(24*var(--u));font:600 calc(22*var(--u))/1.55 var(--serif);color:var(--ink)}
+.prob-reference .ref-cite{display:block;margin-top:calc(6*var(--u));font:500 calc(15*var(--u))/1.5 var(--sans);color:var(--mute);letter-spacing:.06em}
+.prob-reference .ref-teal{color:var(--jade)}.prob-reference .ref-mand{color:var(--cin)}.prob-reference .ref-mono{font-family:var(--mono)}
+.mode-narrow .prob-reference .ref-lbl{font-size:calc(17*var(--u))}
+.mode-narrow .prob-reference .ref-callout{font-size:calc(23*var(--u))}
+
+
+.workspace-growth .lede{font-size:calc(22*var(--u))}
+.wg-body{gap:calc(24*var(--u));justify-content:center}
+.wg-comparison{display:grid;grid-template-columns:.75fr 1.25fr;gap:calc(36*var(--u));border-bottom:1px solid var(--line2);padding-bottom:calc(18*var(--u))}
+.wg-comparison>div+div{border-left:1px solid var(--line2);padding-left:calc(36*var(--u))}
+.wg-comparison span{font:500 calc(15*var(--u))/1.4 var(--sans);color:var(--mute);letter-spacing:.12em}
+.wg-comparison p{font:600 calc(25*var(--u))/1.5 var(--serif);color:var(--ink2);margin-top:calc(7*var(--u))}
+.wg-comparison>div+div p{color:var(--ind)}
+.wg-comparison i{font-style:normal;color:var(--faint);margin:0 calc(13*var(--u))}
+.wg-workspace{padding:calc(20*var(--u)) calc(26*var(--u))}
+.wg-space-head{display:flex;align-items:baseline;gap:calc(22*var(--u));border-bottom:1px solid var(--line);padding-bottom:calc(15*var(--u))}
+.wg-space-head b{font:700 calc(24*var(--u))/1.4 var(--serif);color:var(--ind)}
+.wg-space-head span{font:400 calc(16*var(--u))/1.5 var(--sans);color:var(--mute)}
+.wg-track{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;align-items:center;gap:calc(21*var(--u));padding:calc(20*var(--u)) 0 calc(14*var(--u))}
+.wg-no{font:500 calc(14*var(--u))/1 var(--mono);color:var(--faint)}
+.wg-track h3{font:700 calc(28*var(--u))/1.4 var(--serif);margin:calc(6*var(--u)) 0;color:var(--ink)}
+.wg-track p{font:400 calc(18*var(--u))/1.6 var(--sans);color:var(--ink2)}
+.wg-track>i{font:400 calc(28*var(--u))/1 var(--mono);color:var(--ind2)}
+.wg-return{display:flex;align-items:center;justify-content:center;gap:calc(14*var(--u));border-top:1px dashed var(--line2);padding-top:calc(12*var(--u));font:500 calc(16*var(--u))/1.4 var(--sans);color:var(--ind2)}
+.wg-return i{font-style:normal;font-size:calc(24*var(--u))}
+.wg-explicit{display:grid;grid-template-columns:.75fr 1.25fr;gap:calc(36*var(--u));align-items:center}
+.wg-explicit>div{font:700 calc(40*var(--u))/1.4 var(--serif);color:var(--ink)}
+.wg-explicit>div span{color:var(--cin)}
+.wg-explicit p{font:400 calc(22*var(--u))/1.6 var(--sans);color:var(--ink2)}
+.wg-explicit b{font-weight:600;color:var(--ind)}
+.wg-close{border-top:2px solid var(--ind);padding-top:calc(15*var(--u));display:flex;flex-wrap:wrap;align-items:center;gap:calc(10*var(--u)) calc(24*var(--u))}
+.wg-close b{font:600 calc(23*var(--u))/1.45 var(--serif);color:var(--ind)}
+.wg-close span{font:400 calc(17*var(--u))/1.5 var(--sans);color:var(--mute)}
+.mode-narrow .wg-comparison,.mode-narrow .wg-explicit{grid-template-columns:1fr;gap:calc(18*var(--u))}
+.mode-narrow .wg-comparison>div+div{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:calc(14*var(--u))}
+.mode-narrow .wg-space-head{flex-direction:column;gap:calc(6*var(--u))}
+.mode-narrow .wg-track{grid-template-columns:1fr;gap:calc(12*var(--u));text-align:center}
+.mode-narrow .wg-track>i{transform:rotate(90deg)}
+.mode-narrow .wg-close{align-items:flex-start;flex-direction:column}
+
+
+.human-loop-practice .bd{gap:calc(20*var(--u))}
+.hil-discussion{border-top:1px solid var(--line2);padding-top:calc(20*var(--u))}
+.hil-prompt{display:flex;align-items:center;gap:calc(18*var(--u));margin-bottom:calc(16*var(--u))}
+.hil-prompt h2{font:600 calc(28*var(--u))/1.4 var(--serif);color:var(--ink)}
+.hil-prompt em{font-style:normal;color:var(--cin)}
+.hil-routes{display:grid;grid-template-columns:.8fr 1.2fr;gap:calc(28*var(--u))}
+.hil-route{border-left:2px solid var(--ind2);padding-left:calc(18*var(--u))}
+.hil-route-label{display:flex;gap:calc(12*var(--u));align-items:center;font:500 calc(20*var(--u))/1.4 var(--sans);color:var(--ink2)}
+.hil-route-label b{font:600 calc(26*var(--u))/1.2 var(--mono);color:var(--ind)}
+.hil-flow{display:flex;align-items:center;gap:calc(10*var(--u));margin-top:calc(16*var(--u));font:400 calc(18*var(--u))/1.5 var(--sans);white-space:nowrap}
+.hil-flow strong{font-weight:600;color:var(--cin);background:rgba(178,58,46,.07);padding:calc(7*var(--u)) calc(10*var(--u))}
+.hil-flow i{font-style:normal;color:var(--faint)}
+.hil-follow{display:flex;align-items:center;justify-content:space-between;gap:calc(24*var(--u));margin-top:calc(22*var(--u))}
+.hil-follow p{font:400 calc(21*var(--u))/1.6 var(--sans);color:var(--ink2)}
+.hil-follow b{font-weight:600;color:var(--ind)}
+.hil-follow .timer{margin-top:0;flex-shrink:0;flex-direction:column;align-items:flex-end;gap:calc(6*var(--u))}
+.hil-practice{border-top:2px solid var(--ind);padding-top:calc(16*var(--u));display:flex;flex-direction:column;gap:calc(7*var(--u))}
+.hil-practice b{font:600 calc(28*var(--u))/1.4 var(--serif);color:var(--ind)}
+.hil-practice span{font:400 calc(20*var(--u))/1.6 var(--sans);color:var(--ink2)}
+.mode-narrow .hil-prompt,.mode-narrow .hil-follow{flex-direction:column;align-items:flex-start}
+.mode-narrow .hil-routes{grid-template-columns:1fr}
+.mode-narrow .hil-flow{flex-wrap:wrap;white-space:normal}
+.mode-narrow .hil-follow .timer{align-items:flex-start}
+
+
+.judgment-question .jg-initial[hidden],.judgment-question .jg-analysis[hidden]{display:none}
+.jg-initial{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding-bottom:calc(45*var(--u))}
+.jg-kicker{font:500 calc(20*var(--u))/1.5 var(--sans);color:var(--mute);letter-spacing:.12em}
+.jg-initial h1{font:700 calc(122*var(--u))/1.3 var(--serif);margin:calc(20*var(--u)) 0;color:var(--ink)}
+.jg-initial h1 span{color:var(--cin)}
+.jg-initial p{font:400 calc(26*var(--u))/1.6 var(--sans);color:var(--ink2)}
+.jg-open,.jg-back{font:500 calc(18*var(--u))/1.5 var(--sans);color:var(--ind);background:transparent;border:0;border-bottom:1px solid var(--ind2);padding:calc(8*var(--u)) 0;cursor:pointer}
+.jg-open{margin-top:calc(56*var(--u))}.jg-open span{margin-left:calc(25*var(--u))}
+.jg-open:focus-visible,.jg-back:focus-visible{outline:2px solid var(--ind);outline-offset:6px}
+.jg-analysis{flex:1;min-height:0;display:flex;flex-direction:column}
+.jg-title-row{display:flex;align-items:center;justify-content:space-between;gap:calc(24*var(--u))}
+.jg-title-row .t{margin-bottom:0}.jg-back{margin-top:calc(22*var(--u));font-size:calc(15*var(--u));color:var(--mute);border-color:var(--line2)}
+.jg-body{gap:calc(22*var(--u))}
+.jg-components{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);padding:calc(20*var(--u)) 0;gap:calc(24*var(--u))}
+.jg-components>div+div{border-left:1px solid var(--line2);padding-left:calc(24*var(--u))}
+.jg-components span{font:500 calc(16*var(--u))/1.5 var(--sans);color:var(--mute)}
+.jg-components h3{font:600 calc(29*var(--u))/1.4 var(--serif);margin:calc(8*var(--u)) 0;color:var(--ind)}
+.jg-components p{font:400 calc(17*var(--u))/1.5 var(--sans);color:var(--ink2)}
+.jg-components .jg-value h3,.jg-components .jg-value span{color:var(--cin)}
+.jg-context{display:grid;grid-template-columns:1fr 1.1fr;gap:calc(36*var(--u));align-items:center}
+.jg-context h2{font:600 calc(28*var(--u))/1.5 var(--serif)}
+.jg-context em{font-style:normal;color:var(--cin);display:block}
+.jg-context p{font:400 calc(20*var(--u))/1.65 var(--sans);color:var(--ink2)}
+.jg-choice{border-top:1px solid var(--line2);padding-top:calc(18*var(--u))}
+.jg-choice-title{font:400 calc(21*var(--u))/1.5 var(--sans);color:var(--ink2);margin-bottom:calc(16*var(--u))}
+.jg-choice-title b{font-weight:600;color:var(--ind)}
+.jg-duties{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(28*var(--u))}
+.jg-duties>div{display:flex;align-items:center;gap:calc(20*var(--u))}
+.jg-duties h3{font:600 calc(29*var(--u))/1.4 var(--serif);color:var(--ind);white-space:nowrap}
+.jg-duties p{font:400 calc(18*var(--u))/1.6 var(--sans);color:var(--ink2)}
+.jg-takeaway{border-top:2px solid var(--cin);padding-top:calc(16*var(--u));display:flex;flex-direction:column;gap:calc(5*var(--u))}
+.jg-takeaway b{font:600 calc(28*var(--u))/1.4 var(--serif);color:var(--cin)}
+.jg-takeaway span{font:400 calc(20*var(--u))/1.5 var(--sans);color:var(--ink2)}
+.back-role-heading{margin-top:calc(26*var(--u));display:flex;flex-direction:column;align-items:flex-start;gap:calc(8*var(--u))}
+.back-role-heading>span{font:400 calc(29*var(--u))/1.5 var(--serif);color:#E9E4D8}
+.back-role-heading h2{font:600 calc(64*var(--u))/1.25 var(--serif);color:#F2D19C}
+.back-role-heading p{font:400 calc(22*var(--u))/1.6 var(--sans);color:#D8D1C3}
+.back-role-heading>i{font:400 calc(32*var(--u))/1.1 var(--mono);font-style:normal;color:#BDB6A7;margin:calc(3*var(--u)) 0}
+.back .back-role-heading+.bk-s{margin-top:calc(20*var(--u))}
+.mode-narrow .jg-initial h1{font-size:calc(62*var(--u))}
+.mode-narrow .jg-initial p{font-size:calc(22*var(--u))}
+.mode-narrow .jg-components{grid-template-columns:1fr 1fr}
+.mode-narrow .jg-components>div+div{border-left:0;padding-left:0}
+.mode-narrow .jg-context,.mode-narrow .jg-duties{grid-template-columns:1fr}
+.mode-narrow .jg-context{gap:calc(14*var(--u))}
+.mode-narrow .jg-duties>div{justify-content:space-between}
+.mode-narrow .back-role-heading h2{font-size:calc(48*var(--u))}
+.mode-narrow .back-role-heading p{font-size:calc(19*var(--u))}
+
 </style></head>
 <body>
 <div id="progress"></div>
@@ -536,7 +882,7 @@ aside.notes{display:none}
 
 <!-- ========== 封面 ========== -->
 <section class="slide dark cover" data-title="封面 · AI出草稿，律师出判断"><div class="frame"><div class="cv"><div>
-<div class="cv-k fu" style="--d:.1s">丽水 · 金华 · 衢州 · 温州律协　青年律师联合训练营</div>
+<div class="cv-k fu" style="--d:.1s">丽水 · 温州 · 台州 · 金华 · 衢州律协　青年律师联合训练营</div>
 <div class="cv-t"><span class="l1 fu" style="--d:.25s">AI出草稿，</span><span class="l2 fu" style="--d:.5s">律师出<b>判断</b></span></div>
 <div class="cv-s fu" style="--d:.75s">青年律师常法服务的 AI 工作流与风险边界</div>
 <div class="cv-r sx" style="--d:1s"></div>
@@ -549,9 +895,8 @@ aside.notes{display:none}
 <aside class="notes" data-time="开讲前停留"><p><b>开讲前停在此页。</b>开场计入单元一的 12 分钟。</p><ul>
 <li>承接上一节：“刚才大家听了法律文书这一块。接下来，我们顺着往下走一步：一份东西由 AI 写出来，和一份东西可以落你的名字、交到客户手里，中间还隔着什么？”</li>
 <li>右侧动效：蓝色线条是“草稿”逐行写出，朱红圈注与印章是“判断”。不需要解释，直接翻页。</li>
-<li>逐字稿原设计第 1 页兼作课名页；本 HTML 按要求另设封面与封底，内容页仍为 8 页。</li></ul></aside></section>
+<li>逐字稿原设计第 1 页兼作课名页；本 HTML 按要求另设封面与封底，现增补三页交互示意，内容页为 11 页。</li></ul></aside></section>
 
-<!-- ========== 讲者 ========== -->
 <section class="slide intro-hybrid" data-title="讲者介绍 · 陈石"><div class="frame">
 <div class="rh"><span>讲者</span><span class="rule"></span><span class="course">AI出草稿 · 律师出判断</span></div>
 <div class="intro-actions nonav"><button id="introPlay" type="button">播放简介视频 · 58秒</button><span id="introStatus" role="status" aria-live="polite"></span></div>
@@ -577,7 +922,6 @@ aside.notes{display:none}
 <li>播放完毕、断网或点击“返回简介”时，回到底层简介；离开本页暂停播放。</li>
 <li>简介文字及照片沿用原课件讲者页，未新增未经核实的职务或荣誉。</li></ul></aside></section>
 
-<!-- ========== P1 数据与案例 ========== -->
 <section class="slide" data-title="法律领域 AI 幻觉：公开记录已达 2,286 条"><div class="frame"><div class="wm">01</div>
 <div class="rh"><span class="unit">单元一</span><span>风险发生了，为什么还要用 AI</span><span class="rule"></span><span class="course">AI出草稿 · 律师出判断</span></div>
 <h1 class="t">法律领域 AI 幻觉：公开记录已达 <em>2,286</em> 条</h1>
@@ -612,8 +956,33 @@ aside.notes{display:none}
 <li>补充口述（不上屏）：上海二中院有当事人提交虚假引法材料的报道；目前没有可据以计算全国总量的完整统计；数据库 China 标签不能用来判断国内问题有多少。</li>
 <li>过渡：“它越完整，越像可以交出去，人越容易把中间那道检查省掉。接下来讨论怎样把这道检查放回工作里。”</li></ul></aside></section>
 
-<!-- ========== P2 规范与讨论 ========== -->
-<section class="slide" data-title="核实、说明、责任：规范的锚点与一道讨论题"><div class="frame"><div class="wm">02</div>
+<section class="slide light prob-reference" id="probability-demo" data-title="大模型每次预测下一个 Token">
+<div class="frame"><div class="rh"><span class="unit">单元一</span><span>从上下文到下一步生成</span><span class="rule"></span><span class="course">AI出草稿 · 律师出判断</span></div>
+<div class="ref-k fu" style="--d:.05s;margin-top:calc(14*var(--u))">生成逻辑 · 从上下文预测下一个 Token · 概念模拟器</div>
+<h1 class="t" style="margin-top:calc(4*var(--u))">大模型每次<em>预测</em>下一个 Token</h1>
+<div class="bd ref-tok" style="margin-top:calc(16*var(--u))">
+  <div class="ref-tok-grid nonav">
+    <div class="ref-tok-gen fi" id="ref-gen-box" style="--d:.3s"><div class="ref-tok-tag ref-lbl">生成中的句子</div><div id="ref-gen-text"></div><svg id="ref-attn-svg" aria-hidden="true"></svg><div class="ref-tok-leg ref-src">虚线弧：生成当前字时“回看”前文（注意力示意）</div></div>
+    <div class="ref-tok-side">
+      <div class="ref-panel fi" style="--d:.45s"><div class="ref-lbl">Top-5 候选分布 · 教学模拟</div><div id="ref-cand-list"><div class="mute">等待生成…</div></div><div class="ref-src" id="ref-phase-label">翻到本页自动开始</div></div>
+      <div class="ref-panel fi noclick" style="--d:.6s"><div class="ref-lbl">Temperature · 采样温度（可拖动）</div>
+        <div class="ref-tmp-row"><span class="ref-tmp-e"><b class="ref-teal">集中</b> .2</span><input type="range" id="ref-temp-slider" min="0.2" max="2.0" step="0.05" value="0.7" aria-label="采样温度"><span class="ref-tmp-e"><b class="ref-mand">放飞</b> 2.0</span></div>
+        <div class="ref-tmp-cap ref-mono"><span>p<sup>1/T</sup> → 高概 token 独占</span><span id="ref-temp-val">T = 0.70</span><span>→ 低概也有机会</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ref-callout fu" style="--d:.9s;margin-top:calc(16*var(--u))">大模型不是一次写出整句话——生成时通常逐 Token 预测，像一台“下一个 Token 自动补全机”。温度越低越保守，越高越“放飞”。<span class="ref-cite">同样的任务也可能得到不同结果：采样设置与上下文都会影响生成。</span></div>
+<div class="src">候选概率与回看连线为教学模拟；按参考页以逐字动画说明生成，不对应具体模型的分词或注意力实测。</div></div>
+<aside class="notes" data-time="约 2 分钟"><p><b>按用户指定参考第11页复现，不使用有限语句前缀树。</b></p><ul>
+<li>进入本页自动循环播放四句平台合作相关例句：先核对合同原文再判断风险；独家合作要结合客户目标；退出条件需要回到原文核对；材料不全先列待核事项。</li>
+<li>左侧逐字接续，朱红虚线弧回看前文；右侧始终保留5个不同候选及其概率条。温度滑杆改变候选分布的集中或分散程度。</li>
+<li>本轮保留参考页的脚本播放方式：左侧播放预置例句；候选字与概率为构造的概念示意，不宣称是在线模型真实采样输出。字并不总等于一个真实Token，真实编码器也可能输出词、标点或字节片段。</li>
+<li>回看连线只是注意力概念示意，不是实测权重。Transformer结构并未因此完整展开；本页侧重条件生成、候选分布与上下文影响。</li>
+<li>低温度仍可能稳定地产生错误；上下文与事实核验不能由采样温度替代。案件话语是教学提醒，不作具体法律结论。</li>
+</ul></aside></section>
+
+<section class="slide" data-title="核实、说明、责任：规范的锚点与一道讨论题"><div class="frame"><div class="wm">03</div>
 <div class="rh"><span class="unit">单元一</span><span>风险发生了，为什么还要用 AI</span><span class="rule"></span><span class="course">AI出草稿 · 律师出判断</span></div>
 <h1 class="t">要求已经明确：<em>核实</em>、<em>说明</em>、<em>责任</em></h1>
 <div class="bd">
@@ -656,8 +1025,7 @@ aside.notes{display:none}
 <li>讲者判断：整体基础质量在提高——这是观察，不是覆盖全行业的统计。基础质量提高与关键错误仍可能发生，可以同时存在。</li>
 <li>过渡到“印章管理办法”：“没有 AI 的时候，人就不会把不存在的东西写成法律依据吗？”</li></ul></aside></section>
 
-<!-- ========== P3 机制 ========== -->
-<section class="slide stamp-data" data-title="为什么它能干活，也会生成错误"><div class="frame"><div class="wm">03</div>
+<section class="slide stamp-data" data-title="为什么它能干活，也会生成错误"><div class="frame"><div class="wm">04</div>
 <div class="rh"><span class="unit">单元二</span><span>为什么它能干活，也会生成错误</span><span class="rule"></span><span class="course">AI出草稿 · 律师出判断</span></div>
 <h1 class="t">流畅、完整、很有把握，<em>不等于已经查过</em></h1>
 <div class="bd" style="gap:calc(20*var(--u))">
@@ -709,8 +1077,7 @@ aside.notes{display:none}
 <li>“AI 出草稿”说的是交付状态，不是说它只能排版。人也会出草稿，人写的也要核。</li>
 <li>过渡：“接下来真正要解决的是分工。”</li></ul></aside></section>
 
-<!-- ========== P4 分工 ========== -->
-<section class="slide" data-title="人和 AI 怎样组队"><div class="frame"><div class="wm">04</div>
+<section class="slide" data-title="人和 AI 怎样组队"><div class="frame"><div class="wm">05</div>
 <div class="rh"><span class="unit">单元三</span><span>人和 AI 怎样组队</span><span class="rule"></span><span class="course">AI出草稿 · 律师出判断</span></div>
 <h1 class="t">“帮我弄个方案”：先<i>拆开工作</i>，再定<em>检查点</em></h1>
 <div class="lede">以云栖公司常法服务为例。客户最后要的，可能就是一句：“蓝律师，你帮我弄个方案，我今年怎么过？”</div>
@@ -740,8 +1107,32 @@ aside.notes{display:none}
 <li>主体性三问：开始时谁决定解决什么问题（需要问）；进行时谁决定材料、权限、何时回来问（需要管）；方案出来后谁理解选择、决定交付（需要做）。“如果目标由它猜、材料随便取、标准自己定，最后你只负责点‘批准’……真正的工作选择已经离你很远。”</li>
 <li>过渡：“这些要求难道每次都从头说吗？这就是为什么要建工作区。”</li></ul></aside></section>
 
-<!-- ========== P5 Harness ========== -->
-<section class="slide" data-title="养 AI：模型之外的那套“马具”"><div class="frame"><div class="wm">05</div>
+<section class="slide light new-demo harness-demo" id="context-tape-demo" data-title="Harness 启动：上下文怎样装进来"><div class="frame"><div class="wm">06</div>
+<div class="rh"><span class="unit">单元四</span><span>养 AI，先看宿主怎样装配</span><span class="rule"></span><span class="course">AI出草稿 · 律师出判断</span></div>
+<div class="demo-title-row"><h1 class="t">先装配<em>上下文</em>，再让模型接续</h1><button class="demo-btn demo-site-link" data-embed="context-tape" type="button">打开完整纸带演示 ↗</button></div>
+<div class="lede">你还没提问，宿主就已开始准备规则、扩展与环境；工具定义、工具调用和工具结果，是三件不同的事。</div>
+<div class="bd harness-body nonav">
+ <div class="harness-controls"><div class="demo-actions"><button class="demo-btn" id="harness-prev" type="button" disabled>上一步</button><button class="demo-btn primary" id="harness-next" type="button">启动 Harness</button><button class="demo-btn" id="harness-auto" type="button" aria-pressed="false">连续播放</button><button class="demo-btn" id="harness-reset" type="button">重置</button></div><div class="harness-model"><b>模型参数在纸带之外</b><span>加载文件、保存规则 ≠ 重新训练</span></div></div>
+ <div class="harness-progress"><span id="harness-phase" role="status">0 / 7 · 等待启动</span><span id="harness-count">本轮尚未装配输入</span><div class="harness-selection"><label><input id="harness-use-rules" type="checkbox" checked>装入Skill正文</label><label><input id="harness-use-data" type="checkbox" checked>装入工具返回</label></div></div>
+ <div class="harness-paper-wrap"><div id="harness-paper" class="harness-paper" tabindex="0" aria-label="动态装配的上下文纸带"></div></div>
+ <div class="harness-rail" aria-label="Harness 的常见扩展构成">
+  <button type="button" data-module="rules"><b>规则</b><span>系统与工作区</span></button><button type="button" data-module="skills"><b>Skills</b><span>索引 → 按需正文</span></button><button type="button" data-module="memory"><b>记忆</b><span>检索相关经验</span></button><button type="button" data-module="tools"><b>工具 / MCP</b><span>定义 → 调用 → 结果</span></button><button type="button" data-module="materials"><b>材料 / RAG</b><span>读取后才进入本轮</span></button><button type="button" data-module="records"><b>记录 / Hook</b><span>状态、复核与回填</span></button>
+ </div>
+ <div class="harness-bottom"><div class="card harness-log-panel"><div class="demo-label">装配日志 · 看谁在做什么</div><div id="harness-current" class="harness-current">等待宿主启动，尚未调用模型。</div><ol id="harness-log"></ol><div id="harness-inspector" class="harness-inspector">点纸带片段或下方模块，检查来源与实际状态。</div></div><div class="card harness-comparison"><div class="demo-label">上下文不同，回答怎样变 · 预置教学对照</div><div class="harness-answers"><div><h3>只见任务与材料缺口时</h3><p id="harness-before">提交任务后，显示一份待检查的草稿样本。</p></div><div><h3>按需读入规则与材料后</h3><p id="harness-after">先看工具返回了什么，再观察模型答复。</p></div></div></div></div>
+ <div class="harness-takeaway"><b>Harness 管的是装配与执行，人的判断负责校准方向</b><span>注册不等于调用，文件存在不等于读入；上下文更完整，输出也仍须复核。</span></div>
+</div><div class="src">参考讲者第19页及<a href="https://legalagi.cn/tools/context-tape/" target="_blank" rel="noopener">上下文纸带网站</a>。本页启动、调用、回复均为本地教学模拟；不同宿主的加载时机不同。按段展示，不是实际 Token 用量，也不展示隐藏思维链。</div>
+</div><aside class="notes" data-time="约 4 分钟"><p><b>用“下一步”逐段讲；需要完整看一遍时点“连续播放”。</b></p><ul>
+<li>第1步，宿主加载系统与工作区说明。强调这时用户还没输入本轮任务；纸带不是从聊天框第一句话才开始。</li>
+<li>第2步，依次出现Skill索引、工具定义、相关记忆。索引不等于完整Skill正文，工具名和参数说明不等于已调用，更不是数据库结果。记忆按配置、相关性装入，不是无条件带入所有旧案。</li>
+<li>第3步，用户提交任务，先展示一份材料不足的错误草稿样本。此样本仅供对照，不能据此断言缺少某个部件就必然产生某种回复。</li>
+<li>第4步，先按需读入匹配的Skill正文，模型再提出读取材料的工具请求；下一步由宿主核对权限并执行。工具执行和权限检查属于宿主，不是模型生成一段文字就已查到资料。</li>
+<li>第5步，工具返回教材材料状态及课堂假设的客户目标。只有实际读取并装入的结果，才可能进入这次生成条件。切换“装入Skill正文 / 装入工具返回”，看纸带中哪些段真正进入本轮。</li>
+<li>第6步，模型读取本轮已装配输入，给出有已知、待核与下一步的草稿。右侧是预置对照，不是在线模型效果测试；勾选并不保证真实模型正确。</li>
+<li>第7步，人复核草稿，流程记录把缺口与状态回填，为下一轮提供条件；Hook不自动完成法律审查，也不自动决定把哪句写成通用规则。普通规则保存不改模型参数。</li>
+<li>下方六个模块可点击解释。它们是常见构成，并非全平台固定协议。过渡：“所以养工作区，首先是让这些装配、执行、复核动作可见、可控、可验证。”</li>
+</ul></aside></section>
+
+<section class="slide" data-title="养 AI：模型之外的那套“马具”"><div class="frame"><div class="wm">07</div>
 <div class="rh"><span class="unit">单元四</span><span>养 AI，怎样构建自己的工作区</span><span class="rule"></span><span class="course">AI出草稿 · 律师出判断</span></div>
 <h1 class="t">养 AI：不只看马多快，还要看这套<i>“马具”</i></h1>
 <div class="bd" style="gap:calc(22*var(--u))">
@@ -775,63 +1166,32 @@ aside.notes{display:none}
 <li>七样东西逐一一句话；MCP“名字不必死记”；权限举例：能调用邮件工具，不等于这次就获准给客户发信。</li>
 <li>“今天不要求各位把这些名字背下来。接下来我每加一样东西，都回答一个问题：这次工作为什么需要它？”</li></ul></aside></section>
 
-<!-- ========== P6 养成循环 ========== -->
-<section class="slide" data-title="工作区养成循环：同一任务的三轮改进"><div class="frame"><div class="wm">06</div>
+<section class="slide workspace-growth" data-title="把Agent当伙伴：在工作区里养成场景能力"><div class="frame"><div class="wm">08</div>
 <div class="rh"><span class="unit">单元四</span><span>养 AI，怎样构建自己的工作区</span><span class="rule"></span><span class="course">AI出草稿 · 律师出判断</span></div>
-<h1 class="t">一次工作，变成<i>下一次的能力</i></h1>
-<div class="bd" style="gap:calc(18*var(--u))">
-<div class="loop">
-<div class="lback fi" style="--d:1.2s"><span>下一次，从这里开始 ↺</span></div>
-<div class="lnode"><div class="ldot pop" style="--d:.2s">1</div><div class="pl fu" style="--d:.25s">任务</div></div><div class="lconn fi" style="--d:.35s"></div>
-<div class="lnode"><div class="ldot pop" style="--d:.45s">2</div><div class="pl fu" style="--d:.5s">结果</div></div><div class="lconn fi" style="--d:.6s"></div>
-<div class="lnode"><div class="ldot c pop pulse" style="--d:.7s">3</div><div class="pl fu cin" style="--d:.75s">找差距</div></div><div class="lconn fi" style="--d:.85s"></div>
-<div class="lnode"><div class="ldot pop" style="--d:.95s">4</div><div class="pl fu" style="--d:1s">改进</div></div><div class="lconn fi" style="--d:1.1s"></div>
-<div class="lnode"><div class="ldot pop" style="--d:1.15s">5</div><div class="pl fu" style="--d:1.2s">再验证</div></div>
-</div>
-<div class="rounds">
-<div class="rd card fu" style="--d:1.3s">
-<div class="hd"><span class="no">第一轮</span><h4>先知道拿到的是什么</h4></div>
-<div class="bad"><span class="lb">教学错误样本</span><span class="strike" style="--d:2.1s">经全面审阅</span>云栖公司与平台的合作合同，建议删除独家合作、佣金自动上调……等条款。</div>
-<p>手上只有教材的风险摘要，没有合同全文。改成：</p>
-<ul><li>先列实际收到并读取的材料</li><li>只做待核事项表；不编条号、不编比例</li><li>独家合作：限制哪些渠道、多久、有无例外、怎样退出、客户还有什么选择？</li></ul>
-</div>
-<div class="rd card fu" style="--d:1.5s">
-<div class="hd"><span class="no">第二轮</span><h4>让它理解客户为什么做</h4></div>
-<div><span class="tag hyp">课堂假设</span></div>
-<p>雷建军：“我希望保留跟平台合作的机会，也愿意谈条件。”</p>
-<p>分开写：法律问题 · 业务影响 · 可谈选项 · 待确认条件。“愿意谈”不能改写成“已同意”。</p>
-<div class="split"><div class="a"><b>客户档案</b>云栖本轮说了什么、确认到哪，写清来源和状态</div><div class="b"><b>工作规则</b>提修改建议前，先问目标和选择</div></div>
-</div>
-<div class="rd card fu" style="--d:1.7s">
-<div class="hd"><span class="no">第三轮</span><h4>长出一套服务方法</h4></div>
-<div class="row1"><div>客户需要</div><div>拟议服务</div><div>前提与范围</div><div>费用待确认</div></div>
-<div class="rule-q">“起草服务方案前，分别列出客户明示的需要、建议补问的事项及来源。未确认事项不能写成客户已同意的服务内容。服务范围由律师审核，并以客户确认和委托约定为准。”</div>
-<p>教材三类服务包可借结构；其中报价是教学情节，不是市场统一价格。</p>
-</div></div>
-<div class="vfy">
-<div class="lead fu" style="--d:2s">隔一次<br>再验证<small>“明白了，我会记住”不算</small></div>
-<div class="vs fu" style="--d:2.1s"><span class="i">1</span><div><b>写入</b><span>打开文件看，存到客户档案还是工作规则</span></div></div>
-<div class="vs fu" style="--d:2.2s"><span class="i">2</span><div><b>读取</b><span>新任务有没有实际读到；不能确认就如实说</span></div></div>
-<div class="vs fu" style="--d:2.3s"><span class="i">3</span><div><b>执行</b><span>相近任务里，行为有没有真的改变</span></div></div>
-<div class="end fi" style="--d:2.5s">普通的规则和记忆保存，并不改变模型参数；改进的是它工作的条件。</div>
-</div></div>
-<div class="src fi" style="--d:2.6s">第一轮错误样本、待核事项、规则样例均为备课编写的预置教学样例，不是模型运行记录。第二轮背景及“已核实有替代渠道”为新增课堂假设，非教材事实。</div>
-</div>
-<aside class="notes" data-time="约 31 分钟（第一轮 8 · 第二轮 9 · 第三轮 9 · 验证 5）"><p><b>页面保持“任务—结果—找差距—改进—再验证”循环图。</b>操作、观察和提问合计约 12 分钟。教学样例须标明预置；没有跑通的现场操作用口述或标明来源的预存结果承接，不把预存当实时生成。</p><ul>
-<li><b>第一轮（8 分钟）</b>：取小任务“平台合作的问题整理”。教材有四类安排：独家合作、佣金调整、用户数据、平台单方改规则——都是作者给的风险摘要；教材没有附平台合同全文。展示错误样本，请学员观察约 30 秒：“第一处问题在哪里？”——我都还没给它合同，它就写“全面审阅合同”了。这不是文风问题，是工作状态不真实。</li>
-<li>改任务：“依据教材列出的平台问题，帮我做一张待核事项表。每一项写清材料目前说了什么，出处在哪里，要形成进一步意见还缺什么。”只细讲独家合作一行。呼应课前第 3 题：成稿之外为什么还要有材料和记录。“现行有效”四个字是谁核的？查不到原文就把缺口留着。</li>
-<li><b>第二轮（9 分钟）</b>：风险清单回答“可能有什么问题”，还没回答“我现在怎样跟平台谈”。补一条<b>课堂假设</b>（不是教材原话），只加这一条。约 2 分钟看前后变化，请一位学员指出哪一项建议应重新考虑。教材“优先展示”是作者思路，可比较，不能抄进规则变成一律。</li>
-<li>两种东西别放反：客户档案 vs 工作规则。上个客户的偏好会悄悄控制下个客户的方案。纠正时多说一句理由——经验就是这样被一件具体的事情勾出来的。</li>
-<li><b>第三轮（9 分钟）</b>：六页、三个包、一个年费、一个很积极的响应时间——值不值得付钱，先看页数吗？每项服务要对应一项已表达的需要或清楚列出的待核问题；费用和响应承诺没确定就留待确定。约 2 分钟看一行骨架：客户需要—拟议服务—前提与范围—待确认费用，不展示具体报价或响应小时数。呼应课前第 4 题。规则要拿类似任务试，过重就简化，冲突就协调。</li>
-<li><b>验证（5 分钟）</b>：写入—读取—执行三个位置。再变一个条件（新的课堂假设）：已核实云栖有另一个可替代的合作渠道——客户档案要更新，通用方法仍是先确认目标与选择。</li>
-<li>收束：“我们改进了它工作的条件。普通的规则和记忆保存，并没有因此改变模型参数。”超时时保留三个检查点：材料摘要不是合同全文；个案与通用分开；写入、读取、执行分别验证。</li>
-<li>过渡：“AI 这一边讲到这里。它越来越能干，你自己有没有越来越懂？”</li></ul></aside></section>
+<h1 class="t">把 Agent 当伙伴，<em>围绕场景持续养成</em></h1>
+<div class="lede">固定一个工作区，反复处理同一类工作，把你的判断经验变成它能调用的方法。</div>
+<div class="bd wg-body">
+ <div class="wg-comparison fu" style="--d:.15s"><div><span>传统软件的常见逻辑</span><p>版本交付 <i>→</i> 使用既定功能</p></div><div><span>Agent 的养成逻辑</span><p>通用能力是起点 <i>→</i> 在协作中积累场景方法</p></div></div>
+ <div class="wg-workspace card fu" style="--d:.35s"><div class="wg-space-head"><b>同一个工作区</b><span>聚焦一个工作场景 · 合同审核 / 法律咨询 / 案件分析</span></div>
+  <div class="wg-track"><div><span class="wg-no">01</span><h3>一起做事</h3><p>交代目标和材料<br>形成可检查的草稿</p></div><i>→</i><div><span class="wg-no">02</span><h3>说清判断</h3><p>哪里不合适<br>为什么改、何时这样改</p></div><i>→</i><div><span class="wg-no">03</span><h3>留下方法</h3><p>经确认的经验<br>写成工作区规则 / Memory</p></div><i>→</i><div><span class="wg-no">04</span><h3>下次再用</h3><p>在相近任务中读入<br>验证效果，继续修正</p></div></div>
+  <div class="wg-return"><span>下一次，不必再从零开始</span><i>↺</i></div>
+ </div>
+ <div class="wg-explicit fu" style="--d:.65s"><div>默会知识<span>显性化</span></div><p>把“我知道该怎样判断”，变成<br><b>可读取、可执行、可检查</b>的场景方法。</p></div>
+ <div class="wg-close fi" style="--d:.85s"><b>厂商交付的是通用起点，你们共同养成的是场景能力。</b><span>不只改好这一次的答案，还要让下一次做得更好。</span></div>
+</div><div class="src fi" style="--d:1s">讲者的使用方法：通过规则、Memory与复核积累工作方法；不同产品机制有别。普通对话与规则保存不等于训练模型，实际能力仍受模型、工具、权限与材料条件约束。</div>
+</div><aside class="notes" data-time="单元四 · 方法收束与工作区示范"><p><b>不再按第一、二、三轮展开细节。核心是固定场景、固定工作区、持续协作，把默会知识显性化。</b></p><ul>
+<li>“我更愿意把Agent当作一个要持续协作的伙伴。传统软件的常见用法，是拿到版本里已经定义好的功能去用；Agent产品交付给我的，是通用能力与工作框架的起点。我真正需要的，是它越来越能处理我反复面对的具体场景。”这是使用方法的对比，不把传统软件一概说成不能配置、扩展或升级。</li>
+<li>只选一个场景，例如合同审核。固定工作区保留材料、过程、规则与经验。每次共同完成一件事，人复核结果，指出差距；除了“改成这样”，再说明为什么改、在什么条件下这样改。</li>
+<li>默会知识显性化：很多判断原先只在你脑子里。把它讲清楚，整理为有适用范围的方法，确认后存入工作区规则或按产品机制使用Memory；下次实际读入，在相近任务中观察是否改进，再修正。</li>
+<li>“厂商交付是起点”，不是说场景能力没有边界。普通对话并不直接改变模型参数；这里养成的是工作条件、可调用经验和执行方法，效果还要靠材料、工具、权限与复核。</li>
+<li>不要求第一天建一个覆盖全部业务的系统。从一类经常做、也能检查结果的工作开始。个案事实和客户偏好留在个案；经过确认、能迁移的方法，才沉淀为规则。</li>
+<li>接下一页：“AI这一侧的工作条件可以越做越好，我们自己也要在共同工作中越做越懂。接下来讲人的判断怎样跟着长。”</li>
+</ul></aside></section>
 
-<!-- ========== P7 养人 ========== -->
-<section class="slide" data-title="养人：重构刻意练习"><div class="frame"><div class="wm">07</div>
+<section class="slide human-loop-practice" data-title="养人：人在环工作流与刻意练习"><div class="frame"><div class="wm">09</div>
 <div class="rh"><span class="unit">单元五</span><span>养人，怎样重构刻意练习</span><span class="rule"></span><span class="course">AI出草稿 · 律师出判断</span></div>
-<h1 class="t">养人：把练习<em>放回</em>工作里</h1>
-<div class="lede">能很快得到十份方案，是产能；能解释为什么这份适合、条件变了知道哪里要改，是另一种能力。</div>
+<h1 class="t">养人：把人<em>放进</em>关键流程</h1>
+<div class="lede">在工作场景里构建人在环的工作流，让每一次关键判断，也成为练习判断的机会。</div>
 <div class="bd" style="gap:calc(22*var(--u))">
 <div class="four">
 <div class="f4 fu" style="--d:.2s"><div class="no">01</div><div class="v">先写</div><div class="bar4 sx" style="--d:.4s"></div><div class="e">看 AI 之前，先写下自己的判断和没把握的地方</div></div>
@@ -839,29 +1199,29 @@ aside.notes{display:none}
 <div class="f4 fu" style="--d:.6s"><div class="no">03</div><div class="v">说理由</div><div class="bar4 sx" style="--d:.8s"></div><div class="e">准备改哪一句、为什么；或为什么不改</div></div>
 <div class="f4 fu" style="--d:.8s"><div class="no">04</div><div class="v cin">变条件</div><div class="bar4 sx" style="--d:1s"></div><div class="e">只变一个条件，看哪段建议需要重看</div></div>
 </div>
-<div class="ex">
-<div class="exq card fu" style="--d:1.1s">
-<div style="display:flex;gap:calc(10*var(--u));flex-wrap:wrap"><span class="tag hyp">新增教学场景</span><span class="tag ind">先别打开 AI</span></div>
-<div class="q">雷建军问你：“这个平台独家合作，我要不要签？”</div>
-<ol><li>客户现在可能要解决什么</li><li>你还必须问清哪一件事</li><li>信息没齐时，你准备怎样给一个有条件的回应</li></ol>
-<div class="timer nonav"><button class="tbtn" id="tbtn" type="button" aria-label="90 秒计时"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="3"/><circle id="tring" cx="18" cy="18" r="15" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="94.25" stroke-dashoffset="0" transform="rotate(-90 18 18)"/></svg><span class="tm" id="ttm">1:30</span><span id="tlb">开始计时</span></button><small>只写三行 · 纸上或手机备忘录</small></div>
+<div class="hil-discussion fu">
+<div class="hil-prompt"><span class="tag ind">现场讨论</span><h2>使用 Agent 处理一项事务，<em>人应该放在哪里？</em></h2></div>
+<div class="hil-routes">
+<div class="hil-route"><div class="hil-route-label"><b>A</b><span>先跑出结果，再由人审核</span></div><div class="hil-flow"><span>交付任务</span><i>→</i><span>Agent 处理</span><i>→</i><strong>人审结果</strong></div></div>
+<div class="hil-route"><div class="hil-route-label"><b>B</b><span>在关键流程嵌入人的审核</span></div><div class="hil-flow"><strong>人定目标</strong><i>→</i><span>Agent 处理</span><i>→</i><strong>节点审核</strong><i>→</i><span>继续处理</span><i>→</i><strong>人审结果</strong></div></div>
 </div>
-<div class="exr">
-<div class="chg fu" style="--d:1.3s"><span class="tag hyp">变一个条件 · 课堂假设</span><p><b>已经核实：云栖有其他可以选择的获客渠道</b>，其他情况暂时不变。刚才哪一段建议需要重看？结论不改，也说清这个新条件为什么没有改变你的理由。</p></div>
-<div class="sig fu" style="--d:1.5s"><div class="cap">进步的信号</div><ul><li>能解释理由</li><li>知道哪里没把握</li><li>能发现 AI 越过了材料</li><li>条件变了知道回头改</li></ul></div>
-</div></div></div>
-<div class="src fi" style="--d:1.7s">对照用的候选回答由备课编写，不是某次真实 AI 运行；看理由，不按是否同意它来给分。课前第 5 题：省下来的时间，你打算放到哪里？</div>
+<div class="hil-follow"><p>你会在哪些节点停下来？<b>看什么、凭什么判断、如何反馈？</b></p><div class="timer nonav"><button class="tbtn" id="tbtn" type="button" aria-label="90 秒计时"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="3"/><circle id="tring" cx="18" cy="18" r="15" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="94.25" stroke-dashoffset="0" transform="rotate(-90 18 18)"/></svg><span class="tm" id="ttm">1:30</span><span id="tlb">开始计时</span></button><small>先选一种 · 再说人的位置</small></div></div>
 </div>
-<aside class="notes" data-time="约 13 分钟（含课堂练习约 5.5 分钟）"><p><b>页面只列“先写—对照—说理由—变条件”。</b>练习场景为新增教学假设，屏幕或口头明示。不要求安装工具、登录账号。</p><ul>
-<li>开题：过去自己先写、带教改，做几次慢慢知道分寸；现在第一遍被 AI 拿走，原来写第一稿、被改第一稿时发生的练习还在不在？——技术中介问题。但不能因此“别用 AI”，也不必每份都关掉 AI 重做。</li>
-<li><b>练习（约 5.5 分钟）</b>：① 90 秒只写三行（可点页面上的“开始计时”；讲者安静等待）。② 60 秒展示或口述备课编写的候选回答（见讲师备注.md），声明不是真实 AI 运行。③ 90 秒交流：别念整段，只说“我准备改哪一句，为什么”。无人发言时示范比较“直接拒绝独家”与“先补问渠道和承诺，再比较条件”。④ 60 秒变条件：已核实云栖有其他获客渠道。最后 30 秒收束。</li>
-<li>“如果 AI 提醒得好，改自己的，没有什么不好意思。我们练的是有理由地改主意。”</li>
-<li>带回去：不必每个任务都做，定期挑一项关键判断。有带教的，别只交被 AI 修得很漂亮的稿，把原来怎么想、改了什么、为什么改给他看。AI 也可当陪练，但它给自己打的高分不算。</li>
-<li>课前第 5 题：省下的时间——现场看客户怎样经营、研究最不熟的一块、比较带教改过的地方。也需要休息；别只凭出稿数量判断自己变强。</li>
-<li>“工作区记住了，不等于你理解了；你这次理解了，也不等于下次工作区一定读到了。两边都要检验。”</li></ul></aside></section>
+<div class="hil-practice fi"><b>把审核节点，变成刻意练习的节点。</b><span>挑一个关键判断：先自己想，再与 Agent 对照，讲清理由，换一个条件再检验。</span></div>
+</div>
+<div class="src fi">现场追问：什么时候只审最终结果就够了？什么时候需要提前介入？人的判断，在哪一步得到练习？</div>
+</div>
+<aside class="notes" data-time="单元五 · 人在环工作流与现场讨论"><p><b>本页不再结合案件展开。核心是：在真实工作场景中设计人在环工作流，并把人的审核位置设计成练习判断的位置。</b></p><ul>
+<li>承接上一页：工作区能积累方法，人也要在协作中持续练习。拿到越来越漂亮的结果，是否就意味着自己的判断越来越好？</li>
+<li>先请大家选A或B，给90秒想一想：把任务交给Agent，等它跑完后审结果；还是在关键流程中嵌入人的审核？请说清人的位置和理由，不必追求统一答案。可点击计时，或直接口头讨论。</li>
+<li>继续追问：你会在哪一步停下来？例如确定目标、确认材料范围、比较处理路径、作关键取舍、对外交付。选一两个节点，说清你具体看什么、依据是什么，以及如何让Agent继续工作。</li>
+<li>讨论不收束成“每一步都要人批准”。请大家结合熟悉的工作，考虑错误的后果、能否回退、结果是否容易检查，以及等待审核的成本。哪些判断可以留到最后，哪些应当提前做？</li>
+<li>刻意练习落在节点上：看Agent方案前，先记下自己的判断和不确定之处；对照后找一处差异，说明采纳、修改或保留的理由；再只变一个条件，检验原来的判断是否仍成立。上半页的“先写—对照—说理由—变条件”就是这个做法。</li>
+<li>带教时，可以让青年律师提交“我先怎么想、与Agent哪里不同、为何修改”，再获得带教反馈。每次聚焦一个判断点，不以点了多少次确认或是否同意AI作为进步标准。</li>
+<li>收束：“人在环中，不只是人在最后签字；我们要设计的是，人在哪一步作出什么判断，并从这一次协作中学到什么。”接下一页两条成长线。</li>
+</ul></aside></section>
 
-<!-- ========== P8 收束 ========== -->
-<section class="slide" data-title="把两条成长线带回去"><div class="frame"><div class="wm">08</div>
+<section class="slide" data-title="把两条成长线带回去"><div class="frame"><div class="wm">10</div>
 <div class="rh"><span class="unit">单元六</span><span>把两条成长线带回去</span><span class="rule"></span><span class="course">AI出草稿 · 律师出判断</span></div>
 <h1 class="t">把两条成长线带回去</h1>
 <div class="lede">下午的结业任务——一份民宿常法服务产品方案——就可以从这里开始。</div>
@@ -897,14 +1257,54 @@ aside.notes{display:none}
 <li>同时给自己留一小段练习：先写判断和没把握的地方，再去看 AI。</li>
 <li>结语：“今天我们从 AI 出错讲起，最后仍然是要用它，而且要好好用。把它擅长的事情交出去，把值得留下的方法留下，把需要自己理解和决定的地方认真做完。AI 出的草稿，可以越来越好。你给出的判断，也要跟着长。”→ 翻到封底：“从下一件工作开始。谢谢各位。”</li></ul></aside></section>
 
-<!-- ========== 封底 ========== -->
-<section class="slide dark back" data-title="封底 · 从下一件工作开始"><div class="frame"><div class="bk">
+<section class="slide judgment-question" id="judgment-question" data-title="什么是判断？"><div class="frame"><div class="wm">11</div>
+<div class="rh"><span class="unit">讨论</span><span>判断的内涵</span><span class="rule"></span><span class="course">AI出草稿 · 律师出判断</span></div>
+<div class="jg-initial" id="jg-initial"><div class="jg-kicker">先请大家想一想</div><h1>什么是<span>判断</span>？</h1><p>当我们说“律师出判断”，究竟指哪一种能力？</p><button class="jg-open nonav" id="jg-open" type="button" aria-expanded="false" aria-controls="jg-analysis">点击页面，展开分析 <span aria-hidden="true">→</span></button></div>
+<div class="jg-analysis" id="jg-analysis" hidden>
+<div class="jg-title-row"><h1 class="t">什么是<em>判断</em>？</h1><button class="jg-back nonav" id="jg-back" type="button">回到问题</button></div>
+<div class="lede">先拆开“判断”，再讨论信息、取舍与人的责任。</div>
+<div class="bd jg-body">
+<div class="jg-components"><div><span>01 · 上下文</span><h3>此刻知道什么</h3><p>材料、目标与限制条件</p></div><div><span>02 · 经验先验</span><h3>过去见过什么</h3><p>压缩、内化的历史上下文</p></div><div class="jg-value"><span>03 · 价值权重</span><h3>到底在优化什么</h3><p>速度、安全、收益如何取舍</p></div><div><span>04 · 现实反馈</span><h3>凭什么校准</h3><p>用行动后果、复核与修正检验</p></div></div>
+<div class="jg-context"><h2>先分清：是判断差距，<em>还是上下文差距？</em></h2><p>你掌握客户背景、隐含目标和多年经验，Agent 却只收到三行字。<br>先把相关信息交代清楚并核验，再比较它的判断。</p></div>
+<div class="jg-choice"><div class="jg-choice-title">即使信息相同，<b>我们为什么仍会选不同方案？</b></div><div class="jg-duties"><div><h3>定义问题</h3><p>究竟要解决什么<br>什么值得投入</p></div><div><h3>定义价值</h3><p>优先什么、愿意放弃什么<br>替谁作选择</p></div><div><h3>承担责任</h3><p>谁确认这个取舍<br>谁面对现实后果</p></div></div></div>
+<div class="jg-takeaway"><b>“知道得更多”，并不等于已经完成价值取舍。</b><span>把依据说清，把选择说清，把责任落到具体的人。</span></div>
+</div><div class="src">讲者的拆解框架，整理自陈石《“人的判断力是最后一道防线”？拆开看看》（2026-08-23）及杭律青训班讲稿（2026-10-25）；不是对“判断”的唯一学术定义。</div>
+</div></div><aside class="notes" data-time="约 3 分钟 · 先提问，再展开"><p><b>初始仅显示“什么是判断？”。先听学员回答，再点击页面、展开按钮或按右方向键／空格展开。再次前进才进入下一页；“回到问题”可收起。</b></p><ul>
+<li>先问：“大家觉得，判断的内涵到底是什么？当我们说AI出草稿、律师出判断，我们究竟留下了哪一部分？”停下来听两三位学员，不预设学员答案。</li>
+<li>展开四个零件：上下文、经验先验、价值权重、现实反馈。采用8月23日原文的拆解，不把它包装成判断的唯一学术定义。经验里有很多压缩的历史上下文，不能把自己知道、却没有告诉Agent的信息都算成人的能力优势。</li>
+<li>信息、推断、价值取舍是相关但不同的环节。先补足材料与目标，再比较方案；补齐上下文不保证输出就正确，仍然要核验，也不能据此断言AI必然追平或超过人。</li>
+<li>即使材料一样，速度与安全、收益与关系之间仍可能有取舍。谁的目标、什么优先、愿意牺牲什么，要讲明白；不要把某种默认偏好藏在看似客观的结论里。AI可以帮助列选项、比较利弊，人仍需确认问题、价值与责任的安排。</li>
+<li>沿用旧课的表述：定义问题、定义价值、承担责任。这三项是工作中的角色要求，不是宣称人类天然更准确，或者价值权重只能由人脑计算。</li>
+<li>若继续追问“怎么检验判断”，口头接杭律旧课三道门：可溯源、可对抗、可负责。为什么不选另一个同样说得通的方案？能否解释看了什么、如何取舍、责任由谁承担？本页不再叠加三道门图示。</li>
+<li>接下一页的人机协同循环：把此次依据、取舍和反馈留下来，让下一轮有机会做得更好。</li>
+</ul></aside></section>
+<section class="slide light new-demo cycle-demo" id="collaboration-cycle" data-title="人机协同：让下一轮比这一轮更好"><div class="frame"><div class="wm">12</div>
+<div class="rh"><span class="unit">收束</span><span>人机协同的迭代循环</span><span class="rule"></span><span class="course">AI出草稿 · 律师出判断</span></div>
+<h1 class="t">让下一轮，<em>比这一轮更好</em></h1>
+<div class="lede">把工作中的差距变成反馈，再把核验有效的方法沉淀下来；AI 的工作条件与人的判断能力一起改进。</div>
+<div class="bd cycle-body nonav">
+ <div class="cycle-grid"><div class="cycle-story"><div class="demo-label" id="cycle-step-label">01 · 交互触发</div><h2 id="cycle-heading">先把目标与材料交代清楚</h2><p id="cycle-explanation">从一件真实工作出发，人给出任务、材料范围和交付标准，AI 形成可检查的草稿。</p><div class="cycle-roles"><div><b>人</b><span id="cycle-human">明确想解决什么，以及哪里还没把握。</span></div><div><b>AI</b><span id="cycle-ai">整理材料、列出步骤，交付草稿与缺口。</span></div></div><div class="cycle-example"><span>接回平台合作案例</span><p id="cycle-example">先说明：客户希望保留合作机会；当前只有风险摘要，没有合同原文。</p></div><div class="demo-actions"><button class="demo-btn primary" id="cycle-next" type="button">讲下一步</button><button class="demo-btn" id="cycle-auto" type="button" aria-pressed="false">自动循环</button></div></div>
+ <div class="cycle-figure"><svg viewBox="0 0 640 480" aria-label="四步循环：交互触发、发现缺口、规则迭代、验证沉淀" role="group">
+ <circle cx="320" cy="240" r="160" fill="none" stroke="var(--line2)" stroke-width="2"/>
+ <circle class="cycle-flow" cx="320" cy="240" r="160" fill="none" stroke="var(--ind2)" stroke-width="3" stroke-dasharray="9 19"/>
+ <text x="320" y="231" text-anchor="middle" class="cycle-center">循环往复</text><text x="320" y="261" text-anchor="middle" class="cycle-center-small">隐性判断 → 显性规则</text>
+ <g class="cycle-node on" data-cycle-i="0" tabindex="0" role="button" aria-label="第1步，交互触发"><rect x="225" y="40" width="190" height="78" rx="5"/><text x="320" y="72">01 交互触发</text><text x="320" y="99" class="cycle-node-small">用真实任务启动</text></g>
+ <g class="cycle-node" data-cycle-i="1" tabindex="0" role="button" aria-label="第2步，发现缺口"><rect x="440" y="201" width="190" height="78" rx="5"/><text x="535" y="233">02 发现缺口</text><text x="535" y="260" class="cycle-node-small">核对、比较、说理由</text></g>
+ <g class="cycle-node" data-cycle-i="2" tabindex="0" role="button" aria-label="第3步，规则迭代"><rect x="225" y="362" width="190" height="78" rx="5"/><text x="320" y="394">03 规则迭代</text><text x="320" y="421" class="cycle-node-small">把有效方法显式保存</text></g>
+ <g class="cycle-node" data-cycle-i="3" tabindex="0" role="button" aria-label="第4步，验证沉淀"><rect x="10" y="201" width="190" height="78" rx="5"/><text x="105" y="233">04 验证沉淀</text><text x="105" y="260" class="cycle-node-small">换任务，看是否真用上</text></g>
+ </svg><div class="cycle-assets"><div><b>AI 这一侧</b><span>上下文、规则、流程更清楚</span></div><div><b>人这一侧</b><span>理解、取舍、复核更扎实</span></div></div></div>
+ </div>
+ <div class="demo-takeaway"><b>把差距变成下一轮的方法</b><span>显式保存 → 实际读取 → 换任务验证。普通反馈与规则保存，不等于重新训练。</span></div>
+</div><div class="src">参考讲者《专业人士的AI应用实践》第26页的四步循环。平台合作情节为本课教学示例；规则要说明来源、适用范围并经复核，不把个案偏好写成通用结论。</div>
+</div><aside class="notes" data-time="约 2 分钟"><p><b>放在总结后、封底前，用四步循环收束。</b></p><ul><li>点四个节点或“讲下一步”，分别讲清人和AI的任务。专业判断需要显性表达，但不把全部经验一次性写成巨大规则文件。</li><li>交互触发：用平台合作的一件小任务开始。发现缺口：看见“未给合同却声称审完”这类工作状态问题，说清理由。规则迭代：把“先核对材料范围和客户目标”保存为可执行的方法。验证沉淀：换个任务检查是否实际读入、是否真正改变行为。</li><li>规则沉淀并非聊天越多模型就自动学会。个案事实留在个案，通用方法要有适用范围；写入、读取、执行分别检查。</li><li>人也在循环中练习：先判断，再对照，说理由，变条件。最后落在“AI出的草稿可以越来越好，你给出的判断也要跟着长”。</li></ul></aside></section>
+
+<section class="slide dark back" data-title="封底 · 规则制定者与风险守门人"><div class="frame"><div class="bk">
 <div>
 <div class="cv-k fu" style="--d:.1s">AI出草稿，律师出判断</div>
-<div class="bk-t fu" style="--d:.3s;margin-top:calc(30*var(--u))">从<span>下一件工作</span><br>开始。</div>
+<div class="back-role-heading fu"><span>做智能时代的：</span><div><h2>规则制定者</h2><p>（设计者 · 定义任务、规则与验收）</p></div><i>＋</i><div><h2>风险守门人</h2><p>（把关者 · 守住事实、依据与权限）</p></div></div>
 <div class="bk-s fu" style="--d:.6s">谢谢各位</div>
 <div class="back-home fu" style="--d:.75s"><span>我的主页</span><a href="https://chenshi.ai/" target="_blank" rel="noopener">chenshi.ai<span aria-hidden="true"> ↗</span></a></div>
-<div class="bk-a fu" style="--d:.9s"><div class="seal stamp" style="--d:1.3s;--s:calc(84*var(--u))"><span>律</span><span>师</span><span>判</span><span>断</span></div><div><div class="nm">陈石</div><div class="tt">浙江海泰律师事务所<br>丽水 · 金华 · 衢州 · 温州律协 青年律师联合训练营 · 2026.11.15</div></div></div>
+<div class="bk-a fu" style="--d:.9s"><div class="seal stamp" style="--d:1.3s;--s:calc(84*var(--u))"><span>律</span><span>师</span><span>判</span><span>断</span></div><div><div class="nm">陈石</div><div class="tt">浙江海泰律师事务所<br>丽水 · 温州 · 台州 · 金华 · 衢州律协 青年律师联合训练营 · 2026.11.15</div></div></div>
 </div>
 <div class="back-contact fi" style="--d:1s">
 <div class="back-contact-label">微信 · 扫码添加好友</div>
@@ -918,9 +1318,10 @@ aside.notes{display:none}
 <li><b>上海市律师协会</b>《律师企业法律顾问服务AI应用操作指引（2026）（试行）》</li>
 <li><b>新京报</b> 2026-04-22 调查报道（“印章管理办法”）</li>
 <li><b>《畲乡民宿案——丽水律协青训营案例教材》</b>；课堂假设与教学样例均为备课编写</li>
+<li><b>讲者历史文章与课程</b>：《“人的判断力是最后一道防线”？拆开看看》（2026-08-23）；杭律青训班讲稿（2026-10-25），用于新增“什么是判断”讨论页。</li>
 </ol></div></details>
 </div></div></div>
-<aside class="notes" data-time="结束"><p><b>“从下一件工作开始。谢谢各位。”</b></p><ul><li>逐字稿原设计“不再增加结束页”；本封底按制作要求增加，可在致谢时停留，问答时可指向右侧来源。</li><li>封底显示用户提供的微信二维码原图；主页 chenshi.ai 可点击打开。公开材料保留在二维码下方的折叠列表中。</li><li>印章为装饰性图形（“律师判断”），不代表真实印鉴。</li></ul></aside></section>
+<aside class="notes" data-time="结束"><p><b>“做智能时代的规则制定者，加风险守门人。谢谢各位。”</b></p><ul><li>按用户指定文案收束：设计者定义任务、规则与验收；把关者守住事实、依据与权限。可在致谢、问答时停留。</li><li>封底显示用户提供的微信二维码原图；主页 chenshi.ai 可点击打开。公开材料保留在二维码下方的折叠列表中。</li><li>印章为装饰性图形（“律师判断”），不代表真实印鉴。</li></ul></aside></section>
 
 </div>
 
@@ -947,6 +1348,7 @@ aside.notes{display:none}
 (function(){
 const EMBEDS={"db":{"title":"AI Hallucination Cases Database · Damien Charlotin（需联网）","url":"https://www.damiencharlotin.com/hallucinations/?graphs=1",
 "fb":"<h2>AI Hallucination Cases Database</h2><div class=\"sub\">备用说明 · 远程网站未能显示时使用</div><p>研究者 Damien Charlotin 持续整理的法律领域 AI 幻觉裁判数据库，采用 CC BY 4.0 许可。本课件数据于 2026-11-10 下载 CSV 并与网页图表数据复算，网站当时更新至 2026-11-09。</p><ul><li><b>2,286</b> 条原库记录；<b>907</b> 条标注律师参与；<b>169</b> 条标注纪律移送（官网该项统计排除 26 条仅被指称的记录）。三项交叉，不相加。</li><li>按裁判日期：2025 年四个季度 57 / 125 / 272 / 411；2026 年前三季度 459 / 433 / 369；2026Q4 截至提取时 83 条，未完整。</li><li>同期比较：2025 年前三季度 454 条 → 2026 年前三季度 1,261 条，约 2.78 倍。</li><li>口径：原库记录，未经案件去重（已发现疑似重复）；含推定使用 AI 及少量仅被指称的记录；存在公开、语言、收集和司法时滞偏差；不是全球完整发生数、发生率或模型评测。</li><li>官网 China 标签与香港标签混用，不能据此判断中国大陆数量。</li></ul>"}};
+EMBEDS["context-tape"]={"title": "上下文纸带 · 完整演示网站（需联网）", "url": "https://legalagi.cn/tools/context-tape/", "fb": "<h2>上下文纸带</h2><div class=\"sub\">备用说明 · 原站未能显示时使用</div><p>人和Agent的互动可以用纸带类比：本轮装入的系统规则、用户任务、历史、工具返回及材料，共同构成生成条件。</p><ul><li>先有规则，再接用户提问、助手回答、工具结果与材料；按宿主实际加载的内容为准。</li><li>折叠、卷动只改变显示；排除历史、截取、摘要或新建对话才可能改变实际装配。</li><li>写入文件不等于本轮读取；普通对话与保存规则不等于训练模型。</li><li>完整网站也是预置教学模拟，不连接在线AI。本课件当前页的纸带控件在断网时仍可操作。</li></ul><p>关闭本弹层可回课件演示；也可点击右上角“打开原网页”访问完整网站。</p>"};
 const slides=[...document.querySelectorAll('.slide')];
 const N=slides.length, stage=document.getElementById('stage'), root=document.documentElement;
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches || /[?&](static|rm)\b/.test(location.search);
@@ -997,6 +1399,7 @@ function go(i){
   document.querySelectorAll('#ov2 .it').forEach((e,k)=>e.classList.toggle('cur',k===i));
   try{history.replaceState(null,'','#'+(i+1))}catch(e){}
   if(s===introSlide){introDismissed=false;startIntro(false)}else showIntroBio('');
+  dispatchEvent(new CustomEvent('lecture:slide',{detail:{index:i}}));
 }
 const next=()=>go(cur+1), prev=()=>go(cur-1);
 async function fs(){const d=document;try{if(!(d.fullscreenElement||d.webkitFullscreenElement)){const r=root.requestFullscreen||root.webkitRequestFullscreen;if(!r)throw new Error('unsupported');await r.call(root)}else{const r=d.exitFullscreen||d.webkitExitFullscreen;if(!r)throw new Error('unsupported');await r.call(d)}}catch(e){const b=document.getElementById('cornerFs');if(b){b.title='浏览器未允许全屏，请使用浏览器菜单切换全屏';b.dataset.fullscreenStatus='unavailable'}}}
@@ -1088,7 +1491,8 @@ let buf='',bufT=null;const jb=document.getElementById('jumpbuf');
 function flushBuf(){buf='';jb.classList.remove('show')}
 addEventListener('keydown',e=>{
   if(e.metaKey||e.ctrlKey||e.altKey)return;
-  if(e.target instanceof Element && e.target.closest('video'))return;
+  if(e.target instanceof Element && e.target.closest('video,input,textarea,select,[contenteditable="true"],.tape-paper,.harness-paper'))return;
+  if(e.target instanceof Element && e.target.closest('button,summary,a')&&['Enter',' '].includes(e.key))return;
   if(ov.classList.contains('open')){if(e.key==='Escape')closeEmbed();return}
   const k=e.key;
   if(/^[0-9]$/.test(k)){buf+=k;jb.textContent=buf;jb.classList.add('show');clearTimeout(bufT);bufT=setTimeout(flushBuf,2200);return}
@@ -1107,9 +1511,152 @@ stage.addEventListener('click',e=>{if(e.target.closest('a,button,[data-embed],.n
 help.addEventListener('click',()=>help.classList.remove('open'));
 /* 触摸滑动 */
 let tx=0,ty=0,tt=0,tMedia=false;
-stage.addEventListener('touchstart',e=>{tMedia=!!e.target.closest('.intro-player');const t=e.touches[0];tx=t.clientX;ty=t.clientY;tt=Date.now()},{passive:true});
+stage.addEventListener('touchstart',e=>{tMedia=!!e.target.closest('.intro-player,.nonav,input,textarea,select,button');const t=e.touches[0];tx=t.clientX;ty=t.clientY;tt=Date.now()},{passive:true});
 stage.addEventListener('touchend',e=>{if(tMedia)return;const t=e.changedTouches[0],dx=t.clientX-tx,dy=t.clientY-ty;if(Date.now()-tt<700&&Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.4){dx<0?next():prev()}},{passive:true});
 window.deck={go,openEmbed,closeEmbed,toggleNotes,hideBar:()=>bar.classList.add('hide'),get n(){return N}};
 const h=parseInt(location.hash.slice(1));go(h?h-1:0);showBar();
 })();
-</script></body></html>
+</script><script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const probability=(function(){
+  const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+  const SEN=["先核对合同原文再判断风险", "独家合作要结合客户目标", "退出条件需要回到原文核对", "材料不全先列待核事项"];
+  const POOL=['理','认','读','学','讲','解','做','看','写','想','用','算','记','知','道','对','好','新','高','长','多','少','快','慢','大','小','上','下','前','后','进','出','开','关'];
+  const WILD=['喵','咕','梦','锅','哦','噗','咚','咪','嘎','哈','噜','咔'];
+  let si=0,ci=-1,timer=null,temp=0.7,cands=[],spans=[],on=false,G,C,A,P,TV,box,inited=false;
+  function bc(c0){const s=new Set([c0]),r=[{ch:c0,p:.82}];
+    for(let i=0;i<3&&s.size<4;i++){let c=POOL[Math.floor(Math.random()*POOL.length)];if(!s.has(c)){s.add(c);r.push({ch:c,p:.07+.02*(3-i)})}}
+    if(s.size<5){let c=WILD[Math.floor(Math.random()*WILD.length)];if(!s.has(c)){s.add(c);r.push({ch:c,p:.01})}}
+    while(r.length<5){let c=POOL[Math.floor(Math.random()*POOL.length)];if(!s.has(c)){s.add(c);r.push({ch:c,p:Math.max(.004,.02-.01*r.length)})}}
+    const sum=r.reduce((a,x)=>a+x.p,0);r.forEach(x=>x.p/=sum);return r.sort((a,b)=>b.p-a.p)}
+  function at(cs,t){const ws=cs.map(c=>Math.pow(Math.max(c.p,1e-6),1/t));const sm=ws.reduce((a,b)=>a+b,0);return cs.map((c,i)=>({...c,p:ws[i]/sm}))}
+  function rc(cs){C.innerHTML=at(cs,temp).map(c=>{const w=Math.round(c.p*100);return '<div class="ref-cr"><div class="ref-cc">'+c.ch+'</div><div class="ref-cb"><i style="width:'+w+'%"></i></div><div class="ref-cp">'+w+'%</div></div>'}).join('')}
+  function da(){if(!A)return;A.innerHTML='';if(ci<1||!spans[ci])return;const b=box.getBoundingClientRect(),c=spans[ci].getBoundingClientRect();if(!c.width)return;
+    A.setAttribute('viewBox','0 0 '+b.width+' '+b.height);
+    const cx=c.left-b.left+c.width/2,cy=c.top-b.top,lift=c.height*.55;
+    for(let j=0;j<ci;j++){const r=spans[j].getBoundingClientRect();const sx=r.left-b.left+r.width/2,sy=r.top-b.top;const mx=(sx+cx)/2,my=Math.min(sy,cy)-lift-Math.min(c.height*1.6,lift*.35*(ci-j));
+      const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d','M'+sx+','+sy+' Q'+mx+','+my+' '+cx+','+cy);
+      p.setAttribute('stroke','rgba(178,58,46,.65)');p.setAttribute('stroke-width',Math.max(1.5,c.height*.04));p.setAttribute('stroke-dasharray','6,4');p.setAttribute('fill','none');p.setAttribute('stroke-linecap','round');
+      p.setAttribute('opacity',Math.min(.82,.3+(ci-j)*.1).toFixed(2));A.appendChild(p)}}
+  function rt(cursor){const b=SEN[si].slice(0,ci+1);G.innerHTML=[...b].map((ch,i)=>'<span class="ref-sp'+(i===ci&&cursor?' ref-cur':'')+'">'+ch+'</span>').join('')+(cursor?'<span class="ref-cursor"></span>':'');spans=$$('.ref-sp',G)}
+  function ul(){const s=SEN[si];P.textContent=ci>=s.length-1?'这句生成完毕 · 即将自动换下一句':'正在猜第 '+(ci+2)+' / '+s.length+' 个字';TV.textContent='T = '+temp.toFixed(2)}
+  function ss(){clearTimeout(timer);ci=0;rt(true);cands=bc(SEN[si][0]);rc(cands);ul();timer=setTimeout(adv,600)}
+  function adv(){clearTimeout(timer);if(!on)return;const s=SEN[si];
+    if(ci>=s.length-1){P.textContent='这句生成完毕 · 2 秒后自动换下一句';timer=setTimeout(()=>{si=(si+1)%SEN.length;ci=-1;G.innerHTML='';A.innerHTML='';C.innerHTML='<div class="mute">即将生成下一句…</div>';P.textContent='准备中…';timer=setTimeout(ss,800)},2000);return}
+    cands=bc(s[ci+1]);rc(cands);ul();requestAnimationFrame(da);
+    timer=setTimeout(()=>{ci++;rt(true);ul();requestAnimationFrame(da);const tc=at(cands,temp);const r=Math.random();let acc=0,sel=0;for(let i=0;i<tc.length;i++){acc+=tc[i].p;if(r<=acc){sel=i;break}}
+      const top=cands[sel];cands=cands.map(c=>({...c,p:c.ch===top.ch?c.p+.04:Math.max(.001,c.p-.01)}));rc(cands);timer=setTimeout(adv,650)},480)}
+  function init(){if(inited)return;inited=true;G=$('#ref-gen-text');C=$('#ref-cand-list');A=$('#ref-attn-svg');P=$('#ref-phase-label');TV=$('#ref-temp-val');box=$('#ref-gen-box');
+    const sl=$('#ref-temp-slider');sl.addEventListener('input',()=>{temp=+sl.value;TV.textContent='T = '+temp.toFixed(2);if(cands.length)rc(cands)})}
+  return{enter(s,st){st=document.documentElement.classList.contains("rm");init();clearTimeout(timer);
+      if(st){on=false;si=3;ci=SEN[3].length-1;rt(false);cands=bc(SEN[3][ci]);rc(cands);P.textContent='这句生成完毕（静态展示）';TV.textContent='T = '+temp.toFixed(2);setTimeout(da,50);return}
+      on=true;si=0;ci=-1;G.innerHTML='';A.innerHTML='';C.innerHTML='<div class="mute">即将开始…</div>';timer=setTimeout(ss,900)},
+    leave(){on=false;clearTimeout(timer)},resize(){requestAnimationFrame(da)},snapshot(){return{sentenceIndex:si,charIndex:ci,text:SEN[si].slice(0,ci+1),sentences:[...SEN],temperature:temp,candidates:at(cands,temp),running:on,arcs:A?A.querySelectorAll("path").length:0}}};
+})();
+const tape=(function(){
+ const slide=$('context-tape-demo'),paper=$('harness-paper');
+ const modules={rules:'系统与工作区规则界定任务、责任和约束；不同层级的规则由宿主协调。',skills:'通常先给可用Skill索引或描述，匹配任务后按需读入正文与参考材料；实现因宿主而异。',memory:'显式保存并按需检索相关经验；记忆不是模型参数，也不是所有旧案自动常驻。',tools:'工具定义用于描述能力和参数；模型可提出调用请求，宿主检查权限并执行，再把结果回填。',materials:'文件、检索片段、工具返回，必须实际读取、选入，才能作为本轮上下文；磁盘里有不等于模型看过。',records:'记录任务状态、工具结果与复核反馈；Hook可回填流程状态，法律判断仍须由人核定。'};
+ const groups=[
+  {title:'启动，加载基础规则',items:[
+   {id:'system',module:'rules',role:'系统规则',actor:'宿主',title:'系统约束',text:'辅助整理和起草；正式意见由责任律师核定。',source:'系统预设 · 教学底稿'},
+   {id:'workspace',module:'rules',role:'工作区规则',actor:'宿主',title:'工作区任务说明',text:'只读原始材料；过程与交付分开；引用要核对来源。',source:'工作区说明 · 教学样例'}]},
+  {title:'注册扩展，准备可用能力',items:[
+   {id:'skill-index',module:'skills',role:'Skill索引',actor:'宿主',title:'可用Skill目录',text:'合同审查：适用范围、入口与触发条件；完整正文尚未加载。',source:'Skill元数据 · 不等于全文'},
+   {id:'tool-def',module:'tools',role:'工具定义',actor:'宿主',title:'工具名称与参数',text:'read_file(path)、法律检索MCP等能力说明；此时没有查询结果。',source:'已授权工具的定义 · 尚未调用'},
+   {id:'memory',module:'memory',role:'相关记忆',actor:'宿主',title:'按需检索的方法',text:'先确认客户目标与材料范围，不照搬上一客户偏好。',source:'预置已复核方法样例 · 不带入真实旧案'}]},
+  {title:'用户提交本轮任务',items:[
+   {id:'task',module:'rules',role:'用户',actor:'用户',title:'本轮任务',text:'云栖的平台独家合作，怎样提出修改建议？',source:'本轮用户提问 · 教学任务'}]},
+  {title:'读取Skill，再提出工具请求',items:[
+   {id:'skill-body',module:'skills',role:'Skill正文',actor:'宿主',title:'载入审阅步骤',text:'区分已知、待核和建议；未见合同原文不编条号。',source:'按需读取Skill正文 · 本页教学规则',gate:'rules'},
+   {id:'call',module:'tools',role:'调用请求',actor:'模型',title:'请求读取材料',text:'read_file("教材摘要")；这是待宿主执行的工具请求，不是检索结果。',source:'模型调用格式示意 · 不执行真实调用'}]},
+  {title:'宿主核对权限，执行并回传',items:[
+   {id:'tool-result',module:'materials',role:'工具返回',actor:'宿主',title:'实际读到的材料',text:'只有教材风险摘要，未取得平台合同全文。',source:'预置读取结果 · 不冒充真实检索',gate:'data'},
+   {id:'goal',module:'materials',role:'补充背景',actor:'用户',title:'本轮客户目标',text:'希望保留合作机会，也愿意谈条件。',source:'课堂假设 · 不是教材已确认事实',gate:'data'}]},
+  {title:'装配本轮输入，模型接续草稿',items:[
+   {id:'answer',module:'records',role:'助手输出',actor:'模型',title:'本轮草稿',text:'',source:'依据当前选入内容选择的预置教学回复',output:true}]},
+  {title:'人复核，记录与Hook回填',items:[
+   {id:'review',module:'records',role:'人工复核',actor:'人',title:'确认本轮缺口',text:'合同原文未到；当前草稿不能直接作为签署意见。',source:'人工检查的教学示意',after:true},
+   {id:'hook',module:'records',role:'状态回填',actor:'宿主',title:'留给下一轮',text:'记录缺口与下一步动作；有效方法经复核后再保存为规则。',source:'流程状态说明 · 不自动作法律判断',after:true}]}
+ ];
+ let step=0,items=[],logs=[],busy=false,auto=false,timer=0,activeModule='',focus='',useRules=true,useData=true,inputCount=0;
+ const included=x=>!x.output&&!x.after&&(x.gate!=='rules'||useRules)&&(x.gate!=='data'||useData);
+ function answer(){if(useData&&useRules)return '已知：仅风险摘要，合同原文未到。\n待核：独家范围、期限、退出与替代渠道。\n下一步：取得原文后比较可谈方案。';if(useRules)return '材料与目标尚不完整。\n先补原文、确认客户目标，列待核事项；不编条号，不下签署结论。';if(useData)return '已读到材料缺口与本轮目标。\n草稿仍可能遗漏核验步骤，不能直接用作最终意见。';return '建议直接删掉独家合作条款。\n此为材料与规则不足的教学错误样本。';}
+ function inspect(x){if(!x)return;$('harness-inspector').textContent=x.title+'｜内容：'+(x.output?answer():x.text)+'｜来源：'+x.source+'｜'+(x.output?'本轮新输出，不是生成前的输入':x.after?'供下一轮选择的复核记录':included(x)?'已装入本轮':'本轮未装入');}
+ function paint(follow=false){
+  paper.innerHTML=items.length?items.map(x=>'<article class="harness-segment '+x.module+(included(x)||x.output||x.after?'':' excluded')+'" data-hid="'+x.id+'" tabindex="0"><span>'+escape(x.role)+' · '+escape(x.actor)+'</span><h3>'+escape(x.title)+'</h3><p>'+escape(x.output?answer():x.text)+'</p><small>'+(x.output?'生成后追加':x.after?'复核后回填':included(x)?'已装入':'已排除')+'</small></article>').join(''):'<div class="harness-await"><b>宿主尚未启动</b><span>点击“启动 Harness”，观察你开口前先加载了什么。</span></div>';
+  const count=items.filter(included).length;$('harness-count').textContent='已装入 '+count+' 段'+(step>=6?' · 生成前输入 '+inputCount+' 段':' · 尚未生成本轮回答');
+  $('harness-phase').textContent=step+' / 7 · '+(busy?'正在装配…':step?groups[step-1].title:'等待启动');
+  $('harness-prev').disabled=busy||step===0;$('harness-next').disabled=busy||step===7;$('harness-next').textContent=step===7?'本轮完成':step===0?'启动 Harness':groups[step].title;
+  $('harness-auto').textContent=auto?'暂停连播':'连续播放';$('harness-auto').setAttribute('aria-pressed',String(auto));
+  document.querySelectorAll('.harness-rail [data-module]').forEach(b=>{b.classList.toggle('loaded',items.some(x=>x.module===b.dataset.module));b.classList.toggle('active',activeModule===b.dataset.module);});
+  $('harness-log').innerHTML=logs.slice(-3).map(s=>'<li>'+escape(s)+'</li>').join('');
+  $('harness-before').textContent=step>=3?'建议直接删掉独家合作条款。\n观察：跳过了原文与客户条件的核对。':'提交任务后，显示一份待检查的草稿样本。';
+  $('harness-after').textContent=step>=6?answer():'先看规则与工具返回，装配完成后再生成。';
+  if(focus)inspect(items.find(x=>x.id===focus));
+  if(follow)paper.scrollLeft=paper.scrollWidth;
+ }
+ function current(s){$('harness-current').textContent=s;}
+ function next(){
+  if(busy||step>=7)return;
+  busy=true;let at=0;const group=groups[step];current(group.title+'…');paint();
+  function append(){
+   const x={...group.items[at]};if(x.output)inputCount=items.filter(included).length;items.push(x);focus=x.id;activeModule=x.module;const message=x.actor+' → '+x.title;logs.push(message);current(message);paint(true);at++;
+   if(at<group.items.length)timer=setTimeout(append,650);
+   else{step++;busy=false;if(step===7)auto=false;paint();if(auto)timer=setTimeout(next,1100);}
+  }
+  timer=setTimeout(append,350);
+ }
+ function rebuild(n){clearTimeout(timer);timer=0;busy=false;auto=false;step=n;items=[];logs=[];inputCount=0;for(let i=0;i<n;i++)for(const src of groups[i].items){const x={...src};if(x.output)inputCount=items.filter(included).length;items.push(x);logs.push(x.actor+' → '+x.title);}focus=items.at(-1)?.id||'';activeModule=items.at(-1)?.module||'';current(n?groups[n-1].title:'等待宿主启动，尚未调用模型。');paint(true);}
+ $('harness-next').onclick=next;$('harness-prev').onclick=()=>rebuild(Math.max(0,step-1));
+ $('harness-auto').onclick=()=>{auto=!auto;if(auto){if(step===7)rebuild(0);auto=true;next();}paint();};
+ $('harness-reset').onclick=()=>{useRules=true;useData=true;$('harness-use-rules').checked=true;$('harness-use-data').checked=true;rebuild(0);paper.scrollLeft=0;};
+ for(const name of ['rules','data'])$('harness-use-'+name).onchange=e=>{if(name==='rules')useRules=e.target.checked;else useData=e.target.checked;if(step>=6)inputCount=items.filter(included).length;current('装配选择已改变；右侧切换为相应预置对照，不是重新调用模型。');paint();};
+ paper.onclick=e=>{e.stopPropagation();const el=e.target.closest('[data-hid]');if(el){focus=el.dataset.hid;inspect(items.find(x=>x.id===focus));}};
+ paper.onkeydown=e=>{if(['Enter',' '].includes(e.key)&&e.target.matches('[data-hid]')){e.preventDefault();focus=e.target.dataset.hid;inspect(items.find(x=>x.id===focus));}};
+ document.querySelectorAll('.harness-rail [data-module]').forEach(b=>b.onclick=()=>{activeModule=b.dataset.module;$('harness-inspector').textContent=modules[activeModule];paint();$('harness-inspector').textContent=modules[activeModule];});
+ rebuild(0);
+ return {enter(){paint();},leave(){if(busy||auto)rebuild(step);},snapshot:()=>({step,busy,auto,useRules,useData,inputCount,loaded:items.map(x=>({id:x.id,role:x.role,actor:x.actor,module:x.module,included:included(x),output:!!x.output,after:!!x.after})),selectedCount:items.filter(included).length,logs:[...logs],output:step>=6?answer():''})};
+})();
+const cycle=(function(){
+ const slide=$('collaboration-cycle');let index=0,timer=0,running=false;
+ const steps=[
+ ['交互触发','先把目标与材料交代清楚','从一件真实工作出发，人给出任务、材料范围和交付标准，AI形成可检查的草稿。','明确想解决什么，以及哪里还没把握。','整理材料、列出步骤，交付草稿与缺口。','先说明：客户希望保留合作机会；当前只有风险摘要，没有合同原文。'],
+ ['发现缺口','指出差距，还要讲明理由','回到原文与任务要求，区分输入缺失、流程漏项和判断错误，不只说“这句不对”。','核对事实与依据，解释改或不改的理由。','标出来源、缺口和冲突，协助整理反馈。','发现：没有合同原文，却写“经全面审阅”。先纠正工作状态，再讨论条款。'],
+ ['规则迭代','把核验有效的方法写下来','将反复有用的判断步骤变成规则、清单或模板；个案事实与通用方法分开。','确认规则的理由、适用范围与例外。','把反馈整理成可执行步骤，经确认后保存。','改成：先列实际收到的材料，再问客户目标与替代渠道；未见原文不编条号。'],
+ ['验证沉淀','换一个任务，再检验一次','保存不等于生效。新任务要实际读入，并检查行为是否改变，有偏差就回到循环。','观察效果、变更条件，继续校准判断。','按需读取规则，执行并留下可检查的记录。','换一个平台或客户：是否仍先核对材料与目标？有效的方法留下，个案偏好不照搬。']
+ ];
+ function paint(){const s=steps[index];$('cycle-step-label').textContent='0'+(index+1)+' · '+s[0];$('cycle-heading').textContent=s[1];$('cycle-explanation').textContent=s[2];$('cycle-human').textContent=s[3];$('cycle-ai').textContent=s[4];$('cycle-example').textContent=s[5];document.querySelectorAll('[data-cycle-i]').forEach(e=>{e.classList.toggle('on',+e.dataset.cycleI===index);e.setAttribute('aria-pressed',String(+e.dataset.cycleI===index));});$('cycle-auto').textContent=running?'暂停循环':'自动循环';$('cycle-auto').setAttribute('aria-pressed',String(running));}
+ function stop(){clearInterval(timer);timer=0;running=false;paint();}
+ function start(){stop();running=true;paint();timer=setInterval(()=>{index=(index+1)%4;paint();},4200);}
+ $('cycle-next').onclick=()=>{stop();index=(index+1)%4;paint();};$('cycle-auto').onclick=()=>running?stop():start();
+ document.querySelectorAll('[data-cycle-i]').forEach(e=>{const choose=()=>{stop();index=+e.dataset.cycleI;paint();};e.onclick=event=>{event.stopPropagation();choose();};e.onkeydown=event=>{if(['Enter',' '].includes(event.key)){event.preventDefault();event.stopPropagation();choose();}};});paint();
+ return {enter(){paint();},leave:stop,snapshot:()=>({index,running,title:steps[index][0]})};
+})();
+
+function sync(){if($('probability-demo').classList.contains('active'))probability.enter();else probability.leave();if($('context-tape-demo').classList.contains('active'))tape.enter();else tape.leave();if($('collaboration-cycle').classList.contains('active'))cycle.enter();else cycle.leave();}
+addEventListener('lecture:slide',sync);addEventListener('pagehide',()=>{probability.leave();tape.leave();cycle.leave();});addEventListener('visibilitychange',()=>{if(document.hidden){probability.leave();tape.leave();cycle.leave();}});
+addEventListener("resize",()=>probability.resize());
+window.lectureDemos={probability,tape,cycle};sync();
+})();
+
+</script>
+<script>
+(function(){
+'use strict';
+const slide=document.getElementById('judgment-question'),initial=document.getElementById('jg-initial'),analysis=document.getElementById('jg-analysis'),open=document.getElementById('jg-open'),back=document.getElementById('jg-back');
+let expanded=false;
+function setExpanded(value){expanded=value;initial.hidden=value;analysis.hidden=!value;open.setAttribute('aria-expanded',String(value));back.setAttribute('aria-expanded',String(value));slide.scrollTop=0;}
+function reveal(){setExpanded(true);}
+slide.addEventListener('click',e=>{if(expanded||e.target.closest('a,button,input,textarea,select,aside'))return;e.preventDefault();e.stopPropagation();reveal();});
+open.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();reveal();});
+back.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();setExpanded(false);open.focus({preventScroll:true});});
+document.addEventListener('keydown',e=>{if(!slide.classList.contains('active')||expanded||e.altKey||e.ctrlKey||e.metaKey||e.shiftKey||e.target.closest('button,a,input,textarea,select')||document.querySelector('#ov2.open,#help.open,#notes.open'))return;if(['ArrowRight','ArrowDown','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();e.stopImmediatePropagation();reveal();}},true);
+window.addEventListener('lecture:slide',()=>{if(!slide.classList.contains('active'))setExpanded(false);});
+window.lectureDemos.judgment={expand:reveal,collapse:()=>setExpanded(false),snapshot:()=>({expanded,active:slide.classList.contains('active')})};
+setExpanded(false);
+})();
+</script>
+</body></html>
