@@ -361,17 +361,19 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
     <section class="speak" id="speak">
       <div class="speak__deck" data-reveal>
         <div class="speak__stage">
-          <iframe
+          <video
             id="speak-player"
             class="speak__video"
-            src="//player.bilibili.com/player.html?bvid=BV1yFp761EEk&page=1&high_quality=1&danmaku=0&autoplay=0"
+            src="/assets/videos/chenshi-intro-20261111.mp4"
+            poster="assets/speak/main.webp"
+            controls
+            playsinline
+            preload="none"
             title="正在播放的视频"
-            allowfullscreen
-            loading="lazy"
-          ></iframe>
+          ></video>
         </div>
         <nav class="speak__side" aria-label="切换播放的视频">
-          <button class="speak__pick is-active" type="button" data-bvid="BV1yFp761EEk" aria-current="true">
+          <button class="speak__pick is-active" type="button" data-src="/assets/videos/chenshi-intro-20261111.mp4" data-poster="assets/speak/main.webp" aria-current="true">
             <span class="speak__pick-thumb"><img src="assets/speak/main.webp" alt="" width="480" height="270" loading="lazy"></span>
             <span class="speak__pick-meta">
               <span class="speak__pick-title" lang="en">chenshi</span>

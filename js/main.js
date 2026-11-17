@@ -168,16 +168,46 @@ function initScrollSpy() {
 
 /* ─── Speak Dark Theme ─── */
 function initSpeakPlayer() {
-  const player = document.getElementById('speak-player');
+  const stage = document.querySelector('.speak__stage');
   const picks = document.querySelectorAll('.speak__pick');
-  if (!player || !picks.length) return;
+  if (!stage || !picks.length) return;
+
+  let player = document.getElementById('speak-player');
+  if (!player) return;
+
+  // 选集两类来源：data-src 站内自托管视频（<video>），data-bvid 哔哩哔哩（<iframe>）
+  const mountPlayer = (pick) => {
+    const localSrc = pick.dataset.src;
+    const bvid = pick.dataset.bvid;
+    let next;
+    if (localSrc) {
+      next = document.createElement('video');
+      next.src = localSrc;
+      if (pick.dataset.poster) next.poster = pick.dataset.poster;
+      next.controls = true;
+      next.setAttribute('playsinline', '');
+      next.preload = 'none';
+    } else if (bvid) {
+      next = document.createElement('iframe');
+      // 用户点击触发，autoplay=1 合规
+      next.src = `//player.bilibili.com/player.html?bvid=${bvid}&page=1&high_quality=1&danmaku=0&autoplay=1`;
+      next.setAttribute('allowfullscreen', '');
+      next.setAttribute('loading', 'lazy');
+    } else {
+      return;
+    }
+    next.id = 'speak-player';
+    next.className = 'speak__video';
+    next.title = '正在播放的视频';
+    player.remove();
+    stage.appendChild(next);
+    player = next;
+  };
 
   picks.forEach((pick) => {
     pick.addEventListener('click', () => {
-      const bvid = pick.dataset.bvid;
-      if (!bvid || pick.classList.contains('is-active')) return;
-      // 用户点击触发，autoplay=1 合规
-      player.src = `//player.bilibili.com/player.html?bvid=${bvid}&page=1&high_quality=1&danmaku=0&autoplay=1`;
+      if (pick.classList.contains('is-active')) return;
+      mountPlayer(pick);
       const title = pick.querySelector('.speak__pick-title');
       if (title) player.title = `正在播放：${title.textContent.trim()}`;
       picks.forEach((p) => {
