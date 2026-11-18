@@ -131,9 +131,15 @@
 .is-ready [data-reveal]{opacity:1;transform:none;}
 
 /* ─────────────── ABOUT ─────────────── */
+/* 宽屏对齐写作区：.writing 左右内边距为 clamp(72px,7vw,128px) 且其内容栅格 1500px 封顶居中；
+   本区原为固定左基线（--rail-x+56）/右（--pad-x+40），视口超过约 1500px 后写作区继续外扩而
+   本区原地不动，形成宽屏下 About 左偏、右列与写作区不等宽。max() 使本区在 7vw 超过原基线后
+   跟随写作区增长，栅格上限与写作区同步（1500 + 2×clamp），≤约 1485px 时维持原基线不变。 */
 .about{
   position:relative;overflow:hidden;
-  padding:calc(var(--nav-h) + 3vh) calc(var(--pad-x) + 40px) 4vh calc(var(--rail-x) + 56px);
+  padding:calc(var(--nav-h) + 3vh) max(calc(var(--pad-x) + 40px), clamp(72px,7vw,128px)) 4vh max(calc(var(--rail-x) + 56px), clamp(72px,7vw,128px));
+  max-width:calc(1500px + 2*clamp(72px,7vw,128px));
+  margin:0 auto;
   display:grid;
   grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);
   gap:clamp(48px,5.7vw,96px);
@@ -282,7 +288,7 @@
 }
 
 /* Signal station (platform links) */
-.signal{max-width:650px;margin-left:clamp(16px,2vw,34px);}
+.signal{margin-left:clamp(16px,2vw,34px);}
 .signal__head{
   display:flex;align-items:baseline;justify-content:space-between;gap:16px;
   padding-bottom:16px;border-bottom:1px solid var(--ink);
@@ -374,7 +380,9 @@
   font-size:clamp(86px,7.8vw,132px);
   line-height:.9;letter-spacing:-.025em;
   color:var(--ink);
-  margin-bottom:28px;
+  /* 与内容栅格同盒居中：宽屏下标题左基线 = 栅格线 = About 标题（1440 以下不绑定，维持原位） */
+  max-width:1500px;
+  margin:0 auto 28px;
 }
 
 .writing__grid{
@@ -540,7 +548,7 @@
 
 .writing__all{
   display:inline-flex;align-items:center;gap:14px;
-  position:absolute;right:clamp(72px,7vw,128px);bottom:42px;
+  position:absolute;right:max(clamp(72px,7vw,128px), calc((100vw - 1500px) / 2));bottom:42px;
   font-size:15px;color:var(--muted);
   border-bottom:1px solid var(--line);padding:0 0 8px;
   transition:color .25s,border-color .25s;
@@ -1201,14 +1209,17 @@ body.flight-on .plane-trail{display:block;}
 }
 
 /* ─────────────── SPEAK VIDEO DECK（主视频 + 侧列预览切换） ─────────────── */
-/* 侧列卡片等宽、均分列高：列随主视频 16:9 高度撑开（align-items:stretch），
-   首卡上沿与主视频上沿齐平，末卡下沿与主视频下沿齐平 */
+/* 侧列为绝对定位的滚动列：高度只跟随主视频 16:9 高度，不参与撑高布局；
+   条目总高超出主视频高度时整列独立滚动（右侧自带细滚动条），
+   未超出时卡片等分列高（首卡上沿、末卡下沿与主视频齐平） */
 .speak__deck{
+  --side-w:clamp(216px,17vw,260px);
   position:relative;z-index:1;
   display:flex;align-items:stretch;gap:16px;
 }
 .speak__stage{
   position:relative;flex:1 1 auto;min-width:0;
+  margin-right:calc(var(--side-w) + 16px);
   min-height:0;padding:0;
   aspect-ratio:16/9;overflow:hidden;
   border:1px solid var(--line);
@@ -1216,17 +1227,18 @@ body.flight-on .plane-trail{display:block;}
 }
 .speak__video{position:absolute;inset:0;width:100%;height:100%;border:none;}
 .speak__side{
-  flex:0 0 clamp(216px,17vw,260px);min-height:0;
+  position:absolute;top:0;right:0;bottom:0;width:var(--side-w);
   display:flex;flex-direction:column;gap:12px;
-  /* 条目增多空间不足时纵向滚动，大屏六项内不出现滚动条 */
   overflow-y:auto;
   scrollbar-width:thin;
-  scrollbar-color:rgba(242,238,230,.28) transparent;
+  scrollbar-color:rgba(242,238,230,.4) rgba(242,238,230,.08);
 }
-.speak__side::-webkit-scrollbar{width:6px;}
-.speak__side::-webkit-scrollbar-thumb{background:rgba(242,238,230,.22);border-radius:3px;}
+.speak__side::-webkit-scrollbar{width:8px;}
+.speak__side::-webkit-scrollbar-track{background:rgba(242,238,230,.06);}
+.speak__side::-webkit-scrollbar-thumb{background:rgba(242,238,230,.32);border-radius:4px;}
+.speak__side::-webkit-scrollbar-thumb:hover{background:rgba(242,238,230,.5);}
 .speak__pick{
-  flex:1 1 0;min-height:52px;
+  flex:1 0 auto;min-height:72px;
   display:flex;align-items:center;gap:14px;
   padding:8px 14px 8px 8px;
   background:rgba(242,238,230,.04);
@@ -1255,8 +1267,9 @@ body.flight-on .plane-trail{display:block;}
 .speak__pick.is-active .speak__pick-dur{color:#e8b7ae;}
 @media (max-width:1100px){
   .speak__deck{flex-direction:column;}
-  .speak__stage{min-height:0;padding:0;}
+  .speak__stage{min-height:0;padding:0;margin-right:0;}
   .speak__side{
+    position:static;width:auto;
     flex-basis:auto;
     flex-direction:row;overflow-x:auto;
     scrollbar-width:none;

@@ -136,8 +136,11 @@
   .hero-responsive .portrait__cross { width: 24px; height: 24px; }
 }
 @media (min-width: 1100px) {
+  /* 左基线与全站内容栅格同步（writing/about 同公式）：
+     ≤约1485px 维持原左基线 --rail-x+56；其后随 7vw 增长；
+     视口超过约 1744px 后落到居中 1500px 栅格线 (100vw-1500px)/2 */
   .hero.hero-responsive {
-    padding: calc(var(--nav-h) + 48px) clamp(48px, 5vw, 88px) 72px calc(var(--rail-x) + 56px);
+    padding: calc(var(--nav-h) + 48px) max(clamp(48px, 5vw, 88px), calc((100vw - 1500px) / 2)) 72px max(calc(var(--rail-x) + 56px), clamp(72px, 7vw, 128px), calc((100vw - 1500px) / 2));
     grid-template-columns: minmax(0, .43fr) minmax(0, .57fr);
     column-gap: clamp(24px, 2.8vw, 48px);
   }
@@ -146,11 +149,6 @@
   .hero-responsive .hero__slogan { font-size: 24px; }
   .hero-responsive .portrait { max-width: 900px; }
   .hero-responsive .portrait__cross { width: 48px; height: 48px; }
-}
-@media (min-width: 1800px) {
-  .hero.hero-responsive {
-    padding-inline: max(104px, calc((100vw - 1560px) / 2));
-  }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-responsive .portrait__particles { display: none; }
