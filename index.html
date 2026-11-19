@@ -10,6 +10,7 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
 新增法律元 SKILL 作品卡片反思：内容类型 B 流程/步骤 + C 节点/工具连接；表达形式为六阶段法律能力装配台微缩模型 + 原生 SVG 路径动画；技术栈 L2（HTML/CSS + SVG），阅读路径为输入 → 研究/建模 → 封装 → 评测 → 复核通过；构图家族为 process-flow，布局原语为 rail / gate，主轴为横向、焦点为中央封装压制台与右侧复核门；语义理由是产品价值在于把重复法律工作治理成可复用、可评测的 Skill，而非展示单个工具；响应式策略沿用 640/1024px 的单列 → 双列 → 三列；参考来源为现有 portfolio 卡片系统与 skill.chenshi.ai/legal-meta-skill 的六阶段工作流，只借鉴结构，不复制页面素材；不使用框架、视频、GIF 或新增 CDN；交互为整卡外链，动画为可见时播放的 8 秒功能叙事循环；移动端自适应并保持标题与用途可读；反 AI 审美检查：无紫蓝渐变、无玻璃态、无通用机器人与装饰粒子。
 新增 ADG 作品卡片反思：内容类型 B 流程 + C 来源连接；面向法律人与专业服务者，展示材料入账 → 解析核对 → 来源关联 / 未读项显性报告。pattern_family=process-flow；primitive=rail / gate；reading_path=混合材料→数据闸门→可追溯结果；横向主轴，中央闸门为焦点；semantic_reason=体现可靠摄取与显性失败。技术 L2（HTML/CSS + SVG），复用原生 JS 播放管理器；静态图无法表达处理次序，因此增加解释因果的 8 秒动效；无需框架、GIF、视频或新增依赖。主结构为闸门，辅助为两侧材料，朱红标记点缀；整卡外链、键盘可达；responsive_strategy=column-drop，沿用 640/1024px 单/双/三列，移动端标题自然换行；source_refs=现有 portfolio 卡片、adg.chenshi.ai 的真实功能；页面类型为博客作品索引；新增 WebP 约 100KB 内，懒加载；无紫蓝渐变、玻璃态、机器人与装饰粒子。
 新增 macOS 桌面网页 Skill 作品卡片反思：内容类型 B 流程 + J 界面具象；表达形式为"折页网页立牌 → 微缩桌面屏"静物 + 原生 SVG 窗口级联动效；技术栈 L2（HTML/CSS + SVG），复用播放管理器；阅读路径为网页页签 → 石墨导轨托付 → 窗口级联 / 菜单栏 / Dock 就绪 → 字幕收束；pattern_family=process-flow，primitive=handoff / cascade，焦点为屏面窗口级联；semantic_reason=该开源 Skill 的价值在于把静态网页托付成可交互桌面，动效表达"开成桌面"的因果而非通用缩放；responsive_strategy=column-drop，沿用 640/1024px 单/双/三列，移动端标题与用途自然换行；source_refs=现有 portfolio 卡片与本站 /desktop 实装，只借鉴结构；整卡外链 GitHub 仓库，键盘可达；占位底图按 inkpeg 先例以 PIL 同族绘制并与 600×400 动效层对齐，正式提示词记录于 prompts.md 待 imagegen 原路径替换；无紫蓝渐变、玻璃态、机器人与装饰粒子。
+讲授区新增视频：A 讲授内容，沿用原生 HTML/CSS/JS 播放器与选集列表（L3）。按封面和标题选集，再在主播放器观看；桌面为侧栏列表，移动端为横向选集。封面来源为该视频的 B 站原图。
 -->
 <html lang="zh-CN" data-lang="zh">
 <head>
@@ -385,6 +386,13 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
             <span class="speak__pick-meta">
               <span class="speak__pick-title" lang="zh">法律人关于 AI 的直觉谬误</span>
               <span class="speak__pick-dur">89 分钟</span>
+            </span>
+          </button>
+          <button class="speak__pick" type="button" data-bvid="BV1axs86PEAq" data-start-time="24.5">
+            <span class="speak__pick-thumb"><img src="assets/speak/star-lab.webp" alt="" width="640" height="360" loading="lazy"></span>
+            <span class="speak__pick-meta">
+              <span class="speak__pick-title" lang="zh">星辰实验场：一位律师的 AI 极客之路</span>
+              <span class="speak__pick-dur">103 分钟</span>
             </span>
           </button>
           <button class="speak__pick" type="button" data-bvid="BV1dVWg62EcL">
@@ -877,7 +885,7 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
 
   <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
-  <script src="js/main.js?v=20261117-speak"></script>
+  <script src="js/main.js?v=20261119-speak"></script>
 <script src="js/portfolio.js"></script>
 <script src="js/hero-portrait.js"></script>
 <script src="js/paper-plane.js?v=20261026-fold"></script>
