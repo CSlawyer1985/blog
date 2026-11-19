@@ -148,10 +148,11 @@ export class DesktopOS {
     this.applyRect(w); this.focus(w); this.scheduleSave();
   }
   bindWindowGeometry(w) {
+    const toolbarControls = 'button, input, a, select, textarea, label, .browser-address';
     w.node.addEventListener('pointerdown', () => this.focus(w));
     const start = (event, direction) => {
       if (event.button !== 0 || w.mode !== 'normal') return;
-      if (!direction && event.target.closest('button,input,a,select,.toolbar-tools')) return;
+      if (!direction && event.target.closest(toolbarControls)) return;
       this.focus(w); const initial = { ...w.rect }, x = event.clientX, y = event.clientY;
       const shield = this.elements['drag-shield']; let moved = false;
       const move = e => {
@@ -174,7 +175,7 @@ export class DesktopOS {
       event.preventDefault();
     };
     w.toolbar.addEventListener('pointerdown', e => start(e));
-    w.toolbar.addEventListener('dblclick', e => { if (!e.target.closest('button,input,.toolbar-tools')) this.toggleGeometry(w); });
+    w.toolbar.addEventListener('dblclick', e => { if (!e.target.closest(toolbarControls)) this.toggleGeometry(w); });
     w.toolbar.addEventListener('contextmenu', e => { e.preventDefault(); this.showMenu([{ label: '最小化', action: () => this.minimize(w) }, { label: '缩放／还原', action: () => this.toggleGeometry(w) }, { label: '关闭窗口', action: () => this.close(w) }], e.clientX, e.clientY); });
     for (const direction of ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw']) w.node.append(el('div', { class: `resize-handle resize-${direction}`, onpointerdown: e => start(e, direction) }));
   }
