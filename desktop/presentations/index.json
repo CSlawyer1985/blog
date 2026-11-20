@@ -1,7 +1,13 @@
 {
-  "updated": "2026-11-19",
+  "updated": "2026-11-20",
   "note": "桌面版「演示文稿」加密文件夹的公开目录。仅收录元数据；课件正文本身是静态 HTML，知道直达链接的访客可以不经密码打开单个文件。新增课件：把单文件 HTML 放入本目录（ASCII 文件名，单个文件须小于 25 MiB，Cloudflare Pages 硬限制），并在 decks 中追加一条。",
   "decks": [
+    {
+      "id": "how-you-interact-with-ai",
+      "title": "你和 AI 是如何互动的",
+      "date": "2026-11-20",
+      "file": "how-you-interact-with-ai.html"
+    },
     {
       "id": "views-and-quotes",
       "title": "陈石的观点与金句",
