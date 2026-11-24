@@ -258,3 +258,36 @@
 @keyframes txx-out-b { 0%,44%,94%,100% { opacity: 0; transform: translate(-150px,-55px); } 47% { opacity: 1; transform: translate(-150px,-55px); } 52%,84% { opacity: 1; transform: translate(0,0); } 90% { opacity: 0; transform: translate(0,0); } }
 @keyframes txx-out-c { 0%,48%,94%,100% { opacity: 0; transform: translate(-150px,-55px); } 51% { opacity: 1; transform: translate(-150px,-55px); } 56%,84% { opacity: 1; transform: translate(0,0); } 90% { opacity: 0; transform: translate(0,0); } }
 @keyframes txx-caption { 0%,60%,96%,100% { opacity: 0; transform: translateY(9px); } 66%,86% { opacity: 1; transform: translateY(0); } 91% { opacity: 0; transform: translateY(-4px); } }
+
+/* AI teaching: select a lesson, open the board, then advance through the model pipeline. */
+.teaching-select { animation-name: teaching-select; }
+.teaching-travel { animation-name: teaching-travel; }
+.teaching-board { animation-name: teaching-board; }
+.teaching-input { animation-delay: 1.2s; }
+.teaching-tokens { animation-delay: 1.65s; }
+.teaching-focus { animation-delay: 2.15s; }
+.teaching-output { animation-delay: 2.65s; }
+.teaching-progress { animation-name: teaching-progress; }
+.teaching-progress-line { animation-delay: 2.8s; }
+.art-motion .teaching-label { fill: #f5edde; }
+.art-motion .teaching-label[lang="en"] { font-size: 12px; }
+
+@keyframes teaching-select {
+  0%,7%,36%,100% { opacity: 0; }
+  13%,25% { opacity: 1; }
+}
+@keyframes teaching-travel {
+  0%,16% { transform: translate(163px,302px); opacity: 0; }
+  20% { transform: translate(168px,311px); opacity: 1; }
+  37% { transform: translate(376px,311px); opacity: 1; }
+  43% { transform: translate(388px,299px); opacity: 1; }
+  48%,100% { transform: translate(388px,270px); opacity: 0; }
+}
+@keyframes teaching-board {
+  0%,29%,94%,100% { opacity: 0; }
+  39%,82% { opacity: 1; }
+}
+@keyframes teaching-progress {
+  0%,46%,94%,100% { opacity: 0; }
+  56%,82% { opacity: 1; }
+}

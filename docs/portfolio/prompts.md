@@ -194,3 +194,17 @@ Constraints: no text, no letters, no numbers, no logos, no watermark symbols; th
 Avoid: purple, blue gradients, neon, glassmorphism, generic robots, planets, stars, floating particles, cute cartoon style, glossy plastic, dense UI text, fake branding.
 ```
 
+
+## AI 教学模块 · 2026-11-24
+
+用途：首页第 14 张作品卡片。入口：https://learn.chenshi.ai/。20 个交互课件，从大模型工作原理讲到 Agent 工程。
+
+生成方式：宿主内置 imagegen。参照法律概念 Wiki 和法律 Agent 解构的纸质材质、展台和朱红强调色。原始 PNG 为 `sources/ai-teaching.png`，网页资产为 `assets/portfolio/ai-teaching.webp`（1200×800，质量 84）。
+
+8 秒动效：点亮课程页签，朱红信号沿展台导轨送入讲解板，依次点亮输入、分词、注意力和生成，显示逐帧推演进度后淡出。
+
+```text
+Use case: stylized-concept. Create a premium editorial illustration for a Chinese lawyer and AI builder's portfolio. Landscape 3:2. A precise architectural maquette photographed on a warm parchment seamless studio background (#e9dfcf), ivory paper, graphite metal, one vermilion red (#b63c2f) detail. Analog craftsmanship, tactile uncoated paper, sophisticated miniature still life, refined realistic materials, soft directional daylight from upper left and crisp ambient occlusion, muted warm palette, no purple, no blue gradients, no cute cartoon. Orthographic 3/4 view, subject centered in middle 65% with generous clear edges. NO TEXT, NO letters, NO numbers, NO logos, NO watermark. All structures stand grounded on a shallow rectangular ivory plinth. Subject: a modular interactive AI teaching atlas, from model fundamentals to Agent engineering. A miniature tabletop lesson display with two clearly legible parts resting on the same plinth: on the left, a low upright ivory card-index stand holding four large thick page dividers in a stepped row, one small vermilion selection tab. On the right, a slightly taller freestanding near-front-facing graphite teaching panel framed in ivory card, with a very faint debossed sequential diagram of simple circles, squares and lines cut into its matte surface. The panel represents an interactive lesson; keep the face broad, uncluttered and visible, with generous blank area inside for a later overlay. A low graphite groove on the plinth visually connects the selected divider to the module panel. Keep clear parchment margins and the whole plinth visible. The two physical teaching forms should read immediately at thumbnail size, with tactile materials and realistic shadows. No book opened flat, no computer keyboard, no actual UI, no labels or pseudo-lettering.
+```
+
+浏览器复核覆盖 1440、1024、768、375px，网格分别为 3、3、2、1 列。卡片在视口内播放，离屏暂停，减少动效时保留静态图。桌面键盘与移动视口点击均打开教学目录。截图见 `screenshots/ai-teaching-desktop.png` 和 `screenshots/ai-teaching-mobile.png`。

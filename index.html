@@ -120,7 +120,7 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
   <!-- GSAP loaded async — page renders immediately, animations enhance if available -->
   <script async src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script async src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <link rel="stylesheet" href="css/portfolio.css?v=20261031-desktop">
+  <link rel="stylesheet" href="css/portfolio.css?v=20261124-ai-teaching">
   <link rel="stylesheet" href="css/hero-responsive.css?v=20261118-gridline">
 </head>
 <body>
@@ -146,8 +146,6 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
       <a href="#build"><span lang="zh">创造</span><span lang="en">BUILD</span></a>
       <span class="sep">/</span>
       <a href="#contact"><span lang="zh">联系</span><span lang="en">CONTACT</span></a>
-      <span class="sep">/</span>
-      <a href="/learn/"><span lang="zh">AI 教学</span><span lang="en">AI LESSONS</span></a>
       <span class="sep">/</span>
       <a href="/desktop" class="nav__desktop"><span lang="zh">桌面版</span><span lang="en">DESKTOP</span></a>
       <span class="nav__stat"><i></i>178</span>
@@ -513,7 +511,7 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
     </section>
 
 <section class="project-gallery" id="project-gallery" aria-labelledby="gallery-heading">
-  <header class="gallery-head"><div><p class="gallery-kicker">THE BUILD INDEX <span>/ 01—13</span></p><h2 id="gallery-heading"><span lang="zh">想法，做成了这些。</span><span lang="en">Ideas, made tangible.</span></h2></div><div class="gallery-aside"><p><span lang="zh">课程、工具与实验，持续建造中。</span><span lang="en">Courses, tools and experiments. Always building.</span></p></div></header>
+  <header class="gallery-head"><div><p class="gallery-kicker">THE BUILD INDEX <span>/ 01—14</span></p><h2 id="gallery-heading"><span lang="zh">想法，做成了这些。</span><span lang="en">Ideas, made tangible.</span></h2></div><div class="gallery-aside"><p><span lang="zh">课程、工具与实验，持续建造中。</span><span lang="en">Courses, tools and experiments. Always building.</span></p></div></header>
   <div class="project-grid"><article class="project-item project-night-school">
   <a class="project-link" href="https://legalagi.cn/" target="_blank" rel="noopener noreferrer">
     <div class="project-art" data-art="night-school">
@@ -812,6 +810,60 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
       </svg>
     </div>
     <div class="project-caption"><span class="project-no">13</span><div><h3><span lang="zh">图修修 · TuxiuXiu</span><span lang="en">TuxiuXiu</span></h3><p><span lang="zh">先选样，后批量，本机成组修好。</span><span lang="en">Select samples first, then batch-retouch locally.</span></p></div><span class="project-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span></div>
+  </a></article>
+<!--
+内容类型 A。延续产品区的 modular-grid 与原卡片结构，教学目录指向独立课件。
+动效使用 L3 的原生 SVG 和现有播放管理器，按选课、打开课件、逐帧推演组织。
+参考：法律概念 Wiki、法律 Agent 解构。按原有 3/2/1 列重排。
+-->
+<article class="project-item project-ai-teaching">
+  <a class="project-link" href="https://learn.chenshi.ai/" target="_blank" rel="noopener noreferrer">
+    <div class="project-art" data-art="ai-teaching">
+      <img src="assets/portfolio/ai-teaching.webp" alt="" width="1200" height="800" loading="lazy">
+      <span class="art-corner art-corner-tl" aria-hidden="true"></span><span class="art-corner art-corner-br" aria-hidden="true"></span>
+      <span class="art-index">14 / EDUCATION</span>
+      <span class="art-action"><span lang="zh">访问项目</span><span lang="en">Visit project</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span>
+      <svg class="art-motion" viewBox="0 0 600 400" fill="none" aria-hidden="true">
+        <path class="loop teaching-select" d="m169 181 4 4 10-10" stroke="#f5edde" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle class="loop teaching-travel" r="4.5" fill="#b63c2f" stroke="#f5edde" stroke-width="1.2"/>
+        <g class="loop teaching-board">
+          <g stroke="#ede0c8" stroke-width="1.4">
+            <path class="loop draw teaching-tokens" pathLength="1" d="M315 120h33"/>
+            <path class="loop draw teaching-focus" pathLength="1" d="M373 120h25"/>
+            <path class="loop draw teaching-output" pathLength="1" d="M443 120h29"/>
+          </g>
+          <g class="loop appear teaching-input" text-anchor="middle">
+            <circle cx="299" cy="120" r="7" fill="#f5edde"/>
+            <text class="teaching-label" x="299" y="154" lang="zh">输入</text>
+            <text class="teaching-label" x="299" y="154" lang="en">INPUT</text>
+          </g>
+          <g class="loop appear teaching-tokens" text-anchor="middle">
+            <rect x="353" y="113" width="14" height="14" rx="1" fill="#f5edde"/>
+            <text class="teaching-label" x="360" y="154" lang="zh">分词</text>
+            <text class="teaching-label" x="360" y="154" lang="en">TOKENS</text>
+          </g>
+          <g class="loop appear teaching-focus" text-anchor="middle">
+            <path d="m410 126 12-18 12 18" fill="none" stroke="#f5edde" stroke-width="1.5"/>
+            <circle cx="410" cy="126" r="3" fill="#f5edde"/><circle cx="422" cy="108" r="3" fill="#f5edde"/><circle cx="434" cy="126" r="3" fill="#f5edde"/>
+            <text class="teaching-label" x="422" y="154" lang="zh">注意力</text>
+            <text class="teaching-label" x="422" y="154" lang="en">ATTENTION</text>
+          </g>
+          <g class="loop appear teaching-output" text-anchor="middle">
+            <rect x="479" y="113" width="14" height="14" rx="1" fill="#b63c2f" stroke="#f5edde" stroke-width="1.2"/>
+            <text class="teaching-label" x="486" y="154" lang="zh">生成</text>
+            <text class="teaching-label" x="486" y="154" lang="en">OUTPUT</text>
+          </g>
+          <g class="loop teaching-progress">
+            <text class="teaching-label" x="292" y="211" lang="zh">逐帧推演</text>
+            <text class="teaching-label" x="292" y="211" lang="en">STEP BY STEP</text>
+            <path d="M292 225h195" stroke="#d4c7ae" stroke-width="1" opacity=".5"/>
+            <path class="loop draw teaching-progress-line" pathLength="1" d="M292 225h195" stroke="#e79475" stroke-width="2" stroke-linecap="round"/>
+            <path d="M292 221v8m65-8v8m65-8v8m65-8v8" stroke="#ede0c8" stroke-width="1.5"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="project-caption"><span class="project-no">14</span><div><h3><span lang="zh">AI 教学模块</span><span lang="en">Interactive AI Lessons</span></h3><p><span lang="zh">用 20 个交互课件拆解大模型与 Agent 工程。</span><span lang="en">Explore how language models and AI agents work in 20 interactive lessons.</span></p></div><span class="project-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span></div>
   </a></article></div>
   <div class="gallery-foot"><span>MADE WITH CURIOSITY. BUILT IN PUBLIC.</span><a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener noreferrer"><span lang="zh">更多开源探索</span><span lang="en">More on GitHub</span> ↗</a></div>
 </section>
