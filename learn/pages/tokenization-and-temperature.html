@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>分词与温度 · 不等宽切片刀与概率山峰熔炉</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<style>
+/* 将原文件中的两行 @font-face{font-family:'HSerif'...} 粘贴至此即可恢复原版衬线体 */
+html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
+body{position:fixed;inset:0}
+canvas{display:block;touch-action:none}
+#tools{position:fixed;right:16px;top:14px;display:flex;gap:8px;z-index:10;transition:opacity .35s}
+.tbtn{font:13px "HSerif","Songti SC",serif;color:rgba(244,237,223,.52);background:rgba(10,8,4,.62);border:1px solid rgba(226,170,66,.28);border-radius:5px;padding:4px 10px;cursor:pointer;backdrop-filter:blur(4px);transition:all .2s}
+.tbtn:hover,.tbtn.on{color:#FFD062;border-color:#E2AA42;background:rgba(226,170,66,.14)}
+#dock{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:5px;padding:6px 10px;border-radius:10px;background:rgba(8,7,4,.78);border:1px solid rgba(226,170,66,.22);backdrop-filter:blur(8px);z-index:10;max-width:95vw;overflow-x:auto;transition:opacity .4s}
+#dock::-webkit-scrollbar{display:none}
+.sbtn{font:12px "HSerif","Songti SC",serif;color:rgba(244,237,223,.55);background:none;border:1px solid transparent;border-radius:5px;padding:4px 9px;white-space:nowrap;cursor:pointer;transition:all .2s}
+.sbtn:hover{color:#FFE9B8;border-color:rgba(226,170,66,.35)}
+.sbtn.active{color:#FFD062;border-color:rgba(255,208,98,.6);background:rgba(226,170,66,.16);font-weight:700}
+body.idle #tools,body.idle #dock,body.clean #tools,body.clean #dock{opacity:0;pointer-events:none}
+</style><style>
+  #lesson-back {
+    position: fixed;
+    z-index: 10;
+    top: calc(8px + env(safe-area-inset-top));
+    left: calc(12px + env(safe-area-inset-left));
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 0 10px;
+    border-radius: 4px;
+    color: #ffe5ad;
+    background: #17130e;
+    font: 14px/1.4 system-ui, sans-serif;
+    text-decoration: none;
+  }
+  #lesson-back:hover { text-decoration: underline; }
+  #lesson-back:focus-visible { outline: 2px solid #ffd062; outline-offset: 2px; }
+  body.clean #lesson-back, :fullscreen #lesson-back { display: none; }
+</style>
+</head><body>
+<a id="lesson-back" href="../index.html">← 返回模块目录</a>
+<canvas id="c"></canvas>
+<div id="tools">
+  <button class="tbtn" id="autoBtn" title="自动播放 (A)">自动 A</button>
+  <button class="tbtn" id="cleanBtn" title="纯净录屏 (H)">纯净 H</button>
+  <button class="tbtn" id="fsBtn" title="全屏 (F)">全屏 F</button>
+</div>
+<div id="dock"></div>
+<script>
+(function(){
+'use strict';
+const FONT='"HSerif","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif';
+const IVORY='#F4EDDF', GOLD='#E2AA42', GOLD_HI='#FFD062', PALE='#FFE9B8', DIM='rgba(244,237,223,0.62)', RED='#E86A58', GREEN='#4FD198', ICE='#7CE8FF', FIRE='#FF8C42';
+
+const SCENES=['开场','不等宽切片刀','字母盲区','概率山峰','温度熔炉三态','Top-P 截断门'];
+const S=(id,scene,dur,hint)=>({id,scene,dur,hint});
+const STEPS=[
+  S('title',0,2500,''),
+  S('tok_raw',1,2200,'人类眼里看到的是字母与汉字；但大模型根本读不懂字符，必须先经过{分词器 (Tokenizer)}'),
+  S('tok_cut',1,2600,'{不等宽切片刀 (BPE)} 落下：按高频组合切块——Strawberry 被切成 2 块，数字也被拆碎'),
+  S('tok_blind',2,2800,'顿悟时刻：模型眼里只有数字编号 {[496, 675]}，根本看不到里面的字母——这就是它数不清 r 的根源！'),
+  S('logits_in',3,2400,'视角切到输出端：Transformer 算完所有层，为候选词给出原始得分（{Logits}）'),
+  S('temp_dial',3,2400,'接入{温度熔炉旋钮 (Temperature)}：用公式 e^(z/T) 实时重塑下一词的概率山峰'),
+  S('temp_low',4,2600,'低温 {T = 0.1}（冰蓝尖峰）：最高分独占 {99%}！极度严谨确定，专攻法律审查与代码'),
+  S('temp_mid',4,2600,'中温 {T = 0.7}（暖金均衡）：主峰保持优势、次峰留有余地，表达自然流畅，适合日常写作'),
+  S('temp_high',4,2800,'高温 {T = 1.6}（炽红熔平）：山峰被压成平缓丘陵，连离谱词「{飞翔}」都有 11% 概率，极易胡言乱语'),
+  S('top_p',5,2600,'安全阀 {Top-P = 0.9（核采样）}：降下光学截断门，一刀切掉荒谬长尾，只保留前 90% 合理候选'),
+  S('combo',5,2600,'工程配置铁律：严谨任务用 {T = 0 ~ 0.2}；创意头脑风暴用 {T = 0.8 + Top-P = 0.9}'),
+  S('final',5,2600,''),
+];
+const LAST=STEPS.length-1;
+const SCENE_FIRST=SCENES.map((_,i)=>STEPS.findIndex(s=>s.scene===i));
+
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const seg=(G,a,b)=>ease(clamp((G-a)/(b-a)));
+function actAlpha(G,inS,inE,outS,outE){
+  const fi=inS===null?1:seg(G,inS,inE);
+  const fo=outS===null?1:(1-seg(G,outS,outE));
+  return fi*fo;
+}
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+
+/* ==================== 画布与原版光学贴图 ==================== */
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+const W=1920, H=1080; let view={s:1,ox:0,oy:0,dpr:1};
+function resize(){
+  const w=innerWidth,h=innerHeight,dpr=Math.min(window.devicePixelRatio||1,2);
+  cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.width=w+'px';cv.style.height=h+'px';
+  const s=Math.min(w/W,h/H);view={s,ox:(w-W*s)/2,oy:(h-H*s)/2,dpr};
+}
+addEventListener('resize',resize); resize();
+
+const mcache=new Map();
+function font(sz,wt=400){return `${wt} ${sz}px ${FONT}`;}
+function measure(t,sz,wt=400){const k=t+'|'+wt;let v=mcache.get(k);if(v===undefined){ctx.font=font(100,wt);v=ctx.measureText(t).width/100;mcache.set(k,v);}return v*sz;}
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+
+function text(str,x,y,sz,col,a=1,wt=400,al='center'){
+  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
+  const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.font=font(sz,wt);ctx.fillStyle=col;ctx.textAlign=al;ctx.textBaseline='middle';ctx.fillText(str,x,y);ctx.globalAlpha=prev;
+}
+function glowText(str,x,y,sz,col,a=1,wt=700,blur=0.45,al='center'){
+  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
+  ctx.save();ctx.shadowColor=col===ICE?'rgba(124,232,255,0.65)':(col===FIRE?'rgba(255,140,66,0.65)':'rgba(255,186,60,0.6)');ctx.shadowBlur=sz*blur;text(str,x,y,sz,col,a,wt,al);ctx.restore();
+}
+function rich(str,x,y,sz,a=1,col=IVORY){
+  if(ctx.globalAlpha*clamp(a)<=0.004||!str)return;
+  const parts=[];str.split(/(\{[^}]*\})/).forEach(s=>{if(!s)return;if(s[0]==='{')parts.push([s.slice(1,-1),1]);else parts.push([s,0]);});
+  let tw=0;parts.forEach(p=>{p[2]=measure(p[0],sz,p[1]?700:400);tw+=p[2];});let x0=x-tw/2;
+  parts.forEach(p=>{if(p[1])glowText(p[0],x0,y,sz,GOLD_HI,a,700,0.45,'left');else text(p[0],x0,y,sz,col,a,400,'left');x0+=p[2];});
+}
+function brandMark(x,y,sz,a=1){
+  if(ctx.globalAlpha*clamp(a)<=0.004)return;
+  const s1='陈石律师',s2='  ·  ',s3='chenshi.ai';
+  const w1=measure(s1,sz*0.8),w2=measure(s2,sz*0.8),w3=measure(s3,sz,700),tw=w1+w2+w3;let x0=x-tw/2;
+  text(s1,x0,y,sz*0.8,IVORY,a*0.78,400,'left');x0+=w1;text(s2,x0,y,sz*0.8,GOLD,a*0.8,400,'left');x0+=w2;glowText(s3,x0,y,sz,GOLD_HI,a,700,0.3,'left');
+}
+function drawBox(x,y,w,h,r=12,stroke=GOLD,topC='rgba(28,22,11,0.92)',botC='rgba(12,10,6,0.95)',lw=1.8){
+  ctx.save();
+  const g=ctx.createLinearGradient(0,y,0,y+h);g.addColorStop(0,topC);g.addColorStop(1,botC);
+  rr(x,y,w,h,r);ctx.fillStyle=g;ctx.fill();ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();
+  ctx.strokeStyle='rgba(255,235,185,0.2)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x+r,y+1);ctx.lineTo(x+w-r,y+1);ctx.stroke();
+  ctx.restore();
+}
+
+function mkSprite(stops){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),gr=g.createRadialGradient(64,64,0,64,64,64);stops.forEach(s=>gr.addColorStop(s[0],s[1]));g.fillStyle=gr;g.fillRect(0,0,128,128);return c;}
+const SPR_HALO=mkSprite([[0,'rgba(255,228,170,0.9)'],[0.14,'rgba(255,196,96,0.52)'],[1,'rgba(200,120,30,0)']]);
+const SPR_ICE =mkSprite([[0,'rgba(210,248,255,0.95)'],[0.2,'rgba(124,232,255,0.52)'],[1,'rgba(40,140,200,0)']]);
+const SPR_FIRE=mkSprite([[0,'rgba(255,220,180,0.95)'],[0.2,'rgba(255,140,66,0.55)'],[1,'rgba(200,60,15,0)']]);
+const SPR_RED =mkSprite([[0,'rgba(255,195,185,0.92)'],[0.2,'rgba(232,106,88,0.5)'],[1,'rgba(180,40,30,0)']]);
+const SPR_GRN =mkSprite([[0,'rgba(180,255,220,0.92)'],[0.2,'rgba(79,209,152,0.5)'],[1,'rgba(20,120,80,0)']]);
+function glow(x,y,r,a=1,spr=SPR_HALO){const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||r<=0.5)return;const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.drawImage(spr,x-r,y-r,2*r,2*r);ctx.globalAlpha=prev;}
+
+const DUST=(()=>{const r=mulberry(2048);return Array.from({length:56},()=>({x:r(),y:r(),vx:(r()-0.5)*0.004,vy:-0.003-r()*0.006,r:1.2+r()*2.5,a:0.1+r()*0.22,ph:r()*6.28}));})();
+
+// 真实 Softmax(z / T) 计算
+const CANDS=[
+  {w:'减少', z:3.8},
+  {w:'调整', z:2.9},
+  {w:'降低', z:2.2},
+  {w:'免除', z:1.4},
+  {w:'飞翔', z:0.4, absurd:true},
+];
+function softmax(T){
+  const t=Math.max(0.08, T);
+  const exps=CANDS.map(c=>Math.exp(c.z/t));
+  const sum=exps.reduce((a,b)=>a+b,0);
+  return exps.map(e=>e/sum);
+}
+
+/* ============================== 主渲染 ============================== */
+function render(G,amb){
+  const {s,ox,oy,dpr}=view;
+  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.setTransform(s*dpr,0,0,s*dpr,ox*dpr,oy*dpr);
+  ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();
+  ctx.fillStyle='#030304';ctx.fillRect(0,0,W,H);
+
+  // 背景精密网格 + 暖光 + 金尘
+  ctx.strokeStyle='rgba(226,170,66,0.022)';ctx.lineWidth=1;
+  for(let x=0;x<=W;x+=64){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<=H;y+=64){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  const bg=ctx.createRadialGradient(W/2,H*0.5,0,W/2,H*0.5,960);
+  bg.addColorStop(0,'rgba(128,84,22,0.15)');bg.addColorStop(0.55,'rgba(60,38,10,0.05)');bg.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  ctx.save();ctx.globalCompositeOperation='lighter';
+  DUST.forEach(d=>{const dx=((d.x+amb*d.vx)%1+1)%1*W,dy=((d.y+amb*d.vy)%1+1)%1*H;glow(dx,dy,d.r*3,d.a*(0.55+0.45*Math.sin(amb*1.4+d.ph)));});
+  ctx.restore();
+
+  /* ---------- 幕 0：开场 (0 -> 0.48) ---------- */
+  const a0=actAlpha(G,null,null,0.02,0.48);
+  if(a0>0.005){
+    const intro=clamp(amb/2.2), out=1-a0;
+    const title='分词与温度：Tokenization & Temperature', fs=74, tw=measure(title,fs,700);
+    let x=W/2-tw/2; const rnd=mulberry(89); let ci=0;
+    ctx.save();
+    for(const ch of title){
+      const cw=measure(ch,fs,700), ca=seg(intro,0.04+ci*0.016,0.28+ci*0.016);
+      const dx=(rnd()-0.5)*200*out, dy=-(30+rnd()*120)*out;
+      glowText(ch,x+cw/2+dx,445+(1-ca)*24+dy,fs,PALE,ca*a0,700,0.35);
+      x+=cw; ci++;
+    }
+    const lw=860*seg(intro,0.28,0.82)*a0;
+    ctx.globalCompositeOperation='lighter';
+    const lg=ctx.createLinearGradient(W/2-lw/2,0,W/2+lw/2,0);lg.addColorStop(0,'rgba(255,200,90,0)');lg.addColorStop(0.5,`rgba(255,214,120,${0.95*a0})`);lg.addColorStop(1,'rgba(255,200,90,0)');
+    ctx.fillStyle=lg;ctx.fillRect(W/2-lw/2,540,lw,2);glow(W/2,541,60,0.7*a0);ctx.globalCompositeOperation='source-over';
+    rich('{不等宽切片刀 (BPE)} · {概率山峰熔炉} · {Top-P 截断门}',W/2,605,31,seg(intro,0.5,0.95)*a0,DIM);
+    brandMark(W/2,870,28,seg(intro,0.65,1)*a0);
+    ctx.restore();
+  }
+
+  /* ---------- 幕 1~2：不等宽切片刀与字母盲区 (0.52 -> 3.42) ---------- */
+  const a1=actAlpha(G,0.52,1.0,3.05,3.45);
+  if(a1>0.005){
+    const pCut=seg(G,1.2,2.0), pBlind=seg(G,2.2,3.0);
+    ctx.save();ctx.globalAlpha=a1;ctx.translate(0,(1-a1)*18);
+
+    // 上排：经典案例 Strawberry
+    const y1=360, gap1=pCut*42;
+    text('案例 ① 为什么 AI 数不清 Strawberry 有几个 r ？',960,255,22,GOLD_HI,1,700);
+    // 左块 Straw
+    drawBox(960-260-gap1/2,y1-55,260,110,10,pCut>0.3?GOLD_HI:GOLD);
+    glowText(pBlind>0.4?'ID: 496':'Straw',960-130-gap1/2,y1-8,34,pBlind>0.4?ICE:PALE,1,700,0.3);
+    text(pBlind>0.4?'(整块打包 · 看不见 r)':'Token 1',960-130-gap1/2,y1+32,15,pBlind>0.4?RED:DIM,1,700);
+    // 右块 berry
+    drawBox(960+gap1/2,y1-55,260,110,10,pCut>0.3?GREEN:GOLD);
+    glowText(pBlind>0.4?'ID: 675':'berry',960+130+gap1/2,y1-8,34,pBlind>0.4?ICE:PALE,1,700,0.3);
+    text(pBlind>0.4?'(整块打包 · 看不见 r)':'Token 2',960+130+gap1/2,y1+32,15,pBlind>0.4?RED:DIM,1,700);
+
+    // 光学切片刀光痕
+    if(pCut>0.05 && pCut<0.95){
+      ctx.save();ctx.globalCompositeOperation='lighter';
+      const by=lerp(y1-130,y1+110,pCut);
+      ctx.strokeStyle=GOLD_HI;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(960,y1-120);ctx.lineTo(960,by);ctx.stroke();
+      glow(960,by,40,0.9);ctx.restore();
+    }
+
+    // 下排：中文与大数字案例 违约金 100000 元
+    const y2=625, gap2=pCut*28;
+    text('案例 ② 为什么 AI 经常算错多位数的加减法？',960,520,22,GOLD_HI,1,700);
+    const chChunks=[
+      {t:'违约', id:'ID: 8821', w:180, c:GOLD_HI},
+      {t:'金',   id:'ID: 3910', w:120, c:GOLD_HI},
+      {t:'100',  id:'ID: 1041', w:170, c:FIRE},
+      {t:'000',  id:'ID: 0931', w:170, c:FIRE},
+      {t:'元',   id:'ID: 2044', w:120, c:GREEN},
+    ];
+    const totalW = chChunks.reduce((a,b)=>a+b.w,0) + (chChunks.length-1)*gap2;
+    let cx = 960 - totalW/2;
+    chChunks.forEach(ch=>{
+      drawBox(cx,y2-50,ch.w,100,10,pCut>0.3?ch.c:GOLD);
+      glowText(pBlind>0.4?ch.id:ch.t,cx+ch.w/2,y2-8,28,pBlind>0.4?ICE:PALE,1,700,0.3);
+      text(pBlind>0.4?`原词:${ch.t}`:'不等宽切片',cx+ch.w/2,y2+28,14,DIM,1);
+      cx += ch.w + gap2;
+    });
+
+    if(pBlind>0.1){
+      rr(W/2-520,765,1040,86,10);ctx.fillStyle='rgba(85,20,16,0.72)';ctx.fill();ctx.strokeStyle=RED;ctx.lineWidth=2;ctx.stroke();
+      text('⚠ 字母盲区：大模型拿到的是「整数编号序列」，不是逐字拆解的字符！',W/2,796,20,RED,pBlind,700);
+      text('数字被随机切成 [100][000] 破坏了十进制对齐，这就是它数数和心算容易出错的物理根源',W/2,830,16,IVORY,pBlind);
+    }
+    ctx.restore();
+  }
+
+  /* ---------- 幕 3~5：概率山峰熔炉与 Top-P 截断门 (3.52 -> 11) ---------- */
+  const a2=actAlpha(G,3.52,4.0,null,null);
+  if(a2>0.005){
+    // 随剧情平滑变化的真实温度 T：Step 4-5 默认 0.7 -> Step 6 降至 0.1 -> Step 7 回到 0.7 -> Step 8 升至 1.6 -> Step 9-11 保持 1.2 + Top-P
+    let T = 0.7;
+    if(G < 5.2) T = 0.7;
+    else if(G < 6.2) T = lerp(0.7, 0.12, seg(G,5.2,6.0));
+    else if(G < 7.2) T = lerp(0.12, 0.7, seg(G,6.2,7.0));
+    else if(G < 8.2) T = lerp(0.7, 1.65, seg(G,7.2,8.0));
+    else T = lerp(1.65, 1.35, seg(G,8.2,9.0));
+
+    const probs = softmax(T);
+    const pDial = seg(G,4.2,5.0);
+    const pTopP = seg(G,8.2,9.0);
+    const pCombo= seg(G,9.3,10.0);
+    const pFin  = seg(G,10.4,11.0);
+
+    // 温度颜色随 T 渐变：低温冰蓝 -> 中温暖金 -> 高温炽红
+    const themeCol = T < 0.35 ? ICE : (T > 1.1 ? FIRE : GOLD_HI);
+    const themeSpr = T < 0.35 ? SPR_ICE : (T > 1.1 ? SPR_FIRE : SPR_HALO);
+
+    ctx.save();ctx.globalAlpha=a2;ctx.translate(0,(1-a2)*18);
+
+    // 1. 左侧：温度熔炉旋钮仪表盘（Step 5 起显现）
+    const kx=330, ky=510;
+    if(pDial>0.02){
+      ctx.save();ctx.globalAlpha*=pDial;
+      drawBox(140,295,380,440,16,themeCol,'rgba(22,18,12,0.92)','rgba(10,8,5,0.96)',2.2);
+      glowText('温度熔炉 (Temperature)',kx,350,22,themeCol,1,700,0.35);
+
+      // 旋钮外圈
+      ctx.strokeStyle='rgba(255,255,255,0.16)';ctx.lineWidth=10;
+      ctx.beginPath();ctx.arc(kx,ky,92,Math.PI*0.75,Math.PI*2.25);ctx.stroke();
+      const ang = lerp(Math.PI*0.75, Math.PI*2.25, clamp((T-0.1)/1.6));
+      ctx.strokeStyle=themeCol;ctx.lineWidth=10;
+      ctx.beginPath();ctx.arc(kx,ky,92,Math.PI*0.75,ang);ctx.stroke();
+      // 指针光点
+      const px=kx+Math.cos(ang)*92, py=ky+Math.sin(ang)*92;
+      ctx.globalCompositeOperation='lighter';glow(px,py,38,0.95,themeSpr);ctx.globalCompositeOperation='source-over';
+      glowText(`T = ${T.toFixed(2)}`,kx,ky,36,themeCol,1,700,0.4);
+
+      const modeTxt = T<0.35 ? '❄ 极低温 · 尖锐独峰（严谨）' : (T>1.1 ? '🔥 高温 · 山峰熔平（发散）' : '✦ 中温 · 均衡山脉（自然）');
+      text(modeTxt,kx,655,18,PALE,1,700);
+      text('Softmax(z / T)',kx,695,15,DIM,1);
+      ctx.restore();
+    }
+
+    // 2. 右侧：实时动态概率山峰柱状图（5 个候选词）
+    const bx0=640, byBot=715, bw=165, gap=48, maxH=390;
+    // 底部基线
+    ctx.strokeStyle='rgba(244,237,223,0.35)';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(bx0-30,byBot);ctx.lineTo(bx0+5*(bw+gap)-10,byBot);ctx.stroke();
+    text('句尾预测：「违约金过分高于损失，可请求适当 [ ___ ]」',bx0+520,255,22,PALE,1,700);
+
+    CANDS.forEach((c,i)=>{
+      const p=probs[i];
+      const h=Math.max(10, p*maxH);
+      const x=bx0+i*(bw+gap);
+      const cutByTopP = (pTopP>0.2 && i>=3); // Top-P=0.9 切掉后两个长尾词！
+      const col = cutByTopP ? 'rgba(232,106,88,0.32)' : (i===0 ? themeCol : (c.absurd ? RED : GOLD));
+
+      ctx.save();
+      ctx.globalAlpha *= cutByTopP ? (1-pTopP*0.65) : 1;
+      const g=ctx.createLinearGradient(0,byBot-h,0,byBot);
+      g.addColorStop(0,col);g.addColorStop(1,'rgba(12,10,6,0.2)');
+      rr(x,byBot-h,bw,h,8);ctx.fillStyle=g;ctx.fill();
+      ctx.strokeStyle=col;ctx.lineWidth=i===0?2.4:1.6;ctx.stroke();
+
+      if(i===0){ctx.globalCompositeOperation='lighter';glow(x+bw/2,byBot-h,75,0.45,themeSpr);ctx.globalCompositeOperation='source-over';}
+      glowText(`${(p*100).toFixed(1)}%`,x+bw/2,byBot-h-24,22,col,1,700,0.3);
+      text(c.w,x+bw/2,byBot+30,22,c.absurd?RED:IVORY,1,700);
+      text(`logit: ${c.z}`,x+bw/2,byBot+62,14,DIM,1);
+      ctx.restore();
+    });
+
+    // 3. Top-P 光学截断门（Step 9 从上方降下，一刀切掉右侧长尾词！）
+    if(pTopP>0.02){
+      const gateX = bx0 + 3*(bw+gap) - gap/2;
+      const gyBot = lerp(290, byBot+40, pTopP);
+      ctx.save();ctx.globalAlpha*=pTopP;
+      ctx.strokeStyle=GREEN;ctx.lineWidth=3.5;ctx.setLineDash([10,6]);
+      ctx.beginPath();ctx.moveTo(gateX,290);ctx.lineTo(gateX,gyBot);ctx.stroke();ctx.setLineDash([]);
+      ctx.globalCompositeOperation='lighter';glow(gateX,500,65,0.45,SPR_GRN);ctx.globalCompositeOperation='source-over';
+      glowText('Top-P = 0.9 截断门',gateX,290,19,GREEN,1,700,0.35);
+      text('✕ 荒谬长尾直接归零',gateX+210,430,19,RED,1,700);
+      ctx.restore();
+    }
+
+    // 4. Step 10: 工程配置铁律条
+    if(pCombo>0.02 && pFin<0.8){
+      ctx.save();ctx.globalAlpha*=pCombo*(1-pFin*1.25);
+      rr(W/2-550,845,1100,74,10);ctx.fillStyle='rgba(18,14,6,0.94)';ctx.fill();ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2;ctx.stroke();
+      rich('工程配置铁律：法律 / 代码 / 提取任务用 {T = 0 ~ 0.2}   |   创意写作与发散用 {T = 0.8 + Top-P = 0.9}',W/2,882,20,1,IVORY);
+      ctx.restore();
+    }
+
+    if(pFin>0.02){
+      ctx.save();ctx.globalAlpha*=pFin;
+      rich('{分词}决定了 AI 怎么看世界，{温度与 Top-P} 决定了 AI 怎么开口说话',W/2,845,30,1,IVORY);
+      brandMark(W/2,935,28,1);
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  // 电影暗角
+  const vig=ctx.createRadialGradient(W/2,H/2,H*0.38,W/2,H/2,W*0.66);
+  vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,0,0.55)');
+  ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
+
+  /* ---------- 顶部引导语（先退后进，零叠字） & 进度 ---------- */
+  const lo=Math.floor(G), hi=Math.min(LAST,Math.ceil(G)), f=G-lo;
+  const ha=STEPS[lo].hint, hb=STEPS[hi].hint;
+  if(ha===hb) rich(ha,W/2,92,33,0.95);
+  else {
+    const aOut=1-ease(clamp(f/0.38)), aIn=ease(clamp((f-0.5)/0.42));
+    if(aOut>0.01) rich(ha,W/2,92-(1-aOut)*10,33,0.95*aOut);
+    if(aIn>0.01) rich(hb,W/2,92+(1-aIn)*10,33,0.95*aIn);
+  }
+  const st=STEPS[Math.round(G)];
+  text(`${String(st.scene).padStart(2,'0')} · ${SCENES[st.scene]}    ${Math.round(G)+1} / ${STEPS.length}`,1860,1025,18,'rgba(244,237,223,0.52)',1,400,'right');
+  ctx.fillStyle='rgba(244,237,223,0.16)';ctx.fillRect(1620,1044,240,2);
+  ctx.fillStyle=GOLD;ctx.fillRect(1620,1044,240*G/LAST,2);
+  ctx.restore();
+}
+
+/* ==================== 交互与播控 ==================== */
+let G=0, target=0, anim=null, auto=false; const t0=performance.now();
+const dock=document.getElementById('dock');
+SCENES.forEach((name,idx)=>{
+  const b=document.createElement('button');b.className='sbtn';b.textContent=`${String(idx).padStart(2,'0')} ${name}`;
+  b.addEventListener('pointerdown',e=>e.stopPropagation());
+  b.addEventListener('pointerup',e=>{e.stopPropagation();go(SCENE_FIRST[idx]);});
+  dock.appendChild(b);
+});
+function syncDock(){const sc=STEPS[Math.round(target)].scene;dock.querySelectorAll('.sbtn').forEach((b,i)=>b.classList.toggle('active',i===sc));}
+function go(i){
+  i=clamp(Math.round(i),0,LAST);if(i===target&&!anim)return;
+  const from=G, fwd=i===Math.round(target)+1&&i>from;
+  target=i;anim={from,to:i,start:performance.now(),dur:fwd?STEPS[i].dur:Math.min(850,350+Math.abs(i-from)*60),linear:fwd};syncDock();
+}
+function next(){go(target+1);} function prev(){go(target-1);}
+function tick(now){
+  if(anim){
+    const p=clamp((now-anim.start)/anim.dur);
+    G=anim.linear?lerp(anim.from,anim.to,p):lerp(anim.from,anim.to,ease(p));
+    if(p>=1){G=anim.to;anim=null;if(auto&&G<LAST)setTimeout(()=>auto&&go(target+1),700);}
+  }
+  render(G,(now-t0)/1000);requestAnimationFrame(tick);
+}
+let idleTimer=null;
+function wake(){document.body.classList.remove('idle');clearTimeout(idleTimer);idleTimer=setTimeout(()=>document.body.classList.add('idle'),3200);}
+['mousemove','pointerdown','keydown'].forEach(ev=>addEventListener(ev,wake)); wake();
+
+const autoBtn=document.getElementById('autoBtn'), cleanBtn=document.getElementById('cleanBtn'), fsBtn=document.getElementById('fsBtn');
+function toggleAuto(){auto=!auto;autoBtn.classList.toggle('on',auto);autoBtn.textContent=auto?'自动中':'自动 A';if(auto)next();}
+function toggleClean(){document.body.classList.toggle('clean');}
+function toggleFS(){const d=document,el=d.documentElement;if(!d.fullscreenElement)el.requestFullscreen?.();else d.exitFullscreen?.();}
+[autoBtn,cleanBtn,fsBtn].forEach(b=>b.addEventListener('pointerdown',e=>e.stopPropagation()));
+autoBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleAuto();});
+cleanBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleClean();});
+fsBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
+
+addEventListener('keydown',e=>{
+  if(e.target.id==='lesson-back')return;
+
+  const k=e.key;
+  if(['ArrowRight',' ','PageDown','Enter','ArrowDown'].includes(k)){e.preventDefault();next();}
+  else if(['ArrowLeft','PageUp','Backspace','ArrowUp'].includes(k)){e.preventDefault();prev();}
+  else if(k==='Home')go(0); else if(k==='End')go(LAST);
+  else if(k==='f'||k==='F')toggleFS();
+  else if(k==='a'||k==='A')toggleAuto();
+  else if(k==='h'||k==='H')toggleClean();
+});
+let pd=null;
+cv.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY,b:e.button};});
+cv.addEventListener('pointerup',e=>{if(!pd)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y,b=pd.b;pd=null;
+  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2){dx<0?next():prev();return;}
+  if(Math.abs(dx)<14&&Math.abs(dy)<14){if(b===2)prev();else e.shiftKey?prev():next();}});
+cv.addEventListener('contextmenu',e=>{e.preventDefault();prev();});
+
+syncDock(); requestAnimationFrame(tick);
+})();
+</script></body></html>

@@ -1,0 +1,266 @@
+<!doctype html>
+<!--
+视觉表达方案
+内容类型 A（概念解释），面向希望理解 AI 原理与 Agent 的学习者。
+以分层目录卡片进入独立推演。L3，原生 HTML、CSS 和 JavaScript 提供分类筛选。
+composition:
+  pattern_family: modular-grid
+  primitive: stack + auto-grid
+  reading_path: 总纲、四组主题、终章
+  dominant_axis: vertical
+  focal_point: 系列总纲
+  semantic_reason: 每组课件共享主题，单份课件可独立打开。
+  responsive_strategy: column-drop
+  source_refs: [用户原有教学目录]
+沿用黑金配色与分组卡片。颜色辅助识别，层级由标题和分组表达。
+不引入框架或持续动画。键盘可操作链接与筛选按钮，手机版降至单栏。
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#100e0b">
+  <meta name="description" content="20 个交互课件，从 AI 的数学基础和模型工作原理，到上下文管理与 Agent 工程。">
+  <link rel="canonical" href="https://chenshi.ai/learn/">
+  <link rel="stylesheet" href="catalog.css">
+  <title>AI 底层原理与 Agent 工程图谱 · 陈石</title>
+</head>
+<body>
+  <div class="wrap">
+    <header class="masthead">
+      <nav aria-label="网站导航">
+        <a class="blog-link" href="https://chenshi.ai/">← 返回 Blog</a>
+      </nav>
+      <h1>AI 底层原理与 Agent 工程图谱</h1>
+      <p>20 个交互课件，从分词、注意力和模型训练，讲到上下文管理与多智能体协作。</p>
+    </header>
+
+    <main>
+      <nav class="filters" aria-label="按主题筛选课件" id="filters" hidden>
+        <button type="button" data-filter="all" aria-pressed="true">全部 20 个</button>
+        <button type="button" data-filter="core" aria-pressed="false">总纲与终章</button>
+        <button type="button" data-filter="foundations" aria-pressed="false">数学与训练</button>
+        <button type="button" data-filter="models" aria-pressed="false">模型原理</button>
+        <button type="button" data-filter="context" aria-pressed="false">上下文管理</button>
+        <button type="button" data-filter="engineering" aria-pressed="false">Agent 工程</button>
+      </nav>
+
+      <section class="chapter" aria-labelledby="intro" data-chapter="core">
+        <h2 id="intro">总纲</h2>
+        <div class="lessons">
+          <a class="lesson lesson-featured" href="pages/how-you-interact-with-ai.html">
+            <div>
+              <div class="lesson-number">第 01 课</div>
+              <h3>你和 AI 是如何互动的</h3>
+              <p>从《民法典》第 585 条出发，一镜到底走完分词、向量、概率自回归、上下文纸带、Agent Loop，最终落脚于「Harness（驾驭层）」的核心心法。</p>
+            </div>
+            <div class="lesson-meta"><span>24 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+        </div>
+      </section>
+      <section class="chapter" aria-labelledby="foundations" data-chapter="foundations">
+        <h2 id="foundations">数学基础与模型训练</h2>
+        <div class="lessons">
+          <a class="lesson" href="pages/scalars-vectors-matrices-tensors.html">
+            <div>
+              <div class="lesson-number">第 02 课</div>
+              <h3>标量、向量、矩阵与张量</h3>
+              <p>从孤立数值一路升维到 GPU 并行处理的 3D 发光晶格魔方 [Batch, Seq_Len, Dim]，一秒看懂 AI 世界的数据容器。</p>
+            </div>
+            <div class="lesson-meta"><span>11 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+          <a class="lesson" href="pages/tokenization-and-temperature.html">
+            <div>
+              <div class="lesson-number">第 03 课</div>
+              <h3>分词与温度</h3>
+              <p>解释 AI 为何数不清 Strawberry 的 r、算错多位数加减；并用实时温度旋钮与 Top-P 截断门演示概率山峰的冰蓝尖峰与炽红熔平。</p>
+            </div>
+            <div class="lesson-meta"><span>12 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+          <a class="lesson" href="pages/fine-tuning-and-lora.html">
+            <div>
+              <div class="lesson-number">第 04 课</div>
+              <h3>微调与 LoRA 到底是怎么做的</h3>
+              <p>拆解 SFT 前向做题、算 Loss 与反向传播循环，直观对比全量微调的灾难性遗忘与 LoRA 仅改 0.4% 参数的并联旁路奇技。</p>
+            </div>
+            <div class="lesson-meta"><span>13 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+          <a class="lesson" href="pages/reinforcement-learning.html">
+            <div>
+              <div class="lesson-number">第 05 课</div>
+              <h3>强化学习（RL、RLHF 与 GRPO）</h3>
+              <p>从光学迷宫探索收敛讲起，一路演到 RLHF 人类偏好对齐，以及 DeepSeek-R1 抛弃 Critic 模型、用 GRPO 逼出「顿悟时刻」的原理。</p>
+            </div>
+            <div class="lesson-meta"><span>12 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+        </div>
+      </section>
+      <section class="chapter" aria-labelledby="models" data-chapter="models">
+        <h2 id="models">大模型工作原理</h2>
+        <div class="lessons">
+          <a class="lesson" href="pages/transformer.html">
+            <div>
+              <div class="lesson-number">第 06 课</div>
+              <h3>Transformer 完整结构解剖</h3>
+              <p>完整拆解 RoPE 位置编码、Pre-Norm 接线、5×5 因果掩码矩阵、多头并行与 MLP 的 d→4d→d 参数记忆。</p>
+            </div>
+            <div class="lesson-meta"><span>16 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+          <a class="lesson" href="pages/attention.html">
+            <div>
+              <div class="lesson-number">第 07 课</div>
+              <h3>Attention 与“迷失在中间”</h3>
+              <p>用物理光学演示 Q/K/V 扫描与“迷失在中间”现象，通过把关键约束从暗影拽到高光区，证明上下文排布铁律。</p>
+            </div>
+            <div class="lesson-meta"><span>14 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+          <a class="lesson" href="pages/reasoning.html">
+            <div>
+              <div class="lesson-number">第 08 课</div>
+              <h3>Reasoning 深度思考与 Test-Time Compute</h3>
+              <p>对比系统 1 快思考掉坑与系统 2 潜入水下试错、剪枝回溯再浮出水面交付的过程，揭示 Test-Time Compute 曲线。</p>
+            </div>
+            <div class="lesson-meta"><span>12 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+          <a class="lesson" href="pages/kv-cache-and-prompt-caching.html">
+            <div>
+              <div class="lesson-number">第 09 课</div>
+              <h3>KV Cache 与 Prompt Caching</h3>
+              <p>用“固态冰晶”讲透大模型提速与省钱 90% 的底层秘密，直观演示为什么在纸带开头加个时间戳会让整条冰晶瞬间碎裂。</p>
+            </div>
+            <div class="lesson-meta"><span>12 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+          <a class="lesson" href="pages/hallucination-and-grounding.html">
+            <div>
+              <div class="lesson-number">第 10 课</div>
+              <h3>幻觉的本质与溯源工程</h3>
+              <p>揭示大模型为何必然产生幻觉，并用原文强锚定、内外事实隔离与无依据拒答安全阀三道拉索驯服概率星云。</p>
+            </div>
+            <div class="lesson-meta"><span>12 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+        </div>
+      </section>
+      <section class="chapter" aria-labelledby="context" data-chapter="context">
+        <h2 id="context">上下文与知识管理</h2>
+        <div class="lessons">
+          <a class="lesson" href="pages/skill.html">
+            <div>
+              <div class="lesson-number">第 11 课</div>
+              <h3>Skill 到底是什么</h3>
+              <p>从提示词膨胀与噪音痛点出发，拆解渐进式披露、SKILL.md 目录结构、四种制作方法论与元 Skill 实践。</p>
+            </div>
+            <div class="lesson-meta"><span>18 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+          <a class="lesson" href="pages/fine-tuning-rag-and-skill.html">
+            <div>
+              <div class="lesson-number">第 12 课</div>
+              <h3>微调、LoRA 与 RAG／Skill 的选型</h3>
+              <p>从训练、检索与工作流三个层面，比较微调、LoRA、RAG 与 Skill 各自解决的问题。</p>
+            </div>
+            <div class="lesson-meta"><span>12 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+          <a class="lesson" href="pages/memory-and-context-compaction.html">
+            <div>
+              <div class="lesson-number">第 13 课</div>
+              <h3>Memory 与上下文压缩</h3>
+              <p>演示第 50 轮对话如何蒸馏降噪凝结成摘要琥珀释放 80% 空间，以及 MEMORY.md 如何跨天自动吸附新纸带。</p>
+            </div>
+            <div class="lesson-meta"><span>12 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+        </div>
+      </section>
+      <section class="chapter" aria-labelledby="engineering" data-chapter="engineering">
+        <h2 id="engineering">Agent 工程</h2>
+        <div class="lessons">
+          <a class="lesson" href="pages/mcp.html">
+            <div>
+              <div class="lesson-number">第 14 课</div>
+              <h3>MCP 到底是什么</h3>
+              <p>演示 M×N 集成噩梦如何降维成 M+N 总线，解剖 Tools / Resources / Prompts 三大原语与 JSON-RPC 脉冲。</p>
+            </div>
+            <div class="lesson-meta"><span>16 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+          <a class="lesson" href="pages/hooks.html">
+            <div>
+              <div class="lesson-number">第 15 课</div>
+              <h3>Hooks 到底是什么</h3>
+              <p>在 Agent Loop 上焊死 5 大生命周期闸门，把安全底线与格式校验交给确定性代码，把创造力留给模型。</p>
+            </div>
+            <div class="lesson-meta"><span>12 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+          <a class="lesson" href="pages/sandbox-and-permissions.html">
+            <div>
+              <div class="lesson-number">第 16 课</div>
+              <h3>沙盒与安全边界</h3>
+              <p>对比宿主机裸奔爆炸与防爆舱内试爆吸收，演示零信任断网与不可逆高危操作必须插入人类审批钥匙才放行。</p>
+            </div>
+            <div class="lesson-meta"><span>12 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+          <a class="lesson" href="pages/evals-and-regression.html">
+            <div>
+              <div class="lesson-number">第 17 课</div>
+              <h3>Evals 评测与防退化</h3>
+              <p>根治盲改提示词的打地鼠困境：用 Golden Set 穿过代码裁判与模型裁判，揪出隐性退化并建立线上错题飞轮。</p>
+            </div>
+            <div class="lesson-meta"><span>12 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+          <a class="lesson" href="pages/sub-agent-and-agent-team.html">
+            <div>
+              <div class="lesson-number">第 18 课</div>
+              <h3>Sub-Agent 与 Agent Team</h3>
+              <p>厘清两大高频概念的本质边界：子代理是干完即毁的临时单向汇报，Agent Team 是带共享任务板与点对点信箱的持久协作。</p>
+            </div>
+            <div class="lesson-meta"><span>13 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+          <a class="lesson" href="pages/multi-agent.html">
+            <div>
+              <div class="lesson-number">第 19 课</div>
+              <h3>Multi-Agent 多智能体编排</h3>
+              <p>以股权并购尽调为例，演示主控编排器如何裂变并行多轨、Critic 质检闸门拦截打回重做，最终汇流成高可靠终稿。</p>
+            </div>
+            <div class="lesson-meta"><span>13 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+        </div>
+      </section>
+      <section class="chapter" aria-labelledby="finale" data-chapter="core">
+        <h2 id="finale">终章</h2>
+        <div class="lessons">
+          <a class="lesson lesson-featured" href="pages/agent-landscape.html">
+            <div>
+              <div class="lesson-number">第 20 课</div>
+              <h3>Agent 八大主流形态全景</h3>
+              <p>将前 19 部拆解的底层零件全部组装成完整产品形态——从代码终端、屏幕像素操作、百路深度研究、个人数字分身、企业合规流、后台潜伏网、端到端超级调度，一路延伸至物理世界具身智能。</p>
+            </div>
+            <div class="lesson-meta"><span>16 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>课件可用方向键、点击画面或左右滑动翻页。全屏演示时，退出全屏即可返回目录。</p>
+    </footer>
+  </div>
+
+  <script>
+    const filters = document.getElementById('filters');
+    const chapters = document.querySelectorAll('[data-chapter]');
+    const buttons = filters.querySelectorAll('button');
+
+    filters.addEventListener('click', (event) => {
+      const selected = event.target.closest('button');
+      if (!selected) return;
+
+      buttons.forEach((button) => {
+        button.setAttribute('aria-pressed', String(button === selected));
+      });
+      chapters.forEach((chapter) => {
+        const filter = selected.dataset.filter;
+        chapter.hidden = filter !== 'all' && filter !== chapter.dataset.chapter;
+      });
+    });
+
+    filters.hidden = false;
+  </script>
+</body>
+</html>

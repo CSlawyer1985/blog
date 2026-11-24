@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>Sub-Agent 与 Agent Team · 星形外包与网状圆桌</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<style>
+/* 将原文件中的两行 @font-face{font-family:'HSerif'...} 粘贴至此即可恢复原版衬线体 */
+html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
+body{position:fixed;inset:0}
+canvas{display:block;touch-action:none}
+#fs{position:fixed;right:16px;top:14px;font:13px "HSerif","Songti SC",serif;color:rgba(244,237,223,.38);background:none;border:1px solid rgba(226,170,66,.26);border-radius:4px;padding:4px 10px;cursor:pointer;z-index:5}
+#fs:hover{color:#FFD062;border-color:#E2AA42}
+:fullscreen #fs{display:none}
+</style><style>
+  #lesson-back {
+    position: fixed;
+    z-index: 10;
+    top: calc(8px + env(safe-area-inset-top));
+    left: calc(12px + env(safe-area-inset-left));
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 0 10px;
+    border-radius: 4px;
+    color: #ffe5ad;
+    background: #17130e;
+    font: 14px/1.4 system-ui, sans-serif;
+    text-decoration: none;
+  }
+  #lesson-back:hover { text-decoration: underline; }
+  #lesson-back:focus-visible { outline: 2px solid #ffd062; outline-offset: 2px; }
+  body.clean #lesson-back, :fullscreen #lesson-back { display: none; }
+</style>
+</head><body>
+<a id="lesson-back" href="../index.html">← 返回模块目录</a>
+<canvas id="c"></canvas><button id="fs" title="全屏（F）">全屏 F</button>
+<script>
+(function(){
+'use strict';
+const FONT='"HSerif","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif';
+const IVORY='#F4EDDF', GOLD='#E2AA42', GOLD_HI='#FFD062', PALE='#FFE9B8', DIM='rgba(244,237,223,0.62)', RED='#E86A58', GREEN='#4FD198', BLUE='#6AA9FF';
+
+const SCENES=['开场','Sub-Agent 模式','星形边界','Agent Team 跃迁','点对点协作','终局选型'];
+const S=(id,scene,dur,hint)=>({id,scene,dur,hint});
+const STEPS=[
+  S('title',0,2600,''),
+  S('main_tape',1,2000,'起点：一根主纸带（Main Agent），需要调研海量外部资料'),
+  S('sub_spawn',1,2400,'模式 ① {Sub-Agent（子代理）}：主控向上临时开辟独立副纸带，像派实习生查档案'),
+  S('sub_return',1,2400,'查完即销毁：副纸带只交回{一页精炼摘要}，海量过程数据绝不污染主纸带'),
+  S('sub_limit',2,2600,'Sub-Agent 的架构本质是{星形辐射}：子代理之间互不相见，无法直接沟通'),
+  S('team_shift',3,2600,'当任务需要跨专业博弈与互相纠偏时，架构跃迁为模式 ②：{Agent Team}'),
+  S('team_board',3,2600,'中央立起{共享任务板 (Shared Task List)}，多位持久 Agent 围成圆桌'),
+  S('team_claim',3,2400,'法务、财务、风控各自拥有{独立持久纸带}，从任务板自主认领并并行推进'),
+  S('team_mailbox',4,2600,'核心区别：{点对点信箱 (Mailbox)}——成员之间可以直接发消息、质疑与对质'),
+  S('team_debate',4,2800,'实战推演：风控查出隐性担保，直接发信通知{财务 Agent}重新核定收购估值'),
+  S('team_sync',4,2400,'达成共识后更新共享任务板，经多视角交叉验证输出最终交付'),
+  S('compare',5,2600,'看清区别：Sub-Agent 是{临时单向汇报}，Agent Team 是{持久网状协作}'),
+  S('final',5,2600,''),
+];
+const LAST=STEPS.length-1;
+
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const easeCam=t=>t<.5?16*t**5:1-Math.pow(-2*t+2,5)/2;
+const seg=(G,a,b)=>ease(clamp((G-a)/(b-a)));
+function kf(G,pts,fn=ease){if(G<=pts[0][0])return pts[0][1];for(let i=0;i<pts.length-1;i++){if(G<=pts[i+1][0]){const a=pts[i],b=pts[i+1];return lerp(a[1],b[1],fn((G-a[0])/(b[0]-a[0])));}}return pts[pts.length-1][1];}
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+
+/* ==================== 画布与原版光学贴图 ==================== */
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+const W=1920, H=1080; let view={s:1,ox:0,oy:0,dpr:1};
+function resize(){
+  const w=innerWidth,h=innerHeight,dpr=Math.min(window.devicePixelRatio||1,2);
+  cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.width=w+'px';cv.style.height=h+'px';
+  const s=Math.min(w/W,h/H);view={s,ox:(w-W*s)/2,oy:(h-H*s)/2,dpr};
+}
+addEventListener('resize',resize); resize();
+
+const mcache=new Map();
+function font(sz,wt=400){return `${wt} ${sz}px ${FONT}`;}
+function measure(t,sz,wt=400){const k=t+'|'+wt;let v=mcache.get(k);if(v===undefined){ctx.font=font(100,wt);v=ctx.measureText(t).width/100;mcache.set(k,v);}return v*sz;}
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+
+function text(str,x,y,sz,col,a=1,wt=400,al='center'){
+  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
+  const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.font=font(sz,wt);ctx.fillStyle=col;ctx.textAlign=al;ctx.textBaseline='middle';ctx.fillText(str,x,y);ctx.globalAlpha=prev;
+}
+function glowText(str,x,y,sz,col,a=1,wt=700,blur=0.45,al='center'){
+  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
+  ctx.save();ctx.shadowColor='rgba(255,186,60,0.6)';ctx.shadowBlur=sz*blur;text(str,x,y,sz,col,a,wt,al);ctx.restore();
+}
+function rich(str,x,y,sz,a=1,col=IVORY){
+  if(ctx.globalAlpha*clamp(a)<=0.004||!str)return;
+  const parts=[];str.split(/(\{[^}]*\})/).forEach(s=>{if(!s)return;if(s[0]==='{')parts.push([s.slice(1,-1),1]);else parts.push([s,0]);});
+  let tw=0;parts.forEach(p=>{p[2]=measure(p[0],sz,p[1]?700:400);tw+=p[2];});let x0=x-tw/2;
+  parts.forEach(p=>{if(p[1])glowText(p[0],x0,y,sz,GOLD_HI,a,700,0.45,'left');else text(p[0],x0,y,sz,col,a,400,'left');x0+=p[2];});
+}
+function brandMark(x,y,sz,a=1){
+  if(ctx.globalAlpha*clamp(a)<=0.004)return;
+  const s1='陈石律师',s2='  ·  ',s3='chenshi.ai';
+  const w1=measure(s1,sz*0.8),w2=measure(s2,sz*0.8),w3=measure(s3,sz,700),tw=w1+w2+w3;let x0=x-tw/2;
+  text(s1,x0,y,sz*0.8,IVORY,a*0.78,400,'left');x0+=w1;text(s2,x0,y,sz*0.8,GOLD,a*0.8,400,'left');x0+=w2;glowText(s3,x0,y,sz,GOLD_HI,a,700,0.3,'left');
+  const L1=sz*2.2,gap=sz*0.9;ctx.save();ctx.globalAlpha*=a*0.7;
+  [[x-tw/2-gap-L1,x-tw/2-gap,0],[x+tw/2+gap,x+tw/2+gap+L1,1]].forEach(([u,v,dir])=>{const g=ctx.createLinearGradient(u,0,v,0);g.addColorStop(dir?1:0,'rgba(226,170,66,0)');g.addColorStop(dir?0:1,'rgba(226,170,66,0.9)');ctx.fillStyle=g;ctx.fillRect(u,y-0.75,v-u,1.5);});
+  ctx.restore();
+}
+
+function mkSprite(stops){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),gr=g.createRadialGradient(64,64,0,64,64,64);stops.forEach(s=>gr.addColorStop(s[0],s[1]));g.fillStyle=gr;g.fillRect(0,0,128,128);return c;}
+const SPR_HALO=mkSprite([[0,'rgba(255,228,170,0.9)'],[0.12,'rgba(255,196,96,0.55)'],[0.4,'rgba(226,150,46,0.16)'],[1,'rgba(200,120,30,0)']]);
+const SPR_CORE=mkSprite([[0,'rgba(255,250,235,1)'],[0.25,'rgba(255,226,160,0.9)'],[0.6,'rgba(255,190,80,0.25)'],[1,'rgba(255,170,60,0)']]);
+const SPR_RED =mkSprite([[0,'rgba(255,195,185,0.9)'],[0.2,'rgba(232,106,88,0.5)'],[1,'rgba(180,40,30,0)']]);
+const SPR_GRN =mkSprite([[0,'rgba(180,255,220,0.9)'],[0.2,'rgba(79,209,152,0.5)'],[1,'rgba(20,120,80,0)']]);
+const SPR_BLU =mkSprite([[0,'rgba(180,225,255,0.9)'],[0.2,'rgba(106,169,255,0.5)'],[1,'rgba(40,90,180,0)']]);
+function glow(x,y,r,a=1,spr=SPR_HALO){const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||r<=0.5)return;const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.drawImage(spr,x-r,y-r,2*r,2*r);ctx.globalAlpha=prev;}
+function core(x,y,r,a=1){glow(x,y,r,a,SPR_CORE);}
+
+const FIBER=(()=>{const c=document.createElement('canvas');c.width=512;c.height=128;const g=c.getContext('2d'),r=mulberry(7);
+  for(let i=0;i<900;i++){const x=r()*512,y=r()*128,l=6+r()*40;g.strokeStyle=`rgba(255,215,150,${0.015+r()*0.04})`;g.lineWidth=0.6+r()*0.8;g.beginPath();g.moveTo(x,y);g.lineTo(x+l,y+(r()-0.5)*3);g.stroke();}return c;})();
+let FIBER_PAT=null;
+const DUST=(()=>{const r=mulberry(2030);return Array.from({length:65},()=>({x:r(),y:r(),vx:(r()-0.5)*0.004,vy:-0.003-r()*0.006,r:1.2+r()*2.6,a:0.1+r()*0.25,ph:r()*6.28}));})();
+
+function drawTape(x,y,w,h,col='rgba(236,184,78,0.9)'){
+  ctx.save();
+  const tgr=ctx.createLinearGradient(0,y-h/2,0,y+h/2);
+  tgr.addColorStop(0,'rgba(78,56,20,0.72)');tgr.addColorStop(0.5,'rgba(24,17,7,0.78)');tgr.addColorStop(1,'rgba(78,56,20,0.72)');
+  ctx.fillStyle=tgr;ctx.fillRect(x,y-h/2,w,h);
+  if(!FIBER_PAT)FIBER_PAT=ctx.createPattern(FIBER,'repeat');
+  ctx.fillStyle=FIBER_PAT;ctx.fillRect(x,y-h/2,w,h);
+  ctx.strokeStyle=col;ctx.lineWidth=1.6;
+  ctx.beginPath();ctx.moveTo(x,y-h/2);ctx.lineTo(x+w,y-h/2);ctx.moveTo(x,y+h/2);ctx.lineTo(x+w,y+h/2);ctx.stroke();
+  for(let hx=x+16;hx<x+w-10;hx+=32){[y-h/2+7,y+h/2-7].forEach(hy=>{ctx.fillStyle='#030303';ctx.fillRect(hx-1.8,hy-1.8,3.6,3.6);});}
+  ctx.restore();
+}
+
+/* ============================== 主渲染 ============================== */
+function render(G,amb){
+  const {s,ox,oy,dpr}=view;
+  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.setTransform(s*dpr,0,0,s*dpr,ox*dpr,oy*dpr);
+  ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();
+  ctx.fillStyle='#030303';ctx.fillRect(0,0,W,H);
+
+  // 背景暖光 + 金尘
+  const bg=ctx.createRadialGradient(W/2,H*0.5,0,W/2,H*0.5,960);
+  bg.addColorStop(0,'rgba(128,84,22,0.16)');bg.addColorStop(0.55,'rgba(60,38,10,0.05)');bg.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  ctx.save();ctx.globalCompositeOperation='lighter';
+  DUST.forEach(d=>{const dx=((d.x+amb*d.vx)%1+1)%1*W,dy=((d.y+amb*d.vy)%1+1)%1*H;glow(dx,dy,d.r*3,d.a*(0.55+0.45*Math.sin(amb*1.4+d.ph)));});
+  ctx.restore();
+
+  /* ---------- 0. 原版复刻级开场 (0 -> 0.55) ---------- */
+  const a0=1-seg(G,0.02,0.55);
+  if(a0>0.005){
+    const intro=clamp(amb/2.4), out=seg(G,0.02,0.55);
+    const title='Sub-Agent 与 Agent Team', fs=92, tw=measure(title,fs,700);
+    let x=W/2-tw/2; const rnd=mulberry(17); let ci=0;
+    ctx.save();
+    for(const ch of title){
+      const cw=measure(ch,fs,700), ca=seg(intro,0.06+ci*0.024,0.32+ci*0.024);
+      const dx=(rnd()-0.5)*220*out, dy=-(35+rnd()*140)*out;
+      glowText(ch,x+cw/2+dx,445+(1-ca)*24+dy,fs,PALE,ca*(1-out),700,0.35);
+      x+=cw; ci++;
+    }
+    const sw=((amb*0.18)%1.6)-0.3;
+    if(intro>0.85&&out<0.4){
+      ctx.save();ctx.globalCompositeOperation='lighter';
+      const gx=W/2-tw/2+sw*tw, g=ctx.createLinearGradient(gx-160,0,gx+160,0);
+      g.addColorStop(0,'rgba(255,240,200,0)');g.addColorStop(0.5,'rgba(255,240,200,0.55)');g.addColorStop(1,'rgba(255,240,200,0)');
+      ctx.font=font(fs,700);ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillStyle=g;ctx.globalAlpha=1-out*2.5;ctx.fillText(title,W/2-tw/2,445);ctx.restore();
+    }
+    const lw=840*seg(intro,0.28,0.82)*(1-out);
+    ctx.globalCompositeOperation='lighter';
+    const lg=ctx.createLinearGradient(W/2-lw/2,0,W/2+lw/2,0);lg.addColorStop(0,'rgba(255,200,90,0)');lg.addColorStop(0.5,`rgba(255,214,120,${0.95*(1-out)})`);lg.addColorStop(1,'rgba(255,200,90,0)');
+    ctx.fillStyle=lg;ctx.fillRect(W/2-lw/2,540,lw,2);glow(W/2,541,60,0.7*(1-out));ctx.globalCompositeOperation='source-over';
+    rich('从{星形临时外包}，到{网状圆桌持久协作}',W/2,605,32,seg(intro,0.55,1)*(1-out),DIM);
+    brandMark(W/2,870,28,seg(intro,0.7,1)*(1-out));
+    ctx.restore();
+  }
+
+  /* ---------- 1~2. Sub-Agent 星形外包世界 (G: 0.45 -> 5.45) ---------- */
+  const subWorldA=seg(G,0.45,1.0)*(1-seg(G,4.6,5.3));
+  if(subWorldA>0.005){
+    const pSpawn  = seg(G,1.2,2.0);
+    const pReturn = seg(G,2.2,3.0);
+    const pLimit  = seg(G,3.2,4.0);
+
+    ctx.save();ctx.globalAlpha=subWorldA;
+    const mainY=735, mainX=220, mainW=1480, mainH=134;
+    drawTape(mainX, mainY, mainW, mainH, GOLD_HI);
+    text('主智能体纸带（Main Agent · 核心上下文保持干净）', W/2, mainY+mainH/2+32, 20, GOLD, 0.9, 700);
+    rr(mainX+28, mainY-42, 340, 84, 7);ctx.fillStyle='rgba(14,11,6,0.82)';ctx.fill();ctx.strokeStyle=GOLD;ctx.lineWidth=1.5;ctx.stroke();
+    text('System + 任务目标', mainX+198, mainY-12, 18, GOLD_HI, 1, 700);
+    text('主控只做统筹与决策', mainX+198, mainY+16, 14, DIM, 1);
+
+    // 两条临时副纸带（向上弹出，Step 3 交回摘要后变淡销毁）
+    const subs=[
+      {name:'Sub-Agent A（查法条）', sub:'独立窗口：检索 50 份法规', sum:'法条摘要 (1页)', x:580, tx:780},
+      {name:'Sub-Agent B（查判例）', sub:'独立窗口：精读 30 份判例', sum:'判例摘要 (1页)', x:1340, tx:1200},
+    ];
+    subs.forEach((sb,i)=>{
+      if(pSpawn<=0.01)return;
+      const sy=lerp(mainY-60, 340, pSpawn);
+      const fadeOut=1-pReturn*0.55; // 干完后变暗象征“用完即毁”
+      ctx.save();ctx.globalAlpha*=pSpawn*fadeOut;
+      drawTape(sb.x-260, sy, 520, 108, GREEN);
+      text(sb.name, sb.x, sy-16, 20, GREEN, 1, 700);
+      text(sb.sub, sb.x, sy+16, 15, IVORY, 0.9);
+      if(pReturn>0.5) text('✓ 已销毁（脏数据不回主纸带）', sb.x, sy-74, 16, DIM, (pReturn-0.5)*2);
+      ctx.restore();
+
+      // 向上派发 + 向下交回摘要光缆
+      ctx.save();ctx.globalAlpha*=pSpawn;
+      ctx.strokeStyle='rgba(79,209,152,0.65)';ctx.lineWidth=1.8;ctx.setLineDash([7,5]);
+      ctx.beginPath();ctx.moveTo(sb.tx, mainY-mainH/2);ctx.lineTo(sb.x, sy+54);ctx.stroke();ctx.setLineDash([]);
+      // 摘要落入主纸带
+      if(pReturn>0.02){
+        const sx=lerp(sb.x, sb.tx, pReturn), ry=lerp(sy+54, mainY, pReturn);
+        rr(sx-170, ry-40, 340, 80, 7);ctx.fillStyle='rgba(16,64,44,0.88)';ctx.fill();ctx.strokeStyle=GREEN;ctx.lineWidth=1.8;ctx.stroke();
+        text(sb.sum, sx, ry-10, 18, GREEN, 1, 700);text('精炼结果回传主纸带', sx, ry+16, 14, PALE, 0.9);
+      }
+      ctx.restore();
+    });
+
+    // Step 4: 子代理之间的红色隔绝墙（互不相见）
+    if(pLimit>0.02){
+      ctx.save();ctx.globalAlpha*=pLimit;
+      ctx.strokeStyle=RED;ctx.lineWidth=3;ctx.setLineDash([10,7]);
+      ctx.beginPath();ctx.moveTo(960, 230);ctx.lineTo(960, 470);ctx.stroke();ctx.setLineDash([]);
+      glow(960, 340, 75, 0.5, SPR_RED);
+      text('✕ 互不相见 · 无法直接通信', 960, 340, 22, RED, 1, 700);
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  /* ---------- 3~5. Agent Team 网状圆桌世界 (G >= 5.0) ---------- */
+  const teamWorldA=seg(G,5.0,5.7);
+  if(teamWorldA>0.005){
+    // 五次方运镜：Step 8-9 推近圆桌与信箱，Step 11 拉远对比
+    const camX = kf(G,[[5,960],[8,960],[9,960],[11,960],[12,960]], easeCam);
+    const camY = kf(G,[[5,540],[8,520],[9,520],[11,540],[12,540]], easeCam);
+    const camZ = kf(G,[[5,1.0],[8,1.12],[9,1.12],[11,0.92],[12,0.92]], easeCam);
+
+    const pBoard   = seg(G,5.3,6.0);
+    const pClaim   = seg(G,6.2,7.0);
+    const pMailbox = seg(G,7.2,8.0);
+    const pDebate  = seg(G,8.2,9.0);
+    const pSync    = seg(G,9.2,10.0);
+    const pCmp     = seg(G,10.3,11.0);
+    const pFin     = seg(G,11.3,12.0);
+
+    ctx.save();ctx.globalAlpha=teamWorldA;
+    ctx.translate(W/2,H/2);ctx.scale(camZ,camZ);ctx.translate(-camX,-camY);
+
+    const cx=960, cy=540;
+    // 3 个持久 Agent 围成圆桌（顶：法务，左下：风控，右下：财务）
+    const members=[
+      {name:'法务 Agent', sub:'持久纸带 · 审主协议', x:cx, y:235, col:GOLD_HI, spr:SPR_HALO},
+      {name:'风控 Agent', sub:'持久纸带 · 查隐性担保', x:450, y:740, col:RED, spr:SPR_RED},
+      {name:'财务 Agent', sub:'持久纸带 · 核收购估值', x:1470, y:740, col:BLUE, spr:SPR_BLU},
+    ];
+
+    // 1. 中央：共享任务板（Shared Task List）
+    if(pBoard>0.01){
+      ctx.save();ctx.globalAlpha*=pBoard;
+      rr(cx-210, cy-115, 420, 230, 14);ctx.fillStyle='rgba(24,18,8,0.92)';ctx.fill();ctx.strokeStyle=pSync>0.4?GREEN:GOLD_HI;ctx.lineWidth=2.4;ctx.stroke();
+      glow(cx,cy,140,0.35,pSync>0.4?SPR_GRN:SPR_HALO);
+      glowText('共享任务板',cx,cy-72,24,pSync>0.4?GREEN:GOLD_HI,1,700,0.35);
+      text('Shared Task List',cx,cy-42,14,DIM,1);
+      const tasks=[
+        {t:'[✓] 主协议条款审查', c:GREEN, on:pClaim>0.3},
+        {t:pSync>0.4?'[✓] 隐性担保核查与重估':'[⚡] 隐性担保风险排查', c:pSync>0.4?GREEN:(pDebate>0.3?RED:GOLD_HI), on:pClaim>0.3},
+        {t:pSync>0.4?'[✓] 最终估值模型定稿':'[…] 收购估值测算中', c:pSync>0.4?GREEN:BLUE, on:pClaim>0.3},
+      ];
+      tasks.forEach((tk,i)=>text(tk.t, cx-165, cy+2+i*36, 17, tk.on?tk.c:DIM, 1, 700, 'left'));
+      ctx.restore();
+    }
+
+    // 2. 成员到共享任务板的认领光缆（Step 7）
+    if(pClaim>0.02){
+      members.forEach(m=>{
+        ctx.save();ctx.globalAlpha*=pClaim*0.6;
+        ctx.strokeStyle=m.col;ctx.lineWidth=1.6;ctx.setLineDash([6,6]);
+        ctx.beginPath();ctx.moveTo(m.x,m.y);ctx.lineTo(cx,cy);ctx.stroke();ctx.setLineDash([]);
+        ctx.restore();
+      });
+    }
+
+    // 3. 点对点信箱总线（Mailbox · 三角网状直连，Step 8 起显现）
+    if(pMailbox>0.02){
+      const pairs=[[0,1],[1,2],[2,0]];
+      pairs.forEach(([a,b],idx)=>{
+        const m1=members[a], m2=members[b];
+        const isDebateLine=(idx===1 && pDebate>0.1);
+        ctx.save();ctx.globalAlpha*=pMailbox;
+        ctx.strokeStyle=isDebateLine?(pSync>0.4?GREEN:RED):'rgba(226,170,66,0.55)';
+        ctx.lineWidth=isDebateLine?3.2:1.8;
+        ctx.beginPath();ctx.moveTo(m1.x,m1.y);ctx.lineTo(m2.x,m2.y);ctx.stroke();
+
+        // 风控 -> 财务 实时发信光点脉冲（Step 9）
+        if(isDebateLine){
+          const pt=(amb*0.65)%1;
+          const px=lerp(m1.x,m2.x,pt), py=lerp(m1.y,m2.y,pt);
+          ctx.globalCompositeOperation='lighter';
+          glow(px,py,38,1,pSync>0.4?SPR_GRN:SPR_RED);core(px,py,9,1);
+          ctx.globalCompositeOperation='source-over';
+          text(pSync>0.4?'✓ 估值已按 2 亿隐性担保修正，达成共识':'✉ 点对点直信：“发现 2 亿隐性担保，请立刻重算估值！”', cx, 785, 20, pSync>0.4?GREEN:RED, pDebate, 700);
+        }
+        ctx.restore();
+      });
+    }
+
+    // 4. 绘制 3 位持久 Agent 节点（带独立迷你纸带底座）
+    members.forEach((m,i)=>{
+      ctx.save();
+      ctx.globalCompositeOperation='lighter';
+      glow(m.x,m.y,95,0.45,m.spr);
+      ctx.globalCompositeOperation='source-over';
+      drawTape(m.x-175, m.y, 350, 96, m.col);
+      text(m.name, m.x, m.y-14, 22, m.col, 1, 700);
+      text(m.sub, m.x, m.y+18, 15, IVORY, 0.9);
+      ctx.restore();
+    });
+
+    // 5. 对比总结浮标（Step 11）
+    if(pCmp>0.02){
+      ctx.save();ctx.globalAlpha*=pCmp*(1-pFin*0.85);
+      rr(cx-520, 865, 1040, 74, 10);ctx.fillStyle='rgba(18,14,6,0.92)';ctx.fill();ctx.strokeStyle=GOLD_HI;ctx.lineWidth=1.8;ctx.stroke();
+      rich('{Sub-Agent}：星形外包 · 干完即毁 · 省 Token     |     {Agent Team}：网状圆桌 · 直接辩论 · 攻克复杂难题', cx, 902, 20, 1, IVORY);
+      ctx.restore();
+    }
+
+    ctx.restore(); // 结束摄影机变换
+  }
+
+  /* ---------- 终局收束落版 (Step 12) ---------- */
+  const finA=seg(G,11.4,12.0);
+  if(finA>0.01){
+    ctx.save();ctx.globalAlpha=finA;
+    rich('查资料用 {Sub-Agent} 保持主纸带干净，复杂博弈上 {Agent Team} 圆桌协作',W/2,92,33,1,IVORY);
+    brandMark(W/2,990,26,1);
+    ctx.restore();
+  }
+
+  /* ---------- 顶部引导语（先退后进，零叠字） & 右下角进度 ---------- */
+  const lo=Math.floor(G), hi=Math.min(LAST,Math.ceil(G)), f=G-lo;
+  const ha=STEPS[lo].hint, hb=STEPS[hi].hint;
+  if(ha===hb) rich(ha,W/2,92,34,0.95);
+  else {
+    const aOut=1-ease(clamp(f/0.38)), aIn=ease(clamp((f-0.5)/0.42));
+    if(aOut>0.01) rich(ha,W/2,92-(1-aOut)*10,34,0.95*aOut);
+    if(aIn>0.01) rich(hb,W/2,92+(1-aIn)*10,34,0.95*aIn);
+  }
+  const st=STEPS[Math.round(G)];
+  text(`${String(st.scene).padStart(2,'0')} · ${SCENES[st.scene]}    ${Math.round(G)+1} / ${STEPS.length}`,1860,1040,18,'rgba(244,237,223,0.52)',1,400,'right');
+  ctx.fillStyle='rgba(244,237,223,0.16)';ctx.fillRect(1660,1058,200,2);
+  ctx.fillStyle=GOLD;ctx.fillRect(1660,1058,200*G/LAST,2);
+  ctx.restore();
+}
+
+/* ==================== 交互（与原版完全一致） ==================== */
+let G=0, target=0, anim=null, auto=false; const t0=performance.now();
+function go(i){
+  i=clamp(Math.round(i),0,LAST);if(i===target&&!anim)return;
+  const from=G, fwd=i===Math.round(target)+1&&i>from;
+  target=i;anim={from,to:i,start:performance.now(),dur:fwd?STEPS[i].dur:Math.min(850,350+Math.abs(i-from)*60),linear:fwd};
+}
+function next(){go(target+1);} function prev(){go(target-1);}
+function tick(now){
+  if(anim){
+    const p=clamp((now-anim.start)/anim.dur);
+    G=anim.linear?lerp(anim.from,anim.to,p):lerp(anim.from,anim.to,ease(p));
+    if(p>=1){G=anim.to;anim=null;if(auto&&G<LAST)setTimeout(()=>auto&&go(target+1),700);}
+  }
+  render(G,(now-t0)/1000);requestAnimationFrame(tick);
+}
+addEventListener('keydown',e=>{
+  if(e.target.id==='lesson-back')return;
+
+  const k=e.key;
+  if(['ArrowRight',' ','PageDown','Enter','ArrowDown'].includes(k)){e.preventDefault();next();}
+  else if(['ArrowLeft','PageUp','Backspace','ArrowUp'].includes(k)){e.preventDefault();prev();}
+  else if(k==='Home')go(0); else if(k==='End')go(LAST);
+  else if(k==='f'||k==='F')toggleFS();
+  else if(k==='a'||k==='A'){auto=!auto;if(auto)next();}
+});
+let pd=null;
+cv.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY,b:e.button};});
+cv.addEventListener('pointerup',e=>{if(!pd)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y,b=pd.b;pd=null;
+  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2){dx<0?next():prev();return;}
+  if(Math.abs(dx)<14&&Math.abs(dy)<14){if(b===2)prev();else e.shiftKey?prev():next();}});
+cv.addEventListener('contextmenu',e=>{e.preventDefault();prev();});
+const fsBtn=document.getElementById('fs');
+function toggleFS(){const d=document,el=d.documentElement;if(!d.fullscreenElement)el.requestFullscreen?.();else d.exitFullscreen?.();}
+fsBtn.addEventListener('pointerdown',e=>e.stopPropagation());
+fsBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
+
+requestAnimationFrame(tick);
+})();
+</script></body></html>

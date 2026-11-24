@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>Agent 形态全景 · 从数字终端到物理世界（八大主流形态）</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<style>
+/* 将原文件中的两行 @font-face{font-family:'HSerif'...} 粘贴至此即可恢复原版衬线体 */
+html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
+body{position:fixed;inset:0}
+canvas{display:block;touch-action:none}
+#tools{position:fixed;right:16px;top:14px;display:flex;gap:8px;z-index:10;transition:opacity .35s}
+.tbtn{font:13px "HSerif","Songti SC",serif;color:rgba(244,237,223,.52);background:rgba(10,8,4,.62);border:1px solid rgba(226,170,66,.28);border-radius:5px;padding:4px 10px;cursor:pointer;backdrop-filter:blur(4px);transition:all .2s}
+.tbtn:hover,.tbtn.on{color:#FFD062;border-color:#E2AA42;background:rgba(226,170,66,.14)}
+#dock{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:5px;padding:6px 10px;border-radius:10px;background:rgba(8,7,4,.78);border:1px solid rgba(226,170,66,.22);backdrop-filter:blur(8px);z-index:10;max-width:95vw;overflow-x:auto;transition:opacity .4s}
+#dock::-webkit-scrollbar{display:none}
+.sbtn{font:12px "HSerif","Songti SC",serif;color:rgba(244,237,223,.55);background:none;border:1px solid transparent;border-radius:5px;padding:4px 9px;white-space:nowrap;cursor:pointer;transition:all .2s}
+.sbtn:hover{color:#FFE9B8;border-color:rgba(226,170,66,.35)}
+.sbtn.active{color:#FFD062;border-color:rgba(255,208,98,.6);background:rgba(226,170,66,.16);font-weight:700}
+body.idle #tools,body.idle #dock,body.clean #tools,body.clean #dock{opacity:0;pointer-events:none}
+</style><style>
+  #lesson-back {
+    position: fixed;
+    z-index: 10;
+    top: calc(8px + env(safe-area-inset-top));
+    left: calc(12px + env(safe-area-inset-left));
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 0 10px;
+    border-radius: 4px;
+    color: #ffe5ad;
+    background: #17130e;
+    font: 14px/1.4 system-ui, sans-serif;
+    text-decoration: none;
+  }
+  #lesson-back:hover { text-decoration: underline; }
+  #lesson-back:focus-visible { outline: 2px solid #ffd062; outline-offset: 2px; }
+  body.clean #lesson-back, :fullscreen #lesson-back { display: none; }
+</style>
+</head><body>
+<a id="lesson-back" href="../index.html">← 返回模块目录</a>
+<canvas id="c"></canvas>
+<div id="tools">
+  <button class="tbtn" id="autoBtn" title="自动播放 (A)">自动 A</button>
+  <button class="tbtn" id="cleanBtn" title="纯净录屏 (H)">纯净 H</button>
+  <button class="tbtn" id="fsBtn" title="全屏 (F)">全屏 F</button>
+</div>
+<div id="dock"></div>
+<script>
+(function(){
+'use strict';
+const FONT='"HSerif","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif';
+const IVORY='#F4EDDF', GOLD='#E2AA42', GOLD_HI='#FFD062', PALE='#FFE9B8', DIM='rgba(244,237,223,0.62)', RED='#E86A58', GREEN='#4FD198', BLUE='#6AA9FF', ICE='#7CE8FF', PURPLE='#B88BFF', FIRE='#FF8C42';
+
+const SCENES=['开场','Coding','GUI 屏幕','Deep Research','Personal','企业与后台','Super','具身智能','八态全景'];
+const S=(id,scene,dur,hint)=>({id,scene,dur,hint});
+const STEPS=[
+  S('title',0,2500,''),
+  S('cod_1',1,2400,'形态 ① {Coding Agent}：围绕代码库运转的终端闭环引擎（读代码 → 修改 → 跑测试）'),
+  S('cod_2',1,2500,'编译器与单元测试提供 100% 客观纠错；借由 {Bash + 文件系统}，它正外溢为通用执行引擎'),
+  S('gui_1',2,2500,'形态 ② {GUI / Computer-Use Agent}：面对没有 API 的老旧软件，直接「看屏幕像素 + 模拟键鼠」'),
+  S('gui_2',2,2500,'激光视觉扫描界面坐标，虚拟指针直接接管点击与表单填写——打通数字化最后一公里'),
+  S('res_1',3,2500,'形态 ③ {Deep Research Agent}：广角雷达阵列并发检索上百份网页、论文与司法判例'),
+  S('res_2',3,2500,'经信息漏斗交叉核验、去伪存真，自动综合出带{可点击溯源脚标}的深度研究报告'),
+  S('per_1',4,2500,'形态 ④ {Personal Agent}：以 {MEMORY.md} 长期记忆星核为中心，经 MCP 串联邮件、日历与飞书'),
+  S('per_2',4,2500,'跨越单次对话记住你的偏好与人脉，成为「主动提醒、定时汇总、授权代办」的数字分身'),
+  S('ent_1',5,2600,'形态 ⑤ {Enterprise Agent}：嵌入企业与律所核心系统——强调权限门禁、确定性 SOP 与合规留痕'),
+  S('amb_1',5,2600,'形态 ⑥ {Ambient / Background Agent}：没有聊天框！由 Webhook、邮件或定时事件静默唤醒，后台异步处置'),
+  S('sup_1',6,2600,'形态 ⑦ {Super Agent}：面向开放式跨界难题，把深度思考、现场写代码造工具、沙盒与多智能体融为一体'),
+  S('sup_2',6,2600,'跳过工具选择焦虑：只给终极目标，自主拆解、动态造工具、验证并端到端交付成品'),
+  S('emb_1',7,2600,'形态 ⑧ {Embodied Agent（具身智能）}：借由 {VLA（视觉-语言-动作）} 模型，从输出 Token 迈向物理世界扭矩'),
+  S('all_8',8,2800,'八大主流 Agent 形态全景图谱：从代码终端、个人桌面、企业后台，一路延伸至物理世界'),
+  S('final',8,2600,''),
+];
+const LAST=STEPS.length-1;
+const SCENE_FIRST=SCENES.map((_,i)=>STEPS.findIndex(s=>s.scene===i));
+
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const seg=(G,a,b)=>ease(clamp((G-a)/(b-a)));
+function actAlpha(G,inS,inE,outS,outE){
+  const fi=inS===null?1:seg(G,inS,inE);
+  const fo=outS===null?1:(1-seg(G,outS,outE));
+  return fi*fo;
+}
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+
+/* ==================== 画布与原版光学贴图 ==================== */
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+const W=1920, H=1080; let view={s:1,ox:0,oy:0,dpr:1};
+function resize(){
+  const w=innerWidth,h=innerHeight,dpr=Math.min(window.devicePixelRatio||1,2);
+  cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.width=w+'px';cv.style.height=h+'px';
+  const s=Math.min(w/W,h/H);view={s,ox:(w-W*s)/2,oy:(h-H*s)/2,dpr};
+}
+addEventListener('resize',resize); resize();
+
+const mcache=new Map();
+function font(sz,wt=400){return `${wt} ${sz}px ${FONT}`;}
+function measure(t,sz,wt=400){const k=t+'|'+wt;let v=mcache.get(k);if(v===undefined){ctx.font=font(100,wt);v=ctx.measureText(t).width/100;mcache.set(k,v);}return v*sz;}
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+
+function text(str,x,y,sz,col,a=1,wt=400,al='center'){
+  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
+  const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.font=font(sz,wt);ctx.fillStyle=col;ctx.textAlign=al;ctx.textBaseline='middle';ctx.fillText(str,x,y);ctx.globalAlpha=prev;
+}
+function glowText(str,x,y,sz,col,a=1,wt=700,blur=0.45,al='center'){
+  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
+  ctx.save();ctx.shadowColor=col===ICE?'rgba(124,232,255,0.65)':(col===GREEN?'rgba(79,209,152,0.6)':'rgba(255,186,60,0.6)');ctx.shadowBlur=sz*blur;text(str,x,y,sz,col,a,wt,al);ctx.restore();
+}
+function rich(str,x,y,sz,a=1,col=IVORY){
+  if(ctx.globalAlpha*clamp(a)<=0.004||!str)return;
+  const parts=[];str.split(/(\{[^}]*\})/).forEach(s=>{if(!s)return;if(s[0]==='{')parts.push([s.slice(1,-1),1]);else parts.push([s,0]);});
+  let tw=0;parts.forEach(p=>{p[2]=measure(p[0],sz,p[1]?700:400);tw+=p[2];});let x0=x-tw/2;
+  parts.forEach(p=>{if(p[1])glowText(p[0],x0,y,sz,GOLD_HI,a,700,0.45,'left');else text(p[0],x0,y,sz,col,a,400,'left');x0+=p[2];});
+}
+function brandMark(x,y,sz,a=1){
+  if(ctx.globalAlpha*clamp(a)<=0.004)return;
+  const s1='陈石律师',s2='  ·  ',s3='chenshi.ai';
+  const w1=measure(s1,sz*0.8),w2=measure(s2,sz*0.8),w3=measure(s3,sz,700),tw=w1+w2+w3;let x0=x-tw/2;
+  text(s1,x0,y,sz*0.8,IVORY,a*0.78,400,'left');x0+=w1;text(s2,x0,y,sz*0.8,GOLD,a*0.8,400,'left');x0+=w2;glowText(s3,x0,y,sz,GOLD_HI,a,700,0.3,'left');
+}
+function drawBox(x,y,w,h,r=12,stroke=GOLD,topC='rgba(28,22,11,0.92)',botC='rgba(12,10,6,0.95)',lw=1.8){
+  ctx.save();
+  const g=ctx.createLinearGradient(0,y,0,y+h);g.addColorStop(0,topC);g.addColorStop(1,botC);
+  rr(x,y,w,h,r);ctx.fillStyle=g;ctx.fill();ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();
+  ctx.strokeStyle='rgba(255,235,185,0.2)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x+r,y+1);ctx.lineTo(x+w-r,y+1);ctx.stroke();
+  ctx.restore();
+}
+function arrow(x1,y1,x2,y2,col=GOLD,lw=2.2,dash=false,amb=0){
+  ctx.save();ctx.strokeStyle=col;ctx.lineWidth=lw;
+  if(dash){ctx.setLineDash([8,6]);ctx.lineDashOffset=-amb*40;}
+  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.setLineDash([]);
+  const ang=Math.atan2(y2-y1,x2-x1);ctx.fillStyle=col;
+  ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-13*Math.cos(ang-0.42),y2-13*Math.sin(ang-0.42));ctx.lineTo(x2-13*Math.cos(ang+0.42),y2-13*Math.sin(ang+0.42));ctx.closePath();ctx.fill();
+  ctx.restore();
+}
+
+function mkSprite(stops){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),gr=g.createRadialGradient(64,64,0,64,64,64);stops.forEach(s=>gr.addColorStop(s[0],s[1]));g.fillStyle=gr;g.fillRect(0,0,128,128);return c;}
+const SPR_HALO=mkSprite([[0,'rgba(255,228,170,0.9)'],[0.14,'rgba(255,196,96,0.52)'],[1,'rgba(200,120,30,0)']]);
+const SPR_CORE=mkSprite([[0,'rgba(255,250,235,1)'],[0.25,'rgba(255,226,160,0.9)'],[1,'rgba(255,170,60,0)']]);
+const SPR_GRN =mkSprite([[0,'rgba(180,255,220,0.92)'],[0.2,'rgba(79,209,152,0.5)'],[1,'rgba(20,120,80,0)']]);
+const SPR_BLU =mkSprite([[0,'rgba(180,225,255,0.92)'],[0.2,'rgba(106,169,255,0.5)'],[1,'rgba(40,90,180,0)']]);
+const SPR_ICE =mkSprite([[0,'rgba(210,248,255,0.95)'],[0.2,'rgba(124,232,255,0.52)'],[1,'rgba(40,140,200,0)']]);
+const SPR_FIRE=mkSprite([[0,'rgba(255,220,180,0.95)'],[0.2,'rgba(255,140,66,0.55)'],[1,'rgba(200,60,15,0)']]);
+function glow(x,y,r,a=1,spr=SPR_HALO){const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||r<=0.5)return;const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.drawImage(spr,x-r,y-r,2*r,2*r);ctx.globalAlpha=prev;}
+function core(x,y,r,a=1){glow(x,y,r,a,SPR_CORE);}
+
+const DUST=(()=>{const r=mulberry(2052);return Array.from({length:56},()=>({x:r(),y:r(),vx:(r()-0.5)*0.004,vy:-0.003-r()*0.006,r:1.2+r()*2.5,a:0.1+r()*0.22,ph:r()*6.28}));})();
+
+/* ============================== 主渲染 ============================== */
+function render(G,amb){
+  const {s,ox,oy,dpr}=view;
+  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.setTransform(s*dpr,0,0,s*dpr,ox*dpr,oy*dpr);
+  ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();
+  ctx.fillStyle='#030304';ctx.fillRect(0,0,W,H);
+
+  // 背景精密网格 + 暖光 + 金尘
+  ctx.strokeStyle='rgba(226,170,66,0.022)';ctx.lineWidth=1;
+  for(let x=0;x<=W;x+=64){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<=H;y+=64){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  const bg=ctx.createRadialGradient(W/2,H*0.5,0,W/2,H*0.5,960);
+  bg.addColorStop(0,'rgba(128,84,22,0.16)');bg.addColorStop(0.55,'rgba(60,38,10,0.05)');bg.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  ctx.save();ctx.globalCompositeOperation='lighter';
+  DUST.forEach(d=>{const dx=((d.x+amb*d.vx)%1+1)%1*W,dy=((d.y+amb*d.vy)%1+1)%1*H;glow(dx,dy,d.r*3,d.a*(0.55+0.45*Math.sin(amb*1.4+d.ph)));});
+  ctx.restore();
+
+  /* ---------- 幕 0：开场 (0 -> 0.48) ---------- */
+  const a0=actAlpha(G,null,null,0.02,0.48);
+  if(a0>0.005){
+    const intro=clamp(amb/2.2), out=1-a0;
+    const title='Agent 八大主流形态全景', fs=90, tw=measure(title,fs,700);
+    let x=W/2-tw/2; const rnd=mulberry(101); let ci=0;
+    ctx.save();
+    for(const ch of title){
+      const cw=measure(ch,fs,700), ca=seg(intro,0.05+ci*0.024,0.3+ci*0.024);
+      const dx=(rnd()-0.5)*200*out, dy=-(30+rnd()*120)*out;
+      glowText(ch,x+cw/2+dx,445+(1-ca)*24+dy,fs,PALE,ca*a0,700,0.35);
+      x+=cw; ci++;
+    }
+    const lw=860*seg(intro,0.28,0.82)*a0;
+    ctx.globalCompositeOperation='lighter';
+    const lg=ctx.createLinearGradient(W/2-lw/2,0,W/2+lw/2,0);lg.addColorStop(0,'rgba(255,200,90,0)');lg.addColorStop(0.5,`rgba(255,214,120,${0.95*a0})`);lg.addColorStop(1,'rgba(255,200,90,0)');
+    ctx.fillStyle=lg;ctx.fillRect(W/2-lw/2,540,lw,2);glow(W/2,541,60,0.7*a0);ctx.globalCompositeOperation='source-over';
+    rich('Coding · GUI · Deep Research · Personal · Enterprise · Ambient · Super · Embodied',W/2,605,24,seg(intro,0.5,0.95)*a0,DIM);
+    brandMark(W/2,870,28,seg(intro,0.65,1)*a0);
+    ctx.restore();
+  }
+
+  /* ---------- 幕 1：Coding Agent (0.52 -> 2.45) ---------- */
+  const a1=actAlpha(G,0.52,1.0,2.05,2.45);
+  if(a1>0.005){
+    const p2=seg(G,1.2,2.0);
+    ctx.save();ctx.globalAlpha=a1;ctx.translate(0,(1-a1)*18);
+    const cx=960, cy=525, rx=430, ry=210;
+    ctx.strokeStyle=GREEN;ctx.lineWidth=3;ctx.setLineDash([12,8]);ctx.lineDashOffset=-amb*42;
+    ctx.beginPath();ctx.ellipse(cx,cy,rx,ry,0,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+    const th=amb*1.5, px=cx+rx*Math.cos(th), py=cy+ry*Math.sin(th);
+    ctx.globalCompositeOperation='lighter';glow(px,py,42,0.9,SPR_GRN);core(px,py,9,1);ctx.globalCompositeOperation='source-over';
+    glow(cx,cy,130,0.4,SPR_GRN);
+    glowText('① Coding Agent',cx,cy-18,34,GREEN,1,700,0.4);
+    text('Claude Code · Codex · Cursor',cx,cy+26,18,DIM,1);
+    const nodes=[
+      {t:'Grep 读代码库', sub:'精准定位上下文', x:cx, y:cy-ry, c:GOLD_HI},
+      {t:'Edit 修改文件', sub:'生成补丁代码',   x:cx+rx, y:cy, c:BLUE},
+      {t:'Bash 跑测试',   sub:'编译器客观验证', x:cx, y:cy+ry, c:GREEN},
+      {t:'报错自动自愈',  sub:'读堆栈 → 重写 → 全绿', x:cx-rx, y:cy, c:p2>0.3?GREEN:RED},
+    ];
+    nodes.forEach(n=>{
+      drawBox(n.x-150,n.y-44,300,88,12,n.c,'rgba(18,22,14,0.94)','rgba(8,10,7,0.96)',2);
+      text(n.t,n.x,n.y-12,20,n.c,1,700);text(n.sub,n.x,n.y+18,15,IVORY,0.9);
+    });
+    if(p2>0.05) text('⚡ 能力外溢：只要任务能转化为「文件 + 终端脚本」，Coding Agent 就能化身通用执行引擎',W/2,845,20,PALE,p2,700);
+    ctx.restore();
+  }
+
+  /* ---------- 幕 2：GUI / Computer-Use Agent (2.52 -> 4.45) ---------- */
+  const a2=actAlpha(G,2.52,3.0,4.05,4.45);
+  if(a2>0.005){
+    const pClick=seg(G,3.2,4.0);
+    ctx.save();ctx.globalAlpha=a2;ctx.translate(0,(1-a2)*18);
+
+    // 左侧：模拟无 API 的老旧桌面/ERP 窗口
+    const wx=340, wy=250, ww=840, wh=540;
+    drawBox(wx,wy,ww,wh,14,BLUE,'rgba(16,24,38,0.92)','rgba(8,12,20,0.96)',2.2);
+    // 窗口标题栏
+    ctx.fillStyle='rgba(106,169,255,0.16)';ctx.fillRect(wx+2,wy+2,ww-4,44);
+    text('老旧 ERP / 政务申报系统（无任何 API 接口）',wx+ww/2,wy+24,17,BLUE,1,700);
+    // 表单元素
+    rr(wx+60,wy+100,480,58,8);ctx.fillStyle='rgba(255,255,255,0.06)';ctx.fill();ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.stroke();
+    text('合同编号：HT-2026-0891',wx+84,wy+129,18,IVORY,0.9,400,'left');
+    rr(wx+60,wy+190,480,58,8);ctx.fillStyle='rgba(255,255,255,0.06)';ctx.fill();ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.stroke();
+    text('申报金额：¥ 12,800,000.00',wx+84,wy+219,18,IVORY,0.9,400,'left');
+
+    // 目标按钮（被虚拟指针点击后亮绿）
+    const bx=wx+580, by=wy+395, bw=200, bh=66;
+    rr(bx,by,bw,bh,10);ctx.fillStyle=pClick>0.4?'rgba(79,209,152,0.3)':'rgba(226,170,66,0.22)';ctx.fill();
+    ctx.strokeStyle=pClick>0.4?GREEN:GOLD_HI;ctx.lineWidth=2.2;ctx.stroke();
+    text(pClick>0.4?'✓ 已提交':'确认提交',bx+bw/2,by+bh/2,20,pClick>0.4?GREEN:GOLD_HI,1,700);
+
+    // 激光视觉扫描线（上下扫过屏幕像素）
+    const scanY = wy + 50 + ((amb*140)%(wh-60));
+    ctx.strokeStyle='rgba(124,232,255,0.55)';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(wx+8,scanY);ctx.lineTo(wx+ww-8,scanY);ctx.stroke();
+
+    // 虚拟机械鼠标指针（平滑移动到按钮上点击）
+    const mx=lerp(wx+220, bx+bw/2, pClick), my=lerp(wy+260, by+bh/2, pClick);
+    ctx.save();ctx.translate(mx,my);
+    ctx.fillStyle=GOLD_HI;ctx.strokeStyle='#000';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(0,32);ctx.lineTo(9,24);ctx.lineTo(22,26);ctx.closePath();ctx.fill();ctx.stroke();
+    if(pClick>0.35){ctx.globalCompositeOperation='lighter';glow(0,0,46,0.75,SPR_GRN);}
+    ctx.restore();
+
+    // 右侧解析卡
+    drawBox(1260,295,520,450,16,ICE,'rgba(16,28,44,0.9)','rgba(8,14,22,0.95)',2.2);
+    glowText('② GUI / Computer-Use',1520,365,28,ICE,1,700,0.35);
+    text('Claude Computer Use · Operator',1520,412,16,DIM,1);
+    text('• 截屏看像素 → 识别按钮坐标 (x, y)',1520,495,19,IVORY,0.95);
+    text('• 模拟人类鼠标点击、拖拽与键盘输入',1520,550,19,IVORY,0.95);
+    text('• 价值：打通无 API 系统的最后一公里',1520,615,19,GREEN,1,700);
+    ctx.restore();
+  }
+
+  /* ---------- 幕 3：Deep Research Agent (4.52 -> 6.45) ---------- */
+  const a3=actAlpha(G,4.52,5.0,6.05,6.45);
+  if(a3>0.005){
+    const pRep=seg(G,5.2,6.0);
+    ctx.save();ctx.globalAlpha=a3;ctx.translate(0,(1-a3)*18);
+
+    // 左侧 8 路并发信源 -> 中央信息漏斗 -> 右侧带脚标研报
+    const srcs=['最高院判例库','学术论文库','上市公司年报','行业政策公报','实时财经资讯','海外英文文献','专利数据库','企业工商图谱'];
+    srcs.forEach((s,i)=>{
+      const sy=220+i*84;
+      rr(140,sy-24,260,48,8);ctx.fillStyle='rgba(26,20,10,0.88)';ctx.fill();ctx.strokeStyle='rgba(226,170,66,0.55)';ctx.lineWidth=1.4;ctx.stroke();
+      text(s,270,sy,17,IVORY,0.95);
+      // 并发光束汇聚向漏斗
+      ctx.strokeStyle='rgba(255,208,98,0.42)';ctx.lineWidth=1.8;
+      ctx.beginPath();ctx.moveTo(405,sy);ctx.quadraticCurveTo(600,sy,740,520);ctx.stroke();
+      const pt=((amb*0.65+i*0.13)%1);
+      const px=lerp(405,740,pt), py=lerp(sy,520,pt*pt);
+      ctx.save();ctx.globalCompositeOperation='lighter';glow(px,py,16,0.8);ctx.restore();
+    });
+
+    // 中央漏斗（交叉核验引擎）
+    ctx.beginPath();ctx.moveTo(740,340);ctx.lineTo(1080,430);ctx.lineTo(1080,610);ctx.lineTo(740,700);ctx.closePath();
+    ctx.fillStyle='rgba(36,26,10,0.72)';ctx.fill();ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2.4;ctx.stroke();
+    glowText('③ Deep Research',900,498,24,GOLD_HI,1,700,0.35);
+    text('多轮追问 · 交叉核验 · 去伪存真',900,545,16,PALE,0.95);
+
+    // 右侧深度研报（Step 6）
+    if(pRep>0.02){
+      ctx.save();ctx.globalAlpha*=pRep;
+      arrow(1085,520,1225,520,GREEN,3,true,amb);
+      drawBox(1235,280,540,480,16,GREEN,'rgba(14,48,34,0.82)','rgba(7,20,14,0.95)',2.4);
+      glowText('深度研究报告（带溯源脚标）',1505,345,23,GREEN,1,700,0.35);
+      ['1. 核心趋势结论与数据对比  [1][4]','2. 关键司法风险与判例支撑  [2][7]','3. 估值模型与敏感性分析    [3][5]','4. 完整引用来源清单 (128 篇)'].forEach((ln,i)=>{
+        text(ln,1285,435+i*66,19,IVORY,0.95,400,'left');
+      });
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  /* ---------- 幕 4：Personal Agent (6.52 -> 8.45) ---------- */
+  const a4=actAlpha(G,6.52,7.0,8.05,8.45);
+  if(a4>0.005){
+    const pPro=seg(G,7.2,8.0);
+    ctx.save();ctx.globalAlpha=a4;ctx.translate(0,(1-a4)*18);
+    const cx=960, cy=535;
+    const apps=[
+      {t:'邮件与日历',   sub:'日程冲突自动协调', ang:-Math.PI*0.78, c:BLUE},
+      {t:'飞书 / 微信',  sub:'群消息定时摘要',   ang:-Math.PI*0.22, c:GREEN},
+      {t:'本地知识库',   sub:'Obsidian · 案件档案', ang:0,            c:GOLD_HI},
+      {t:'浏览器控制',   sub:'跨站比价与检索',   ang:Math.PI*0.22,  c:ICE},
+      {t:'定时触发器',   sub:'Cron 主动巡检',    ang:Math.PI*0.78,  c:GOLD_HI},
+      {t:'物理审批钥匙', sub:'高危动作人类授权', ang:Math.PI,       c:RED},
+    ];
+    apps.forEach(ap=>{
+      const r=390, ax=cx+Math.cos(ap.ang)*r*1.25, ay=cy+Math.sin(ap.ang)*r*0.78;
+      ctx.strokeStyle=ap.c;ctx.lineWidth=2;ctx.setLineDash([7,6]);ctx.lineDashOffset=-amb*35;
+      ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(ax,ay);ctx.stroke();ctx.setLineDash([]);
+      drawBox(ax-135,ay-42,270,84,12,ap.c,'rgba(16,20,28,0.92)','rgba(8,10,14,0.96)',1.8);
+      text(ap.t,ax,ay-11,19,ap.c,1,700);text(ap.sub,ax,ay+18,14,IVORY,0.9);
+    });
+    ctx.globalCompositeOperation='lighter';glow(cx,cy,155,0.65,SPR_BLU);core(cx,cy,32,0.95);ctx.globalCompositeOperation='source-over';
+    ctx.strokeStyle=ICE;ctx.lineWidth=2.6;ctx.beginPath();ctx.arc(cx,cy,118,0,Math.PI*2);ctx.stroke();
+    glowText('④ Personal Agent',cx,cy-24,26,ICE,1,700,0.4);
+    text('MEMORY.md 长期记忆中枢',cx,cy+16,17,PALE,1,700);
+    if(pPro>0.05) text('✦ 范式反转：从「人类主动去问 AI」→「AI 记住你的一切，在后台主动提醒与授权代办」',W/2,880,20,ICE,pPro,700);
+    ctx.restore();
+  }
+
+  /* ---------- 幕 5：Enterprise Agent & Ambient Agent (8.52 -> 10.45) ---------- */
+  const a5=actAlpha(G,8.52,9.0,10.05,10.45);
+  if(a5>0.005){
+    const pAmb=seg(G,9.2,10.0);
+    ctx.save();ctx.globalAlpha=a5;ctx.translate(0,(1-a5)*18);
+
+    // 左侧：⑤ Enterprise / Vertical Agent（合规流水线 + 门禁钢印）
+    drawBox(130,260,790,560,16,GOLD_HI,'rgba(26,20,10,0.92)','rgba(11,9,5,0.96)',2.2);
+    glowText('⑤ Enterprise / Vertical Agent',525,330,27,GOLD_HI,1,700,0.35);
+    text('嵌入 ERP / CRM / 律所案件系统的垂直业务代理',525,375,16,DIM,1);
+    const steps=['🪪 角色权限校验 (RBAC)','⚙ 确定性业务 SOP 执行','🔏 全链路审计日志留痕'];
+    steps.forEach((st,i)=>{
+      drawBox(210,435+i*112,630,78,10,i===2?GREEN:GOLD);
+      text(st,525,474+i*112,20,i===2?GREEN:PALE,1,700);
+    });
+
+    // 右侧：⑥ Ambient / Background Agent（潜伏雷达网，无聊天框）
+    if(pAmb>0.02){
+      ctx.save();ctx.globalAlpha*=pAmb;ctx.translate((1-pAmb)*24,0);
+      drawBox(1000,260,790,560,16,PURPLE,'rgba(24,16,38,0.9)','rgba(10,7,16,0.96)',2.2);
+      glowText('⑥ Ambient / Background Agent',1395,330,27,PURPLE,1,700,0.35);
+      text('没有聊天对话框！由事件静默唤醒，云端异步处置',1395,375,16,DIM,1);
+      // 雷达波纹
+      const rx=1395, ry=575;
+      for(let k=0;k<3;k++){
+        const rad=45+((amb*70+k*55)%165);
+        ctx.strokeStyle=`rgba(184,139,255,${0.65*(1-rad/215)})`;ctx.lineWidth=2;
+        ctx.beginPath();ctx.arc(rx,ry,rad,0,Math.PI*2);ctx.stroke();
+      }
+      ctx.fillStyle=PURPLE;ctx.beginPath();ctx.arc(rx,ry,16,0,Math.PI*2);ctx.fill();
+      text('⚡ Webhook / 邮件 / 合同到期 → 后台自动修 Bug、发预警',1395,775,18,PALE,1,700);
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  /* ---------- 幕 6：Super Agent (10.52 -> 12.45) ---------- */
+  const a6=actAlpha(G,10.52,11.0,12.05,12.45);
+  if(a6>0.005){
+    const p2=seg(G,11.2,12.0);
+    ctx.save();ctx.globalAlpha=a6;ctx.translate(0,(1-a6)*18);
+    const cx=960, cy=520;
+    ctx.globalCompositeOperation='lighter';glow(cx,cy,175,0.65);core(cx,cy,38,1);ctx.globalCompositeOperation='source-over';
+    ctx.strokeStyle=GOLD_HI;ctx.lineWidth=3;ctx.beginPath();ctx.arc(cx,cy,112,0,Math.PI*2);ctx.stroke();
+    glowText('⑦ Super Agent',cx,cy-18,30,GOLD_HI,1,700,0.45);
+    text('端到端超级调度器',cx,cy+22,17,PALE,1,700);
+
+    const pillars=[
+      {t:'深度思考 (Reasoning)', sub:'自主拆解跨界难题', x:420, y:370, c:BLUE},
+      {t:'现场写代码造工具',     sub:'缺工具就自己造！', x:1500, y:370, c:GREEN},
+      {t:'沙盒隔离舱 (Sandbox)', sub:'安全试错与数据验证', x:420, y:670, c:ICE},
+      {t:'多智能体群 (Team)',    sub:'按需裂变专家并行', x:1500, y:670, c:GOLD_HI},
+    ];
+    pillars.forEach(pl=>{
+      ctx.strokeStyle=pl.c;ctx.lineWidth=2.6;ctx.setLineDash([9,6]);ctx.lineDashOffset=-amb*40;
+      ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(pl.x,pl.y);ctx.stroke();ctx.setLineDash([]);
+      drawBox(pl.x-195,pl.y-52,390,104,14,pl.c,'rgba(22,18,10,0.94)','rgba(10,8,5,0.96)',2.2);
+      glowText(pl.t,pl.x,pl.y-14,21,pl.c,1,700,0.3);
+      text(pl.sub,pl.x,pl.y+20,16,IVORY,0.92);
+    });
+    if(p2>0.05) text('★ 终极体验：跳过工具选择焦虑，只给目标，直接收获经过验证的成品',W/2,845,21,GOLD_HI,p2,700);
+    ctx.restore();
+  }
+
+  /* ---------- 幕 7：Embodied Agent 具身智能 (12.52 -> 13.45) ---------- */
+  const a7=actAlpha(G,12.52,13.0,13.05,13.45);
+  if(a7>0.005){
+    ctx.save();ctx.globalAlpha=a7;ctx.translate(0,(1-a7)*18);
+    // 左：数字世界输入 -> 中：VLA 模型 -> 右：动态机械臂关节
+    drawBox(160,390,340,260,14,ICE);
+    text('多模态环境感知',330,470,22,ICE,1,700);
+    text('摄像头视觉 + 语音指令',330,525,18,IVORY,0.9);
+    text('力矩与触觉传感器',330,570,17,DIM,1);
+
+    arrow(505,520,685,520,GOLD_HI,3,true,amb);
+    drawBox(695,370,400,300,16,FIRE,'rgba(48,22,12,0.88)','rgba(16,9,6,0.95)',2.4);
+    glow(895,520,140,0.4,SPR_FIRE);
+    glowText('⑧ Embodied Agent',895,455,27,FIRE,1,700,0.4);
+    text('VLA（视觉-语言-动作）模型',895,515,20,PALE,1,700);
+    text('输出不再是文字 Token',895,570,18,IVORY,0.9);
+    text('而是连续的物理关节扭矩！',895,608,18,GOLD_HI,1,700);
+
+    arrow(1100,520,1265,520,FIRE,3,true,amb);
+    // 右侧动态光学机械臂
+    const j0x=1360, j0y=680;
+    const a1r=-1.1+Math.sin(amb*1.5)*0.22, a2r=0.85+Math.cos(amb*1.5)*0.28;
+    const j1x=j0x+Math.cos(a1r)*180, j1y=j0y+Math.sin(a1r)*180;
+    const j2x=j1x+Math.cos(a1r+a2r)*160, j2y=j1y+Math.sin(a1r+a2r)*160;
+    ctx.strokeStyle=GOLD_HI;ctx.lineWidth=10;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(j0x,j0y);ctx.lineTo(j1x,j1y);ctx.lineTo(j2x,j2y);ctx.stroke();
+    [[j0x,j0y],[j1x,j1y],[j2x,j2y]].forEach(([jx,jy])=>{
+      ctx.fillStyle='#0c0905';ctx.beginPath();ctx.arc(jx,jy,14,0,Math.PI*2);ctx.fill();
+      ctx.strokeStyle=FIRE;ctx.lineWidth=3;ctx.stroke();
+      glow(jx,jy,36,0.5,SPR_FIRE);
+    });
+    text('人形机器人 · 自动驾驶 · 物理交互',1510,745,19,PALE,1,700);
+    ctx.restore();
+  }
+
+  /* ---------- 幕 8：八大形态全景矩阵 & 终局收束 (13.52 -> 15) ---------- */
+  const a8=actAlpha(G,13.52,14.0,null,null);
+  if(a8>0.005){
+    const pFin=seg(G,14.35,15.0);
+    ctx.save();ctx.globalAlpha=a8;ctx.translate(0,(1-a8)*18);
+
+    const grid=[
+      {n:'① Coding Agent',       d:'代码库 + 终端测试闭环', c:GREEN},
+      {n:'② GUI / Computer-Use', d:'看屏幕像素 + 模拟键鼠', c:ICE},
+      {n:'③ Deep Research',      d:'百路信源交叉核验研报', c:GOLD_HI},
+      {n:'④ Personal Agent',     d:'长期记忆 + 个人数字分身', c:BLUE},
+      {n:'⑤ Enterprise Agent',   d:'权限门禁 + 确定性合规流', c:GOLD},
+      {n:'⑥ Ambient Agent',      d:'无对话框 + 事件静默驱动', c:PURPLE},
+      {n:'⑦ Super Agent',        d:'动态造工具 + 端到端调度', c:GOLD_HI},
+      {n:'⑧ Embodied Agent',     d:'VLA 模型 + 物理世界交互', c:FIRE},
+    ];
+    const cw=400, ch=190, gx=36, gy=36;
+    const sx0=(W-(4*cw+3*gx))/2, sy0=260;
+    grid.forEach((it,i)=>{
+      const col=i%4, row=Math.floor(i/4);
+      const x=sx0+col*(cw+gx), y=sy0+row*(ch+gy);
+      drawBox(x,y,cw,ch,14,it.c,'rgba(22,18,10,0.92)','rgba(10,8,5,0.96)',2.2);
+      glowText(it.n,x+cw/2,y+68,23,it.c,1,700,0.35);
+      text(it.d,x+cw/2,y+128,18,IVORY,0.94);
+    });
+
+    if(pFin>0.02){
+      ctx.save();ctx.globalAlpha*=pFin;
+      rich('所有前沿 Agent 形态，都生长在同一套底座之上：{大模型原理} + {上下文工程} + {Harness 驾驭层}',W/2,785,29,1,IVORY);
+      brandMark(W/2,900,28,1);
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  // 电影暗角
+  const vig=ctx.createRadialGradient(W/2,H/2,H*0.38,W/2,H/2,W*0.66);
+  vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,0,0.55)');
+  ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
+
+  /* ---------- 顶部引导语（先退后进，零叠字） & 进度 ---------- */
+  const lo=Math.floor(G), hi=Math.min(LAST,Math.ceil(G)), f=G-lo;
+  const ha=STEPS[lo].hint, hb=STEPS[hi].hint;
+  if(ha===hb) rich(ha,W/2,92,32,0.95);
+  else {
+    const aOut=1-ease(clamp(f/0.38)), aIn=ease(clamp((f-0.5)/0.42));
+    if(aOut>0.01) rich(ha,W/2,92-(1-aOut)*10,32,0.95*aOut);
+    if(aIn>0.01) rich(hb,W/2,92+(1-aIn)*10,32,0.95*aIn);
+  }
+  const st=STEPS[Math.round(G)];
+  text(`${String(st.scene).padStart(2,'0')} · ${SCENES[st.scene]}    ${Math.round(G)+1} / ${STEPS.length}`,1860,1025,18,'rgba(244,237,223,0.52)',1,400,'right');
+  ctx.fillStyle='rgba(244,237,223,0.16)';ctx.fillRect(1620,1044,240,2);
+  ctx.fillStyle=GOLD;ctx.fillRect(1620,1044,240*G/LAST,2);
+  ctx.restore();
+}
+
+/* ==================== 交互与播控 ==================== */
+let G=0, target=0, anim=null, auto=false; const t0=performance.now();
+const dock=document.getElementById('dock');
+SCENES.forEach((name,idx)=>{
+  const b=document.createElement('button');b.className='sbtn';b.textContent=`${String(idx).padStart(2,'0')} ${name}`;
+  b.addEventListener('pointerdown',e=>e.stopPropagation());
+  b.addEventListener('pointerup',e=>{e.stopPropagation();go(SCENE_FIRST[idx]);});
+  dock.appendChild(b);
+});
+function syncDock(){const sc=STEPS[Math.round(target)].scene;dock.querySelectorAll('.sbtn').forEach((b,i)=>b.classList.toggle('active',i===sc));}
+function go(i){
+  i=clamp(Math.round(i),0,LAST);if(i===target&&!anim)return;
+  const from=G, fwd=i===Math.round(target)+1&&i>from;
+  target=i;anim={from,to:i,start:performance.now(),dur:fwd?STEPS[i].dur:Math.min(850,350+Math.abs(i-from)*60),linear:fwd};syncDock();
+}
+function next(){go(target+1);} function prev(){go(target-1);}
+function tick(now){
+  if(anim){
+    const p=clamp((now-anim.start)/anim.dur);
+    G=anim.linear?lerp(anim.from,anim.to,p):lerp(anim.from,anim.to,ease(p));
+    if(p>=1){G=anim.to;anim=null;if(auto&&G<LAST)setTimeout(()=>auto&&go(target+1),700);}
+  }
+  render(G,(now-t0)/1000);requestAnimationFrame(tick);
+}
+let idleTimer=null;
+function wake(){document.body.classList.remove('idle');clearTimeout(idleTimer);idleTimer=setTimeout(()=>document.body.classList.add('idle'),3200);}
+['mousemove','pointerdown','keydown'].forEach(ev=>addEventListener(ev,wake)); wake();
+
+const autoBtn=document.getElementById('autoBtn'), cleanBtn=document.getElementById('cleanBtn'), fsBtn=document.getElementById('fsBtn');
+function toggleAuto(){auto=!auto;autoBtn.classList.toggle('on',auto);autoBtn.textContent=auto?'自动中':'自动 A';if(auto)next();}
+function toggleClean(){document.body.classList.toggle('clean');}
+function toggleFS(){const d=document,el=d.documentElement;if(!d.fullscreenElement)el.requestFullscreen?.();else d.exitFullscreen?.();}
+[autoBtn,cleanBtn,fsBtn].forEach(b=>b.addEventListener('pointerdown',e=>e.stopPropagation()));
+autoBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleAuto();});
+cleanBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleClean();});
+fsBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
+
+addEventListener('keydown',e=>{
+  if(e.target.id==='lesson-back')return;
+
+  const k=e.key;
+  if(['ArrowRight',' ','PageDown','Enter','ArrowDown'].includes(k)){e.preventDefault();next();}
+  else if(['ArrowLeft','PageUp','Backspace','ArrowUp'].includes(k)){e.preventDefault();prev();}
+  else if(k==='Home')go(0); else if(k==='End')go(LAST);
+  else if(k==='f'||k==='F')toggleFS();
+  else if(k==='a'||k==='A')toggleAuto();
+  else if(k==='h'||k==='H')toggleClean();
+});
+let pd=null;
+cv.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY,b:e.button};});
+cv.addEventListener('pointerup',e=>{if(!pd)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y,b=pd.b;pd=null;
+  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2){dx<0?next():prev();return;}
+  if(Math.abs(dx)<14&&Math.abs(dy)<14){if(b===2)prev();else e.shiftKey?prev():next();}});
+cv.addEventListener('contextmenu',e=>{e.preventDefault();prev();});
+
+syncDock(); requestAnimationFrame(tick);
+})();
+</script></body></html>

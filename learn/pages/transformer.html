@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>Transformer 完整结构解剖 · 从残差流到因果掩码</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<style>
+/* 将原文件中的两行 @font-face{font-family:'HSerif'...} 粘贴至此即可恢复原版衬线体 */
+html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
+body{position:fixed;inset:0}
+canvas{display:block;touch-action:none}
+#tools{position:fixed;right:16px;top:14px;display:flex;gap:8px;z-index:10;transition:opacity .35s}
+.tbtn{font:13px "HSerif","Songti SC",serif;color:rgba(244,237,223,.52);background:rgba(10,8,4,.62);border:1px solid rgba(226,170,66,.28);border-radius:5px;padding:4px 10px;cursor:pointer;backdrop-filter:blur(4px);transition:all .2s}
+.tbtn:hover,.tbtn.on{color:#FFD062;border-color:#E2AA42;background:rgba(226,170,66,.14)}
+#dock{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:5px;padding:6px 10px;border-radius:10px;background:rgba(8,7,4,.78);border:1px solid rgba(226,170,66,.22);backdrop-filter:blur(8px);z-index:10;max-width:95vw;overflow-x:auto;transition:opacity .4s}
+#dock::-webkit-scrollbar{display:none}
+.sbtn{font:12px "HSerif","Songti SC",serif;color:rgba(244,237,223,.55);background:none;border:1px solid transparent;border-radius:5px;padding:4px 9px;white-space:nowrap;cursor:pointer;transition:all .2s}
+.sbtn:hover{color:#FFE9B8;border-color:rgba(226,170,66,.35)}
+.sbtn.active{color:#FFD062;border-color:rgba(255,208,98,.6);background:rgba(226,170,66,.16);font-weight:700}
+body.idle #tools,body.idle #dock,body.clean #tools,body.clean #dock{opacity:0;pointer-events:none}
+</style><style>
+  #lesson-back {
+    position: fixed;
+    z-index: 10;
+    top: calc(8px + env(safe-area-inset-top));
+    left: calc(12px + env(safe-area-inset-left));
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 0 10px;
+    border-radius: 4px;
+    color: #ffe5ad;
+    background: #17130e;
+    font: 14px/1.4 system-ui, sans-serif;
+    text-decoration: none;
+  }
+  #lesson-back:hover { text-decoration: underline; }
+  #lesson-back:focus-visible { outline: 2px solid #ffd062; outline-offset: 2px; }
+  body.clean #lesson-back, :fullscreen #lesson-back { display: none; }
+</style>
+</head><body>
+<a id="lesson-back" href="../index.html">← 返回模块目录</a>
+<canvas id="c"></canvas>
+<div id="tools">
+  <button class="tbtn" id="autoBtn" title="自动播放 (A)">自动 A</button>
+  <button class="tbtn" id="cleanBtn" title="纯净录屏 (H)">纯净 H</button>
+  <button class="tbtn" id="fsBtn" title="全屏 (F)">全屏 F</button>
+</div>
+<div id="dock"></div>
+<script>
+(function(){
+'use strict';
+const FONT='"HSerif","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif';
+const IVORY='#F4EDDF', GOLD='#E2AA42', GOLD_HI='#FFD062', PALE='#FFE9B8', DIM='rgba(244,237,223,0.62)', RED='#E86A58', GREEN='#4FD198', BLUE='#6AA9FF', PURPLE='#B88BFF';
+
+const SCENES=['开场','输入与位置','Block 接线图','Attention 内部','MLP 内部','深层堆叠','塔顶输出'];
+const S=(id,scene,dur,hint)=>({id,scene,dur,hint});
+const STEPS=[
+  S('title',0,2500,''),
+  S('in_emb',1,2200,'① 输入层：每个词元查表变成高维向量（例如 {4096 维} 数字）'),
+  S('in_pos',1,2400,'② 位置编码（{RoPE}）：Transformer 并行读全句，必须注入位置波纹区分先后'),
+  S('in_res',1,2200,'向量进入主干道——{残差流 (Residual Stream)}，它将笔直贯通所有层'),
+  S('blk_map',2,2600,'解剖单个 {Transformer Block}（Pre-Norm 架构）：两条支路交替读写主干道'),
+  S('att_qkv',3,2600,'掀开 Attention ①：向量分别乘以 {W_Q、W_K、W_V}，分裂出查询、键、值三组矩阵'),
+  S('att_mat',3,2600,'掀开 Attention ②：{Q · Kᵀ / √d} 算出每对词之间的相关性，形成 5×5 得分矩阵'),
+  S('att_mask',3,2800,'掀开 Attention ③：{因果掩码 (Causal Mask)} 涂黑右上三角——禁止偷看未来词！'),
+  S('att_mh',3,2600,'掀开 Attention ④：{多头并行 (Multi-Head)}——拆分多个子空间，同时盯语法、法条与逻辑'),
+  S('mlp_exp',4,2600,'掀开 MLP ①：{升维展开 (d → 4d)}，经非线性激活（SwiGLU）点亮特定参数记忆'),
+  S('mlp_add',4,2400,'掀开 MLP ②：再压缩回 {d 维}，通过残差连接（{x + Δx}）无损叠加回主干道'),
+  S('stack_n',5,2600,'把同一个 Block 垂直堆叠 {32 ~ 96 层}：浅层看语法，中层建语义，深层做推理'),
+  S('out_norm',6,2400,'离开最后一层：经过 {Final RMSNorm} 归一化，只取出最右侧最后一个词元的向量'),
+  S('out_unemb',6,2600,'输出头：{Unembedding 矩阵} 将 4096 维投影到 10 万词表，得到所有词的 Logits'),
+  S('out_soft',6,2600,'经 {Softmax} 转为概率分布，采样吐出「{减少}」，落回底端启动下一轮自回归'),
+  S('final',6,2600,''),
+];
+const LAST=STEPS.length-1;
+const SCENE_FIRST=SCENES.map((_,i)=>STEPS.findIndex(s=>s.scene===i));
+
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const seg=(G,a,b)=>ease(clamp((G-a)/(b-a)));
+function actAlpha(G,inS,inE,outS,outE){
+  const fi=inS===null?1:seg(G,inS,inE);
+  const fo=outS===null?1:(1-seg(G,outS,outE));
+  return fi*fo;
+}
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+
+/* ==================== 画布与原版光学贴图 ==================== */
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+const W=1920, H=1080; let view={s:1,ox:0,oy:0,dpr:1};
+function resize(){
+  const w=innerWidth,h=innerHeight,dpr=Math.min(window.devicePixelRatio||1,2);
+  cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.width=w+'px';cv.style.height=h+'px';
+  const s=Math.min(w/W,h/H);view={s,ox:(w-W*s)/2,oy:(h-H*s)/2,dpr};
+}
+addEventListener('resize',resize); resize();
+
+const mcache=new Map();
+function font(sz,wt=400){return `${wt} ${sz}px ${FONT}`;}
+function measure(t,sz,wt=400){const k=t+'|'+wt;let v=mcache.get(k);if(v===undefined){ctx.font=font(100,wt);v=ctx.measureText(t).width/100;mcache.set(k,v);}return v*sz;}
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+
+function text(str,x,y,sz,col,a=1,wt=400,al='center'){
+  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
+  const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.font=font(sz,wt);ctx.fillStyle=col;ctx.textAlign=al;ctx.textBaseline='middle';ctx.fillText(str,x,y);ctx.globalAlpha=prev;
+}
+function glowText(str,x,y,sz,col,a=1,wt=700,blur=0.45,al='center'){
+  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
+  ctx.save();ctx.shadowColor='rgba(255,186,60,0.6)';ctx.shadowBlur=sz*blur;text(str,x,y,sz,col,a,wt,al);ctx.restore();
+}
+function rich(str,x,y,sz,a=1,col=IVORY){
+  if(ctx.globalAlpha*clamp(a)<=0.004||!str)return;
+  const parts=[];str.split(/(\{[^}]*\})/).forEach(s=>{if(!s)return;if(s[0]==='{')parts.push([s.slice(1,-1),1]);else parts.push([s,0]);});
+  let tw=0;parts.forEach(p=>{p[2]=measure(p[0],sz,p[1]?700:400);tw+=p[2];});let x0=x-tw/2;
+  parts.forEach(p=>{if(p[1])glowText(p[0],x0,y,sz,GOLD_HI,a,700,0.45,'left');else text(p[0],x0,y,sz,col,a,400,'left');x0+=p[2];});
+}
+function brandMark(x,y,sz,a=1){
+  if(ctx.globalAlpha*clamp(a)<=0.004)return;
+  const s1='陈石律师',s2='  ·  ',s3='chenshi.ai';
+  const w1=measure(s1,sz*0.8),w2=measure(s2,sz*0.8),w3=measure(s3,sz,700),tw=w1+w2+w3;let x0=x-tw/2;
+  text(s1,x0,y,sz*0.8,IVORY,a*0.78,400,'left');x0+=w1;text(s2,x0,y,sz*0.8,GOLD,a*0.8,400,'left');x0+=w2;glowText(s3,x0,y,sz,GOLD_HI,a,700,0.3,'left');
+}
+function drawBox(x,y,w,h,r=10,stroke=GOLD,topC='rgba(28,22,11,0.92)',botC='rgba(12,10,6,0.95)',lw=1.8){
+  ctx.save();
+  const g=ctx.createLinearGradient(0,y,0,y+h);g.addColorStop(0,topC);g.addColorStop(1,botC);
+  rr(x,y,w,h,r);ctx.fillStyle=g;ctx.fill();ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();
+  ctx.strokeStyle='rgba(255,235,185,0.2)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x+r,y+1);ctx.lineTo(x+w-r,y+1);ctx.stroke();
+  ctx.restore();
+}
+function arrow(x1,y1,x2,y2,col=GOLD,lw=2,dash=false,amb=0){
+  ctx.save();ctx.strokeStyle=col;ctx.lineWidth=lw;
+  if(dash){ctx.setLineDash([7,6]);ctx.lineDashOffset=-amb*35;}
+  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.setLineDash([]);
+  const ang=Math.atan2(y2-y1,x2-x1);ctx.fillStyle=col;
+  ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-12*Math.cos(ang-0.42),y2-12*Math.sin(ang-0.42));ctx.lineTo(x2-12*Math.cos(ang+0.42),y2-12*Math.sin(ang+0.42));ctx.closePath();ctx.fill();
+  ctx.restore();
+}
+
+function mkSprite(stops){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),gr=g.createRadialGradient(64,64,0,64,64,64);stops.forEach(s=>gr.addColorStop(s[0],s[1]));g.fillStyle=gr;g.fillRect(0,0,128,128);return c;}
+const SPR_HALO=mkSprite([[0,'rgba(255,228,170,0.9)'],[0.14,'rgba(255,196,96,0.52)'],[1,'rgba(200,120,30,0)']]);
+const SPR_BLU =mkSprite([[0,'rgba(180,225,255,0.9)'],[0.2,'rgba(106,169,255,0.48)'],[1,'rgba(40,90,180,0)']]);
+const SPR_GRN =mkSprite([[0,'rgba(180,255,220,0.9)'],[0.2,'rgba(79,209,152,0.48)'],[1,'rgba(20,120,80,0)']]);
+function glow(x,y,r,a=1,spr=SPR_HALO){const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||r<=0.5)return;const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.drawImage(spr,x-r,y-r,2*r,2*r);ctx.globalAlpha=prev;}
+
+const DUST=(()=>{const r=mulberry(2033);return Array.from({length:56},()=>({x:r(),y:r(),vx:(r()-0.5)*0.004,vy:-0.003-r()*0.006,r:1.2+r()*2.5,a:0.1+r()*0.22,ph:r()*6.28}));})();
+
+const TOKS=['违约金','过分','高于','损失','适当'];
+// 5x5 因果注意力权重矩阵（下三角有效，上三角为 -∞ 掩码）
+const ATT_W=[
+  [1.00, 0,    0,    0,    0   ],
+  [0.62, 0.38, 0,    0,    0   ],
+  [0.45, 0.35, 0.20, 0,    0   ],
+  [0.52, 0.14, 0.18, 0.16, 0   ],
+  [0.48, 0.15, 0.11, 0.16, 0.10],
+];
+
+/* ============================== 主渲染 ============================== */
+function render(G,amb){
+  const {s,ox,oy,dpr}=view;
+  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.setTransform(s*dpr,0,0,s*dpr,ox*dpr,oy*dpr);
+  ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();
+  ctx.fillStyle='#030304';ctx.fillRect(0,0,W,H);
+
+  // 极淡工程网格 + 暖光 + 金尘
+  ctx.strokeStyle='rgba(226,170,66,0.022)';ctx.lineWidth=1;
+  for(let x=0;x<=W;x+=64){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<=H;y+=64){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  const bg=ctx.createRadialGradient(W/2,H*0.5,0,W/2,H*0.5,960);
+  bg.addColorStop(0,'rgba(128,84,22,0.16)');bg.addColorStop(0.55,'rgba(60,38,10,0.05)');bg.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  ctx.save();ctx.globalCompositeOperation='lighter';
+  DUST.forEach(d=>{const dx=((d.x+amb*d.vx)%1+1)%1*W,dy=((d.y+amb*d.vy)%1+1)%1*H;glow(dx,dy,d.r*3,d.a*(0.55+0.45*Math.sin(amb*1.4+d.ph)));});
+  ctx.restore();
+
+  /* ---------- 幕 0：开场 (0 -> 0.42 退净) ---------- */
+  const a0=actAlpha(G,null,null,0.02,0.42);
+  if(a0>0.005){
+    const intro=clamp(amb/2.0), dy=-28*(1-a0);
+    ctx.save();ctx.globalAlpha=a0;
+    glowText('Transformer 完整结构解剖',W/2,425-(1-intro)*22+dy,94,PALE,intro,700,0.4);
+    const lw=840*seg(intro,0.2,0.85);
+    const lg=ctx.createLinearGradient(W/2-lw/2,0,W/2+lw/2,0);lg.addColorStop(0,'rgba(255,200,90,0)');lg.addColorStop(0.5,'rgba(255,214,120,0.9)');lg.addColorStop(1,'rgba(255,200,90,0)');
+    ctx.fillStyle=lg;ctx.fillRect(W/2-lw/2,518+dy,lw,2);
+    rich('输入与位置编码 · {Pre-Norm 接线} · {因果掩码矩阵} · {MLP 升维记忆}',W/2,582+dy,30,seg(intro,0.4,0.95),DIM);
+    brandMark(W/2,860+dy*0.5,28,seg(intro,0.6,1));
+    ctx.restore();
+  }
+
+  /* ---------- 幕 1：输入层 -> 位置编码 -> 残差流 (0.52 -> 3.42) ---------- */
+  const a1=actAlpha(G,0.52,1.0,3.02,3.42);
+  if(a1>0.005){
+    const pPos=seg(G,1.2,2.0), pRes=seg(G,2.2,3.0);
+    ctx.save();ctx.globalAlpha=a1;ctx.translate(0,(1-a1)*18);
+    TOKS.forEach((tk,i)=>{
+      const x=420+i*270, yTok=810, yEmb=620, yPos=440;
+      // 词元
+      drawBox(x-75,yTok-30,150,60,8,GOLD);
+      text(tk,x,yTok,22,IVORY,1,700);
+      arrow(x,yTok-32,x,yEmb+58,GOLD,1.8,false);
+      // 向量柱（4096 维示意）
+      drawBox(x-55,yEmb-54,110,108,8,BLUE,'rgba(18,38,72,0.75)','rgba(8,18,34,0.9)',1.6);
+      text('[0.21, -0.7,',x,yEmb-20,14,BLUE,1);text(' 0.88, …]',x,yEmb+6,14,BLUE,1);text('4096 维',x,yEmb+34,13,DIM,1);
+
+      // 位置编码 RoPE（Step 2）
+      if(pPos>0.02){
+        ctx.save();ctx.globalAlpha*=pPos;
+        arrow(x,yEmb-56,x,yPos+36,GOLD_HI,1.8);
+        // 旋转波纹圆环
+        ctx.strokeStyle=GREEN;ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,yPos,28,0,Math.PI*2);ctx.stroke();
+        const ang=amb*2+i*1.1;
+        ctx.strokeStyle=GOLD_HI;ctx.beginPath();ctx.moveTo(x,yPos);ctx.lineTo(x+Math.cos(ang)*22,yPos+Math.sin(ang)*22);ctx.stroke();
+        text(`+ pos ${i}`,x,yPos-46,16,GREEN,1,700);
+        ctx.restore();
+      }
+      // 向上射出残差流光柱（Step 3）
+      if(pRes>0.02){
+        ctx.save();ctx.globalAlpha*=pRes;
+        const topY=lerp(yPos-30,210,pRes);
+        const g=ctx.createLinearGradient(0,yPos-30,0,topY);g.addColorStop(0,'rgba(226,170,66,0.4)');g.addColorStop(1,'rgba(255,220,130,0.95)');
+        ctx.strokeStyle=g;ctx.lineWidth=3.5;ctx.beginPath();ctx.moveTo(x,yPos-30);ctx.lineTo(x,topY);ctx.stroke();
+        ctx.globalCompositeOperation='lighter';glow(x,topY,32,0.85);ctx.globalCompositeOperation='source-over';
+        ctx.restore();
+      }
+    });
+    if(pRes>0.3) glowText('↑ 残差流主干道（Residual Stream · 贯通全塔的信息高速公路）',W/2,175,23,GOLD_HI,(pRes-0.3)/0.7,700,0.35);
+    ctx.restore();
+  }
+
+  /* ---------- 幕 2：单个 Transformer Block 完整接线图 (3.52 -> 4.42) ---------- */
+  const a2=actAlpha(G,3.52,4.0,4.02,4.42);
+  if(a2>0.005){
+    ctx.save();ctx.globalAlpha=a2;ctx.translate(0,(1-a2)*18);
+    // 左侧：笔直向上的残差主干道（x=560）
+    const mainX=560, branchX=1020;
+    ctx.strokeStyle=GOLD_HI;ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(mainX,890);ctx.lineTo(mainX,180);ctx.stroke();
+    text('输入向量 x',mainX,920,20,PALE,1,700);
+    text('输出至下一层',mainX,155,20,GOLD_HI,1,700);
+
+    // Block 外框
+    rr(420,215,1080,640,18);ctx.fillStyle='rgba(20,16,8,0.45)';ctx.fill();ctx.strokeStyle='rgba(226,170,66,0.45)';ctx.setLineDash([10,6]);ctx.lineWidth=2;ctx.stroke();ctx.setLineDash([]);
+    text('Single Transformer Block (Pre-Norm 标准接线)',1470,248,18,GOLD,0.9,700,'right');
+
+    // 下半支路 1：Attention（RMSNorm -> Multi-Head Attention -> +）
+    ctx.strokeStyle=GOLD;ctx.lineWidth=2.2;
+    ctx.beginPath();ctx.moveTo(mainX,810);ctx.lineTo(branchX,810);ctx.lineTo(branchX,575);ctx.lineTo(mainX+22,575);ctx.stroke();
+    drawBox(branchX-170,730,340,56,8,BLUE,'rgba(18,38,72,0.85)','rgba(8,18,34,0.92)',1.6);
+    text('① RMSNorm（数值归一化）',branchX,758,18,BLUE,1,700);
+    drawBox(branchX-210,615,420,86,10,GOLD_HI,'rgba(56,40,14,0.88)','rgba(24,17,7,0.95)',2.2);
+    glowText('② Multi-Head Self-Attention',branchX,645,22,GOLD_HI,1,700,0.3);
+    text('词与词之间交换上下文信息',branchX,676,15,IVORY,0.9);
+    // 残差汇合点 +
+    ctx.fillStyle='#080705';ctx.beginPath();ctx.arc(mainX,575,20,0,Math.PI*2);ctx.fill();ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2.4;ctx.stroke();
+    text('+',mainX,576,26,GOLD_HI,1,700);
+    text('x₁ = x + Attention(Norm(x))',mainX-32,575,17,PALE,1,700,'right');
+
+    // 上半支路 2：MLP（RMSNorm -> SwiGLU MLP -> +）
+    ctx.strokeStyle=GREEN;ctx.lineWidth=2.2;
+    ctx.beginPath();ctx.moveTo(mainX,500);ctx.lineTo(branchX,500);ctx.lineTo(branchX,270);ctx.lineTo(mainX+22,270);ctx.stroke();
+    drawBox(branchX-170,422,340,56,8,BLUE,'rgba(18,38,72,0.85)','rgba(8,18,34,0.92)',1.6);
+    text('③ RMSNorm（数值归一化）',branchX,450,18,BLUE,1,700);
+    drawBox(branchX-210,308,420,86,10,GREEN,'rgba(14,56,38,0.88)','rgba(8,24,16,0.95)',2.2);
+    glowText('④ Feed-Forward / MLP (SwiGLU)',branchX,338,22,GREEN,1,700,0.3);
+    text('每个词独立升维，唤醒参数记忆',branchX,369,15,IVORY,0.9);
+    // 残差汇合点 +
+    ctx.fillStyle='#080705';ctx.beginPath();ctx.arc(mainX,270,20,0,Math.PI*2);ctx.fill();ctx.strokeStyle=GREEN;ctx.lineWidth=2.4;ctx.stroke();
+    text('+',mainX,271,26,GREEN,1,700);
+    text('x₂ = x₁ + MLP(Norm(x₁))',mainX-32,270,17,GREEN,1,700,'right');
+    ctx.restore();
+  }
+
+  /* ---------- 幕 3：掀开 Attention 内部（QKV -> 5x5 矩阵 -> 因果掩码 -> Multi-Head）(4.52 -> 8.42) ---------- */
+  const a3=actAlpha(G,4.52,5.0,8.02,8.42);
+  if(a3>0.005){
+    const pMat=seg(G,5.2,6.0), pMask=seg(G,6.2,7.0), pMH=seg(G,7.2,8.0);
+    ctx.save();ctx.globalAlpha=a3;ctx.translate(0,(1-a3)*18);
+
+    // 左侧：x -> Q, K, V 线性投影
+    const qx=280, qy=540;
+    drawBox(110,qy-55,150,110,10,GOLD);text('输入向量 x',185,qy,20,PALE,1,700);
+    const qkv=[
+      {n:'Q (Query)',sub:'我想找什么',y:355,c:GOLD_HI},
+      {n:'K (Key)',  sub:'我是什么标签',y:540,c:BLUE},
+      {n:'V (Value)',sub:'我携带的内容',y:725,c:GREEN},
+    ];
+    qkv.forEach(item=>{
+      arrow(262,qy,372,item.y,item.c,2);
+      drawBox(380,item.y-46,230,92,10,item.c,'rgba(22,18,10,0.9)','rgba(10,8,5,0.95)',1.8);
+      text(item.n,495,item.y-12,21,item.c,1,700);text(item.sub,495,item.y+18,15,DIM,1);
+    });
+
+    // 中央：5 × 5 注意力得分矩阵 + 因果掩码（Step 6-7）
+    if(pMat>0.02){
+      const mx=800, my=310, cell=88;
+      ctx.save();ctx.globalAlpha*=pMat*(1-pMH*0.45);
+      arrow(615,355,mx-25,my+160,GOLD_HI,1.8,true,amb);
+      arrow(615,540,mx-25,my+220,BLUE,1.8,true,amb);
+      text('Q · Kᵀ / √d → Softmax 权重矩阵',mx+2.5*cell,my-68,22,GOLD_HI,1,700);
+
+      for(let r=0;r<5;r++){
+        text(TOKS[r],mx-18,my+r*cell+cell/2,17,IVORY,0.9,700,'right');
+        text(TOKS[r],mx+r*cell+cell/2,my-22,17,BLUE,0.9,700,'center');
+        for(let c=0;c<5;c++){
+          const cx=mx+c*cell, cy=my+r*cell;
+          const isFuture = c > r;
+          const w = ATT_W[r][c];
+          if(isFuture && pMask>0.1){
+            // 因果掩码涂黑右上三角！
+            rr(cx+3,cy+3,cell-6,cell-6,5);ctx.fillStyle=`rgba(232,106,88,${0.18*pMask})`;ctx.fill();
+            ctx.strokeStyle=`rgba(232,106,88,${0.55*pMask})`;ctx.lineWidth=1.2;ctx.stroke();
+            text('−∞',cx+cell/2,cy+cell/2,20,RED,pMask,700);
+          } else {
+            const val = isFuture ? 0.31 : w;
+            rr(cx+3,cy+3,cell-6,cell-6,5);
+            ctx.fillStyle=`rgba(226,170,66,${0.12+val*0.62})`;ctx.fill();
+            ctx.strokeStyle='rgba(226,170,66,0.45)';ctx.lineWidth=1.2;ctx.stroke();
+            text(val.toFixed(2),cx+cell/2,cy+cell/2,17,val>0.4?PALE:IVORY,1,val>0.4?700:400);
+          }
+        }
+      }
+      if(pMask>0.3) text('↗ 右上三角被 Causal Mask 置为 −∞（不能偷看后面的词）',mx+2.5*cell,my+5*cell+34,17,RED,pMask,700);
+      ctx.restore();
+    }
+
+    // 右侧：Multi-Head 多头平行子空间（Step 8）
+    if(pMH>0.02){
+      ctx.save();ctx.globalAlpha*=pMH;ctx.translate((1-pMH)*26,0);
+      const hx=1540;
+      const heads=[
+        {t:'Head 1 · 语法结构头',d:'关联主谓宾与标点',y:350,c:GOLD_HI},
+        {t:'Head 2 · 法律实体头',d:'锁定“违约金 ↔ 损失”',y:540,c:BLUE},
+        {t:'Head 3 · 逻辑推理头',d:'捕捉“过分高于 → 减少”',y:730,c:GREEN},
+      ];
+      heads.forEach(hd=>{
+        drawBox(hx-195,hd.y-55,390,110,12,hd.c,'rgba(22,18,10,0.92)','rgba(10,8,5,0.96)',2);
+        glowText(hd.t,hx,hd.y-14,20,hd.c,1,700,0.3);
+        text(hd.d,hx,hd.y+20,16,IVORY,0.9);
+      });
+      text('32 ~ 128 个头并行计算 → Concat 拼接输出',hx,850,18,PALE,1,700);
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  /* ---------- 幕 4：掀开 MLP 内部（d -> 4d -> d 升维参数记忆）(8.52 -> 10.42) ---------- */
+  const a4=actAlpha(G,8.52,9.0,10.02,10.42);
+  if(a4>0.005){
+    const pAdd=seg(G,9.2,10.0);
+    ctx.save();ctx.globalAlpha=a4;ctx.translate(0,(1-a4)*18);
+    // 左：输入 d 维 (4096) -> 中：升维 4d (16384) + 非线性激活 -> 右：压缩回 d 维 + 残差相加
+    const x1=320, x2=960, x3=1560, cy=540;
+
+    // 神经网络升维/降维连线
+    for(let i=0;i<5;i++){
+      const y1=cy-140+i*70;
+      for(let j=0;j<9;j++){
+        const y2=cy-240+j*60;
+        const lit=(j===2||j===5||j===6);
+        ctx.strokeStyle=lit?'rgba(79,209,152,0.45)':'rgba(226,170,66,0.12)';ctx.lineWidth=lit?1.8:1;
+        ctx.beginPath();ctx.moveTo(x1+75,y1);ctx.lineTo(x2-110,y2);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(x2+110,y2);ctx.lineTo(x3-75,y1);ctx.stroke();
+      }
+    }
+
+    drawBox(x1-75,cy-185,150,370,12,GOLD,'rgba(36,26,10,0.9)','rgba(14,10,5,0.95)',2);
+    text('输入向量',x1,cy-20,21,GOLD_HI,1,700);text('d = 4,096 维',x1,cy+20,16,DIM,1);
+
+    // 中央 4d 隐藏层（高亮激活的知识神经元）
+    drawBox(x2-110,cy-280,220,560,14,GREEN,'rgba(12,48,34,0.88)','rgba(6,20,14,0.95)',2.4);
+    glowText('4× 升维隐藏层',x2,cy-225,22,GREEN,1,700,0.35);
+    text('4d = 16,384 维',x2,cy-192,15,PALE,1);
+    text('SwiGLU / GELU 激活',x2,cy-162,14,DIM,1);
+    const activeLabels={2:'激活：民法典 585',5:'激活：违约金调减',6:'激活：30% 裁判尺度'};
+    for(let j=0;j<9;j++){
+      const y2=cy-120+j*44;
+      const lit=!!activeLabels[j];
+      ctx.fillStyle=lit?GREEN:'rgba(255,255,255,0.15)';
+      ctx.beginPath();ctx.arc(x2-70,y2,lit?7:4,0,Math.PI*2);ctx.fill();
+      if(lit){ctx.globalCompositeOperation='lighter';glow(x2-70,y2,26,0.8,SPR_GRN);ctx.globalCompositeOperation='source-over';}
+      text(lit?activeLabels[j]:'静默神经元 (≈0)',x2-52,y2,15,lit?PALE:DIM,lit?1:0.45,lit?700:400,'left');
+    }
+
+    drawBox(x3-75,cy-185,150,370,12,GOLD_HI,'rgba(36,26,10,0.9)','rgba(14,10,5,0.95)',2);
+    text('压缩输出 Δx',x3,cy-20,20,GOLD_HI,1,700);text('回到 4,096 维',x3,cy+20,16,DIM,1);
+
+    // 底部残差直通线 (Step 10)
+    if(pAdd>0.02){
+      ctx.save();ctx.globalAlpha*=pAdd;
+      ctx.strokeStyle=GOLD_HI;ctx.lineWidth=3;ctx.setLineDash([10,6]);ctx.lineDashOffset=-amb*40;
+      ctx.beginPath();ctx.moveTo(x1,cy+188);ctx.lineTo(x1,cy+270);ctx.lineTo(x3,cy+270);ctx.lineTo(x3,cy+188);ctx.stroke();ctx.setLineDash([]);
+      text('残差旁路直通：x_out = x + Δx（新记忆无损写入主干道）',W/2,cy+246,20,GOLD_HI,1,700);
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  /* ---------- 幕 5：96 层深层堆叠与层级分工 (10.52 -> 11.42) ---------- */
+  const a5=actAlpha(G,10.52,11.0,11.02,11.42);
+  if(a5>0.005){
+    ctx.save();ctx.globalAlpha=a5;ctx.translate(0,(1-a5)*18);
+    const stacks=[
+      {l:'Layer 65 ~ 96（深层）',d:'复杂逻辑推理、意图对齐、精准决策输出',y:270,c:GOLD_HI},
+      {l:'Layer 33 ~ 64（中层）',d:'语义消歧、跨句关系整合、调用领域知识',y:495,c:GREEN},
+      {l:'Layer 01 ~ 32（浅层）',d:'词法识别、基础句法结构、局部短语搭配',y:720,c:BLUE},
+    ];
+    stacks.forEach((st,i)=>{
+      drawBox(480,st.y-72,960,144,14,st.c,'rgba(24,20,12,0.9)','rgba(12,10,6,0.95)',2);
+      glowText(st.l,530,st.y-20,25,st.c,1,700,0.3,'left');
+      text(st.d,530,st.y+24,20,IVORY,0.92,400,'left');
+      if(i>0) arrow(960,st.y-74,960,stacks[i-1].y+74,GOLD_HI,2.6,true,amb);
+    });
+    text('同一套 Block 结构垂直堆叠，层数越深，抽象能力越强',W/2,865,22,DIM,1);
+    ctx.restore();
+  }
+
+  /* ---------- 幕 6：塔顶输出头（Final Norm -> Unembedding -> Softmax -> 接龙）(11.52 -> 15) ---------- */
+  const a6=actAlpha(G,11.52,12.0,null,null);
+  if(a6>0.005){
+    const pUnemb=seg(G,12.2,13.0), pSoft=seg(G,13.2,14.0), pFin=seg(G,14.3,15.0);
+    ctx.save();ctx.globalAlpha=a6;ctx.translate(0,(1-a6)*18);
+
+    // 1. 最右侧最后一个词元向量 + Final RMSNorm
+    drawBox(160,420,280,220,14,GOLD_HI,'rgba(36,26,10,0.92)','rgba(14,10,5,0.96)',2.2);
+    glow(300,530,110,0.45);
+    text('末位词元终极向量',300,480,20,GOLD_HI,1,700);
+    text('「适当」 (4,096 维)',300,525,21,PALE,1,700);
+    text('经 Final RMSNorm',300,575,16,BLUE,1,700);
+
+    // 2. Unembedding 矩阵投影（4096 -> 100,000 词表 Logits）
+    if(pUnemb>0.02){
+      ctx.save();ctx.globalAlpha*=pUnemb;
+      arrow(445,530,545,530,GOLD_HI,2.4,true,amb);
+      drawBox(555,390,340,280,14,BLUE,'rgba(18,38,72,0.75)','rgba(8,18,34,0.92)',2);
+      glowText('Unembedding (W_U)',725,450,24,BLUE,1,700,0.3);
+      text('4,096 维  →  100,000 词表',725,505,19,IVORY,1,700);
+      text('为词典里的每一个词',725,560,17,DIM,1);
+      text('算出原始得分 (Logits)',725,595,17,PALE,1,700);
+      ctx.restore();
+    }
+
+    // 3. Softmax 概率分布与采样「减少」
+    if(pSoft>0.02){
+      ctx.save();ctx.globalAlpha*=pSoft;
+      arrow(900,530,1000,530,GOLD_HI,2.4,true,amb);
+      drawBox(1010,360,740,340,14,GREEN,'rgba(14,48,34,0.65)','rgba(8,20,14,0.92)',2.2);
+      glowText('Softmax 概率分布 → 采样输出',1380,410,24,GREEN,1,700,0.35);
+      const probs=[['减少',0.68],['调整',0.18],['调减',0.09],['降低',0.03]];
+      probs.forEach(([w,p],i)=>{
+        const y=475+i*52, bw=420*p*1.25;
+        text(w,1065,y,21,i===0?GOLD_HI:IVORY,1,i===0?700:400,'left');
+        rr(1135,y-12,460,24,5);ctx.fillStyle='rgba(255,255,255,0.06)';ctx.fill();
+        rr(1135,y-12,bw,24,5);ctx.fillStyle=i===0?GOLD_HI:'rgba(226,170,66,0.45)';ctx.fill();
+        text(`${Math.round(p*100)}%`,1150+bw,y,18,i===0?GOLD_HI:DIM,1,i===0?700:400,'left');
+      });
+      // 自回归接龙底线
+      ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2;ctx.setLineDash([8,6]);ctx.lineDashOffset=-amb*40;
+      ctx.beginPath();ctx.moveTo(1380,705);ctx.lineTo(1380,770);ctx.lineTo(300,770);ctx.lineTo(300,648);ctx.stroke();ctx.setLineDash([]);
+      text('↺ 将「减少」拼回输入末尾，进入下一轮自回归循环',840,750,19,GOLD_HI,1,700);
+      ctx.restore();
+    }
+
+    if(pFin>0.02){
+      ctx.save();ctx.globalAlpha*=pFin;
+      rich('{残差流}保底，{Attention} 换信息，{MLP} 调记忆——这就是 Transformer 的全部秘密',W/2,860,30,1,IVORY);
+      brandMark(W/2,950,26,1);
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  // 电影暗角
+  const vig=ctx.createRadialGradient(W/2,H/2,H*0.38,W/2,H/2,W*0.66);
+  vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,0,0.55)');
+  ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
+
+  /* ---------- 顶部引导语（先退后进，零叠字） & 进度 ---------- */
+  const lo=Math.floor(G), hi=Math.min(LAST,Math.ceil(G)), f=G-lo;
+  const ha=STEPS[lo].hint, hb=STEPS[hi].hint;
+  if(ha===hb) rich(ha,W/2,92,33,0.95);
+  else {
+    const aOut=1-ease(clamp(f/0.38)), aIn=ease(clamp((f-0.5)/0.42));
+    if(aOut>0.01) rich(ha,W/2,92-(1-aOut)*10,33,0.95*aOut);
+    if(aIn>0.01) rich(hb,W/2,92+(1-aIn)*10,33,0.95*aIn);
+  }
+  const st=STEPS[Math.round(G)];
+  text(`${String(st.scene).padStart(2,'0')} · ${SCENES[st.scene]}    ${Math.round(G)+1} / ${STEPS.length}`,1860,1025,18,'rgba(244,237,223,0.52)',1,400,'right');
+  ctx.fillStyle='rgba(244,237,223,0.16)';ctx.fillRect(1620,1044,240,2);
+  ctx.fillStyle=GOLD;ctx.fillRect(1620,1044,240*G/LAST,2);
+  ctx.restore();
+}
+
+/* ==================== 交互与播控 ==================== */
+let G=0, target=0, anim=null, auto=false; const t0=performance.now();
+const dock=document.getElementById('dock');
+SCENES.forEach((name,idx)=>{
+  const b=document.createElement('button');b.className='sbtn';b.textContent=`${String(idx).padStart(2,'0')} ${name}`;
+  b.addEventListener('pointerdown',e=>e.stopPropagation());
+  b.addEventListener('pointerup',e=>{e.stopPropagation();go(SCENE_FIRST[idx]);});
+  dock.appendChild(b);
+});
+function syncDock(){const sc=STEPS[Math.round(target)].scene;dock.querySelectorAll('.sbtn').forEach((b,i)=>b.classList.toggle('active',i===sc));}
+function go(i){
+  i=clamp(Math.round(i),0,LAST);if(i===target&&!anim)return;
+  const from=G, fwd=i===Math.round(target)+1&&i>from;
+  target=i;anim={from,to:i,start:performance.now(),dur:fwd?STEPS[i].dur:Math.min(850,350+Math.abs(i-from)*60),linear:fwd};syncDock();
+}
+function next(){go(target+1);} function prev(){go(target-1);}
+function tick(now){
+  if(anim){
+    const p=clamp((now-anim.start)/anim.dur);
+    G=anim.linear?lerp(anim.from,anim.to,p):lerp(anim.from,anim.to,ease(p));
+    if(p>=1){G=anim.to;anim=null;if(auto&&G<LAST)setTimeout(()=>auto&&go(target+1),700);}
+  }
+  render(G,(now-t0)/1000);requestAnimationFrame(tick);
+}
+let idleTimer=null;
+function wake(){document.body.classList.remove('idle');clearTimeout(idleTimer);idleTimer=setTimeout(()=>document.body.classList.add('idle'),3200);}
+['mousemove','pointerdown','keydown'].forEach(ev=>addEventListener(ev,wake)); wake();
+
+const autoBtn=document.getElementById('autoBtn'), cleanBtn=document.getElementById('cleanBtn'), fsBtn=document.getElementById('fsBtn');
+function toggleAuto(){auto=!auto;autoBtn.classList.toggle('on',auto);autoBtn.textContent=auto?'自动中':'自动 A';if(auto)next();}
+function toggleClean(){document.body.classList.toggle('clean');}
+function toggleFS(){const d=document,el=d.documentElement;if(!d.fullscreenElement)el.requestFullscreen?.();else d.exitFullscreen?.();}
+[autoBtn,cleanBtn,fsBtn].forEach(b=>b.addEventListener('pointerdown',e=>e.stopPropagation()));
+autoBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleAuto();});
+cleanBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleClean();});
+fsBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
+
+addEventListener('keydown',e=>{
+  if(e.target.id==='lesson-back')return;
+
+  const k=e.key;
+  if(['ArrowRight',' ','PageDown','Enter','ArrowDown'].includes(k)){e.preventDefault();next();}
+  else if(['ArrowLeft','PageUp','Backspace','ArrowUp'].includes(k)){e.preventDefault();prev();}
+  else if(k==='Home')go(0); else if(k==='End')go(LAST);
+  else if(k==='f'||k==='F')toggleFS();
+  else if(k==='a'||k==='A')toggleAuto();
+  else if(k==='h'||k==='H')toggleClean();
+});
+let pd=null;
+cv.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY,b:e.button};});
+cv.addEventListener('pointerup',e=>{if(!pd)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y,b=pd.b;pd=null;
+  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2){dx<0?next():prev();return;}
+  if(Math.abs(dx)<14&&Math.abs(dy)<14){if(b===2)prev();else e.shiftKey?prev():next();}});
+cv.addEventListener('contextmenu',e=>{e.preventDefault();prev();});
+
+syncDock(); requestAnimationFrame(tick);
+})();
+</script></body></html>

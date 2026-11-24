@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>Memory 与上下文压缩 · 蒸馏冷凝塔与琥珀切片</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<style>
+/* 将原文件中的两行 @font-face{font-family:'HSerif'...} 粘贴至此即可恢复原版衬线体 */
+html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
+body{position:fixed;inset:0}
+canvas{display:block;touch-action:none}
+#tools{position:fixed;right:16px;top:14px;display:flex;gap:8px;z-index:10;transition:opacity .35s}
+.tbtn{font:13px "HSerif","Songti SC",serif;color:rgba(244,237,223,.52);background:rgba(10,8,4,.62);border:1px solid rgba(226,170,66,.28);border-radius:5px;padding:4px 10px;cursor:pointer;backdrop-filter:blur(4px);transition:all .2s}
+.tbtn:hover,.tbtn.on{color:#FFD062;border-color:#E2AA42;background:rgba(226,170,66,.14)}
+#dock{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:5px;padding:6px 10px;border-radius:10px;background:rgba(8,7,4,.78);border:1px solid rgba(226,170,66,.22);backdrop-filter:blur(8px);z-index:10;max-width:95vw;overflow-x:auto;transition:opacity .4s}
+#dock::-webkit-scrollbar{display:none}
+.sbtn{font:12px "HSerif","Songti SC",serif;color:rgba(244,237,223,.55);background:none;border:1px solid transparent;border-radius:5px;padding:4px 9px;white-space:nowrap;cursor:pointer;transition:all .2s}
+.sbtn:hover{color:#FFE9B8;border-color:rgba(226,170,66,.35)}
+.sbtn.active{color:#FFD062;border-color:rgba(255,208,98,.6);background:rgba(226,170,66,.16);font-weight:700}
+body.idle #tools,body.idle #dock,body.clean #tools,body.clean #dock{opacity:0;pointer-events:none}
+</style><style>
+  #lesson-back {
+    position: fixed;
+    z-index: 10;
+    top: calc(8px + env(safe-area-inset-top));
+    left: calc(12px + env(safe-area-inset-left));
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 0 10px;
+    border-radius: 4px;
+    color: #ffe5ad;
+    background: #17130e;
+    font: 14px/1.4 system-ui, sans-serif;
+    text-decoration: none;
+  }
+  #lesson-back:hover { text-decoration: underline; }
+  #lesson-back:focus-visible { outline: 2px solid #ffd062; outline-offset: 2px; }
+  body.clean #lesson-back, :fullscreen #lesson-back { display: none; }
+</style>
+</head><body>
+<a id="lesson-back" href="../index.html">← 返回模块目录</a>
+<canvas id="c"></canvas>
+<div id="tools">
+  <button class="tbtn" id="autoBtn" title="自动播放 (A)">自动 A</button>
+  <button class="tbtn" id="cleanBtn" title="纯净录屏 (H)">纯净 H</button>
+  <button class="tbtn" id="fsBtn" title="全屏 (F)">全屏 F</button>
+</div>
+<div id="dock"></div>
+<script>
+(function(){
+'use strict';
+const FONT='"HSerif","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif';
+const IVORY='#F4EDDF', GOLD='#E2AA42', GOLD_HI='#FFD062', PALE='#FFE9B8', DIM='rgba(244,237,223,0.62)', RED='#E86A58', GREEN='#4FD198', BLUE='#6AA9FF';
+
+const SCENES=['开场','纸带告急','蒸馏压缩','凝结琥珀','长期记忆','双轨本质'];
+const S=(id,scene,dur,hint)=>({id,scene,dur,hint});
+const STEPS=[
+  S('title',0,2500,''),
+  S('tape_full',1,2200,'对话聊到第 50 轮：纸带塞满了寒暄、报错堆栈与反复修改的中间草稿'),
+  S('tape_red',1,2400,'上下文逼近 200K 红线——再聊下去，模型要么{截断失忆}，要么注意力彻底溃散'),
+  S('extract',2,2500,'触发{上下文压缩 (Compaction)}：将前半段冗长的历史记录整体抽离纸带'),
+  S('distill',2,2600,'送入{光学蒸馏冷凝塔}：寒暄、无效报错与废话化作轻雾蒸发'),
+  S('amber',3,2600,'只保留核心事实、已定决策与未竟事项，凝结成一块高密度的{金色琥珀 (Summary)}'),
+  S('reinsert',3,2600,'琥珀落回纸带最前端，瞬间{释放 80% 干净空间}，长程任务得以无限延续'),
+  S('reset',4,2400,'但单次会话终会结束——关掉窗口，纸带清空，明天再来 AI 又成了陌生人'),
+  S('lt_mem',4,2600,'于是引入{长期记忆 (Long-Term Memory)}：把跨天偏好与经验沉淀进外部 {MEMORY.md} 琥珀库'),
+  S('new_day',4,2600,'第二天新开一条空白纸带，外部琥珀库自动把你的身份与习惯{吸附到纸带前端}'),
+  S('dual_cmp',5,2600,'记忆双轨分工：{Compaction} 管单次会话不爆窗，{Memory} 让 AI 跨天越用越懂你'),
+  S('final',5,2600,''),
+];
+const LAST=STEPS.length-1;
+const SCENE_FIRST=SCENES.map((_,i)=>STEPS.findIndex(s=>s.scene===i));
+
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const easeCam=t=>t<.5?16*t**5:1-Math.pow(-2*t+2,5)/2;
+const seg=(G,a,b)=>ease(clamp((G-a)/(b-a)));
+function kf(G,pts,fn=ease){if(G<=pts[0][0])return pts[0][1];for(let i=0;i<pts.length-1;i++){if(G<=pts[i+1][0]){const a=pts[i],b=pts[i+1];return lerp(a[1],b[1],fn((G-a[0])/(b[0]-a[0])));}}return pts[pts.length-1][1];}
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+
+/* ==================== 画布与原版光学贴图 ==================== */
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+const W=1920, H=1080; let view={s:1,ox:0,oy:0,dpr:1};
+function resize(){
+  const w=innerWidth,h=innerHeight,dpr=Math.min(window.devicePixelRatio||1,2);
+  cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.width=w+'px';cv.style.height=h+'px';
+  const s=Math.min(w/W,h/H);view={s,ox:(w-W*s)/2,oy:(h-H*s)/2,dpr};
+}
+addEventListener('resize',resize); resize();
+
+const mcache=new Map();
+function font(sz,wt=400){return `${wt} ${sz}px ${FONT}`;}
+function measure(t,sz,wt=400){const k=t+'|'+wt;let v=mcache.get(k);if(v===undefined){ctx.font=font(100,wt);v=ctx.measureText(t).width/100;mcache.set(k,v);}return v*sz;}
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+
+function text(str,x,y,sz,col,a=1,wt=400,al='center'){
+  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
+  const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.font=font(sz,wt);ctx.fillStyle=col;ctx.textAlign=al;ctx.textBaseline='middle';ctx.fillText(str,x,y);ctx.globalAlpha=prev;
+}
+function glowText(str,x,y,sz,col,a=1,wt=700,blur=0.45,al='center'){
+  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
+  ctx.save();ctx.shadowColor='rgba(255,186,60,0.6)';ctx.shadowBlur=sz*blur;text(str,x,y,sz,col,a,wt,al);ctx.restore();
+}
+function rich(str,x,y,sz,a=1,col=IVORY){
+  if(ctx.globalAlpha*clamp(a)<=0.004||!str)return;
+  const parts=[];str.split(/(\{[^}]*\})/).forEach(s=>{if(!s)return;if(s[0]==='{')parts.push([s.slice(1,-1),1]);else parts.push([s,0]);});
+  let tw=0;parts.forEach(p=>{p[2]=measure(p[0],sz,p[1]?700:400);tw+=p[2];});let x0=x-tw/2;
+  parts.forEach(p=>{if(p[1])glowText(p[0],x0,y,sz,GOLD_HI,a,700,0.45,'left');else text(p[0],x0,y,sz,col,a,400,'left');x0+=p[2];});
+}
+function brandMark(x,y,sz,a=1){
+  if(ctx.globalAlpha*clamp(a)<=0.004)return;
+  const s1='陈石律师',s2='  ·  ',s3='chenshi.ai';
+  const w1=measure(s1,sz*0.8),w2=measure(s2,sz*0.8),w3=measure(s3,sz,700),tw=w1+w2+w3;let x0=x-tw/2;
+  text(s1,x0,y,sz*0.8,IVORY,a*0.78,400,'left');x0+=w1;text(s2,x0,y,sz*0.8,GOLD,a*0.8,400,'left');x0+=w2;glowText(s3,x0,y,sz,GOLD_HI,a,700,0.3,'left');
+}
+
+function mkSprite(stops){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),gr=g.createRadialGradient(64,64,0,64,64,64);stops.forEach(s=>gr.addColorStop(s[0],s[1]));g.fillStyle=gr;g.fillRect(0,0,128,128);return c;}
+const SPR_HALO=mkSprite([[0,'rgba(255,228,170,0.9)'],[0.14,'rgba(255,196,96,0.52)'],[1,'rgba(200,120,30,0)']]);
+const SPR_RED =mkSprite([[0,'rgba(255,195,185,0.92)'],[0.2,'rgba(232,106,88,0.5)'],[1,'rgba(180,40,30,0)']]);
+const SPR_GRN =mkSprite([[0,'rgba(180,255,220,0.92)'],[0.2,'rgba(79,209,152,0.5)'],[1,'rgba(20,120,80,0)']]);
+const SPR_BLU =mkSprite([[0,'rgba(180,225,255,0.92)'],[0.2,'rgba(106,169,255,0.5)'],[1,'rgba(40,90,180,0)']]);
+function glow(x,y,r,a=1,spr=SPR_HALO){const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||r<=0.5)return;const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.drawImage(spr,x-r,y-r,2*r,2*r);ctx.globalAlpha=prev;}
+
+const FIBER=(()=>{const c=document.createElement('canvas');c.width=512;c.height=128;const g=c.getContext('2d'),r=mulberry(7);
+  for(let i=0;i<900;i++){const x=r()*512,y=r()*128,l=6+r()*40;g.strokeStyle=`rgba(255,215,150,${0.015+r()*0.04})`;g.lineWidth=0.6+r()*0.8;g.beginPath();g.moveTo(x,y);g.lineTo(x+l,y+(r()-0.5)*3);g.stroke();}return c;})();
+let FIBER_PAT=null;
+const DUST=(()=>{const r=mulberry(2036);return Array.from({length:60},()=>({x:r(),y:r(),vx:(r()-0.5)*0.004,vy:-0.003-r()*0.006,r:1.2+r()*2.5,a:0.1+r()*0.22,ph:r()*6.28}));})();
+const STEAM=(()=>{const r=mulberry(88);return Array.from({length:24},()=>({ox:(r()-0.5)*340,spd:0.3+r()*0.5,ph:r(),sz:12+r()*18}));})();
+
+function drawTape(x,y,w,h,danger=0){
+  ctx.save();ctx.shadowColor='rgba(0,0,0,0.9)';ctx.shadowBlur=38;ctx.shadowOffsetY=14;
+  const tgr=ctx.createLinearGradient(0,y-h/2,0,y+h/2);
+  if(danger>0.3){tgr.addColorStop(0,'rgba(130,34,26,0.75)');tgr.addColorStop(0.5,'rgba(45,14,12,0.82)');tgr.addColorStop(1,'rgba(130,34,26,0.75)');}
+  else{tgr.addColorStop(0,'rgba(82,58,20,0.74)');tgr.addColorStop(0.5,'rgba(24,17,7,0.8)');tgr.addColorStop(1,'rgba(82,58,20,0.74)');}
+  ctx.fillStyle=tgr;ctx.fillRect(x,y-h/2,w,h);ctx.restore();
+  if(!FIBER_PAT)FIBER_PAT=ctx.createPattern(FIBER,'repeat');
+  ctx.fillStyle=FIBER_PAT;ctx.fillRect(x,y-h/2,w,h);
+  ctx.strokeStyle=danger>0.3?RED:'rgba(236,184,78,0.9)';ctx.lineWidth=1.8;
+  ctx.beginPath();ctx.moveTo(x,y-h/2);ctx.lineTo(x+w,y-h/2);ctx.moveTo(x,y+h/2);ctx.lineTo(x+w,y+h/2);ctx.stroke();
+  for(let hx=x+18;hx<x+w-10;hx+=36){[y-h/2+9,y+h/2-9].forEach(hy=>{ctx.fillStyle='#030303';ctx.fillRect(hx-2,hy-2,4,4);});}
+}
+
+// 绘制高密度「金色琥珀切片」
+function drawAmber(x,y,w,h,title,sub,a=1){
+  if(a<=0.01)return;
+  ctx.save();ctx.globalAlpha*=a;
+  ctx.globalCompositeOperation='lighter';glow(x,y,Math.max(w,h)*0.65,0.45);ctx.globalCompositeOperation='source-over';
+  const g=ctx.createLinearGradient(x-w/2,y-h/2,x+w/2,y+h/2);
+  g.addColorStop(0,'rgba(255,214,102,0.36)');g.addColorStop(0.5,'rgba(195,128,28,0.48)');g.addColorStop(1,'rgba(255,204,88,0.32)');
+  rr(x-w/2,y-h/2,w,h,10);ctx.fillStyle=g;ctx.fill();
+  ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2.4;ctx.stroke();
+  // 琥珀内部晶面折光
+  ctx.strokeStyle='rgba(255,245,210,0.35)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(x-w/2+12,y-h/2+2);ctx.lineTo(x+w/2-12,y-h/2+2);ctx.stroke();
+  glowText(title,x,y-13,18,PALE,1,700,0.3);
+  text(sub,x,y+16,13,IVORY,0.92);
+  ctx.restore();
+}
+
+const OLD_TURNS=[
+  {t:'寒暄与开场',   sub:'第1~5轮',   noise:true},
+  {t:'初稿与推翻',   sub:'第6~18轮',  noise:true},
+  {t:'报错堆栈日志', sub:'第19~30轮', noise:true},
+  {t:'核心决策结论', sub:'第31~42轮', noise:false},
+  {t:'最新一轮对话', sub:'第48~50轮', keep:true},
+];
+
+/* ============================== 主渲染 ============================== */
+function render(G,amb){
+  const {s,ox,oy,dpr}=view;
+  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.setTransform(s*dpr,0,0,s*dpr,ox*dpr,oy*dpr);
+  ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();
+  ctx.fillStyle='#030304';ctx.fillRect(0,0,W,H);
+
+  // 背景暖光 + 金尘
+  const bg=ctx.createRadialGradient(W/2,H*0.5,0,W/2,H*0.5,960);
+  bg.addColorStop(0,'rgba(128,84,22,0.16)');bg.addColorStop(0.55,'rgba(60,38,10,0.05)');bg.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  ctx.save();ctx.globalCompositeOperation='lighter';
+  DUST.forEach(d=>{const dx=((d.x+amb*d.vx)%1+1)%1*W,dy=((d.y+amb*d.vy)%1+1)%1*H;glow(dx,dy,d.r*3,d.a*(0.55+0.45*Math.sin(amb*1.4+d.ph)));});
+  ctx.restore();
+
+  /* ---------- 0. 开场标题 (0 -> 0.55) ---------- */
+  const a0=1-seg(G,0.02,0.55);
+  if(a0>0.005){
+    const intro=clamp(amb/2.4), out=seg(G,0.02,0.55);
+    const title='Memory 与上下文压缩', fs=94, tw=measure(title,fs,700);
+    let x=W/2-tw/2; const rnd=mulberry(41); let ci=0;
+    ctx.save();
+    for(const ch of title){
+      const cw=measure(ch,fs,700), ca=seg(intro,0.06+ci*0.028,0.34+ci*0.028);
+      const dx=(rnd()-0.5)*220*out, dy=-(35+rnd()*140)*out;
+      glowText(ch,x+cw/2+dx,445+(1-ca)*24+dy,fs,PALE,ca*(1-out),700,0.35);
+      x+=cw; ci++;
+    }
+    const lw=840*seg(intro,0.28,0.82)*(1-out);
+    ctx.globalCompositeOperation='lighter';
+    const lg=ctx.createLinearGradient(W/2-lw/2,0,W/2+lw/2,0);lg.addColorStop(0,'rgba(255,200,90,0)');lg.addColorStop(0.5,`rgba(255,214,120,${0.95*(1-out)})`);lg.addColorStop(1,'rgba(255,200,90,0)');
+    ctx.fillStyle=lg;ctx.fillRect(W/2-lw/2,540,lw,2);glow(W/2,541,60,0.7*(1-out));ctx.globalCompositeOperation='source-over';
+    rich('{蒸馏冷凝塔 (Compaction)} 与 {跨天琥珀库 (Long-Term Memory)}',W/2,605,31,seg(intro,0.55,1)*(1-out),DIM);
+    brandMark(W/2,870,28,seg(intro,0.7,1)*(1-out));
+    ctx.restore();
+  }
+
+  /* ---------- 1~5. 连续舞台 (G >= 0.45) ---------- */
+  const worldA=seg(G,0.45,1.0);
+  if(worldA>0.005){
+    const pRed     = seg(G,1.2,2.0)*(1-seg(G,2.4,3.0));
+    const pExtract = seg(G,2.3,3.0);                    // 前 4 块抽离升入蒸馏塔
+    const pDistill = seg(G,3.2,4.0);                    // 噪音蒸发
+    const pAmber   = seg(G,4.2,5.0);                    // 凝结成金色琥珀
+    const pReins   = seg(G,5.2,6.0);                    // 琥珀落回纸带前端
+    const pReset   = seg(G,6.3,7.0);                    // 会话结束，纸带清空
+    const pLTMem   = seg(G,7.3,8.0);                    // 右上角外部 MEMORY.md 琥珀库显现
+    const pNewDay  = seg(G,8.3,9.0);                    // 第二天新纸带自动吸附长期琥珀
+    const pDual    = seg(G,9.3,10.0);                   // 双轨分工对比
+    const pFin     = seg(G,10.4,11.0);
+
+    ctx.save();ctx.globalAlpha=worldA;
+    const ty=740, th=146, x0=110, tw=1700;
+    const shake=pRed>0.3?Math.sin(amb*40)*6*pRed:0;
+
+    // 1. 底部常驻主纸带
+    drawTape(x0+shake, ty, tw, th, pRed);
+    const tapeLab = pReset>0.4 ? (pNewDay>0.4 ? 'Day 2 · 全新对话纸带（已自动载入长期记忆琥珀）' : '会话关闭 · 纸带瞬间清空（一切归零）')
+                  : (pReins>0.5 ? '单次会话纸带 · 已释放 80% 干净空间' : (pRed>0.3 ? '⚠ 上下文逼近 200K 红线（96% 已满！）' : '单次会话上下文纸带（第 50 轮）'));
+    text(tapeLab, W/2+shake, ty+th/2+32, 20, pRed>0.3?RED:(pReins>0.5&&pReset<0.4?GREEN:GOLD), 0.92, 700);
+
+    // 2. 光学蒸馏冷凝塔（Step 3-6，位于纸带正上方）
+    const towerA = pExtract*(1-pReset);
+    if(towerA>0.01){
+      const tx=680, tTop=210, tBot=535;
+      ctx.save();ctx.globalAlpha*=towerA;
+      // 梯形冷凝漏斗轮廓
+      ctx.beginPath();ctx.moveTo(tx-310,tTop);ctx.lineTo(tx+310,tTop);ctx.lineTo(tx+145,tBot);ctx.lineTo(tx-145,tBot);ctx.closePath();
+      const gr=ctx.createLinearGradient(0,tTop,0,tBot);gr.addColorStop(0,'rgba(44,34,14,0.35)');gr.addColorStop(1,'rgba(28,20,8,0.68)');
+      ctx.fillStyle=gr;ctx.fill();ctx.strokeStyle='rgba(226,170,66,0.58)';ctx.lineWidth=1.8;ctx.stroke();
+      text('光学蒸馏冷凝塔 (Compaction)', tx, tTop-24, 19, GOLD_HI, 1, 700);
+
+      // Step 4: 噪音化作轻雾向上蒸发
+      if(pDistill>0.05 && pAmber<0.85){
+        const sa=pDistill*(1-pAmber*1.1);
+        ctx.save();ctx.globalAlpha*=clamp(sa);
+        STEAM.forEach(st=>{
+          const pt=((amb*st.spd+st.ph)%1);
+          const sx=tx+st.ox*(1-pt*0.3), sy=lerp(tTop+120, tTop-70, pt);
+          glow(sx,sy,st.sz*2.2,(1-pt)*0.45,SPR_BLU);
+        });
+        text('↑ 寒暄 / 报错堆栈 / 废话蒸发剔除', tx, tTop+38, 17, BLUE, 1, 700);
+        ctx.restore();
+      }
+      ctx.restore();
+    }
+
+    // 3. 纸带上的 5 块历史对话（前 4 块飞入蒸馏塔并在 Step 5 融化，第 5 块留在纸带并在 Step 6 左移）
+    const cw=300;
+    OLD_TURNS.forEach((b,i)=>{
+      const baseX = x0 + 35 + i*(cw+26) + cw/2;
+      if(b.keep){
+        // 第 5 块“最新一轮对话”：在琥珀落回后向左平滑靠拢，右侧腾出大片空白！
+        const fade = 1 - pReset;
+        if(fade<=0.01)return;
+        const x = lerp(baseX, x0 + 430 + cw/2, pReins);
+        ctx.save();ctx.globalAlpha*=fade;
+        rr(x-cw/2, ty-46, cw, 92, 8);ctx.fillStyle='rgba(36,26,10,0.9)';ctx.fill();ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2;ctx.stroke();
+        text(b.t, x, ty-12, 19, PALE, 1, 700);text(b.sub, x, ty+18, 14, DIM, 1);
+        ctx.restore();
+      } else {
+        // 前 4 块：Step 3 抽离升空 -> Step 4 进塔蒸发 -> Step 5 消失化作琥珀
+        const fade = (1 - pAmber) * (1 - pReset);
+        if(fade<=0.01)return;
+        const tx = 680 + (i-1.5)*135;
+        const x = lerp(baseX, tx, pExtract);
+        const y = lerp(ty, 360 - (b.noise?pDistill*70:0), pExtract);
+        const w = lerp(cw, 124, pExtract);
+        ctx.save();ctx.globalAlpha *= fade * (b.noise ? (1-pDistill*0.85) : 1);
+        rr(x-w/2, y-44, w, 88, 7);
+        ctx.fillStyle=b.noise&&pRed>0.2?'rgba(90,24,20,0.65)':'rgba(24,18,9,0.88)';ctx.fill();
+        ctx.strokeStyle=b.noise&&pRed>0.2?RED:GOLD;ctx.lineWidth=1.5;ctx.stroke();
+        text(b.t, x, y-12, w>180?18:14, b.noise&&pRed>0.2?RED:IVORY, 1, 700);
+        text(b.sub, x, y+16, 12, DIM, 0.9);
+        ctx.restore();
+      }
+    });
+
+    // 4. 金色琥珀切片（Step 5 在塔底凝结 -> Step 6 落回纸带前端 -> Step 7 随会话关闭淡出）
+    if(pAmber>0.01 && pReset<0.98){
+      const ax = lerp(680, x0 + 215, pReins);
+      const ay = lerp(475, ty, pReins);
+      const aw = lerp(280, 355, pReins);
+      drawAmber(ax, ay, aw, 92, '✦ 压缩摘要琥珀 (Summary)', '浓缩前 42 轮核心事实与决策 · 仅占 8% 空间', pAmber*(1-pReset));
+      // 释放空间绿色标注
+      if(pReins>0.5 && pReset<0.3){
+        const fa=seg(pReins,0.5,1)*(1-pReset*3.3);
+        ctx.save();ctx.globalAlpha*=clamp(fa);
+        rr(x0+780, ty-44, 880, 88, 8);ctx.fillStyle='rgba(79,209,152,0.08)';ctx.fill();ctx.strokeStyle=GREEN;ctx.setLineDash([8,6]);ctx.lineWidth=1.8;ctx.stroke();ctx.setLineDash([]);
+        text('✓ 已释放 80% 干净上下文空间，可继续长程推演', x0+1220, ty, 20, GREEN, 1, 700);
+        ctx.restore();
+      }
+    }
+
+    // 5. 长期记忆外部琥珀库 MEMORY.md（Step 8 起在上方显现，Step 9 飞出一块吸附到 Day 2 新纸带前端！）
+    if(pLTMem>0.01){
+      const mx=960, my=340;
+      ctx.save();ctx.globalAlpha*=pLTMem;
+      rr(mx-420, my-125, 840, 250, 16);ctx.fillStyle='rgba(16,22,34,0.82)';ctx.fill();ctx.strokeStyle=BLUE;ctx.lineWidth=2.2;ctx.stroke();
+      glow(mx,my,180,0.3,SPR_BLU);
+      glowText('外部长期记忆库（MEMORY.md / 向量记忆库）', mx, my-85, 23, BLUE, 1, 700, 0.3);
+      text('独立于单次对话之外，跨天、跨周持久保存', mx, my-50, 15, DIM, 1);
+
+      const mems=[
+        {t:'身份与偏好琥珀', sub:'执业律师 · 严谨客观口径', x:mx-245},
+        {t:'项目上下文琥珀', sub:'万科/华润建工审查红线', x:mx},
+        {t:'纠偏经验琥珀',   sub:'民法典取代合同法等铁律', x:mx+245},
+      ];
+      mems.forEach(m=>{
+        drawAmber(m.x, my+28, 220, 96, m.t, m.sub, 1);
+      });
+      ctx.restore();
+
+      // Step 9: 第二天新开纸带，长期记忆琥珀自动飞落吸附到纸带最前端！
+      if(pNewDay>0.02){
+        const sx=lerp(mx, x0+240, pNewDay), sy=lerp(my+75, ty, pNewDay);
+        drawAmber(sx, sy, 410, 94, '✦ 长期记忆自动注入 (MEMORY.md)', '无需重复自我介绍 · AI 一开口就懂你的习惯', pNewDay);
+        if(pNewDay>0.6){
+          const na=seg(pNewDay,0.6,1);
+          rr(x0+475, ty-44, 420, 88, 8);ctx.fillStyle='rgba(36,26,10,0.85)';ctx.fill();ctx.strokeStyle=GOLD_HI;ctx.lineWidth=1.8;ctx.stroke();
+          text('Day 2 新提问', x0+685, ty-12, 19, GOLD_HI, na, 700);text('“接着昨天那份合同继续审”', x0+685, ty+18, 15, IVORY, na);
+        }
+      }
+    }
+
+    // 6. Step 10: 双轨总结卡片
+    if(pDual>0.02 && pFin<0.8){
+      ctx.save();ctx.globalAlpha*=pDual*(1-pFin*1.25);
+      rr(W/2-540, 520, 1080, 96, 12);ctx.fillStyle='rgba(18,14,6,0.94)';ctx.fill();ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2;ctx.stroke();
+      rich('{Compaction (压缩)}：会话内蒸馏降噪，防止单条纸带爆窗     |     {Memory (记忆)}：跨会话持久沉淀，让 Agent 拥有连续人格', W/2, 568, 19, 1, IVORY);
+      ctx.restore();
+    }
+
+    ctx.restore();
+  }
+
+  /* ---------- 终局收束落版 (Step 11) ---------- */
+  const finA=seg(G,10.4,11.0);
+  if(finA>0.01){
+    ctx.save();ctx.globalAlpha=finA;
+    rich('忘掉噪音的{蒸馏压缩}，记住精华的{长期琥珀}——这就是 Agent 的记忆系统',W/2,92,32,1,IVORY);
+    brandMark(W/2,930,28,1);
+    ctx.restore();
+  }
+
+  // 电影暗角
+  const vig=ctx.createRadialGradient(W/2,H/2,H*0.38,W/2,H/2,W*0.66);
+  vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,0,0.55)');
+  ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
+
+  /* ---------- 顶部引导语（先退后进，零叠字） & 进度 ---------- */
+  const lo=Math.floor(G), hi=Math.min(LAST,Math.ceil(G)), f=G-lo;
+  const ha=STEPS[lo].hint, hb=STEPS[hi].hint;
+  if(ha===hb) rich(ha,W/2,92,33,0.95);
+  else {
+    const aOut=1-ease(clamp(f/0.38)), aIn=ease(clamp((f-0.5)/0.42));
+    if(aOut>0.01) rich(ha,W/2,92-(1-aOut)*10,33,0.95*aOut);
+    if(aIn>0.01) rich(hb,W/2,92+(1-aIn)*10,33,0.95*aIn);
+  }
+  const st=STEPS[Math.round(G)];
+  text(`${String(st.scene).padStart(2,'0')} · ${SCENES[st.scene]}    ${Math.round(G)+1} / ${STEPS.length}`,1860,1025,18,'rgba(244,237,223,0.52)',1,400,'right');
+  ctx.fillStyle='rgba(244,237,223,0.16)';ctx.fillRect(1620,1044,240,2);
+  ctx.fillStyle=GOLD;ctx.fillRect(1620,1044,240*G/LAST,2);
+  ctx.restore();
+}
+
+/* ==================== 交互与播控 ==================== */
+let G=0, target=0, anim=null, auto=false; const t0=performance.now();
+const dock=document.getElementById('dock');
+SCENES.forEach((name,idx)=>{
+  const b=document.createElement('button');b.className='sbtn';b.textContent=`${String(idx).padStart(2,'0')} ${name}`;
+  b.addEventListener('pointerdown',e=>e.stopPropagation());
+  b.addEventListener('pointerup',e=>{e.stopPropagation();go(SCENE_FIRST[idx]);});
+  dock.appendChild(b);
+});
+function syncDock(){const sc=STEPS[Math.round(target)].scene;dock.querySelectorAll('.sbtn').forEach((b,i)=>b.classList.toggle('active',i===sc));}
+function go(i){
+  i=clamp(Math.round(i),0,LAST);if(i===target&&!anim)return;
+  const from=G, fwd=i===Math.round(target)+1&&i>from;
+  target=i;anim={from,to:i,start:performance.now(),dur:fwd?STEPS[i].dur:Math.min(850,350+Math.abs(i-from)*60),linear:fwd};syncDock();
+}
+function next(){go(target+1);} function prev(){go(target-1);}
+function tick(now){
+  if(anim){
+    const p=clamp((now-anim.start)/anim.dur);
+    G=anim.linear?lerp(anim.from,anim.to,p):lerp(anim.from,anim.to,ease(p));
+    if(p>=1){G=anim.to;anim=null;if(auto&&G<LAST)setTimeout(()=>auto&&go(target+1),700);}
+  }
+  render(G,(now-t0)/1000);requestAnimationFrame(tick);
+}
+let idleTimer=null;
+function wake(){document.body.classList.remove('idle');clearTimeout(idleTimer);idleTimer=setTimeout(()=>document.body.classList.add('idle'),3200);}
+['mousemove','pointerdown','keydown'].forEach(ev=>addEventListener(ev,wake)); wake();
+
+const autoBtn=document.getElementById('autoBtn'), cleanBtn=document.getElementById('cleanBtn'), fsBtn=document.getElementById('fsBtn');
+function toggleAuto(){auto=!auto;autoBtn.classList.toggle('on',auto);autoBtn.textContent=auto?'自动中':'自动 A';if(auto)next();}
+function toggleClean(){document.body.classList.toggle('clean');}
+function toggleFS(){const d=document,el=d.documentElement;if(!d.fullscreenElement)el.requestFullscreen?.();else d.exitFullscreen?.();}
+[autoBtn,cleanBtn,fsBtn].forEach(b=>b.addEventListener('pointerdown',e=>e.stopPropagation()));
+autoBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleAuto();});
+cleanBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleClean();});
+fsBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
+
+addEventListener('keydown',e=>{
+  if(e.target.id==='lesson-back')return;
+
+  const k=e.key;
+  if(['ArrowRight',' ','PageDown','Enter','ArrowDown'].includes(k)){e.preventDefault();next();}
+  else if(['ArrowLeft','PageUp','Backspace','ArrowUp'].includes(k)){e.preventDefault();prev();}
+  else if(k==='Home')go(0); else if(k==='End')go(LAST);
+  else if(k==='f'||k==='F')toggleFS();
+  else if(k==='a'||k==='A')toggleAuto();
+  else if(k==='h'||k==='H')toggleClean();
+});
+let pd=null;
+cv.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY,b:e.button};});
+cv.addEventListener('pointerup',e=>{if(!pd)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y,b=pd.b;pd=null;
+  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2){dx<0?next():prev();return;}
+  if(Math.abs(dx)<14&&Math.abs(dy)<14){if(b===2)prev();else e.shiftKey?prev():next();}});
+cv.addEventListener('contextmenu',e=>{e.preventDefault();prev();});
+
+syncDock(); requestAnimationFrame(tick);
+})();
+</script></body></html>

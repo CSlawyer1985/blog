@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>KV Cache 与 Prompt Caching · 纸带上的固态缓存冰晶</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<style>
+/* 将原文件中的两行 @font-face{font-family:'HSerif'...} 粘贴至此即可恢复原版衬线体 */
+html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
+body{position:fixed;inset:0}
+canvas{display:block;touch-action:none}
+#tools{position:fixed;right:16px;top:14px;display:flex;gap:8px;z-index:10;transition:opacity .35s}
+.tbtn{font:13px "HSerif","Songti SC",serif;color:rgba(244,237,223,.52);background:rgba(10,8,4,.62);border:1px solid rgba(226,170,66,.28);border-radius:5px;padding:4px 10px;cursor:pointer;backdrop-filter:blur(4px);transition:all .2s}
+.tbtn:hover,.tbtn.on{color:#FFD062;border-color:#E2AA42;background:rgba(226,170,66,.14)}
+#dock{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:5px;padding:6px 10px;border-radius:10px;background:rgba(8,7,4,.78);border:1px solid rgba(226,170,66,.22);backdrop-filter:blur(8px);z-index:10;max-width:95vw;overflow-x:auto;transition:opacity .4s}
+#dock::-webkit-scrollbar{display:none}
+.sbtn{font:12px "HSerif","Songti SC",serif;color:rgba(244,237,223,.55);background:none;border:1px solid transparent;border-radius:5px;padding:4px 9px;white-space:nowrap;cursor:pointer;transition:all .2s}
+.sbtn:hover{color:#FFE9B8;border-color:rgba(226,170,66,.35)}
+.sbtn.active{color:#FFD062;border-color:rgba(255,208,98,.6);background:rgba(226,170,66,.16);font-weight:700}
+body.idle #tools,body.idle #dock,body.clean #tools,body.clean #dock{opacity:0;pointer-events:none}
+</style><style>
+  #lesson-back {
+    position: fixed;
+    z-index: 10;
+    top: calc(8px + env(safe-area-inset-top));
+    left: calc(12px + env(safe-area-inset-left));
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 0 10px;
+    border-radius: 4px;
+    color: #ffe5ad;
+    background: #17130e;
+    font: 14px/1.4 system-ui, sans-serif;
+    text-decoration: none;
+  }
+  #lesson-back:hover { text-decoration: underline; }
+  #lesson-back:focus-visible { outline: 2px solid #ffd062; outline-offset: 2px; }
+  body.clean #lesson-back, :fullscreen #lesson-back { display: none; }
+</style>
+</head><body>
+<a id="lesson-back" href="../index.html">← 返回模块目录</a>
+<canvas id="c"></canvas>
+<div id="tools">
+  <button class="tbtn" id="autoBtn" title="自动播放 (A)">自动 A</button>
+  <button class="tbtn" id="cleanBtn" title="纯净录屏 (H)">纯净 H</button>
+  <button class="tbtn" id="fsBtn" title="全屏 (F)">全屏 F</button>
+</div>
+<div id="dock"></div>
+<script>
+(function(){
+'use strict';
+const FONT='"HSerif","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif';
+const IVORY='#F4EDDF', GOLD='#E2AA42', GOLD_HI='#FFD062', PALE='#FFE9B8', DIM='rgba(244,237,223,0.62)', RED='#E86A58', GREEN='#4FD198', ICE='#7CE8FF';
+
+const SCENES=['开场','重复计算之痛','KV Cache 冻结','Prompt Caching','冰晶碎裂陷阱','工程铁律'];
+const S=(id,scene,dur,hint)=>({id,scene,dur,hint});
+const STEPS=[
+  S('title',0,2500,''),
+  S('recompute',1,2400,'逻辑上，自回归每吐一个新词，都要把前面所有词的 {K、V 矩阵} 全部重算一遍'),
+  S('kv_freeze',2,2600,'工程加速 ① {KV Cache}：把已经算过的 K、V 直接冻结成{固态冰晶}存入显存'),
+  S('kv_reuse',2,2400,'生成下一个词时，直接复用冰晶，只需为{最新一格}算一次——速度飙升数倍'),
+  S('prefix_show',3,2400,'工程加速 ② {Prompt Caching}：Agent 纸带前端的规则、工具与长合同几乎从不变动'),
+  S('prefix_freeze',3,2600,'服务端把整段不变的前缀冻成一块{跨请求缓存冰晶}，供后续每一轮对话直接复用'),
+  S('cache_hit',3,2600,'新一轮提问到来：{缓存命中 (Cache Hit)}！跳过 90% 重算，费用直降 90%、首字极速'),
+  S('prefix_edit',4,2600,'致命陷阱：如果在纸带最开头插入一个动态变量（如「{当前时间 06:19}」）……'),
+  S('shatter',4,2800,'前缀匹配瞬间失效！整条缓存冰晶从修改点向右{连锁碎裂 (Cache Miss)}，全部重算'),
+  S('best_rule',5,2600,'黄金排布铁律：{静态不变的放最前}（冻结成冰），{动态变化的放最后}（随时追加）'),
+  S('vram_cost',5,2400,'物理代价：冰晶全存在 GPU 显存里——纸带越长，冰晶越占显存，这就是长上下文昂贵的根源'),
+  S('final',5,2600,''),
+];
+const LAST=STEPS.length-1;
+const SCENE_FIRST=SCENES.map((_,i)=>STEPS.findIndex(s=>s.scene===i));
+
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const seg=(G,a,b)=>ease(clamp((G-a)/(b-a)));
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+
+/* ==================== 画布与原版光学贴图 ==================== */
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+const W=1920, H=1080; let view={s:1,ox:0,oy:0,dpr:1};
+function resize(){
+  const w=innerWidth,h=innerHeight,dpr=Math.min(window.devicePixelRatio||1,2);
+  cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.width=w+'px';cv.style.height=h+'px';
+  const s=Math.min(w/W,h/H);view={s,ox:(w-W*s)/2,oy:(h-H*s)/2,dpr};
+}
+addEventListener('resize',resize); resize();
+
+const mcache=new Map();
+function font(sz,wt=400){return `${wt} ${sz}px ${FONT}`;}
+function measure(t,sz,wt=400){const k=t+'|'+wt;let v=mcache.get(k);if(v===undefined){ctx.font=font(100,wt);v=ctx.measureText(t).width/100;mcache.set(k,v);}return v*sz;}
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+
+function text(str,x,y,sz,col,a=1,wt=400,al='center'){
+  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
+  const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.font=font(sz,wt);ctx.fillStyle=col;ctx.textAlign=al;ctx.textBaseline='middle';ctx.fillText(str,x,y);ctx.globalAlpha=prev;
+}
+function glowText(str,x,y,sz,col,a=1,wt=700,blur=0.45,al='center'){
+  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
+  ctx.save();ctx.shadowColor=col===ICE?'rgba(124,232,255,0.65)':'rgba(255,186,60,0.6)';ctx.shadowBlur=sz*blur;text(str,x,y,sz,col,a,wt,al);ctx.restore();
+}
+function rich(str,x,y,sz,a=1,col=IVORY){
+  if(ctx.globalAlpha*clamp(a)<=0.004||!str)return;
+  const parts=[];str.split(/(\{[^}]*\})/).forEach(s=>{if(!s)return;if(s[0]==='{')parts.push([s.slice(1,-1),1]);else parts.push([s,0]);});
+  let tw=0;parts.forEach(p=>{p[2]=measure(p[0],sz,p[1]?700:400);tw+=p[2];});let x0=x-tw/2;
+  parts.forEach(p=>{if(p[1])glowText(p[0],x0,y,sz,GOLD_HI,a,700,0.45,'left');else text(p[0],x0,y,sz,col,a,400,'left');x0+=p[2];});
+}
+function brandMark(x,y,sz,a=1){
+  if(ctx.globalAlpha*clamp(a)<=0.004)return;
+  const s1='陈石律师',s2='  ·  ',s3='chenshi.ai';
+  const w1=measure(s1,sz*0.8),w2=measure(s2,sz*0.8),w3=measure(s3,sz,700),tw=w1+w2+w3;let x0=x-tw/2;
+  text(s1,x0,y,sz*0.8,IVORY,a*0.78,400,'left');x0+=w1;text(s2,x0,y,sz*0.8,GOLD,a*0.8,400,'left');x0+=w2;glowText(s3,x0,y,sz,GOLD_HI,a,700,0.3,'left');
+}
+
+function mkSprite(stops){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),gr=g.createRadialGradient(64,64,0,64,64,64);stops.forEach(s=>gr.addColorStop(s[0],s[1]));g.fillStyle=gr;g.fillRect(0,0,128,128);return c;}
+const SPR_HALO=mkSprite([[0,'rgba(255,228,170,0.9)'],[0.14,'rgba(255,196,96,0.52)'],[1,'rgba(200,120,30,0)']]);
+const SPR_ICE =mkSprite([[0,'rgba(210,248,255,0.95)'],[0.2,'rgba(124,232,255,0.52)'],[1,'rgba(40,140,200,0)']]);
+const SPR_RED =mkSprite([[0,'rgba(255,195,185,0.92)'],[0.2,'rgba(232,106,88,0.5)'],[1,'rgba(180,40,30,0)']]);
+const SPR_GRN =mkSprite([[0,'rgba(180,255,220,0.92)'],[0.2,'rgba(79,209,152,0.5)'],[1,'rgba(20,120,80,0)']]);
+function glow(x,y,r,a=1,spr=SPR_HALO){const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||r<=0.5)return;const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.drawImage(spr,x-r,y-r,2*r,2*r);ctx.globalAlpha=prev;}
+
+const FIBER=(()=>{const c=document.createElement('canvas');c.width=512;c.height=128;const g=c.getContext('2d'),r=mulberry(7);
+  for(let i=0;i<900;i++){const x=r()*512,y=r()*128,l=6+r()*40;g.strokeStyle=`rgba(255,215,150,${0.015+r()*0.04})`;g.lineWidth=0.6+r()*0.8;g.beginPath();g.moveTo(x,y);g.lineTo(x+l,y+(r()-0.5)*3);g.stroke();}return c;})();
+let FIBER_PAT=null;
+const DUST=(()=>{const r=mulberry(2035);return Array.from({length:60},()=>({x:r(),y:r(),vx:(r()-0.5)*0.004,vy:-0.003-r()*0.006,r:1.2+r()*2.5,a:0.1+r()*0.22,ph:r()*6.28}));})();
+
+// 冰晶碎裂碎片（Step 8 连锁碎裂动效）
+const SHARDS=(()=>{const r=mulberry(999);return Array.from({length:28},(_,i)=>({
+  x:200+i*42, y:520+(r()-0.5)*80, vx:(r()-0.5)*160, vy:-60+r()*220, rot:(r()-0.5)*4, sz:12+r()*18, delay:i*0.022
+}));})();
+
+function drawTape(x,y,w,h){
+  ctx.save();ctx.shadowColor='rgba(0,0,0,0.9)';ctx.shadowBlur=38;ctx.shadowOffsetY=14;
+  const tgr=ctx.createLinearGradient(0,y-h/2,0,y+h/2);
+  tgr.addColorStop(0,'rgba(82,58,20,0.74)');tgr.addColorStop(0.5,'rgba(24,17,7,0.8)');tgr.addColorStop(1,'rgba(82,58,20,0.74)');
+  ctx.fillStyle=tgr;ctx.fillRect(x,y-h/2,w,h);ctx.restore();
+  if(!FIBER_PAT)FIBER_PAT=ctx.createPattern(FIBER,'repeat');
+  ctx.fillStyle=FIBER_PAT;ctx.fillRect(x,y-h/2,w,h);
+  ctx.strokeStyle='rgba(236,184,78,0.9)';ctx.lineWidth=1.8;
+  ctx.beginPath();ctx.moveTo(x,y-h/2);ctx.lineTo(x+w,y-h/2);ctx.moveTo(x,y+h/2);ctx.lineTo(x+w,y+h/2);ctx.stroke();
+  for(let hx=x+18;hx<x+w-10;hx+=36){[y-h/2+9,y+h/2-9].forEach(hy=>{ctx.fillStyle='#030303';ctx.fillRect(hx-2,hy-2,4,4);});}
+}
+
+// 绘制晶莹的「固态缓存冰晶」外壳
+function drawIceCrystal(x,y,w,h,prog,amb){
+  if(prog<=0.01)return;
+  const cw=w*prog;
+  ctx.save();
+  const g=ctx.createLinearGradient(x,y-h/2,x+cw,y+h/2);
+  g.addColorStop(0,'rgba(124,232,255,0.22)');g.addColorStop(0.5,'rgba(180,245,255,0.12)');g.addColorStop(1,'rgba(124,232,255,0.26)');
+  rr(x,y-h/2,cw,h,10);ctx.fillStyle=g;ctx.fill();
+  ctx.strokeStyle=ICE;ctx.lineWidth=2.2;ctx.stroke();
+  // 晶面折射斜线
+  ctx.save();ctx.clip();
+  ctx.strokeStyle='rgba(220,250,255,0.22)';ctx.lineWidth=1.2;
+  for(let sx=x-40;sx<x+cw+60;sx+=90){
+    ctx.beginPath();ctx.moveTo(sx,y-h/2);ctx.lineTo(sx+45,y+h/2);ctx.stroke();
+  }
+  // 冰晶表面流光
+  const sp=((amb*0.18)%1.5)-0.25, lx=x+sp*cw;
+  ctx.globalCompositeOperation='lighter';
+  const sg=ctx.createLinearGradient(lx-120,0,lx+120,0);sg.addColorStop(0,'rgba(210,250,255,0)');sg.addColorStop(0.5,'rgba(210,250,255,0.22)');sg.addColorStop(1,'rgba(210,250,255,0)');
+  ctx.fillStyle=sg;ctx.fillRect(x,y-h/2,cw,h);
+  ctx.restore();ctx.restore();
+}
+
+/* ============================== 主渲染 ============================== */
+function render(G,amb){
+  const {s,ox,oy,dpr}=view;
+  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.setTransform(s*dpr,0,0,s*dpr,ox*dpr,oy*dpr);
+  ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();
+  ctx.fillStyle='#030304';ctx.fillRect(0,0,W,H);
+
+  // 背景暖光 + 金尘
+  const bg=ctx.createRadialGradient(W/2,H*0.5,0,W/2,H*0.5,960);
+  bg.addColorStop(0,'rgba(120,90,32,0.14)');bg.addColorStop(0.6,'rgba(30,52,68,0.06)');bg.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  ctx.save();ctx.globalCompositeOperation='lighter';
+  DUST.forEach(d=>{const dx=((d.x+amb*d.vx)%1+1)%1*W,dy=((d.y+amb*d.vy)%1+1)%1*H;glow(dx,dy,d.r*3,d.a*(0.55+0.45*Math.sin(amb*1.4+d.ph)));});
+  ctx.restore();
+
+  /* ---------- 0. 开场标题 (0 -> 0.55) ---------- */
+  const a0=1-seg(G,0.02,0.55);
+  if(a0>0.005){
+    const intro=clamp(amb/2.4), out=seg(G,0.02,0.55);
+    const title='KV Cache 与 Prompt Caching', fs=86, tw=measure(title,fs,700);
+    let x=W/2-tw/2; const rnd=mulberry(35); let ci=0;
+    ctx.save();
+    for(const ch of title){
+      const cw=measure(ch,fs,700), ca=seg(intro,0.05+ci*0.022,0.3+ci*0.022);
+      const dx=(rnd()-0.5)*220*out, dy=-(35+rnd()*140)*out;
+      glowText(ch,x+cw/2+dx,445+(1-ca)*24+dy,fs,PALE,ca*(1-out),700,0.35);
+      x+=cw; ci++;
+    }
+    const lw=840*seg(intro,0.28,0.82)*(1-out);
+    ctx.globalCompositeOperation='lighter';
+    const lg=ctx.createLinearGradient(W/2-lw/2,0,W/2+lw/2,0);lg.addColorStop(0,'rgba(124,232,255,0)');lg.addColorStop(0.5,`rgba(124,232,255,${0.95*(1-out)})`);lg.addColorStop(1,'rgba(124,232,255,0)');
+    ctx.fillStyle=lg;ctx.fillRect(W/2-lw/2,540,lw,2);glow(W/2,541,60,0.7*(1-out),SPR_ICE);ctx.globalCompositeOperation='source-over';
+    rich('纸带上的{固态缓存冰晶}：大模型省钱 90% 与提速的物理秘密',W/2,605,31,seg(intro,0.55,1)*(1-out),DIM);
+    brandMark(W/2,870,28,seg(intro,0.7,1)*(1-out));
+    ctx.restore();
+  }
+
+  /* ---------- 1~5. 单一连续纸带舞台 (G >= 0.45) ---------- */
+  const worldA=seg(G,0.45,1.0);
+  if(worldA>0.005){
+    const pRecomp = seg(G,0.6,1.2)*(1-seg(G,1.4,2.0));
+    const pKV     = seg(G,1.3,2.0)*(1-seg(G,3.5,4.0));
+    const pReuse  = seg(G,2.2,3.0)*(1-seg(G,3.5,4.0));
+    const pPrefix = seg(G,3.5,4.2);                    // 切换到 Agent 长前缀视图
+    const pFreeze = seg(G,4.3,5.0);                    // 冻结整段前缀成冰晶
+    const pHit    = seg(G,5.3,6.0)*(1-seg(G,6.4,7.0)); // 缓存命中省 90%
+    const pEdit   = seg(G,6.3,7.0)*(1-seg(G,8.5,9.0)); // 开头插入动态时间戳
+    const pShatter= seg(G,7.2,8.0)*(1-seg(G,8.5,9.0)); // 冰晶连锁碎裂！
+    const pRule   = seg(G,8.4,9.0);                    // 恢复静态在前、动态在后
+    const pVram   = seg(G,9.3,10.0);                   // 显存占用条
+    const pFin    = seg(G,10.4,11.0);
+
+    ctx.save();ctx.globalAlpha=worldA;
+    const ty=520, th=154, x0=110, tw=1700;
+
+    // 纸带本体
+    drawTape(x0, ty, tw, th);
+
+    // ===== 前半段：Token 级 KV Cache 演示 (Step 1-3) =====
+    if(pPrefix < 0.95){
+      ctx.save();ctx.globalAlpha *= (1 - pPrefix);
+      const toks=['违约金','过分','高于','损失','，可请求','适当','减少'];
+      const cw=210;
+      toks.forEach((tk,i)=>{
+        const x=x0+45+i*(cw+16);
+        const isNew=(i===6);
+        rr(x, ty-48, cw, 96, 8);
+        ctx.fillStyle=isNew?'rgba(56,40,14,0.85)':'rgba(18,15,8,0.88)';ctx.fill();
+        ctx.strokeStyle=isNew?GOLD_HI:'rgba(226,170,66,0.55)';ctx.lineWidth=isNew?2.2:1.4;ctx.stroke();
+        text(tk, x+cw/2, ty-10, 22, isNew?GOLD_HI:IVORY, 1, 700);
+        text(isNew?'最新生成 (新算 QKV)':'已生成词元', x+cw/2, ty+22, 13, isNew?PALE:DIM, 1);
+
+        // Step 1: 红色重复计算波浪（没有 KV Cache 时全部重算）
+        if(pRecomp>0.1 && !isNew){
+          const pulse=0.45+0.45*Math.sin(amb*10-i*0.6);
+          ctx.save();ctx.globalAlpha*=pRecomp*pulse;
+          rr(x, ty-48, cw, 96, 8);ctx.strokeStyle=RED;ctx.lineWidth=2.6;ctx.stroke();
+          text('重算 K,V ⚠', x+cw/2, ty-70, 15, RED, 1, 700);
+          ctx.restore();
+        }
+      });
+      // Step 2-3: 前 6 格冻结成固态 KV Cache 冰晶！
+      if(pKV>0.02){
+        drawIceCrystal(x0+35, ty, 6*(cw+16)-6, 114, pKV, amb);
+        glowText('❄ KV Cache 固态冰晶（前 6 格 K、V 已存显存，永不重算）', x0+35+3*(cw+16), ty-94, 20, ICE, pKV, 700, 0.35);
+      }
+      if(pReuse>0.05){
+        text('✓ 只需为最新 1 格计算 QKV → 推理速度飙升！', x0+45+6*(cw+16)+cw/2-80, ty+105, 19, GREEN, pReuse, 700);
+      }
+      ctx.restore();
+    }
+
+    // ===== 后半段：Agent 级 Prompt Caching 与冰晶碎裂演示 (Step 4-11) =====
+    if(pPrefix > 0.05){
+      ctx.save();ctx.globalAlpha *= pPrefix;
+      const editShift = pEdit * 185; // Step 7 在开头硬塞入一个「当前时间」块，把后面整体右推！
+      const segs=[
+        {t:'System Prompt',   sub:'身份与红线 (2k)', w:250},
+        {t:'Tools & MCP',     sub:'工具说明书 (4k)', w:250},
+        {t:'Rules & Skills',  sub:'项目铁律 (3k)',   w:250},
+        {t:'《建设工程合同》', sub:'长文档全文 (25k)', w:330},
+      ];
+
+      // 如果处于 Step 7-8，最开头插入红色动态时间戳
+      if(pEdit>0.02){
+        ctx.save();ctx.globalAlpha*=pEdit;
+        rr(x0+24, ty-48, 175, 96, 8);ctx.fillStyle='rgba(95,24,20,0.85)';ctx.fill();ctx.strokeStyle=RED;ctx.lineWidth=2.4;ctx.stroke();
+        glow(x0+112,ty,70,0.45,SPR_RED);
+        text('⏱ 动态时间', x0+112, ty-14, 17, RED, 1, 700);
+        text('06:19:42 (每秒变)', x0+112, ty+18, 14, PALE, 1);
+        ctx.restore();
+      }
+
+      // 4 段静态前缀
+      let cx = x0 + 24 + editShift;
+      const prefixStartX = cx;
+      segs.forEach(sg=>{
+        rr(cx, ty-48, sg.w, 96, 8);ctx.fillStyle='rgba(18,15,8,0.88)';ctx.fill();ctx.strokeStyle='rgba(226,170,66,0.6)';ctx.lineWidth=1.5;ctx.stroke();
+        text(sg.t, cx+sg.w/2, ty-12, 19, IVORY, 1, 700);
+        text(sg.sub, cx+sg.w/2, ty+18, 14, DIM, 1);
+        cx += sg.w + 12;
+      });
+      const prefixW = cx - prefixStartX - 12;
+
+      // 末尾：动态提问块（永远放最后）
+      const qW = Math.max(240, x0 + tw - cx - 24);
+      rr(cx, ty-48, qW, 96, 8);ctx.fillStyle='rgba(56,40,14,0.85)';ctx.fill();ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2;ctx.stroke();
+      text(pRule>0.4?'⏱ 时间 + 当前提问':'本轮新提问', cx+qW/2, ty-12, 19, GOLD_HI, 1, 700);
+      text(pRule>0.4?'动态内容放最后，绝不破坏冰晶':'第8条违约金能调减吗？', cx+qW/2, ty+18, 14, PALE, 0.9);
+
+      // 固态前缀缓存冰晶（Step 5 冻结，Step 8 碎裂，Step 9 恢复！）
+      const iceIntact = pFreeze * (1 - pShatter) + pRule * pShatter;
+      if(iceIntact > 0.02){
+        drawIceCrystal(prefixStartX-8, ty, prefixW+16, 116, iceIntact, amb);
+        glowText('❄ Prompt Caching 固态前缀冰晶（34,000 Tokens 已缓存）', prefixStartX + prefixW/2, ty-96, 21, ICE, iceIntact, 700, 0.35);
+      }
+
+      // Step 6: 缓存命中指标卡片
+      if(pHit>0.02){
+        ctx.save();ctx.globalAlpha*=pHit;
+        rr(W/2-460, 690, 920, 108, 12);ctx.fillStyle='rgba(14,56,42,0.78)';ctx.fill();ctx.strokeStyle=GREEN;ctx.lineWidth=2;ctx.stroke();
+        glow(W/2,744,140,0.35,SPR_GRN);
+        glowText('✓ Cache Hit（前缀缓存命中）', W/2, 724, 24, GREEN, 1, 700, 0.35);
+        text('跳过 34,000 Token 重复计算   ·   输入成本直降 90%   ·   首字延迟缩短 80%', W/2, 766, 19, PALE, 1);
+        ctx.restore();
+      }
+
+      // Step 8: 冰晶连锁碎裂动效（Cache Miss！）
+      if(pShatter>0.02){
+        ctx.save();ctx.globalAlpha*=pShatter;
+        SHARDS.forEach(sh=>{
+          const t=clamp((pShatter-sh.delay)*1.8);if(t<=0)return;
+          const sx=sh.x+sh.vx*t, sy=sh.y+sh.vy*t+140*t*t;
+          ctx.save();ctx.translate(sx,sy);ctx.rotate(sh.rot*t);ctx.globalAlpha*=(1-t*0.7);
+          ctx.fillStyle='rgba(124,232,255,0.45)';ctx.strokeStyle=RED;ctx.lineWidth=1.4;
+          ctx.beginPath();ctx.moveTo(0,-sh.sz);ctx.lineTo(sh.sz*0.8,sh.sz*0.6);ctx.lineTo(-sh.sz*0.7,sh.sz*0.8);ctx.closePath();ctx.fill();ctx.stroke();
+          ctx.restore();
+        });
+        rr(W/2-460, 690, 920, 108, 12);ctx.fillStyle='rgba(85,20,16,0.82)';ctx.fill();ctx.strokeStyle=RED;ctx.lineWidth=2.2;ctx.stroke();
+        glow(W/2,744,140,0.4,SPR_RED);
+        text('✕ Cache Miss（前缀失效 · 冰晶连锁碎裂！）', W/2, 724, 24, RED, 1, 700);
+        text('因为开头改了 1 个时间戳，后面 34,000 Token 缓存全部作废，账单瞬间暴涨 10 倍！', W/2, 766, 18, IVORY, 1);
+        ctx.restore();
+      }
+
+      // Step 9: 工程排布铁律
+      if(pRule>0.02 && pVram<0.6){
+        ctx.save();ctx.globalAlpha*=pRule*(1-pVram*1.6);
+        rr(W/2-510, 690, 1020, 108, 12);ctx.fillStyle='rgba(18,28,38,0.85)';ctx.fill();ctx.strokeStyle=ICE;ctx.lineWidth=2;ctx.stroke();
+        glowText('黄金铁律：静态不变放最前（冻结） · 动态变化放最后（追加）', W/2, 724, 23, ICE, 1, 700, 0.3);
+        text('System / Tools / Rules / 长文档严禁夹杂随机数与实时时间戳，死守前缀稳定', W/2, 766, 18, PALE, 0.95);
+        ctx.restore();
+      }
+
+      // Step 10: 显存物理代价条
+      if(pVram>0.02){
+        ctx.save();ctx.globalAlpha*=pVram*(1-pFin*0.8);
+        const bx=460, by=725, bw=1000, bh=34;
+        text('GPU 显存占用（KV Cache 冰晶体积随上下文长度线性暴涨）', W/2, by-28, 20, GOLD_HI, 1, 700);
+        rr(bx,by,bw,bh,6);ctx.fillStyle='rgba(255,255,255,0.08)';ctx.fill();
+        rr(bx,by,bw*0.82,bh,6);ctx.fillStyle='rgba(124,232,255,0.55)';ctx.fill();
+        ctx.strokeStyle=ICE;ctx.lineWidth=1.6;rr(bx,by,bw,bh,6);ctx.stroke();
+        text('显存不是无限的：这就是为什么不能把所有资料无脑塞进纸带，而需要 Skill 与 Grep', W/2, by+62, 18, DIM, 1);
+        ctx.restore();
+      }
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  /* ---------- 终局收束落版 (Step 11) ---------- */
+  const finA=seg(G,10.4,11.0);
+  if(finA>0.01){
+    ctx.save();ctx.globalAlpha=finA;
+    rich('守住{前缀冰晶}，就是守住 Agent 的响应速度与算力账单',W/2,92,34,1,IVORY);
+    brandMark(W/2,930,28,1);
+    ctx.restore();
+  }
+
+  // 电影暗角
+  const vig=ctx.createRadialGradient(W/2,H/2,H*0.38,W/2,H/2,W*0.66);
+  vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,0,0.55)');
+  ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
+
+  /* ---------- 顶部引导语（先退后进，零叠字） & 进度 ---------- */
+  const lo=Math.floor(G), hi=Math.min(LAST,Math.ceil(G)), f=G-lo;
+  const ha=STEPS[lo].hint, hb=STEPS[hi].hint;
+  if(ha===hb) rich(ha,W/2,92,33,0.95);
+  else {
+    const aOut=1-ease(clamp(f/0.38)), aIn=ease(clamp((f-0.5)/0.42));
+    if(aOut>0.01) rich(ha,W/2,92-(1-aOut)*10,33,0.95*aOut);
+    if(aIn>0.01) rich(hb,W/2,92+(1-aIn)*10,33,0.95*aIn);
+  }
+  const st=STEPS[Math.round(G)];
+  text(`${String(st.scene).padStart(2,'0')} · ${SCENES[st.scene]}    ${Math.round(G)+1} / ${STEPS.length}`,1860,1025,18,'rgba(244,237,223,0.52)',1,400,'right');
+  ctx.fillStyle='rgba(244,237,223,0.16)';ctx.fillRect(1620,1044,240,2);
+  ctx.fillStyle=GOLD;ctx.fillRect(1620,1044,240*G/LAST,2);
+  ctx.restore();
+}
+
+/* ==================== 交互与播控 ==================== */
+let G=0, target=0, anim=null, auto=false; const t0=performance.now();
+const dock=document.getElementById('dock');
+SCENES.forEach((name,idx)=>{
+  const b=document.createElement('button');b.className='sbtn';b.textContent=`${String(idx).padStart(2,'0')} ${name}`;
+  b.addEventListener('pointerdown',e=>e.stopPropagation());
+  b.addEventListener('pointerup',e=>{e.stopPropagation();go(SCENE_FIRST[idx]);});
+  dock.appendChild(b);
+});
+function syncDock(){const sc=STEPS[Math.round(target)].scene;dock.querySelectorAll('.sbtn').forEach((b,i)=>b.classList.toggle('active',i===sc));}
+function go(i){
+  i=clamp(Math.round(i),0,LAST);if(i===target&&!anim)return;
+  const from=G, fwd=i===Math.round(target)+1&&i>from;
+  target=i;anim={from,to:i,start:performance.now(),dur:fwd?STEPS[i].dur:Math.min(850,350+Math.abs(i-from)*60),linear:fwd};syncDock();
+}
+function next(){go(target+1);} function prev(){go(target-1);}
+function tick(now){
+  if(anim){
+    const p=clamp((now-anim.start)/anim.dur);
+    G=anim.linear?lerp(anim.from,anim.to,p):lerp(anim.from,anim.to,ease(p));
+    if(p>=1){G=anim.to;anim=null;if(auto&&G<LAST)setTimeout(()=>auto&&go(target+1),700);}
+  }
+  render(G,(now-t0)/1000);requestAnimationFrame(tick);
+}
+let idleTimer=null;
+function wake(){document.body.classList.remove('idle');clearTimeout(idleTimer);idleTimer=setTimeout(()=>document.body.classList.add('idle'),3200);}
+['mousemove','pointerdown','keydown'].forEach(ev=>addEventListener(ev,wake)); wake();
+
+const autoBtn=document.getElementById('autoBtn'), cleanBtn=document.getElementById('cleanBtn'), fsBtn=document.getElementById('fsBtn');
+function toggleAuto(){auto=!auto;autoBtn.classList.toggle('on',auto);autoBtn.textContent=auto?'自动中':'自动 A';if(auto)next();}
+function toggleClean(){document.body.classList.toggle('clean');}
+function toggleFS(){const d=document,el=d.documentElement;if(!d.fullscreenElement)el.requestFullscreen?.();else d.exitFullscreen?.();}
+[autoBtn,cleanBtn,fsBtn].forEach(b=>b.addEventListener('pointerdown',e=>e.stopPropagation()));
+autoBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleAuto();});
+cleanBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleClean();});
+fsBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
+
+addEventListener('keydown',e=>{
+  if(e.target.id==='lesson-back')return;
+
+  const k=e.key;
+  if(['ArrowRight',' ','PageDown','Enter','ArrowDown'].includes(k)){e.preventDefault();next();}
+  else if(['ArrowLeft','PageUp','Backspace','ArrowUp'].includes(k)){e.preventDefault();prev();}
+  else if(k==='Home')go(0); else if(k==='End')go(LAST);
+  else if(k==='f'||k==='F')toggleFS();
+  else if(k==='a'||k==='A')toggleAuto();
+  else if(k==='h'||k==='H')toggleClean();
+});
+let pd=null;
+cv.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY,b:e.button};});
+cv.addEventListener('pointerup',e=>{if(!pd)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y,b=pd.b;pd=null;
+  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2){dx<0?next():prev();return;}
+  if(Math.abs(dx)<14&&Math.abs(dy)<14){if(b===2)prev();else e.shiftKey?prev():next();}});
+cv.addEventListener('contextmenu',e=>{e.preventDefault();prev();});
+
+syncDock(); requestAnimationFrame(tick);
+})();
+</script></body></html>

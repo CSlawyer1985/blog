@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>微调、LoRA 与 RAG/Skill · 激光重塑星云与外挂光学镜片</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<style>
+/* 将原文件中的两行 @font-face{font-family:'HSerif'...} 粘贴至此即可恢复原版衬线体 */
+html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
+body{position:fixed;inset:0}
+canvas{display:block;touch-action:none}
+#tools{position:fixed;right:16px;top:14px;display:flex;gap:8px;z-index:10;transition:opacity .35s}
+.tbtn{font:13px "HSerif","Songti SC",serif;color:rgba(244,237,223,.52);background:rgba(10,8,4,.62);border:1px solid rgba(226,170,66,.28);border-radius:5px;padding:4px 10px;cursor:pointer;backdrop-filter:blur(4px);transition:all .2s}
+.tbtn:hover,.tbtn.on{color:#FFD062;border-color:#E2AA42;background:rgba(226,170,66,.14)}
+#dock{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:5px;padding:6px 10px;border-radius:10px;background:rgba(8,7,4,.78);border:1px solid rgba(226,170,66,.22);backdrop-filter:blur(8px);z-index:10;max-width:95vw;overflow-x:auto;transition:opacity .4s}
+#dock::-webkit-scrollbar{display:none}
+.sbtn{font:12px "HSerif","Songti SC",serif;color:rgba(244,237,223,.55);background:none;border:1px solid transparent;border-radius:5px;padding:4px 9px;white-space:nowrap;cursor:pointer;transition:all .2s}
+.sbtn:hover{color:#FFE9B8;border-color:rgba(226,170,66,.35)}
+.sbtn.active{color:#FFD062;border-color:rgba(255,208,98,.6);background:rgba(226,170,66,.16);font-weight:700}
+body.idle #tools,body.idle #dock,body.clean #tools,body.clean #dock{opacity:0;pointer-events:none}
+</style><style>
+  #lesson-back {
+    position: fixed;
+    z-index: 10;
+    top: calc(8px + env(safe-area-inset-top));
+    left: calc(12px + env(safe-area-inset-left));
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    box-sizing: border-box;
+    padding: 0 10px;
+    border-radius: 4px;
+    color: #ffe5ad;
+    background: #17130e;
+    font: 14px/1.4 system-ui, sans-serif;
+    text-decoration: none;
+  }
+  #lesson-back:hover { text-decoration: underline; }
+  #lesson-back:focus-visible { outline: 2px solid #ffd062; outline-offset: 2px; }
+  body.clean #lesson-back, :fullscreen #lesson-back { display: none; }
+</style>
+</head><body>
+<a id="lesson-back" href="../index.html">← 返回模块目录</a>
+<canvas id="c"></canvas>
+<div id="tools">
+  <button class="tbtn" id="autoBtn" title="自动播放 (A)">自动 A</button>
+  <button class="tbtn" id="cleanBtn" title="纯净录屏 (H)">纯净 H</button>
+  <button class="tbtn" id="fsBtn" title="全屏 (F)">全屏 F</button>
+</div>
+<div id="dock"></div>
+<script>
+(function(){
+'use strict';
+const FONT='"HSerif","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif';
+const IVORY='#F4EDDF', GOLD='#E2AA42', GOLD_HI='#FFD062', PALE='#FFE9B8', DIM='rgba(244,237,223,0.62)', RED='#E86A58', GREEN='#4FD198', BLUE='#6AA9FF', ICE='#7CE8FF';
+
+const SCENES=['开场','全量微调','LoRA 镜片','微调的边界','三剑合璧','选型铁律'];
+const S=(id,scene,dur,hint)=>({id,scene,dur,hint});
+const STEPS=[
+  S('title',0,2500,''),
+  S('base_cloud',1,2200,'预训练基座模型像一片庞大的{通才星云}：博学多才，但不懂你团队的专属口径'),
+  S('full_ft',1,2600,'方法 ① {全量微调 (Full Fine-tuning)}：用高能激光改写整片星云里的每一颗参数'),
+  S('forget',1,2600,'沉重代价：算力极其昂贵，且强行改写极易引发「{灾难性遗忘}」——学会专精，忘了常识'),
+  S('lora_lens',2,2600,'破局 ② {LoRA（低秩适配）}：冻结原星云纹丝不动，只在旁侧外挂一块极薄的{光学镜片}'),
+  S('lora_math',2,2600,'镜片内部用极小的低秩矩阵 {B × A} 逼近参数增量：只练不到 1% 的参数，零遗忘'),
+  S('lora_swap',2,2500,'{即插即用}：换一片镜片，同一座基座瞬间在「法律文书」「医疗诊断」「代码」间切换'),
+  S('ft_limit',3,2600,'但微调有致命边界：它擅长改{说话习惯与肌肉记忆}，却极不擅长背{实时变化的知识}'),
+  S('add_tape',4,2600,'需要查最新法条与合同时，不该重训大脑——而是通过 {RAG / Grep} 把资料直接放上纸带'),
+  S('synergy',4,2800,'终极组合拳：{基座 + LoRA 塑风格}  +  {RAG/Grep 供实时事实}  +  {Skill 定工作流}'),
+  S('rule',5,2600,'落地选型铁律：95% 的业务场景，先用 {Prompt / Skill / RAG}，最后才考虑微调'),
+  S('final',5,2600,''),
+];
+const LAST=STEPS.length-1;
+const SCENE_FIRST=SCENES.map((_,i)=>STEPS.findIndex(s=>s.scene===i));
+
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const easeCam=t=>t<.5?16*t**5:1-Math.pow(-2*t+2,5)/2;
+const seg=(G,a,b)=>ease(clamp((G-a)/(b-a)));
+function kf(G,pts,fn=ease){if(G<=pts[0][0])return pts[0][1];for(let i=0;i<pts.length-1;i++){if(G<=pts[i+1][0]){const a=pts[i],b=pts[i+1];return lerp(a[1],b[1],fn((G-a[0])/(b[0]-a[0])));}}return pts[pts.length-1][1];}
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+function gauss(r){let u=0,v=0;while(!u)u=r();while(!v)v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+
+/* ==================== 画布与原版光学贴图 ==================== */
+const cv=document.getElementById('c'), ctx=cv.getContext('2d');
+const W=1920, H=1080; let view={s:1,ox:0,oy:0,dpr:1};
+function resize(){
+  const w=innerWidth,h=innerHeight,dpr=Math.min(window.devicePixelRatio||1,2);
+  cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.width=w+'px';cv.style.height=h+'px';
+  const s=Math.min(w/W,h/H);view={s,ox:(w-W*s)/2,oy:(h-H*s)/2,dpr};
+}
+addEventListener('resize',resize); resize();
+
+const mcache=new Map();
+function font(sz,wt=400){return `${wt} ${sz}px ${FONT}`;}
+function measure(t,sz,wt=400){const k=t+'|'+wt;let v=mcache.get(k);if(v===undefined){ctx.font=font(100,wt);v=ctx.measureText(t).width/100;mcache.set(k,v);}return v*sz;}
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+
+function text(str,x,y,sz,col,a=1,wt=400,al='center'){
+  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
+  const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.font=font(sz,wt);ctx.fillStyle=col;ctx.textAlign=al;ctx.textBaseline='middle';ctx.fillText(str,x,y);ctx.globalAlpha=prev;
+}
+function glowText(str,x,y,sz,col,a=1,wt=700,blur=0.45,al='center'){
+  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
+  ctx.save();ctx.shadowColor=col===ICE?'rgba(124,232,255,0.65)':'rgba(255,186,60,0.6)';ctx.shadowBlur=sz*blur;text(str,x,y,sz,col,a,wt,al);ctx.restore();
+}
+function rich(str,x,y,sz,a=1,col=IVORY){
+  if(ctx.globalAlpha*clamp(a)<=0.004||!str)return;
+  const parts=[];str.split(/(\{[^}]*\})/).forEach(s=>{if(!s)return;if(s[0]==='{')parts.push([s.slice(1,-1),1]);else parts.push([s,0]);});
+  let tw=0;parts.forEach(p=>{p[2]=measure(p[0],sz,p[1]?700:400);tw+=p[2];});let x0=x-tw/2;
+  parts.forEach(p=>{if(p[1])glowText(p[0],x0,y,sz,GOLD_HI,a,700,0.45,'left');else text(p[0],x0,y,sz,col,a,400,'left');x0+=p[2];});
+}
+function brandMark(x,y,sz,a=1){
+  if(ctx.globalAlpha*clamp(a)<=0.004)return;
+  const s1='陈石律师',s2='  ·  ',s3='chenshi.ai';
+  const w1=measure(s1,sz*0.8),w2=measure(s2,sz*0.8),w3=measure(s3,sz,700),tw=w1+w2+w3;let x0=x-tw/2;
+  text(s1,x0,y,sz*0.8,IVORY,a*0.78,400,'left');x0+=w1;text(s2,x0,y,sz*0.8,GOLD,a*0.8,400,'left');x0+=w2;glowText(s3,x0,y,sz,GOLD_HI,a,700,0.3,'left');
+}
+
+function mkSprite(stops){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),gr=g.createRadialGradient(64,64,0,64,64,64);stops.forEach(s=>gr.addColorStop(s[0],s[1]));g.fillStyle=gr;g.fillRect(0,0,128,128);return c;}
+const SPR_HALO=mkSprite([[0,'rgba(255,228,170,0.9)'],[0.14,'rgba(255,196,96,0.52)'],[1,'rgba(200,120,30,0)']]);
+const SPR_RED =mkSprite([[0,'rgba(255,195,185,0.92)'],[0.2,'rgba(232,106,88,0.5)'],[1,'rgba(180,40,30,0)']]);
+const SPR_GRN =mkSprite([[0,'rgba(180,255,220,0.92)'],[0.2,'rgba(79,209,152,0.5)'],[1,'rgba(20,120,80,0)']]);
+const SPR_BLU =mkSprite([[0,'rgba(180,225,255,0.92)'],[0.2,'rgba(106,169,255,0.5)'],[1,'rgba(40,90,180,0)']]);
+const SPR_ICE =mkSprite([[0,'rgba(210,248,255,0.95)'],[0.2,'rgba(124,232,255,0.52)'],[1,'rgba(40,140,200,0)']]);
+function glow(x,y,r,a=1,spr=SPR_HALO){const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||r<=0.5)return;const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.drawImage(spr,x-r,y-r,2*r,2*r);ctx.globalAlpha=prev;}
+
+const FIBER=(()=>{const c=document.createElement('canvas');c.width=512;c.height=128;const g=c.getContext('2d'),r=mulberry(7);
+  for(let i=0;i<900;i++){const x=r()*512,y=r()*128,l=6+r()*40;g.strokeStyle=`rgba(255,215,150,${0.015+r()*0.04})`;g.lineWidth=0.6+r()*0.8;g.beginPath();g.moveTo(x,y);g.lineTo(x+l,y+(r()-0.5)*3);g.stroke();}return c;})();
+let FIBER_PAT=null;
+function drawTape(x,y,w,h){
+  ctx.save();ctx.shadowColor='rgba(0,0,0,0.9)';ctx.shadowBlur=38;ctx.shadowOffsetY=14;
+  const tgr=ctx.createLinearGradient(0,y-h/2,0,y+h/2);
+  tgr.addColorStop(0,'rgba(82,58,20,0.74)');tgr.addColorStop(0.5,'rgba(24,17,7,0.8)');tgr.addColorStop(1,'rgba(82,58,20,0.74)');
+  ctx.fillStyle=tgr;ctx.fillRect(x,y-h/2,w,h);ctx.restore();
+  if(!FIBER_PAT)FIBER_PAT=ctx.createPattern(FIBER,'repeat');
+  ctx.fillStyle=FIBER_PAT;ctx.fillRect(x,y-h/2,w,h);
+  ctx.strokeStyle='rgba(236,184,78,0.9)';ctx.lineWidth=1.8;
+  ctx.beginPath();ctx.moveTo(x,y-h/2);ctx.lineTo(x+w,y-h/2);ctx.moveTo(x,y+h/2);ctx.lineTo(x+w,y+h/2);ctx.stroke();
+  for(let hx=x+18;hx<x+w-10;hx+=36){[y-h/2+9,y+h/2-9].forEach(hy=>{ctx.fillStyle='#030303';ctx.fillRect(hx-2,hy-2,4,4);});}
+}
+
+const DUST=(()=>{const r=mulberry(2040);return Array.from({length:60},()=>({x:r(),y:r(),vx:(r()-0.5)*0.004,vy:-0.003-r()*0.006,r:1.2+r()*2.5,a:0.1+r()*0.22,ph:r()*6.28}));})();
+
+// 3D 通才参数星云（160 颗参数粒子）
+const NEBULA=(()=>{
+  const r=mulberry(777);
+  return Array.from({length:160},(_,i)=>{
+    const rad=0.35+Math.abs(gauss(r))*0.52, th=r()*Math.PI*2, ph=Math.acos(2*r()-1);
+    return {
+      x:rad*Math.sin(ph)*Math.cos(th),
+      y:rad*Math.sin(ph)*Math.sin(th),
+      z:rad*Math.cos(ph),
+      sz:2.4+r()*2.8,
+      lost:(i%3===0) // 全量微调时发生“灾难性遗忘”的常识节点
+    };
+  });
+})();
+function proj3D(p,yaw,cx,cy,sc){
+  const c=Math.cos(yaw), s=Math.sin(yaw);
+  const x1=c*p.x+s*p.z, z1=-s*p.x+c*p.z;
+  const f=sc/(3.4+z1);
+  return {x:cx+x1*f, y:cy+p.y*f, s:f/sc*3.4, z:z1};
+}
+
+// 绘制 LoRA 光学镜片
+function drawLoRALens(x,y,h,col,title,sub,a=1){
+  if(a<=0.01)return;
+  ctx.save();ctx.globalAlpha*=a;
+  const w=28;
+  ctx.beginPath();ctx.moveTo(x,y-h/2);ctx.quadraticCurveTo(x+w,y,x,y+h/2);ctx.quadraticCurveTo(x-w,y,x,y-h/2);ctx.closePath();
+  const g=ctx.createLinearGradient(x-w,y-h/2,x+w,y+h/2);
+  g.addColorStop(0,'rgba(255,235,170,0.35)');g.addColorStop(0.5,'rgba(255,208,98,0.12)');g.addColorStop(1,'rgba(255,235,170,0.35)');
+  ctx.fillStyle=g;ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=2.6;ctx.stroke();
+  ctx.globalCompositeOperation='lighter';glow(x,y,95,0.45,col===GREEN?SPR_GRN:(col===BLUE?SPR_BLU:SPR_HALO));ctx.globalCompositeOperation='source-over';
+  glowText(title,x,y-h/2-34,20,col,1,700,0.35);
+  text(sub,x,y+h/2+26,15,IVORY,0.9);
+  ctx.restore();
+}
+
+/* ============================== 主渲染 ============================== */
+function render(G,amb){
+  const {s,ox,oy,dpr}=view;
+  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
+  ctx.setTransform(s*dpr,0,0,s*dpr,ox*dpr,oy*dpr);
+  ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();
+  ctx.fillStyle='#030304';ctx.fillRect(0,0,W,H);
+
+  // 背景精密网格 + 暖光 + 金尘
+  ctx.strokeStyle='rgba(226,170,66,0.022)';ctx.lineWidth=1;
+  for(let x=0;x<=W;x+=64){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<=H;y+=64){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  const bg=ctx.createRadialGradient(W/2,H*0.5,0,W/2,H*0.5,960);
+  bg.addColorStop(0,'rgba(128,84,22,0.16)');bg.addColorStop(0.55,'rgba(60,38,10,0.05)');bg.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  ctx.save();ctx.globalCompositeOperation='lighter';
+  DUST.forEach(d=>{const dx=((d.x+amb*d.vx)%1+1)%1*W,dy=((d.y+amb*d.vy)%1+1)%1*H;glow(dx,dy,d.r*3,d.a*(0.55+0.45*Math.sin(amb*1.4+d.ph)));});
+  ctx.restore();
+
+  /* ---------- 0. 开场标题 (0 -> 0.55) ---------- */
+  const a0=1-seg(G,0.02,0.55);
+  if(a0>0.005){
+    const intro=clamp(amb/2.4), out=seg(G,0.02,0.55);
+    const title='微调、LoRA 与 RAG / Skill', fs=86, tw=measure(title,fs,700);
+    let x=W/2-tw/2; const rnd=mulberry(67); let ci=0;
+    ctx.save();
+    for(const ch of title){
+      const cw=measure(ch,fs,700), ca=seg(intro,0.05+ci*0.022,0.3+ci*0.022);
+      const dx=(rnd()-0.5)*220*out, dy=-(35+rnd()*140)*out;
+      glowText(ch,x+cw/2+dx,445+(1-ca)*24+dy,fs,PALE,ca*(1-out),700,0.35);
+      x+=cw; ci++;
+    }
+    const lw=840*seg(intro,0.28,0.82)*(1-out);
+    ctx.globalCompositeOperation='lighter';
+    const lg=ctx.createLinearGradient(W/2-lw/2,0,W/2+lw/2,0);lg.addColorStop(0,'rgba(255,200,90,0)');lg.addColorStop(0.5,`rgba(255,214,120,${0.95*(1-out)})`);lg.addColorStop(1,'rgba(255,200,90,0)');
+    ctx.fillStyle=lg;ctx.fillRect(W/2-lw/2,540,lw,2);glow(W/2,541,60,0.7*(1-out));ctx.globalCompositeOperation='source-over';
+    rich('{激光重塑大脑} vs. {外挂光学镜片} vs. {纸带外挂知识}',W/2,605,31,seg(intro,0.55,1)*(1-out),DIM);
+    brandMark(W/2,870,28,seg(intro,0.7,1)*(1-out));
+    ctx.restore();
+  }
+
+  /* ---------- 1~5. 连续物理舞台 (G >= 0.45) ---------- */
+  const worldA=seg(G,0.45,1.0);
+  if(worldA>0.005){
+    const pFullFT = seg(G,1.2,2.0)*(1-seg(G,3.4,4.0)); // 全量微调激光
+    const pForget = seg(G,2.2,3.0)*(1-seg(G,3.4,4.0)); // 灾难性遗忘
+    const pLoRA   = seg(G,3.3,4.0);                    // 冻结星云 + 外挂 LoRA 镜片
+    const pMath   = seg(G,4.2,5.0)*(1-seg(G,5.4,6.0)); // B × A 低秩分解
+    const pSwap   = seg(G,5.3,6.0)*(1-seg(G,6.4,7.0)); // 镜片热插拔
+    const pLimit  = seg(G,6.3,7.0)*(1-seg(G,7.5,8.0)); // 微调的知识滞后边界
+    const pTape   = seg(G,7.3,8.0);                    // 底部纸带展开（RAG + Skill）
+    const pSyn    = seg(G,8.3,9.0);                    // 三剑合璧连线
+    const pRule   = seg(G,9.3,10.0);                   // 选型铁律
+    const pFin    = seg(G,10.4,11.0);
+
+    // 星云位置随剧情平滑移动：居中 -> 左移腾出镜片位 -> 上移腾出底部纸带位
+    const nebX = kf(G,[[1,960],[3,960],[4,600],[7,600],[8,600],[11,600]], easeCam);
+    const nebY = kf(G,[[1,540],[7,540],[8,385],[11,385]], easeCam);
+    const nebSC= kf(G,[[1,640],[7,640],[8,460],[11,460]], easeCam);
+    const yaw  = amb*0.26;
+
+    ctx.save();ctx.globalAlpha=worldA;
+
+    // 1. 3D 预训练基座参数星云
+    ctx.save();ctx.globalCompositeOperation='lighter';
+    NEBULA.forEach(p=>{
+      const pr=proj3D(p,yaw,nebX,nebY,nebSC);
+      const br=clamp(1-(pr.z+1.2)/2.6);
+      let spr=SPR_HALO, a=0.35+br*0.65;
+      if(pForget>0.2 && p.lost){ spr=SPR_RED; a*=lerp(1,0.35,pForget); }
+      else if(pLoRA>0.2){ spr=SPR_ICE; a*=0.72; } // 冻结态：冷静冰蓝
+      glow(pr.x,pr.y,p.sz*4.2*pr.s,a,spr);
+    });
+    ctx.restore();
+
+    const nebLabY = nebY + lerp(255, 175, pTape);
+    glowText(pLoRA>0.3?'冻结基座星云 (Frozen Base W)':'预训练基座星云 (Base LLM)', nebX, nebLabY, 22, pLoRA>0.3?ICE:GOLD_HI, 1, 700, 0.35);
+
+    // Step 2-3: 全量微调高能激光轰击 + 灾难性遗忘提示
+    if(pFullFT>0.02){
+      ctx.save();ctx.globalAlpha*=pFullFT;
+      for(let i=0;i<6;i++){
+        const sy=280+i*105;
+        ctx.strokeStyle=pForget>0.3?RED:GOLD_HI;ctx.lineWidth=2.5;
+        ctx.beginPath();ctx.moveTo(160,sy);ctx.lineTo(nebX+(i%2?80:-80),nebY+(i-2.5)*55);ctx.stroke();
+      }
+      text('⚡ 100% 参数全部重算（算力爆炸）',290,235,19,GOLD_HI,1,700);
+      if(pForget>0.05){
+        rr(1310,430,490,200,14);ctx.fillStyle='rgba(85,20,16,0.78)';ctx.fill();ctx.strokeStyle=RED;ctx.lineWidth=2.2;ctx.stroke();
+        text('⚠ 灾难性遗忘 (Catastrophic Forgetting)',1555,488,20,RED,pForget,700);
+        text('强行改写所有权重后，通用推理与常识',1555,542,17,IVORY,pForget);
+        text('反而退化，且整套百亿参数难以回滚！',1555,578,17,IVORY,pForget);
+      }
+      ctx.restore();
+    }
+
+    // 2. 右侧：LoRA 外挂光学镜片（Step 4 起显现）
+    if(pLoRA>0.02){
+      const lensX = 1120, lensY = nebY, lensH = lerp(360, 250, pTape);
+      const swapIdx = pSwap>0.1 ? (Math.floor(amb*0.9)%3) : 0;
+      const lensMeta = [
+        {t:'LoRA · 法律文书镜片', sub:'仅 0.5% 参数 · 精准法律口径', c:GOLD_HI},
+        {t:'LoRA · 医疗影像镜片', sub:'热插拔切换 · 零重训基座',   c:GREEN},
+        {t:'LoRA · 代码架构镜片', sub:'多套镜片共用 1 座基座',     c:BLUE},
+      ][swapIdx];
+
+      // 从冻结星云射穿 LoRA 镜片的光束
+      ctx.save();ctx.globalAlpha*=pLoRA;
+      ctx.strokeStyle=lensMeta.c;ctx.lineWidth=3;
+      ctx.beginPath();ctx.moveTo(nebX+lerp(180,120,pTape),nebY);ctx.lineTo(lensX-22,lensY);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(lensX+22,lensY);ctx.lineTo(1480,lensY);ctx.stroke();
+      drawLoRALens(lensX,lensY,lensH,lensMeta.c,lensMeta.t,lensMeta.sub,pLoRA);
+
+      // 右端折射输出标牌
+      rr(1485,lensY-52,320,104,12);ctx.fillStyle='rgba(24,18,8,0.9)';ctx.fill();ctx.strokeStyle=lensMeta.c;ctx.lineWidth=2;ctx.stroke();
+      text('折射输出：W + ΔW',1645,lensY-14,19,lensMeta.c,1,700);
+      text('专业风格瞬间成型',1645,lensY+20,15,IVORY,0.92);
+
+      // Step 5: 低秩分解公式 B × A
+      if(pMath>0.02){
+        ctx.save();ctx.globalAlpha*=pMath;
+        rr(lensX-175,lensY+lensH/2+64,350,76,10);ctx.fillStyle='rgba(22,18,10,0.92)';ctx.fill();ctx.strokeStyle=GOLD_HI;ctx.lineWidth=1.8;ctx.stroke();
+        glowText('ΔW = B (d×r) × A (r×d)',lensX,lensY+lensH/2+92,19,GOLD_HI,1,700,0.3);
+        text('秩 r=8 远小于 d=4096 → 显存省 99%',lensX,lensY+lensH/2+122,14,DIM,1);
+        ctx.restore();
+      }
+      // Step 7: 微调的知识边界警告
+      if(pLimit>0.02){
+        ctx.save();ctx.globalAlpha*=pLimit;
+        rr(W/2-480,785,960,110,12);ctx.fillStyle='rgba(85,20,16,0.78)';ctx.fill();ctx.strokeStyle=RED;ctx.lineWidth=2;ctx.stroke();
+        text('⚠ 微调的边界：学「风格与格式」极佳，背「昨天刚出的新法规」必过时！',W/2,824,20,RED,1,700);
+        text('新合同、新案情每天在变，不可能天天重训 LoRA 镜片',W/2,864,17,IVORY,0.92);
+        ctx.restore();
+      }
+      ctx.restore();
+    }
+
+    // 3. 底部纤维打孔纸带（Step 8 起展开：RAG/Grep + Skill 与上方 LoRA 三剑合璧！）
+    if(pTape>0.01){
+      const ty=745, th=146, x0=110, tw=1700;
+      ctx.save();ctx.globalAlpha*=pTape;
+      drawTape(x0,ty,tw,th);
+      text('上下文窗口纸带（动态外挂 · 实时更新 · 零训练成本）',W/2,ty+th/2+30,19,GOLD,0.9,700);
+
+      const segs=[
+        {t:'Skill (SOP 与工具)',  sub:'固化工作流与质量红线', w:480, c:GOLD_HI},
+        {t:'RAG / Grep (实时事实)',sub:'精准拉取最新法条与合同原文', w:560, c:GREEN},
+        {t:'用户本轮提问',         sub:'结合以上依据，按专业口径输出', w:560, c:BLUE},
+      ];
+      let sx=x0+30;
+      segs.forEach(sg=>{
+        rr(sx,ty-46,sg.w,92,8);ctx.fillStyle='rgba(16,13,7,0.88)';ctx.fill();ctx.strokeStyle=sg.c;ctx.lineWidth=1.8;ctx.stroke();
+        text(sg.t,sx+sg.w/2,ty-14,20,sg.c,1,700);text(sg.sub,sx+sg.w/2,ty+18,15,IVORY,0.92);
+        sx+=sg.w+20;
+      });
+
+      // Step 9: 三剑合璧垂直能量汇流线
+      if(pSyn>0.02){
+        ctx.save();ctx.globalAlpha*=pSyn;
+        ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2.6;ctx.setLineDash([8,6]);ctx.lineDashOffset=-amb*35;
+        ctx.beginPath();ctx.moveTo(1120,nebY+145);ctx.lineTo(1120,ty-th/2-6);ctx.stroke();ctx.setLineDash([]);
+        text('↑ 纸带给事实与流程 · 镜片给风格与肌肉记忆',1120,610,19,PALE,1,700);
+        ctx.restore();
+      }
+      ctx.restore();
+    }
+
+    // 4. Step 10: 选型铁律浮标
+    if(pRule>0.02 && pFin<0.8){
+      ctx.save();ctx.globalAlpha*=pRule*(1-pFin*1.25);
+      rr(W/2-540,895,1080,72,10);ctx.fillStyle='rgba(18,14,6,0.94)';ctx.fill();ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2;ctx.stroke();
+      rich('选型铁律：能用 {Prompt / Skill} 解决不建库，能用 {RAG / Grep} 解决不微调',W/2,931,21,1,IVORY);
+      ctx.restore();
+    }
+
+    ctx.restore();
+  }
+
+  /* ---------- 终局收束落版 (Step 11) ---------- */
+  const finA=seg(G,10.4,11.0);
+  if(finA>0.01){
+    ctx.save();ctx.globalAlpha=finA;
+    rich('{微调/LoRA} 塑大脑习惯，{RAG/Grep} 供实时事实，{Skill} 定工程流程',W/2,92,32,1,IVORY);
+    brandMark(W/2,960,26,1);
+    ctx.restore();
+  }
+
+  // 电影暗角
+  const vig=ctx.createRadialGradient(W/2,H/2,H*0.38,W/2,H/2,W*0.66);
+  vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,0,0.55)');
+  ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
+
+  /* ---------- 顶部引导语（先退后进，零叠字） & 进度 ---------- */
+  const lo=Math.floor(G), hi=Math.min(LAST,Math.ceil(G)), f=G-lo;
+  const ha=STEPS[lo].hint, hb=STEPS[hi].hint;
+  if(ha===hb) rich(ha,W/2,92,33,0.95);
+  else {
+    const aOut=1-ease(clamp(f/0.38)), aIn=ease(clamp((f-0.5)/0.42));
+    if(aOut>0.01) rich(ha,W/2,92-(1-aOut)*10,33,0.95*aOut);
+    if(aIn>0.01) rich(hb,W/2,92+(1-aIn)*10,33,0.95*aIn);
+  }
+  const st=STEPS[Math.round(G)];
+  text(`${String(st.scene).padStart(2,'0')} · ${SCENES[st.scene]}    ${Math.round(G)+1} / ${STEPS.length}`,1860,1025,18,'rgba(244,237,223,0.52)',1,400,'right');
+  ctx.fillStyle='rgba(244,237,223,0.16)';ctx.fillRect(1620,1044,240,2);
+  ctx.fillStyle=GOLD;ctx.fillRect(1620,1044,240*G/LAST,2);
+  ctx.restore();
+}
+
+/* ==================== 交互与播控 ==================== */
+let G=0, target=0, anim=null, auto=false; const t0=performance.now();
+const dock=document.getElementById('dock');
+SCENES.forEach((name,idx)=>{
+  const b=document.createElement('button');b.className='sbtn';b.textContent=`${String(idx).padStart(2,'0')} ${name}`;
+  b.addEventListener('pointerdown',e=>e.stopPropagation());
+  b.addEventListener('pointerup',e=>{e.stopPropagation();go(SCENE_FIRST[idx]);});
+  dock.appendChild(b);
+});
+function syncDock(){const sc=STEPS[Math.round(target)].scene;dock.querySelectorAll('.sbtn').forEach((b,i)=>b.classList.toggle('active',i===sc));}
+function go(i){
+  i=clamp(Math.round(i),0,LAST);if(i===target&&!anim)return;
+  const from=G, fwd=i===Math.round(target)+1&&i>from;
+  target=i;anim={from,to:i,start:performance.now(),dur:fwd?STEPS[i].dur:Math.min(850,350+Math.abs(i-from)*60),linear:fwd};syncDock();
+}
+function next(){go(target+1);} function prev(){go(target-1);}
+function tick(now){
+  if(anim){
+    const p=clamp((now-anim.start)/anim.dur);
+    G=anim.linear?lerp(anim.from,anim.to,p):lerp(anim.from,anim.to,ease(p));
+    if(p>=1){G=anim.to;anim=null;if(auto&&G<LAST)setTimeout(()=>auto&&go(target+1),700);}
+  }
+  render(G,(now-t0)/1000);requestAnimationFrame(tick);
+}
+let idleTimer=null;
+function wake(){document.body.classList.remove('idle');clearTimeout(idleTimer);idleTimer=setTimeout(()=>document.body.classList.add('idle'),3200);}
+['mousemove','pointerdown','keydown'].forEach(ev=>addEventListener(ev,wake)); wake();
+
+const autoBtn=document.getElementById('autoBtn'), cleanBtn=document.getElementById('cleanBtn'), fsBtn=document.getElementById('fsBtn');
+function toggleAuto(){auto=!auto;autoBtn.classList.toggle('on',auto);autoBtn.textContent=auto?'自动中':'自动 A';if(auto)next();}
+function toggleClean(){document.body.classList.toggle('clean');}
+function toggleFS(){const d=document,el=d.documentElement;if(!d.fullscreenElement)el.requestFullscreen?.();else d.exitFullscreen?.();}
+[autoBtn,cleanBtn,fsBtn].forEach(b=>b.addEventListener('pointerdown',e=>e.stopPropagation()));
+autoBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleAuto();});
+cleanBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleClean();});
+fsBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
+
+addEventListener('keydown',e=>{
+  if(e.target.id==='lesson-back')return;
+
+  const k=e.key;
+  if(['ArrowRight',' ','PageDown','Enter','ArrowDown'].includes(k)){e.preventDefault();next();}
+  else if(['ArrowLeft','PageUp','Backspace','ArrowUp'].includes(k)){e.preventDefault();prev();}
+  else if(k==='Home')go(0); else if(k==='End')go(LAST);
+  else if(k==='f'||k==='F')toggleFS();
+  else if(k==='a'||k==='A')toggleAuto();
+  else if(k==='h'||k==='H')toggleClean();
+});
+let pd=null;
+cv.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY,b:e.button};});
+cv.addEventListener('pointerup',e=>{if(!pd)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y,b=pd.b;pd=null;
+  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2){dx<0?next():prev();return;}
+  if(Math.abs(dx)<14&&Math.abs(dy)<14){if(b===2)prev();else e.shiftKey?prev():next();}});
+cv.addEventListener('contextmenu',e=>{e.preventDefault();prev();});
+
+syncDock(); requestAnimationFrame(tick);
+})();
+</script></body></html>
