@@ -1,0 +1,9 @@
+@font-face{font-family:'HSerif';font-weight:400;font-display:swap;src:url(fonts/hserif-400.woff2) format('woff2');}
+@font-face{font-family:'HSerif';font-weight:700;font-display:swap;src:url(fonts/hserif-700.woff2) format('woff2');}
+html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+body{position:fixed;inset:0}canvas{display:block;touch-action:none}
+#fs{position:fixed;right:calc(14px + env(safe-area-inset-right));top:calc(12px + env(safe-area-inset-top));font:13px "HSerif","Songti SC",serif;color:rgba(244,237,223,.35);background:none;border:1px solid rgba(226,170,66,.25);border-radius:4px;padding:4px 10px;cursor:pointer;z-index:2}
+#fs:hover{color:#FFD062;border-color:#E2AA42}:fullscreen #fs{display:none}
+#lesson-back{position:fixed;z-index:10;top:calc(8px + env(safe-area-inset-top));left:calc(12px + env(safe-area-inset-left));display:inline-flex;align-items:center;min-height:44px;box-sizing:border-box;padding:0 10px;border-radius:4px;color:#ffe5ad;background:#17130e;font:14px/1.4 system-ui,sans-serif;text-decoration:none}
+#lesson-back:hover{text-decoration:underline}#lesson-back:focus-visible{outline:2px solid #ffd062;outline-offset:2px}
+:fullscreen #lesson-back{display:none}

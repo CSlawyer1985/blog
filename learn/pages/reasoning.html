@@ -1,419 +1,132 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
-<title>Reasoning 深度思考 · 水下隐藏纸带与树状剪枝</title>
+<title>Reasoning 深度思考 · 同一根纸带上的「草稿」</title>
+<meta name="description" content="推理模型先在同一根纸带上写思考 token、自我检查，再作答；界面为什么把思考折叠；思考预算怎么取舍。以违约金调整为例。">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
-<style>
-/* 将原文件中的两行 @font-face{font-family:'HSerif'...} 粘贴至此即可恢复原版衬线体 */
-html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
-body{position:fixed;inset:0}
-canvas{display:block;touch-action:none}
-#tools{position:fixed;right:16px;top:14px;display:flex;gap:8px;z-index:10;transition:opacity .35s}
-.tbtn{font:13px "HSerif","Songti SC",serif;color:rgba(244,237,223,.52);background:rgba(10,8,4,.62);border:1px solid rgba(226,170,66,.28);border-radius:5px;padding:4px 10px;cursor:pointer;backdrop-filter:blur(4px);transition:all .2s}
-.tbtn:hover,.tbtn.on{color:#FFD062;border-color:#E2AA42;background:rgba(226,170,66,.14)}
-#dock{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:5px;padding:6px 10px;border-radius:10px;background:rgba(8,7,4,.78);border:1px solid rgba(226,170,66,.22);backdrop-filter:blur(8px);z-index:10;max-width:95vw;overflow-x:auto;transition:opacity .4s}
-#dock::-webkit-scrollbar{display:none}
-.sbtn{font:12px "HSerif","Songti SC",serif;color:rgba(244,237,223,.55);background:none;border:1px solid transparent;border-radius:5px;padding:4px 9px;white-space:nowrap;cursor:pointer;transition:all .2s}
-.sbtn:hover{color:#FFE9B8;border-color:rgba(226,170,66,.35)}
-.sbtn.active{color:#FFD062;border-color:rgba(255,208,98,.6);background:rgba(226,170,66,.16);font-weight:700}
-body.idle #tools,body.idle #dock,body.clean #tools,body.clean #dock{opacity:0;pointer-events:none}
-</style><style>
-  #lesson-back {
-    position: fixed;
-    z-index: 10;
-    top: calc(8px + env(safe-area-inset-top));
-    left: calc(12px + env(safe-area-inset-left));
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    box-sizing: border-box;
-    padding: 0 10px;
-    border-radius: 4px;
-    color: #ffe5ad;
-    background: #17130e;
-    font: 14px/1.4 system-ui, sans-serif;
-    text-decoration: none;
-  }
-  #lesson-back:hover { text-decoration: underline; }
-  #lesson-back:focus-visible { outline: 2px solid #ffd062; outline-offset: 2px; }
-  body.clean #lesson-back, :fullscreen #lesson-back { display: none; }
-</style>
+<link rel="preload" href="../assets/fonts/hserif-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/hserif-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/lesson.css">
 </head><body>
 <a id="lesson-back" href="../index.html">← 返回模块目录</a>
-<canvas id="c"></canvas>
-<div id="tools">
-  <button class="tbtn" id="autoBtn" title="自动播放 (A)">自动 A</button>
-  <button class="tbtn" id="cleanBtn" title="纯净录屏 (H)">纯净 H</button>
-  <button class="tbtn" id="fsBtn" title="全屏 (F)">全屏 F</button>
-</div>
-<div id="dock"></div>
+<canvas id="c"></canvas><button id="fs" title="全屏（F）">全屏 F</button>
+<script src="../assets/lesson-engine.js"></script>
 <script>
-(function(){
-'use strict';
-const FONT='"HSerif","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif';
-const IVORY='#F4EDDF', GOLD='#E2AA42', GOLD_HI='#FFD062', PALE='#FFE9B8', DIM='rgba(244,237,223,0.62)', RED='#E86A58', GREEN='#4FD198', BLUE='#6AA9FF';
-
-const SCENES=['开场','快思考的陷阱','水下思考轨','树状剪枝','浮出水面','推理时算力'];
-const S=(id,scene,dur,hint)=>({id,scene,dur,hint});
+// @title Reasoning 深度思考 · 同一根纸带上的「草稿」
+// @desc 推理模型先在同一根纸带上写思考 token、自我检查，再作答；界面为什么把思考折叠；思考预算怎么取舍。以违约金调整为例。
+(function(){'use strict';
+const {C,LY,ctx,clamp,lerp,ease,seg,kf,lin,bump,damp,text,glowText,rich,measure,rr,glow,glowAdd,card,block,tape,line,S}=LE;
+const {IVORY,GOLD,GOLD_HI,PALE,DIM,DIM2,RED,GREEN,PURPLE}=C;
+const SCENES=['开场','快答的坑','写下思考','自我检查','作答','折叠','思考预算','收束'];
 const STEPS=[
-  S('title',0,2500,''),
-  S('trap_q',1,2200,'给模型一道带坑的难题：合同约定违约金 30%，且{预先放弃调减权}，法院还会调吗？'),
-  S('fast_fail',1,2600,'普通模型（系统 1 快思考）：拿到问题直接往主纸带吐字，顺着字面掉进陷阱'),
-  S('dive_in',2,2600,'推理模型（系统 2 慢思考）：先不急着回答，光束一头潜入{水下隐藏纸带 (<think>)}'),
-  S('branch_a',3,2600,'水下探索 ①：先沿直觉试探分支 A（契约自由，放弃有效）→ 撞上法理红墙！'),
-  S('prune_back',3,2600,'自我反思与{剪枝回溯}：模型意识到违背公平原则，果断砍掉死胡同，退回分叉口'),
-  S('branch_b',3,2600,'水下探索 ②：转向分支 B——核验最高院裁判规则，确认「{预先放弃条款无效}」'),
-  S('surface',4,2800,'逻辑闭环达成！验证后的高纯度光束{浮出水面}，在主纸带上打印精准结论'),
-  S('hide_draft',4,2200,'水下海量试错草稿自动折叠收起，留给用户的只有{干净、严谨的最终交付}'),
-  S('ttc_curve',5,2800,'底层范式跃迁：{Test-Time Compute（推理时算力）}——给模型更多思考时间，准确率飙升'),
-  S('ttc_trade',5,2400,'工程心法：简单任务用快思考省钱提速，{复杂推理与风控}才开启深度思考'),
-  S('final',5,2600,''),
+ S('title',0,2600,''),
+ S('q',1,2400,'一道带坑的题：合同约定高额违约金，还约定「{不得请求调减}」——法院还能调吗？'),
+ S('fast',1,2600,'直接作答：顺着字面接龙，容易答成「{约定有效，不能调}」'),
+ S('think',2,3000,'推理模型：先在{同一根纸带}上写一段思考 token，再作答'),
+ S('wrong',3,3200,'思考时可以{自我检查}：发现这条思路与司法解释冲突，推翻重来'),
+ S('cite',3,3600,'换一条路，逐条核对：{第64条第3款}、第65条第2款、民法典第585条'),
+ S('answer',4,2800,'想清楚再落笔：{回答}接在思考之后，写在同一根纸带上'),
+ S('fold',5,3000,'思考和回答都是模型生成的 token；聊天界面通常把思考{折叠}，或只显示摘要'),
+ S('cost',5,2600,'思考 token 也要{计费}（按输出 token），也会让回答变慢'),
+ S('drag',6,1800,'{拖动}思考段的末端，调整思考预算（曲线为示意）',true),
+ S('rule',6,2800,'工程心法：简单任务快答省钱，{复杂推理与风险审查}再开深度思考'),
+ S('final',7,3200,''),
 ];
-const LAST=STEPS.length-1;
-const SCENE_FIRST=SCENES.map((_,i)=>STEPS.findIndex(s=>s.scene===i));
-
-const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
-const lerp=(a,b,t)=>a+(b-a)*t;
-const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-const easeCam=t=>t<.5?16*t**5:1-Math.pow(-2*t+2,5)/2;
-const seg=(G,a,b)=>ease(clamp((G-a)/(b-a)));
-function kf(G,pts,fn=ease){if(G<=pts[0][0])return pts[0][1];for(let i=0;i<pts.length-1;i++){if(G<=pts[i+1][0]){const a=pts[i],b=pts[i+1];return lerp(a[1],b[1],fn((G-a[0])/(b[0]-a[0])));}}return pts[pts.length-1][1];}
-function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
-
-/* ==================== 画布与原版光学贴图 ==================== */
-const cv=document.getElementById('c'), ctx=cv.getContext('2d');
-const W=1920, H=1080; let view={s:1,ox:0,oy:0,dpr:1};
-function resize(){
-  const w=innerWidth,h=innerHeight,dpr=Math.min(window.devicePixelRatio||1,2);
-  cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.width=w+'px';cv.style.height=h+'px';
-  const s=Math.min(w/W,h/H);view={s,ox:(w-W*s)/2,oy:(h-H*s)/2,dpr};
-}
-addEventListener('resize',resize); resize();
-
-const mcache=new Map();
-function font(sz,wt=400){return `${wt} ${sz}px ${FONT}`;}
-function measure(t,sz,wt=400){const k=t+'|'+wt;let v=mcache.get(k);if(v===undefined){ctx.font=font(100,wt);v=ctx.measureText(t).width/100;mcache.set(k,v);}return v*sz;}
-function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
-
-function text(str,x,y,sz,col,a=1,wt=400,al='center'){
-  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
-  const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.font=font(sz,wt);ctx.fillStyle=col;ctx.textAlign=al;ctx.textBaseline='middle';ctx.fillText(str,x,y);ctx.globalAlpha=prev;
-}
-function glowText(str,x,y,sz,col,a=1,wt=700,blur=0.45,al='center'){
-  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
-  ctx.save();ctx.shadowColor='rgba(255,186,60,0.6)';ctx.shadowBlur=sz*blur;text(str,x,y,sz,col,a,wt,al);ctx.restore();
-}
-function rich(str,x,y,sz,a=1,col=IVORY){
-  if(ctx.globalAlpha*clamp(a)<=0.004||!str)return;
-  const parts=[];str.split(/(\{[^}]*\})/).forEach(s=>{if(!s)return;if(s[0]==='{')parts.push([s.slice(1,-1),1]);else parts.push([s,0]);});
-  let tw=0;parts.forEach(p=>{p[2]=measure(p[0],sz,p[1]?700:400);tw+=p[2];});let x0=x-tw/2;
-  parts.forEach(p=>{if(p[1])glowText(p[0],x0,y,sz,GOLD_HI,a,700,0.45,'left');else text(p[0],x0,y,sz,col,a,400,'left');x0+=p[2];});
-}
-function brandMark(x,y,sz,a=1){
-  if(ctx.globalAlpha*clamp(a)<=0.004)return;
-  const s1='陈石律师',s2='  ·  ',s3='chenshi.ai';
-  const w1=measure(s1,sz*0.8),w2=measure(s2,sz*0.8),w3=measure(s3,sz,700),tw=w1+w2+w3;let x0=x-tw/2;
-  text(s1,x0,y,sz*0.8,IVORY,a*0.78,400,'left');x0+=w1;text(s2,x0,y,sz*0.8,GOLD,a*0.8,400,'left');x0+=w2;glowText(s3,x0,y,sz,GOLD_HI,a,700,0.3,'left');
-}
-
-function mkSprite(stops){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),gr=g.createRadialGradient(64,64,0,64,64,64);stops.forEach(s=>gr.addColorStop(s[0],s[1]));g.fillStyle=gr;g.fillRect(0,0,128,128);return c;}
-const SPR_HALO=mkSprite([[0,'rgba(255,228,170,0.9)'],[0.14,'rgba(255,196,96,0.52)'],[1,'rgba(200,120,30,0)']]);
-const SPR_CORE=mkSprite([[0,'rgba(255,250,235,1)'],[0.25,'rgba(255,226,160,0.9)'],[1,'rgba(255,170,60,0)']]);
-const SPR_RED =mkSprite([[0,'rgba(255,195,185,0.9)'],[0.2,'rgba(232,106,88,0.5)'],[1,'rgba(180,40,30,0)']]);
-const SPR_GRN =mkSprite([[0,'rgba(180,255,220,0.9)'],[0.2,'rgba(79,209,152,0.5)'],[1,'rgba(20,120,80,0)']]);
-const SPR_BLU =mkSprite([[0,'rgba(180,225,255,0.9)'],[0.2,'rgba(106,169,255,0.5)'],[1,'rgba(40,90,180,0)']]);
-function glow(x,y,r,a=1,spr=SPR_HALO){const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||r<=0.5)return;const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.drawImage(spr,x-r,y-r,2*r,2*r);ctx.globalAlpha=prev;}
-
-const FIBER=(()=>{const c=document.createElement('canvas');c.width=512;c.height=128;const g=c.getContext('2d'),r=mulberry(7);
-  for(let i=0;i<900;i++){const x=r()*512,y=r()*128,l=6+r()*40;g.strokeStyle=`rgba(255,215,150,${0.015+r()*0.04})`;g.lineWidth=0.6+r()*0.8;g.beginPath();g.moveTo(x,y);g.lineTo(x+l,y+(r()-0.5)*3);g.stroke();}return c;})();
-let FIBER_PAT=null;
-const DUST=(()=>{const r=mulberry(2034);return Array.from({length:60},()=>({x:r(),y:r(),vx:(r()-0.5)*0.004,vy:-0.003-r()*0.006,r:1.2+r()*2.5,a:0.1+r()*0.22,ph:r()*6.28}));})();
-
-function drawTape(x,y,w,h){
-  ctx.save();
-  const tgr=ctx.createLinearGradient(0,y-h/2,0,y+h/2);
-  tgr.addColorStop(0,'rgba(82,58,20,0.74)');tgr.addColorStop(0.5,'rgba(24,17,7,0.8)');tgr.addColorStop(1,'rgba(82,58,20,0.74)');
-  ctx.fillStyle=tgr;ctx.fillRect(x,y-h/2,w,h);
-  if(!FIBER_PAT)FIBER_PAT=ctx.createPattern(FIBER,'repeat');
-  ctx.fillStyle=FIBER_PAT;ctx.fillRect(x,y-h/2,w,h);
-  ctx.strokeStyle='rgba(236,184,78,0.9)';ctx.lineWidth=1.8;
-  ctx.beginPath();ctx.moveTo(x,y-h/2);ctx.lineTo(x+w,y-h/2);ctx.moveTo(x,y+h/2);ctx.lineTo(x+w,y+h/2);ctx.stroke();
-  for(let hx=x+18;hx<x+w-10;hx+=36){[y-h/2+9,y+h/2-9].forEach(hy=>{ctx.fillStyle='#030303';ctx.fillRect(hx-2,hy-2,4,4);});}
-  ctx.restore();
-}
-
-function drawPath(pts,prog,col,lw=2.8,dash=null){
-  if(prog<=0.005)return;
-  ctx.save();ctx.strokeStyle=col;ctx.lineWidth=lw;
-  if(dash)ctx.setLineDash(dash);
-  // 简化分段长度插值
-  const segs=pts.length-1, total=prog*segs;
-  ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);
-  for(let i=0;i<segs;i++){
-    const t=clamp(total-i);if(t<=0)break;
-    const x=lerp(pts[i][0],pts[i+1][0],t), y=lerp(pts[i][1],pts[i+1][1],t);
-    ctx.lineTo(x,y);
-    if(t<1){ctx.stroke();ctx.globalCompositeOperation='lighter';glow(x,y,26,0.9,col===RED?SPR_RED:(col===GREEN?SPR_GRN:SPR_BLU));ctx.restore();return;}
-  }
-  ctx.stroke();ctx.restore();
-}
-
-/* ============================== 主渲染 ============================== */
-function render(G,amb){
-  const {s,ox,oy,dpr}=view;
-  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
-  ctx.setTransform(s*dpr,0,0,s*dpr,ox*dpr,oy*dpr);
-  ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();
-  ctx.fillStyle='#030304';ctx.fillRect(0,0,W,H);
-
-  // 背景暖光 + 金尘
-  const bg=ctx.createRadialGradient(W/2,H*0.45,0,W/2,H*0.45,960);
-  bg.addColorStop(0,'rgba(128,84,22,0.15)');bg.addColorStop(0.55,'rgba(60,38,10,0.05)');bg.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  ctx.save();ctx.globalCompositeOperation='lighter';
-  DUST.forEach(d=>{const dx=((d.x+amb*d.vx)%1+1)%1*W,dy=((d.y+amb*d.vy)%1+1)%1*H;glow(dx,dy,d.r*3,d.a*(0.55+0.45*Math.sin(amb*1.4+d.ph)));});
-  ctx.restore();
-
-  /* ---------- 0. 开场标题 (0 -> 0.55) ---------- */
-  const a0=1-seg(G,0.02,0.55);
-  if(a0>0.005){
-    const intro=clamp(amb/2.4), out=seg(G,0.02,0.55);
-    const title='Reasoning 深度思考', fs=98, tw=measure(title,fs,700);
-    let x=W/2-tw/2; const rnd=mulberry(31); let ci=0;
-    ctx.save();
-    for(const ch of title){
-      const cw=measure(ch,fs,700), ca=seg(intro,0.06+ci*0.03,0.34+ci*0.03);
-      const dx=(rnd()-0.5)*220*out, dy=-(35+rnd()*140)*out;
-      glowText(ch,x+cw/2+dx,445+(1-ca)*24+dy,fs,PALE,ca*(1-out),700,0.35);
-      x+=cw; ci++;
-    }
-    const lw=820*seg(intro,0.28,0.82)*(1-out);
-    ctx.globalCompositeOperation='lighter';
-    const lg=ctx.createLinearGradient(W/2-lw/2,0,W/2+lw/2,0);lg.addColorStop(0,'rgba(255,200,90,0)');lg.addColorStop(0.5,`rgba(255,214,120,${0.95*(1-out)})`);lg.addColorStop(1,'rgba(255,200,90,0)');
-    ctx.fillStyle=lg;ctx.fillRect(W/2-lw/2,540,lw,2);glow(W/2,541,60,0.7*(1-out));ctx.globalCompositeOperation='source-over';
-    rich('{水下隐藏纸带 (<think>)} · {树状剪枝} · {Test-Time Compute}',W/2,605,31,seg(intro,0.55,1)*(1-out),DIM);
-    brandMark(W/2,870,28,seg(intro,0.7,1)*(1-out));
-    ctx.restore();
-  }
-
-  /* ---------- 1~4. 水面主纸带 + 水下思考轨 (G: 0.45 -> 8.55) ---------- */
-  const worldA=seg(G,0.45,1.0)*(1-seg(G,8.1,8.65));
-  if(worldA>0.005){
-    const pFast   = seg(G,1.2,2.0)*(1-seg(G,2.3,3.0));
-    const pDive   = seg(G,2.3,3.0);
-    const pBrA    = seg(G,3.2,4.0);
-    const pPrune  = seg(G,4.2,5.0);
-    const pBrB    = seg(G,5.2,6.0);
-    const pSurf   = seg(G,6.2,7.0);
-    const pFold   = seg(G,7.2,8.0);
-
-    // 五次方运镜：Step 3-6 微微下移聚焦水下思考区，Step 7-8 回到水面看最终回答
-    const camY = kf(G,[[1,480],[2,480],[3,560],[6,560],[7,490],[8,490]], easeCam);
-    const camZ = kf(G,[[1,1.0],[3,1.04],[6,1.04],[7,1.0],[8,1.0]], easeCam);
-
-    ctx.save();ctx.globalAlpha=worldA;
-    ctx.translate(W/2,H/2);ctx.scale(camZ,camZ);ctx.translate(-W/2,-camY);
-
-    const surfY=330, waterLineY=430;
-
-    // 1. 水面主纸带（用户可见区域）
-    drawTape(130, surfY, 1660, 128);
-    text('水面主纸带（用户可见上下文）', 280, surfY-84, 17, GOLD, 0.85, 700);
-    // 左侧提问块
-    rr(155, surfY-42, 480, 84, 7);ctx.fillStyle='rgba(18,14,7,0.88)';ctx.fill();ctx.strokeStyle=GOLD_HI;ctx.lineWidth=1.8;ctx.stroke();
-    text('提问：约定违约金 30% + 预先放弃调减权', 395, surfY-12, 18, PALE, 1, 700);
-    text('法院还会支持调减吗？', 395, surfY+16, 16, GOLD_HI, 1, 700);
-
-    // Step 2: 系统 1 快思考直接冲出，掉进红坑
-    if(pFast>0.02){
-      ctx.save();ctx.globalAlpha*=pFast;
-      drawPath([[640,surfY],[950,surfY]], pFast, RED, 3);
-      rr(960, surfY-42, 760, 84, 7);ctx.fillStyle='rgba(80,20,16,0.78)';ctx.fill();ctx.strokeStyle=RED;ctx.lineWidth=2;ctx.stroke();
-      glow(1340,surfY,110,0.4,SPR_RED);
-      text('✕ 系统 1 直觉快答：“既然双方自愿放弃调减权，法院应不予调减”', 1340, surfY-10, 18, RED, 1, 700);
-      text('（未经过深层法理校验，直接顺着字面掉进陷阱）', 1340, surfY+18, 14, IVORY, 0.85);
-      ctx.restore();
-    }
-
-    // 2. 水面分界线 + 水下隐藏思考区 (<think> ... </think>)
-    if(pDive>0.01){
-      const underA = pDive * (1 - pFold*0.72);
-      ctx.save();ctx.globalAlpha*=underA;
-      // 深海暗蓝背景区
-      const ugr=ctx.createLinearGradient(0,waterLineY,0,890);
-      ugr.addColorStop(0,'rgba(16,38,68,0.38)');ugr.addColorStop(1,'rgba(6,14,28,0.68)');
-      ctx.fillStyle=ugr;ctx.fillRect(130,waterLineY,1660,440);
-      // 发光水面波纹线
-      ctx.strokeStyle='rgba(106,169,255,0.65)';ctx.lineWidth=1.8;ctx.setLineDash([12,8]);
-      ctx.beginPath();ctx.moveTo(130,waterLineY);ctx.lineTo(1790,waterLineY);ctx.stroke();ctx.setLineDash([]);
-      text('▼ 水下隐藏思考轨 <think>（对用户折叠，仅供模型内部试错与推理）', 960, waterLineY+26, 17, BLUE, 0.9, 700);
-
-      // 潜入光束：从提问块一头扎进水下分叉节点 (680, 620)
-      drawPath([[540,surfY+44],[540,620],[680,620]], pDive, BLUE, 3);
-      glow(680,620,38,0.8,SPR_BLU);
-      text('思考起点', 680, 655, 15, BLUE, 1, 700);
-
-      // 分支 A（向上：直觉契约自由 -> 撞红墙被剪枝）
-      if(pBrA>0.02){
-        const brACol = pPrune>0.3 ? 'rgba(232,106,88,0.42)' : RED;
-        drawPath([[680,620],[840,520],[1140,520]], pBrA, brACol, pPrune>0.3?1.6:2.8, pPrune>0.3?[6,6]:null);
-        rr(855, 486, 360, 66, 8);ctx.fillStyle='rgba(75,20,16,0.62)';ctx.fill();ctx.strokeStyle=brACol;ctx.lineWidth=1.6;ctx.stroke();
-        text('分支 A：契约自由，放弃有效？', 1035, 508, 17, pPrune>0.3?DIM:RED, 1, 700);
-        text('✕ 撞墙：违背《民法典》585条公平原则', 1035, 534, 14, RED, 0.95);
-        if(pPrune>0.1){
-          text('✂ 剪枝回溯 (Backtrack)', 1245, 520, 17, RED, pPrune, 700, 'left');
-        }
-      }
-
-      // 分支 B（向下：核验司法解释 -> 通过验证！）
-      if(pBrB>0.02){
-        drawPath([[680,620],[840,740],[1360,740]], pBrB, GREEN, 3.2);
-        rr(855, 704, 490, 72, 8);ctx.fillStyle='rgba(14,62,42,0.78)';ctx.fill();ctx.strokeStyle=GREEN;ctx.lineWidth=2;ctx.stroke();
-        glow(1100,740,90,0.4,SPR_GRN);
-        text('✓ 分支 B：查最高院《合同编通则解释》第64条', 1100, 728, 17, GREEN, 1, 700);
-        text('预先放弃违约金调减权的约定无效，法院仍可酌减！', 1100, 756, 15, PALE, 0.95);
-      }
-
-      // 浮出水面光束（Step 7）
-      if(pSurf>0.02){
-        drawPath([[1345,740],[1460,740],[1460,surfY+44]], pSurf, GREEN, 3.2);
-      }
-      ctx.restore();
-    }
-
-    // 3. 浮出水面后打印在主纸带上的最终精准结论（Step 7-8）
-    if(pSurf>0.35){
-      const sa=seg(pSurf,0.35,1.0);
-      ctx.save();ctx.globalAlpha*=sa;
-      rr(960, surfY-42, 795, 84, 7);ctx.fillStyle='rgba(14,62,42,0.88)';ctx.fill();ctx.strokeStyle=GREEN;ctx.lineWidth=2.2;ctx.stroke();
-      glow(1355,surfY,110,0.45,SPR_GRN);
-      text('✓ 最终回答：法院仍会支持调减（预先放弃调减权条款无效）', 1355, surfY-10, 19, GREEN, 1, 700);
-      text(pFold>0.4?'[已折叠 1,840 个水下思考 Token · 仅呈现最终精炼结论]':'已通过水下反证与法理校验', 1355, surfY+18, 14, PALE, 0.92);
-      ctx.restore();
-    }
-
-    ctx.restore();
-  }
-
-  /* ---------- 5. Test-Time Compute 缩放定律曲线 (G >= 8.4) ---------- */
-  const ttcA=seg(G,8.4,9.0);
-  if(ttcA>0.005){
-    const pTrade=seg(G,9.3,10.0), pFin=seg(G,10.4,11.0);
-    ctx.save();ctx.globalAlpha=ttcA;ctx.translate(0,(1-ttcA)*18);
-
-    // 坐标系
-    const ox0=360, oy0=740, gw=1180, gh=440;
-    ctx.strokeStyle='rgba(244,237,223,0.45)';ctx.lineWidth=2;
-    ctx.beginPath();ctx.moveTo(ox0,oy0-gh);ctx.lineTo(ox0,oy0);ctx.lineTo(ox0+gw,oy0);ctx.stroke();
-    text('复杂推理准确率 ↑', ox0-20, oy0-gh-24, 19, GOLD_HI, 1, 700, 'center');
-    text('Test-Time Compute（水下思考 Token / 推理耗时）→', ox0+gw/2, oy0+46, 20, IVORY, 0.9, 700);
-
-    // 上升对数光学曲线
-    ctx.strokeStyle=GOLD_HI;ctx.lineWidth=3.5;
-    ctx.beginPath();
-    for(let i=0;i<=80;i++){
-      const u=i/80, px=ox0+u*gw*0.92, py=oy0-gh*(0.18+0.74*Math.pow(u,0.48));
-      i?ctx.lineTo(px,py):ctx.moveTo(px,py);
-    }
-    ctx.stroke();
-
-    // 曲线上两个关键锚点
-    const pt1={x:ox0+gw*0.12, y:oy0-gh*(0.18+0.74*Math.pow(0.12,0.48))};
-    const pt2={x:ox0+gw*0.78, y:oy0-gh*(0.18+0.74*Math.pow(0.78,0.48))};
-    ctx.globalCompositeOperation='lighter';glow(pt1.x,pt1.y,45,0.75,SPR_RED);glow(pt2.x,pt2.y,65,0.9,SPR_GRN);ctx.globalCompositeOperation='source-over';
-    text('System 1 · 直觉秒答', pt1.x+20, pt1.y+42, 19, RED, 1, 700, 'left');
-    text('System 2 · 深度思考（用算力换准确度）', pt2.x-20, pt2.y-42, 22, GREEN, 1, 700, 'right');
-
-    if(pTrade>0.02){
-      ctx.save();ctx.globalAlpha*=pTrade*(1-pFin*0.85);
-      rich('第二增长曲线：不仅靠{训练时堆参数}，更靠{推理时多想一会儿}', W/2, 855, 28, 1, PALE);
-      ctx.restore();
-    }
-    if(pFin>0.02){
-      ctx.save();ctx.globalAlpha*=pFin;
-      rich('给模型一条{水下隐藏纸带}，它就能像专家一样先打草稿、再落笔', W/2, 855, 30, 1, IVORY);
-      brandMark(W/2, 950, 26, 1);
-      ctx.restore();
-    }
-    ctx.restore();
-  }
-
-  // 电影暗角
-  const vig=ctx.createRadialGradient(W/2,H/2,H*0.38,W/2,H/2,W*0.66);
-  vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,0,0.55)');
-  ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
-
-  /* ---------- 顶部引导语（先退后进，零叠字） & 进度 ---------- */
-  const lo=Math.floor(G), hi=Math.min(LAST,Math.ceil(G)), f=G-lo;
-  const ha=STEPS[lo].hint, hb=STEPS[hi].hint;
-  if(ha===hb) rich(ha,W/2,92,33,0.95);
-  else {
-    const aOut=1-ease(clamp(f/0.38)), aIn=ease(clamp((f-0.5)/0.42));
-    if(aOut>0.01) rich(ha,W/2,92-(1-aOut)*10,33,0.95*aOut);
-    if(aIn>0.01) rich(hb,W/2,92+(1-aIn)*10,33,0.95*aIn);
-  }
-  const st=STEPS[Math.round(G)];
-  text(`${String(st.scene).padStart(2,'0')} · ${SCENES[st.scene]}    ${Math.round(G)+1} / ${STEPS.length}`,1860,1025,18,'rgba(244,237,223,0.52)',1,400,'right');
-  ctx.fillStyle='rgba(244,237,223,0.16)';ctx.fillRect(1620,1044,240,2);
-  ctx.fillStyle=GOLD;ctx.fillRect(1620,1044,240*G/LAST,2);
-  ctx.restore();
-}
-
-/* ==================== 交互与播控 ==================== */
-let G=0, target=0, anim=null, auto=false; const t0=performance.now();
-const dock=document.getElementById('dock');
-SCENES.forEach((name,idx)=>{
-  const b=document.createElement('button');b.className='sbtn';b.textContent=`${String(idx).padStart(2,'0')} ${name}`;
-  b.addEventListener('pointerdown',e=>e.stopPropagation());
-  b.addEventListener('pointerup',e=>{e.stopPropagation();go(SCENE_FIRST[idx]);});
-  dock.appendChild(b);
-});
-function syncDock(){const sc=STEPS[Math.round(target)].scene;dock.querySelectorAll('.sbtn').forEach((b,i)=>b.classList.toggle('active',i===sc));}
-function go(i){
-  i=clamp(Math.round(i),0,LAST);if(i===target&&!anim)return;
-  const from=G, fwd=i===Math.round(target)+1&&i>from;
-  target=i;anim={from,to:i,start:performance.now(),dur:fwd?STEPS[i].dur:Math.min(850,350+Math.abs(i-from)*60),linear:fwd};syncDock();
-}
-function next(){go(target+1);} function prev(){go(target-1);}
-function tick(now){
-  if(anim){
-    const p=clamp((now-anim.start)/anim.dur);
-    G=anim.linear?lerp(anim.from,anim.to,p):lerp(anim.from,anim.to,ease(p));
-    if(p>=1){G=anim.to;anim=null;if(auto&&G<LAST)setTimeout(()=>auto&&go(target+1),700);}
-  }
-  render(G,(now-t0)/1000);requestAnimationFrame(tick);
-}
-let idleTimer=null;
-function wake(){document.body.classList.remove('idle');clearTimeout(idleTimer);idleTimer=setTimeout(()=>document.body.classList.add('idle'),3200);}
-['mousemove','pointerdown','keydown'].forEach(ev=>addEventListener(ev,wake)); wake();
-
-const autoBtn=document.getElementById('autoBtn'), cleanBtn=document.getElementById('cleanBtn'), fsBtn=document.getElementById('fsBtn');
-function toggleAuto(){auto=!auto;autoBtn.classList.toggle('on',auto);autoBtn.textContent=auto?'自动中':'自动 A';if(auto)next();}
-function toggleClean(){document.body.classList.toggle('clean');}
-function toggleFS(){const d=document,el=d.documentElement;if(!d.fullscreenElement)el.requestFullscreen?.();else d.exitFullscreen?.();}
-[autoBtn,cleanBtn,fsBtn].forEach(b=>b.addEventListener('pointerdown',e=>e.stopPropagation()));
-autoBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleAuto();});
-cleanBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleClean();});
-fsBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
-
-addEventListener('keydown',e=>{
-  if(e.target.id==='lesson-back')return;
-
-  const k=e.key;
-  if(['ArrowRight',' ','PageDown','Enter','ArrowDown'].includes(k)){e.preventDefault();next();}
-  else if(['ArrowLeft','PageUp','Backspace','ArrowUp'].includes(k)){e.preventDefault();prev();}
-  else if(k==='Home')go(0); else if(k==='End')go(LAST);
-  else if(k==='f'||k==='F')toggleFS();
-  else if(k==='a'||k==='A')toggleAuto();
-  else if(k==='h'||k==='H')toggleClean();
-});
-let pd=null;
-cv.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY,b:e.button};});
-cv.addEventListener('pointerup',e=>{if(!pd)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y,b=pd.b;pd=null;
-  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2){dx<0?next():prev();return;}
-  if(Math.abs(dx)<14&&Math.abs(dy)<14){if(b===2)prev();else e.shiftKey?prev():next();}});
-cv.addEventListener('contextmenu',e=>{e.preventDefault();prev();});
-
-syncDock(); requestAnimationFrame(tick);
+const SI={};STEPS.forEach((s,i)=>SI[s.id]=i);const LAST=STEPS.length-1;
+const Q='合同约定违约金远高于实际损失，并写明「不得请求调减」。违约方还能请求法院调减吗？';
+const FAST='约定有效，不能调减。';
+const ANS='能。该约定挡不住调整；是否调减，看违约金是否{过分高于损失}。';
+const TH=[
+ ['先拆问题：这条「不得调减」的约定，能不能排除法院调整？','n',SI.think-0.75,SI.think-0.15],
+ ['直觉：契约自由，约定有效，所以不能调？','x',SI.wrong-0.9,SI.wrong-0.6],
+ ['检查：这与司法解释冲突——此路不通，推翻。','r',SI.wrong-0.5,SI.wrong-0.1],
+ ['《合同编通则解释》第64条第3款：仅以约定不得调整为由主张不予调整的，法院不予支持。','c',SI.cite-0.95,SI.cite-0.7],
+ ['第65条第2款：超过造成损失的 30%，一般可以认定为「过分高于」。','c',SI.cite-0.6,SI.cite-0.38],
+ ['民法典第585条第2款：过分高于损失的，可请求法院适当减少。','c',SI.cite-0.32,SI.cite-0.08],
+ ['结论：约定不影响请求调减；关键看是否过分高于损失。','g',SI.answer-0.85,SI.answer-0.6],
+];
+let bUser=null,bDisp=null;
+const hard=b=>0.25+0.6*(1-Math.exp(-3.2*b)),easy=b=>0.88+0.05*b;
+function geo(G){const P=LY.port,H=LY.H;
+  if(!P){const up=kf(G,[[SI.answer,0],[SI.fold,1],[SI.cost,1],[SI.drag,0]]);return{P,a0:80,c:lerp(650,440,up),th:190,bh:150,qL:420,maxT:820,aL:520,gap:14,panel:{x:250,y:170,w:1420,h:330},ui:{x:430,y:600,w:1060,h:330}};}
+  const maxT=Math.max(400,Math.min(740,H-420-250-230-560));
+  return{P,a0:420,c:540,th:1000,bh:940,qL:250,maxT,aL:230,gap:14,ui:{x:90,y:420+250+maxT+230+70,w:900,h:400}};}
+function R(g,a0,a1){return g.P?[g.c-g.bh/2,g.a0+a0,g.bh,a1-a0]:[g.a0+a0,g.c-g.bh/2,a1-a0,g.bh];}
+function render(G,amb,dt){const W=LY.W,H=LY.H,P=LY.port;const g=geo(G);
+  const zq=P?1:LE.kf(G,[[0.6,1.38],[SI.q,1.38],[SI.fast,1.22],[SI.think-0.5,1]]);const ext=P?0:LE.kf(G,[[SI.q,g.qL],[SI.fast,g.qL+g.gap+g.aL],[SI.think-0.5,1760]]);
+  const cam={x:P?540:lerp(960,g.a0+ext/2,clamp((zq-1)/0.22)),y:P?H/2:lerp(540,g.c,clamp((zq-1)/0.22)),z:zq};
+  LE.bg(amb,(cam.x-960)*0.5,P?0:(g.c-650));
+  LE.title('Reasoning 深度思考','思考写在{同一根纸带}上，只是对你{折叠}了',LE.easeOut(clamp(amb/1.8)),seg(G,0.05,0.6),{portLines:['Reasoning','深度思考']});
+  if(G<0.25)return;const inA=seg(G,0.3,1);ctx.save();LE.camera(cam.x,cam.y,cam.z);
+  let bT=kf(G,[[SI.fast,0],[SI.think,0.35],[SI.wrong,0.6],[SI.cite,0.92],[SI.answer,1],[SI.drag,1]]);
+  if(LE.isAt('drag')&&bUser!=null)bT=bUser;bDisp=bDisp==null?bT:damp(bDisp,bT,dt,14);if(!LE.isAt('drag')||bUser==null)bDisp=bT;
+  const tl=g.maxT*bDisp;
+  const fastA=seg(G,SI.fast-0.7,SI.fast-0.2)*(1-seg(G,SI.fast+0.05,SI.fast+0.4));const ansA=seg(G,SI.answer-0.55,SI.answer-0.1);
+  const qa=[0,g.qL],ta=[g.qL+g.gap,g.qL+g.gap+tl],aa=[ta[1]+(tl>1?g.gap:0),ta[1]+(tl>1?g.gap:0)+g.aL];
+  const grow=Math.max(fastA*(g.qL+g.gap+g.aL)/aa[1],seg(G,SI.think-0.9,SI.think-0.6));
+  tape(g.a0-24,g.a0+Math.max(g.qL+30,lerp(g.qL,aa[1],grow))+24,g.c,g.th,{vert:P,a:inA});
+  {const [x,y,w,h]=R(g,qa[0],qa[1]);const a=inA*seg(G,0.5,1);block(x,y,w,h,{style:'gold',a});
+    text('用户提问',x+(P?36:22),y+(P?40:24),P?26:18,DIM,a,400,'left');rich(Q,x+w/2,y+h/2+(P?18:12),P?32:19,a,{maxW:w-(P?60:40),lh:P?46:27});}
+  if(fastA>0.01){const [x,y,w,h]=R(g,qa[1]+g.gap,qa[1]+g.gap+g.aL);block(x,y,w,h,{style:'red',a:fastA});text('直接作答',x+(P?36:22),y+(P?40:24),P?26:18,DIM,fastA,400,'left');
+    glowText(FAST,x+w/2,y+h/2+(P?14:10),P?40:28,RED,fastA,700,0.3);text('✗ 与司法解释不符',x+w/2,y+h+(P?-36:30),P?26:19,RED,fastA*seg(G,SI.fast-0.3,SI.fast),700);}
+  const thA=seg(G,SI.think-0.9,SI.think-0.6);
+  if(thA>0.01&&tl>2){const [x,y,w,h]=R(g,ta[0],ta[1]);block(x,y,w,h,{style:'think',a:thA,dash:[7,5]});
+    ctx.globalAlpha=thA*0.55;ctx.fillStyle=PURPLE;const n=Math.floor((P?h:w)/22);
+    for(let k=0;k<n;k++){const ph=(k*37)%11/11;if(P){const yy=y+12+k*22;if(yy>y+h-12)break;ctx.fillRect(x+w-40,yy,16*(0.4+ph),4);}else{const xx=x+12+k*22;if(xx>x+w-16)break;ctx.fillRect(xx,y+h-24,10,4+10*ph);}}ctx.globalAlpha=1;
+    text('思考 token',x+(P?36:16),y+(P?40:22),P?26:17,PURPLE,thA,700,'left');
+    if(G>SI.think-0.8&&G<SI.answer-0.55){const cx=P?x+w/2:x+w-6,cy=P?y+h-6:y+h/2;glowAdd(cx,cy,30,0.7*(0.6+0.4*Math.sin(amb*8)),LE.SPR.PURPLE);}}
+  const pnA=thA*(1-seg(G,SI.answer+0.1,SI.fold-0.3));if(pnA>0.01)drawThoughts(g,G,amb,pnA,ta);
+  if(ansA>0.01){const [x,y,w,h]=R(g,aa[0],aa[1]);block(x,y,w,h,{style:'green',a:ansA});text('回答',x+(P?36:22),y+(P?40:24),P?26:18,DIM,ansA,400,'left');
+    rich(ANS,x+w/2,y+h/2+(P?18:12),P?34:21,ansA,{maxW:w-(P?60:44),lh:P?48:29,color:PALE,hl:GREEN});
+    if(G<SI.fold)text('✓',x+w-(P?40:24),y+(P?40:24),P?36:24,GREEN,ansA*seg(G,SI.answer-0.3,SI.answer),700);}
+  const uiA=seg(G,SI.fold-0.7,SI.fold)*(1-seg(G,SI.drag-0.7,SI.drag-0.3));if(uiA>0.01)drawUI(g,G,amb,uiA);
+  const cA=seg(G,SI.cost-0.6,SI.cost)*(1-seg(G,SI.drag-0.7,SI.drag-0.3));
+  if(cA>0.01){const [x,y,w,h]=R(g,ta[0],ta[1]);if(P)rich('{计费} · 这一段也计入输出 token，也要时间生成',540,y+h/2,32,cA,{maxW:820});
+    else{ctx.globalAlpha=cA;ctx.strokeStyle=GOLD_HI;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(x,y-18);ctx.lineTo(x+w,y-18);ctx.stroke();ctx.globalAlpha=1;rich('{计费} · 这一段也计入输出 token，也要时间生成',x+w/2,y-42,22,cA);}}
+  const dA=seg(G,SI.drag-0.7,SI.drag)*(1-seg(G,LAST-0.6,LAST));if(dA>0.01)drawBudget(g,G,amb,dA,ta);ctx.restore();
+  LE.finale(['推理模型先在{同一根纸带}上写思考，再作答','思考能{自我检查、推翻重来}，但也更慢、更贵','简单题快答；{复杂推理与风险审查}，再开深度思考'],seg(G,LAST-0.8,LAST),'法律依据：《最高人民法院关于适用〈中华人民共和国民法典〉合同编通则若干问题的解释》（法释〔2023〕13号）第64条第3款、第65条第2款；《民法典》第585条第2款。是否「过分高于」须结合案情综合判断。曲线为示意。');}
+function drawThoughts(g,G,amb,a,ta){const P=g.P;let x,y,w,h,fs,lh;
+  if(P){const r=R(g,ta[0],ta[1]);x=r[0]+36;y=r[1]+80;w=r[2]-110;h=r[3]-90;fs=28;lh=40;}
+  else{const p=g.panel;x=p.x+40;y=p.y+56;w=p.w-80;h=p.h-70;fs=23;lh=33;const r=R(g,ta[0],ta[1]);
+    card(p.x,p.y,p.w,p.h,{a:a*0.96,stroke:'rgba(195,160,255,0.55)',fill:['rgba(30,22,44,0.92)','rgba(12,9,18,0.95)']});
+    ctx.globalAlpha=a*0.35;ctx.strokeStyle=PURPLE;ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(r[0],r[1]);ctx.lineTo(p.x+30,p.y+p.h);ctx.moveTo(r[0]+r[2],r[1]);ctx.lineTo(p.x+p.w-30,p.y+p.h);ctx.stroke();ctx.globalAlpha=1;
+    text('放大看思考段（真实内容会更长、更散，这里只保留主线）',p.x+40,p.y+28,17,DIM2,a,400,'left');}
+  ctx.save();ctx.beginPath();ctx.rect(x-20,y-10,w+40,h+6);ctx.clip();
+  const vis=[];TH.forEach(t=>{const p=lin(G,t[2],t[3]);if(p>0)vis.push([t,p]);});
+  const lines=vis.map(([t])=>LE.richLines(t[0],fs,w));const tot=lines.reduce((s,n)=>s+n*lh+10,0);let yy=y-Math.max(0,tot-h);
+  vis.forEach(([t,p],k)=>{const typ=t[1],str=t[0];const n=Math.max(1,Math.ceil([...str].length*p));const shown=[...str].slice(0,n).join('');
+    const col=typ==='x'?DIM:(typ==='r'?RED:(typ==='c'?PALE:(typ==='g'?GREEN:IVORY)));
+    const nl=rich(shown,x,yy+fs/2,fs,a,{maxW:w,align:'left',valign:'top',lh,color:col,weight:typ==='g'?700:400});
+    if(typ==='x'&&G>SI.wrong-0.5){const sw=seg(G,SI.wrong-0.5,SI.wrong-0.3);ctx.globalAlpha=a;ctx.fillStyle=RED;ctx.fillRect(x,yy+fs/2,Math.min(w,measure(str,fs))*sw,2.2);ctx.globalAlpha=1;}
+    if(typ==='c'){ctx.globalAlpha=a;ctx.fillStyle=GOLD;ctx.fillRect(x-16,yy+4,3,nl*lh-10);ctx.globalAlpha=1;}
+    yy+=lines[k]*lh+10;});ctx.restore();}
+function drawUI(g,G,amb,a){const P=g.P,u=g.ui;card(u.x,u.y,u.w,u.h,{a,r:22,stroke:'rgba(244,237,223,0.25)',fill:['rgba(26,22,18,0.96)','rgba(14,12,10,0.97)']});
+  text('你在聊天界面上看到的',u.x+(P?40:30),u.y+(P?44:32),P?28:19,DIM,a,400,'left');
+  const bx=u.x+u.w-(P?40:30),qy=u.y+(P?110:78),qw=P?560:520;
+  ctx.globalAlpha=a;rr(bx-qw,qy-(P?34:26),qw,P?68:52,P?30:24);ctx.fillStyle='rgba(226,170,66,0.18)';ctx.fill();ctx.globalAlpha=1;LE.fitText('违约方还能请求法院调减吗？',bx-qw/2,qy,P?30:21,qw-40,IVORY,a,400);
+  const cy=qy+(P?90:66),fold=seg(G,SI.fold-0.45,SI.fold-0.05);
+  ctx.globalAlpha=a;rr(u.x+(P?40:30),cy-(P?26:20),P?340:280,P?52:40,P?26:20);ctx.fillStyle='rgba(195,160,255,0.12)';ctx.fill();ctx.strokeStyle='rgba(195,160,255,0.5)';ctx.lineWidth=1.2;ctx.stroke();ctx.globalAlpha=1;
+  text('▸ 已深度思考（已折叠）',u.x+(P?60:46),cy,P?26:18,PURPLE,a*fold,700,'left');
+  rich(ANS,u.x+(P?40:30),cy+(P?70:54),P?30:21,a*seg(G,SI.fold-0.3,SI.fold),{maxW:u.w-(P?80:60),align:'left',valign:'top',lh:P?44:30,color:PALE,hl:GREEN});
+  if(!P){const r=R(g,g.qL+g.gap,g.qL+g.gap+g.maxT);ctx.globalAlpha=a*0.4*fold;ctx.setLineDash([5,6]);ctx.strokeStyle=PURPLE;ctx.lineWidth=1.3;ctx.beginPath();ctx.moveTo(r[0]+r[2]/2,r[1]+r[3]);ctx.lineTo(u.x+30+140,cy-20);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;
+    text('模型这一侧：完整的思考仍在本轮纸带上',r[0]+r[2]/2,r[1]-26,19,PURPLE,a*fold,700);}
+  else text('↑ 纸带上完整的思考，在界面里折成一行',540,u.y-36,26,PURPLE,a*fold,700);}
+function drawBudget(g,G,amb,a,ta){const P=g.P;const ch=P?{x:150,y:g.ui.y+60,w:780,h:300}:{x:300,y:190,w:1320,h:300};
+  card(ch.x-50,ch.y-60,ch.w+100,ch.h+120,{a:a*0.9,stroke:'rgba(244,237,223,0.18)',fill:['rgba(20,16,10,0.9)','rgba(10,8,5,0.94)']});
+  const X=b=>ch.x+ch.w*b,Y=v=>ch.y+ch.h-(v-0.2)/0.8*ch.h;
+  ctx.globalAlpha=a*0.5;ctx.strokeStyle='rgba(244,237,223,0.45)';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(ch.x,ch.y);ctx.lineTo(ch.x,ch.y+ch.h);ctx.lineTo(ch.x+ch.w,ch.y+ch.h);ctx.stroke();ctx.globalAlpha=1;
+  [[hard,GOLD_HI,'难题（多步推理）'],[easy,C.ICE,'简单题']].forEach(([f,col,lab])=>{ctx.globalAlpha=a;ctx.strokeStyle=col;ctx.lineWidth=3;ctx.beginPath();for(let i=0;i<=60;i++){const b=i/60;i?ctx.lineTo(X(b),Y(f(b))):ctx.moveTo(X(b),Y(f(b)));}ctx.stroke();ctx.globalAlpha=1;
+    text(lab,X(1),Y(f(1))-(P?26:20),P?24:18,col,a,700,'right');});
+  ctx.globalAlpha=a*0.8;ctx.setLineDash([6,6]);ctx.strokeStyle=RED;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(X(0),Y(0.22));ctx.lineTo(X(1),Y(0.98));ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;
+  text('耗时 / 费用',X(0.5),Y(0.22+0.76*0.5)-24,P?24:18,RED,a,700);
+  text('准确率',ch.x-12,ch.y-30,P?24:18,DIM,a,400,'left');text('思考预算 →',ch.x+ch.w,ch.y+ch.h+30,P?24:18,DIM,a,400,'right');text('示意',ch.x+ch.w,ch.y-30,P?24:18,DIM2,a,400,'right');
+  const b=clamp(bDisp,0,1);ctx.globalAlpha=a*0.5;ctx.strokeStyle=PURPLE;ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(X(b),ch.y);ctx.lineTo(X(b),ch.y+ch.h);ctx.stroke();ctx.globalAlpha=1;
+  [[hard,GOLD_HI],[easy,C.ICE]].forEach(([f,col])=>{glowAdd(X(b),Y(f(b)),22,0.8*a);ctx.globalAlpha=a;ctx.beginPath();ctx.arc(X(b),Y(f(b)),7,0,7);ctx.fillStyle=col;ctx.fill();ctx.globalAlpha=1;});
+  const r=R(g,ta[0],ta[1]);const hx=P?r[0]+r[2]/2:r[0]+r[2],hy=P?r[1]+r[3]:r[1]+r[3]/2;
+  if(LE.isAt('drag'))LE.dragHint(hx,hy,bUser==null?(P?'↕ 拖动末端':'← 拖动末端 →'):'',amb,1,{dy:P?0:g.bh/2+40,dx:P?330:0,r:34});}
+const drags=[{step:'drag',cursor:'grab',hit:pt=>{const g=geo(SI.drag);if(LY.port)return pt.y>g.a0+g.qL-40&&pt.y<g.a0+g.qL+g.maxT+g.aL+60&&Math.abs(pt.x-g.c)<g.bh/2+60;return Math.abs(pt.y-g.c)<g.bh/2+120&&pt.x>g.a0+g.qL-40&&pt.x<g.a0+g.qL+g.maxT+g.aL+60;},
+  move:pt=>{const g=geo(SI.drag);const a=(LY.port?pt.y:pt.x)-g.a0-g.qL-g.gap;bUser=clamp(a/g.maxT,0.04,1);}}];
+LE.run({steps:STEPS,scenes:SCENES,render,drags,onGo:()=>{bUser=null;},onSeek:(g,st)=>{bUser=st.b??null;bDisp=null;}});
 })();
+
 </script></body></html>

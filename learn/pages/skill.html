@@ -1,570 +1,98 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
-<title>Skill 到底是什么 · 质感升级版</title>
+<title>Skill 到底是什么 · 把一大段规矩拆成按需加载的文件包</title>
+<meta name="description" content="提示词越写越长的问题；Skill 文件包（SKILL.md、references、scripts、templates）；渐进加载三层：开场只放说明，命中再读正文，执行时按需取资料、脚本只回结果；怎样写好一个 Skill。">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
-<style>
-/* 如需恢复原版定制衬线体，可将原文件中的两行 @font-face 粘贴至此 */
-html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
-body{position:fixed;inset:0}
-canvas{display:block;touch-action:none}
-#tools{position:fixed;right:16px;top:14px;display:flex;gap:8px;z-index:10;transition:opacity .35s}
-.tbtn{font:13px "HSerif","Songti SC","STSong",serif;color:rgba(244,237,223,.52);background:rgba(10,8,4,.62);border:1px solid rgba(226,170,66,.28);border-radius:5px;padding:4px 10px;cursor:pointer;backdrop-filter:blur(4px);transition:all .2s}
-.tbtn:hover,.tbtn.on{color:#FFD062;border-color:#E2AA42;background:rgba(226,170,66,.14)}
-#dock{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);display:flex;gap:5px;padding:6px 10px;border-radius:10px;background:rgba(8,7,4,.78);border:1px solid rgba(226,170,66,.22);backdrop-filter:blur(8px);z-index:10;max-width:94vw;overflow-x:auto;transition:opacity .4s}
-#dock::-webkit-scrollbar{display:none}
-.sbtn{font:12px "HSerif","Songti SC",serif;color:rgba(244,237,223,.55);background:none;border:1px solid transparent;border-radius:5px;padding:4px 9px;white-space:nowrap;cursor:pointer;transition:all .2s}
-.sbtn:hover{color:#FFE9B8;border-color:rgba(226,170,66,.35)}
-.sbtn.active{color:#FFD062;border-color:rgba(255,208,98,.6);background:rgba(226,170,66,.16);font-weight:700}
-body.idle #tools,body.idle #dock,body.clean #tools,body.clean #dock{opacity:0;pointer-events:none}
-</style><style>
-  #lesson-back {
-    position: fixed;
-    z-index: 10;
-    top: calc(8px + env(safe-area-inset-top));
-    left: calc(12px + env(safe-area-inset-left));
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    box-sizing: border-box;
-    padding: 0 10px;
-    border-radius: 4px;
-    color: #ffe5ad;
-    background: #17130e;
-    font: 14px/1.4 system-ui, sans-serif;
-    text-decoration: none;
-  }
-  #lesson-back:hover { text-decoration: underline; }
-  #lesson-back:focus-visible { outline: 2px solid #ffd062; outline-offset: 2px; }
-  body.clean #lesson-back, :fullscreen #lesson-back { display: none; }
-</style>
+<link rel="preload" href="../assets/fonts/hserif-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/hserif-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/lesson.css">
 </head><body>
 <a id="lesson-back" href="../index.html">← 返回模块目录</a>
-<canvas id="c"></canvas>
-<div id="tools">
-  <button class="tbtn" id="autoBtn" title="自动播放 (A)">自动 A</button>
-  <button class="tbtn" id="cleanBtn" title="纯净录屏 (H)">纯净 H</button>
-  <button class="tbtn" id="fsBtn" title="全屏 (F)">全屏 F</button>
-</div>
-<div id="dock"></div>
+<canvas id="c"></canvas><button id="fs" title="全屏（F）">全屏 F</button>
+<script src="../assets/lesson-engine.js"></script>
 <script>
-(function(){
-'use strict';
-const FONT='"HSerif","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif';
-const IVORY='#F4EDDF', GOLD='#E2AA42', GOLD_HI='#FFD062', PALE='#FFE9B8', DIM='rgba(244,237,223,0.62)', RED='#E86A58', GREEN='#4FD198', BLUE='#6AA9FF';
-
-const SCENES=['开场','提示词的短板','工程化切分','文件包解剖','渐进式加载','制作方法论','元 Skill'];
-const S=(id,scene,dur,hint)=>({id,scene,dur,hint});
+// @title Skill 到底是什么 · 把一大段规矩拆成按需加载的文件包
+// @desc 提示词越写越长的问题；Skill 文件包（SKILL.md、references、scripts、templates）；渐进加载三层：开场只放说明，命中再读正文，执行时按需取资料、脚本只回结果；怎样写好一个 Skill。
+(function(){'use strict';
+const {C,LY,ctx,clamp,lerp,ease,seg,lin,bump,damp,text,glowText,rich,measure,rr,glow,glowAdd,card,block,tape,line,arrowHead,qbez,S}=LE;
+const {IVORY,GOLD,GOLD_HI,PALE,DIM,DIM2,RED,GREEN,ICE,PURPLE}=C;
+const SCENES=['开场','提示词越写越长','切成文件包','渐进加载','动手比一比','怎么写好','收束'];
 const STEPS=[
-  S('title',0,2400,''),
-  S('p_grow',1,2000,'最初，我们不断把规矩塞进同一段 {Prompt}'),
-  S('p_bloat',1,2200,'为了控制模型，提示词越来越长、越来越重'),
-  S('p_noise',1,2400,'不同场景下大量内容用不上：既{浪费 Token}，又制造{噪音}'),
-  S('s_cut',2,2400,'Anthropic 的工程解法：把巨型提示词{物理切开}'),
-  S('s_index',2,2200,'提炼一张极薄的 {SKILL.md 索引}，其余文件按需加载'),
-  S('pkg_open',3,2200,'解剖一个标准的 {Skill 文件包}'),
-  S('pkg_md',3,2400,'不可或缺的核心：{SKILL.md}（元数据索引 + 工作流正文）'),
-  S('pkg_refs',3,2400,'{references/} 规则与知识库：法条、案例、红线清单'),
-  S('pkg_scripts',3,2400,'{scripts/ & templates/}：确定性代码齿轮 + 标准输出模板'),
-  S('load_l1',4,2400,'渐进式加载 ①：启动时仅加载 {名称与一句话简介}'),
-  S('load_l2',4,2600,'渐进式加载 ②：命中场景后，才把 {SKILL.md 正文} 装入上下文'),
-  S('load_l3',4,2600,'渐进式加载 ③：执行到具体节点，按需调取 {规则与脚本结果}'),
-  S('m_four',5,2600,'如何制作一个高质量 Skill？{四种核心方法}'),
-  S('m_goal',5,2600,'殊途同归：沉淀为清晰的{工作流、节点依赖与质量标准}'),
-  S('meta_anth',6,2400,'用 Skill 生产 Skill：从 Anthropic 官方 {skill-creator} 讲起'),
-  S('meta_own',6,2600,'更进一步：为你沉淀的实战{元 Skill}与系统教程'),
-  S('final',6,2400,''),
+ S('title',0,2600,''),
+ S('grow',1,3200,'最初，我们把所有规矩都塞进同一段{提示词}'),
+ S('noise',1,3000,'场景一多：每次都带着全部规矩，既{占纸带空间}，又制造{干扰}'),
+ S('cut',2,3000,'Skill 的做法：把规矩{切开}，装进一个文件夹（文件包）'),
+ S('pkg',2,3400,'{SKILL.md} 写名称、何时使用和工作流；{references/} 放资料，{scripts/} 放脚本，{templates/} 放模板'),
+ S('l1',3,3000,'渐进加载 ①：开场只把每个 Skill 的{名称和一句话说明}放上纸带'),
+ S('l2',3,3000,'② 任务命中「合同审查」后，才把它的 {SKILL.md 正文}读进纸带'),
+ S('l3',3,3200,'③ 执行到具体步骤，再按需读{参考资料}；脚本直接运行，只把{结果}写回纸带'),
+ S('drag',4,1800,'{拖动}装了多少个 Skill：比一比「全塞进提示词」和「渐进加载」占多少纸带（示意）',true),
+ S('make',5,3200,'写好一个 Skill：{何时使用}写清楚，流程分步可检查，确定性的计算交给{脚本}'),
+ S('meta',5,3000,'还可以用 Skill 来做 Skill：例如 Anthropic 官方提供的 {skill-creator}'),
+ S('final',6,3200,''),
 ];
-const LAST=STEPS.length-1;
-const SCENE_FIRST=SCENES.map((_,i)=>STEPS.findIndex(s=>s.scene===i));
-
-const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
-const lerp=(a,b,t)=>a+(b-a)*t;
-const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-const seg=(G,a,b)=>ease(clamp((G-a)/(b-a)));
-function actAlpha(G,inS,inE,outS,outE){
-  const fi=inS===null?1:seg(G,inS,inE);
-  const fo=outS===null?1:(1-seg(G,outS,outE));
-  return fi*fo;
-}
-function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
-
-const cv=document.getElementById('c'), ctx=cv.getContext('2d');
-let view={s:1,ox:0,oy:0,dpr:1}, W=1920, H=1080;
-function resize(){
-  const w=innerWidth,h=innerHeight,dpr=Math.min(window.devicePixelRatio||1,2);
-  cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.width=w+'px';cv.style.height=h+'px';
-  const s=Math.min(w/W,h/H); view={s,ox:(w-W*s)/2,oy:(h-H*s)/2,dpr};
-}
-addEventListener('resize',resize); resize();
-
-const mcache=new Map();
-function font(sz,wt=400){return `${wt} ${sz}px ${FONT}`;}
-function measure(t,sz,wt=400){const k=t+'|'+wt;let v=mcache.get(k);if(v===undefined){ctx.font=font(100,wt);v=ctx.measureText(t).width/100;mcache.set(k,v);}return v*sz;}
-function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
-
-// 乘法透明度绘制（零叠字保障）
-function text(str,x,y,sz,col,a=1,wt=400,al='center'){
-  const eff=ctx.globalAlpha*clamp(a); if(eff<=0.004||!str)return;
-  const prev=ctx.globalAlpha; ctx.globalAlpha=eff;
-  ctx.font=font(sz,wt);ctx.fillStyle=col;ctx.textAlign=al;ctx.textBaseline='middle';ctx.fillText(str,x,y);
-  ctx.globalAlpha=prev;
-}
-function glowText(str,x,y,sz,col,a=1,wt=700,blur=0.45,al='center'){
-  const eff=ctx.globalAlpha*clamp(a); if(eff<=0.004||!str)return;
-  ctx.save();ctx.shadowColor='rgba(255,186,60,0.6)';ctx.shadowBlur=sz*blur;
-  text(str,x,y,sz,col,a,wt,al);ctx.restore();
-}
-function rich(str,x,y,sz,a=1,col=IVORY){
-  if(ctx.globalAlpha*clamp(a)<=0.004||!str)return;
-  const parts=[];str.split(/(\{[^}]*\})/).forEach(s=>{if(!s)return;if(s[0]==='{')parts.push([s.slice(1,-1),1]);else parts.push([s,0]);});
-  let tw=0;parts.forEach(p=>{p[2]=measure(p[0],sz,p[1]?700:400);tw+=p[2];});let x0=x-tw/2;
-  parts.forEach(p=>{if(p[1])glowText(p[0],x0,y,sz,GOLD_HI,a,700,0.4,'left');else text(p[0],x0,y,sz,col,a,400,'left');x0+=p[2];});
-}
-function brandMark(x,y,sz,a=1){
-  if(ctx.globalAlpha*clamp(a)<=0.004)return;
-  const s1='陈石律师',s2='  ·  ',s3='chenshi.ai';
-  const w1=measure(s1,sz*0.85),w2=measure(s2,sz*0.85),w3=measure(s3,sz,700),tw=w1+w2+w3;let x0=x-tw/2;
-  text(s1,x0,y,sz*0.85,IVORY,a*0.8,400,'left');x0+=w1;text(s2,x0,y,sz*0.85,GOLD,a*0.8,400,'left');x0+=w2;glowText(s3,x0,y,sz,GOLD_HI,a,700,0.3,'left');
-}
-
-// 【质感升级】精工卡片绘制器：纵深渐变 + 立体投影 + 顶部1px高光倒角
-function drawPanel(x,y,w,h,r=12,stroke='rgba(226,170,66,0.5)',topCol='rgba(28,22,11,0.92)',botCol='rgba(12,10,6,0.94)',lw=1.8){
-  ctx.save();
-  ctx.shadowColor='rgba(0,0,0,0.75)';ctx.shadowBlur=28;ctx.shadowOffsetY=12;
-  const g=ctx.createLinearGradient(0,y,0,y+h);g.addColorStop(0,topCol);g.addColorStop(1,botCol);
-  rr(x,y,w,h,r);ctx.fillStyle=g;ctx.fill();
-  ctx.shadowColor='transparent';ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();
-  // 顶部玻璃高光边线
-  ctx.strokeStyle='rgba(255,235,185,0.22)';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(x+r,y+1);ctx.lineTo(x+w-r,y+1);ctx.stroke();
-  ctx.restore();
-}
-
-// 【质感升级】程序化纸带纤维纹理（900 条微细金丝纤维）
-const FIBER=(()=>{const c=document.createElement('canvas');c.width=512;c.height=160;const g=c.getContext('2d'),r=mulberry(7);
-  for(let i=0;i<900;i++){const x=r()*512,y=r()*160,l=8+r()*44;g.strokeStyle=`rgba(255,220,155,${0.018+r()*0.045})`;g.lineWidth=0.6+r()*0.7;g.beginPath();g.moveTo(x,y);g.lineTo(x+l,y+(r()-0.5)*3);g.stroke();}
-  return c;})();
-let FIBER_PAT=null;
-
-const SPR_HALO=(()=>{const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),gr=g.createRadialGradient(64,64,0,64,64,64);
-  gr.addColorStop(0,'rgba(255,228,170,0.85)');gr.addColorStop(0.2,'rgba(255,190,80,0.45)');gr.addColorStop(1,'rgba(200,120,30,0)');g.fillStyle=gr;g.fillRect(0,0,128,128);return c;})();
-function glow(x,y,r,a=1){const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||r<=0.5)return;const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.drawImage(SPR_HALO,x-r,y-r,2*r,2*r);ctx.globalAlpha=prev;}
-function arrow(x1,y1,x2,y2,a=1,col=GOLD,amb=0){
-  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.01)return;
-  ctx.save();ctx.globalAlpha=eff;ctx.strokeStyle=col;ctx.lineWidth=2.2;ctx.setLineDash([8,8]);ctx.lineDashOffset=-amb*36;
-  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.setLineDash([]);
-  const ang=Math.atan2(y2-y1,x2-x1);ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-14*Math.cos(ang-0.42),y2-14*Math.sin(ang-0.42));ctx.lineTo(x2-14*Math.cos(ang+0.42),y2-14*Math.sin(ang+0.42));ctx.closePath();ctx.fill();ctx.restore();
-}
-
-const DUST=(()=>{const r=mulberry(2026);return Array.from({length:48},()=>({x:r(),y:r(),vx:(r()-0.5)*0.005,vy:-0.004-r()*0.007,rad:1.5+r()*3.2,a:0.1+r()*0.22,ph:r()*6.28}));})();
-
-const PROMPT_BLOCKS=[
-  {t:'角色定位与语气红线',used:true},
-  {t:'建设工程合同审查 18 条细则',used:true},
-  {t:'股权并购尽调核查清单 (3200字)',used:false},
-  {t:'劳动仲裁举证责任与计算公式',used:false},
-  {t:'违约金过高调减的 12 个最高院类案',used:true},
-  {t:'诉讼文书排版格式与 Word 模板规范',used:false},
-  {t:'税务合规与跨境交易免责条款',used:false},
-];
-
-/* ============================== 主渲染 ============================== */
-function render(G,amb){
-  const {s,ox,oy,dpr}=view;
-  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
-  ctx.setTransform(s*dpr,0,0,s*dpr,ox*dpr,oy*dpr);
-  ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();
-  ctx.fillStyle='#040405';ctx.fillRect(0,0,W,H);
-
-  // 极淡精密工程背景网格
-  ctx.strokeStyle='rgba(226,170,66,0.025)';ctx.lineWidth=1;
-  for(let x=0;x<=W;x+=64){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-  for(let y=0;y<=H;y+=64){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-
-  // 背景暖光 + 金尘
-  const bg=ctx.createRadialGradient(W/2,H*0.48,0,W/2,H*0.48,980);
-  bg.addColorStop(0,'rgba(135,88,24,0.18)');bg.addColorStop(0.55,'rgba(55,34,10,0.06)');bg.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  ctx.save();ctx.globalCompositeOperation='lighter';
-  DUST.forEach(d=>{const dx=((d.x+amb*d.vx)%1+1)%1*W,dy=((d.y+amb*d.vy)%1+1)%1*H;glow(dx,dy,d.rad*3,d.a*(0.55+0.45*Math.sin(amb*1.5+d.ph))*0.6);});
-  ctx.restore();
-
-  /* ---------- 幕 0：开场标题 ---------- */
-  const a0=actAlpha(G,null,null,0.02,0.42);
-  if(a0>0.005){
-    const intro=clamp(amb/2.0), dy=-28*(1-a0);
-    ctx.save();ctx.globalAlpha=a0;
-    glowText('Skill 到底是什么？',W/2,430-(1-intro)*22+dy,108,PALE,intro,700,0.4);
-    const lw=780*seg(intro,0.2,0.85);
-    const lg=ctx.createLinearGradient(W/2-lw/2,0,W/2+lw/2,0);lg.addColorStop(0,'rgba(255,200,90,0)');lg.addColorStop(0.5,'rgba(255,214,120,0.9)');lg.addColorStop(1,'rgba(255,200,90,0)');
-    ctx.fillStyle=lg;ctx.fillRect(W/2-lw/2,522+dy,lw,2);
-    rich('从提示词的短板出发，看懂 Anthropic 的{渐进式加载}工程范式',W/2,585+dy,32,seg(intro,0.4,0.95),DIM);
-    brandMark(W/2,860+dy*0.5,28,seg(intro,0.6,1));
-    ctx.restore();
-  }
-
-  /* ---------- 幕 1 & 2：Prompt 膨胀 -> 噪音 -> 物理切分 ---------- */
-  const a12=actAlpha(G,0.52,1.0,5.02,5.42);
-  if(a12>0.005){
-    const grow=seg(G,1.15,2.0), noise=seg(G,2.15,2.95), cut=seg(G,3.15,4.0), idxShow=seg(G,4.15,4.95);
-    const nVis=Math.round(lerp(2,PROMPT_BLOCKS.length,grow));
-    const bx=lerp(960,640,idxShow), bw=lerp(860,640,cut), bh=56, gap=lerp(6,22,cut);
-    const totalH=nVis*(bh+gap)-gap, y0=545-totalH/2;
-
-    ctx.save();ctx.globalAlpha=a12;ctx.translate(0,(1-a12)*20);
-    if(cut<0.95){
-      ctx.save();ctx.globalAlpha*=1-cut;
-      drawPanel(bx-bw/2-24,y0-42,bw+48,totalH+70,14,noise>0.3?RED:GOLD,'rgba(44,30,12,0.55)','rgba(18,12,6,0.75)',2.2);
-      text('单一巨型提示词 (Mega Prompt)',bx,y0-18,20,noise>0.3?RED:GOLD_HI,1,700);
-      ctx.restore();
-    }
-    for(let i=0;i<nVis;i++){
-      const b=PROMPT_BLOCKS[i], y=y0+i*(bh+gap);
-      const isNoise=noise>0.05&&!b.used, spreadX=cut*(b.used?-40:140);
-      const pulse=isNoise&&cut<0.5?(0.55+0.25*Math.sin(amb*7+i)):1;
-      ctx.save();ctx.globalAlpha*=pulse;
-      drawPanel(bx-bw/2+spreadX,y,bw,bh,7,isNoise?'rgba(232,106,88,0.75)':(b.used&&noise>0.2?GOLD_HI:'rgba(226,170,66,0.6)'),
-        isNoise?'rgba(95,30,24,0.35)':'rgba(65,46,16,0.35)',isNoise?'rgba(40,14,12,0.5)':'rgba(24,17,7,0.55)',1.5);
-      text(b.t,bx-bw/2+spreadX+22,y+bh/2,21,isNoise?'rgba(255,190,180,0.92)':IVORY,1,b.used?700:400,'left');
-      const badge=isNoise?(cut>0.5?'移入独立规则文件':'本次用不上 · 噪音/烧Token'):(cut>0.5?'按需载入':'当前所需');
-      text(badge,bx+bw/2+spreadX-18,y+bh/2,16,isNoise?RED:GOLD_HI,1,700,'right');
-      ctx.restore();
-    }
-    if(idxShow>0.02){
-      const ix=1390, iy=540, iw=400, ih=340;
-      ctx.save();ctx.globalAlpha*=idxShow;ctx.translate((1-idxShow)*30,0);
-      drawPanel(ix-iw/2,iy-ih/2,iw,ih,14,GOLD_HI,'rgba(36,26,10,0.94)','rgba(14,10,5,0.96)',2.4);
-      glow(ix,iy-110,130,0.35);
-      glowText('SKILL.md',ix,iy-118,34,GOLD_HI,1,700,0.4);
-      text('轻量级入口索引（渐进式披露核心）',ix,iy-74,18,DIM,1);
-      text('name: contract-review',ix-155,iy-18,19,GREEN,1,700,'left');
-      text('description: 合同违约金与风控审查',ix-155,iy+16,18,IVORY,1,400,'left');
-      text('→ 命中场景时，再按需展开正文',ix-155,iy+68,18,GOLD_HI,1,400,'left');
-      text('→ 需要法条时，再读取 references/',ix-155,iy+102,18,DIM,1,400,'left');
-      text('→ 需要计算时，直接调用 scripts/',ix-155,iy+136,18,DIM,1,400,'left');
-      arrow(bx+bw/2+155,540,ix-iw/2-18,540,1,GOLD_HI,amb);
-      ctx.restore();
-    }
-    ctx.restore();
-  }
-
-  /* ---------- 幕 3：Skill 文件包立体解剖 ---------- */
-  const a3=actAlpha(G,5.52,6.0,9.02,9.42);
-  if(a3>0.005){
-    const sub1=actAlpha(G,6.0,6.45,7.08,7.42), sub2=actAlpha(G,7.52,7.92,8.08,8.42), sub3=actAlpha(G,8.52,8.92,null,null);
-    ctx.save();ctx.globalAlpha=a3;ctx.translate(0,(1-a3)*20);
-    const tx=370, ty=540, tw=440, th=470;
-    drawPanel(tx-tw/2,ty-th/2,tw,th,14,'rgba(226,170,66,0.55)');
-    glowText('contract-review/',tx-175,ty-185,26,GOLD_HI,1,700,0.3,'left');
-
-    const tree=[
-      {name:'├── SKILL.md',sub:'必备核心 · 索引与SOP',y:ty-100,hl:sub1,col:GOLD_HI},
-      {name:'├── references/',sub:'法条、类案、审查红线',y:ty-10,hl:sub2,col:BLUE},
-      {name:'├── scripts/',sub:'Python/Shell 确定性脚本',y:ty+80,hl:sub3,col:GREEN},
-      {name:'└── templates/',sub:'报告结构与输出模板',y:ty+170,hl:sub3,col:GREEN},
-    ];
-    tree.forEach(it=>{
-      const act=0.35+0.65*it.hl;
-      if(it.hl>0.05){ctx.save();ctx.globalAlpha*=it.hl;rr(tx-195,it.y-34,390,68,8);ctx.fillStyle='rgba(226,170,66,0.14)';ctx.fill();ctx.strokeStyle=it.col;ctx.lineWidth=1.8;ctx.stroke();ctx.restore();}
-      text(it.name,tx-175,it.y-8,22,it.hl>0.2?it.col:IVORY,act,700,'left');
-      text(it.sub,tx-140,it.y+18,16,DIM,act,400,'left');
-    });
-
-    const px=1190, py=540, pw=960, ph=470;
-    drawPanel(px-pw/2,py-ph/2,pw,ph,16,'rgba(226,170,66,0.45)');
-
-    if(sub1>0.005){
-      ctx.save();ctx.globalAlpha*=sub1;ctx.translate(0,(1-sub1)*16);
-      glowText('核心必选文件：SKILL.md 的双段结构',px,py-175,32,GOLD_HI,1,700,0.35);
-      drawPanel(px-420,py-120,840,120,10,GREEN,'rgba(16,58,42,0.45)','rgba(8,28,20,0.6)',1.8);
-      text('① YAML Frontmatter（极薄元数据 · 决定何时触发）',px-395,py-88,20,GREEN,1,700,'left');
-      text('---   name: contract-review  |  description: 审查合同违约金、主体与风险   ---',px-395,py-42,19,IVORY,1,400,'left');
-      drawPanel(px-420,py+26,840,165,10,GOLD_HI,'rgba(56,40,14,0.45)','rgba(24,18,7,0.6)',1.8);
-      text('② Markdown 正文（触发后展开 · 标准工作流 SOP）',px-395,py+60,20,GOLD_HI,1,700,'left');
-      text('Step 1: 提取合同核心标的与违约金比例（调用 scripts/calc.py）',px-395,py+102,19,IVORY,1,400,'left');
-      text('Step 2: 对照 references/civil_code_585.md 评估调减空间',px-395,py+136,19,IVORY,1,400,'left');
-      text('Step 3: 严格按 templates/review_report.md 输出最终审查意见',px-395,py+170,19,IVORY,1,400,'left');
-      ctx.restore();
-    }
-    if(sub2>0.005){
-      ctx.save();ctx.globalAlpha*=sub2;ctx.translate(0,(1-sub2)*16);
-      glowText('references/ 规则与专业知识库',px,py-165,32,BLUE,1,700,0.35);
-      const cards=[
-        ['民法典第585条.md','静态法条与司法解释','不占用默认上下文，审查到违约金才读'],
-        ['最高院类案红线.md','裁判尺度与举证规则','按案件类型精准挂载，杜绝幻觉'],
-        ['律所风控口径.md','团队内部经验与红线','把资深律师的隐性经验显性化沉淀']
-      ];
-      cards.forEach((c,i)=>{
-        const cx=px-290+i*290;
-        drawPanel(cx-130,py-95,260,250,10,BLUE,'rgba(22,44,78,0.42)','rgba(10,18,34,0.65)',1.6);
-        text(c[0],cx,py-40,21,BLUE,1,700);text(c[1],cx,py+15,18,IVORY,1);text(c[2],cx,py+80,15,DIM,1);
-      });
-      ctx.restore();
-    }
-    if(sub3>0.005){
-      ctx.save();ctx.globalAlpha*=sub3;ctx.translate(0,(1-sub3)*16);
-      glowText('scripts/ 确定性代码齿轮  +  templates/ 标准模板',px,py-165,32,GREEN,1,700,0.35);
-      drawPanel(px-420,py-95,400,260,10,GREEN,'rgba(14,54,38,0.45)','rgba(8,24,18,0.65)',1.8);
-      text('⚙ scripts/（确定性执行）',px-220,py-45,23,GREEN,1,700);
-      text('• 算违约金/利息、拆 PDF、格式转换',px-395,py+12,18,IVORY,1,400,'left');
-      text('• 代码跑完只把“结果”写回上下文',px-395,py+52,18,IVORY,1,400,'left');
-      text('• 不靠大模型用概率硬算数学题',px-395,py+92,18,GOLD_HI,1,700,'left');
-      drawPanel(px+20,py-95,400,260,10,GOLD_HI,'rgba(56,40,14,0.45)','rgba(22,16,6,0.65)',1.8);
-      text('📄 templates/（输出锚点）',px+220,py-45,23,GOLD_HI,1,700);
-      text('• 锁定法律意见书 / 表格 / JSON 结构',px+45,py+12,18,IVORY,1,400,'left');
-      text('• 确保每次交付格式高度稳定一致',px+45,py+52,18,IVORY,1,400,'left');
-      text('• 团队新人也能跑出合伙人级交付',px+45,py+92,18,GOLD_HI,1,700,'left');
-      ctx.restore();
-    }
-    ctx.restore();
-  }
-
-  /* ---------- 幕 4：三级渐进式加载 · 高质感实体纸带 ---------- */
-  const a4=actAlpha(G,9.52,10.0,12.02,12.42);
-  if(a4>0.005){
-    const l2=seg(G,10.25,11.0), l3=seg(G,11.25,12.0);
-    const ty=535, th=164, x0=96, x1=1824, tw=x1-x0;
-
-    ctx.save();ctx.globalAlpha=a4;ctx.translate(0,(1-a4)*20);
-    text('AGENT 上下文窗口纸带（CONTEXT WINDOW TAPE）',W/2,ty-th/2-34,21,GOLD_HI,0.92,700);
-
-    // 1. 纸带主体：立体悬浮阴影 + 多层暗金纸质渐变
-    ctx.save();
-    ctx.shadowColor='rgba(0,0,0,0.9)';ctx.shadowBlur=42;ctx.shadowOffsetY=18;
-    const tgr=ctx.createLinearGradient(0,ty-th/2,0,ty+th/2);
-    tgr.addColorStop(0,'rgba(88,62,22,0.72)');
-    tgr.addColorStop(0.14,'rgba(44,31,12,0.72)');
-    tgr.addColorStop(0.5,'rgba(26,18,7,0.76)');
-    tgr.addColorStop(0.86,'rgba(44,31,12,0.72)');
-    tgr.addColorStop(1,'rgba(88,62,22,0.72)');
-    ctx.fillStyle=tgr;ctx.fillRect(x0,ty-th/2,tw,th);
-    ctx.restore();
-
-    // 2. 纸张纤维纹理平铺
-    if(!FIBER_PAT)FIBER_PAT=ctx.createPattern(FIBER,'repeat');
-    ctx.save();ctx.fillStyle=FIBER_PAT;ctx.fillRect(x0,ty-th/2,tw,th);ctx.restore();
-
-    // 3. 双层金属边线（外亮金 + 内微光高光）
-    ctx.strokeStyle='rgba(236,184,78,0.92)';ctx.lineWidth=1.8;
-    ctx.beginPath();ctx.moveTo(x0,ty-th/2);ctx.lineTo(x1,ty-th/2);ctx.moveTo(x0,ty+th/2);ctx.lineTo(x1,ty+th/2);ctx.stroke();
-    ctx.strokeStyle='rgba(255,232,165,0.26)';ctx.lineWidth=1;
-    ctx.beginPath();ctx.moveTo(x0,ty-th/2+5);ctx.lineTo(x1,ty-th/2+5);ctx.moveTo(x0,ty+th/2-5);ctx.lineTo(x1,ty+th/2-5);ctx.stroke();
-
-    // 4. 上下双排物理齿孔（带微弱内凹暗底与金边）
-    for(let hx=x0+20;hx<x1-12;hx+=36){
-      [ty-th/2+12,ty+th/2-12].forEach(hy=>{
-        ctx.fillStyle='rgba(0,0,0,0.78)';rr(hx-4,hy-2.5,8,5,1.5);ctx.fill();
-        ctx.strokeStyle='rgba(232,178,72,0.38)';ctx.lineWidth=0.8;ctx.stroke();
-      });
-    }
-
-    // 5. 缓慢掠过的纸面材质流光
-    const sp=((amb*0.11)%1.4)-0.2;
-    ctx.save();ctx.globalCompositeOperation='lighter';
-    const sx=x0+sp*tw, sg=ctx.createLinearGradient(sx-240,0,sx+240,0);
-    sg.addColorStop(0,'rgba(255,214,125,0)');sg.addColorStop(0.5,'rgba(255,220,140,0.09)');sg.addColorStop(1,'rgba(255,214,125,0)');
-    ctx.fillStyle=sg;ctx.fillRect(x0,ty-th/2,tw,th);ctx.restore();
-
-    // 6. 纸带内部按需展开的精工区块（避开上下齿孔区域）
-    let cx=x0+22;
-    const segH=th-44;
-    const drawSeg=(fullW,prog,title,sub,col,topBg,botBg)=>{
-      const w=fullW*prog; if(w<2)return;
-      ctx.save();
-      const g=ctx.createLinearGradient(0,ty-segH/2,0,ty+segH/2);g.addColorStop(0,topBg);g.addColorStop(1,botBg);
-      rr(cx,ty-segH/2,w,segH,7);ctx.fillStyle=g;ctx.fill();
-      ctx.strokeStyle=col;ctx.lineWidth=1.8;ctx.stroke();
-      ctx.clip();
-      // 区块顶部高光边
-      ctx.strokeStyle='rgba(255,255,255,0.22)';ctx.lineWidth=1;
-      ctx.beginPath();ctx.moveTo(cx+6,ty-segH/2+1);ctx.lineTo(cx+w-6,ty-segH/2+1);ctx.stroke();
-      const txtA=seg(prog,0.55,1.0);
-      text(title,cx+fullW/2,ty-15,19,col,txtA,700);
-      text(sub,cx+fullW/2,ty+16,14,IVORY,txtA*0.88);
-      ctx.restore();
-      cx+=w+10*prog;
-    };
-
-    drawSeg(205,1,'System & Rules','固定底座',BLUE,'rgba(32,62,115,0.55)','rgba(14,26,52,0.75)');
-    drawSeg(235,1,'L1: 20个 Skill 简介','仅 name + 1行描述 (~300t)',GREEN,'rgba(18,74,52,0.58)','rgba(9,36,26,0.78)');
-    if(l2>0.01){
-      drawSeg(215,l2,'用户触发','/合同审查 第8条',IVORY,'rgba(244,237,223,0.14)','rgba(244,237,223,0.05)');
-      drawSeg(370,l2,'L2: SKILL.md 正文','命中后按需展开完整 SOP',GOLD_HI,'rgba(120,86,24,0.62)','rgba(54,38,10,0.82)');
-    }
-    if(l3>0.01){
-      drawSeg(285,l3,'L3: 按需读法条','civil_code_585.md',BLUE,'rgba(32,62,115,0.58)','rgba(14,26,52,0.78)');
-      drawSeg(285,l3,'L3: 脚本返回值','calc.py -> 调减建议',GREEN,'rgba(18,74,52,0.58)','rgba(9,36,26,0.78)');
-    }
-
-    // 底部三层状态指示卡
-    const stages=[
-      {t:'L1 常驻元数据',d:'极低开销 · 随时待命',on:true,col:GREEN},
-      {t:'L2 按需展开正文',d:'触发才加载 · 零噪音',on:l2>0.4,col:GOLD_HI},
-      {t:'L3 节点按需挂载',d:'脚本外置执行 · 只回传结果',on:l3>0.4,col:BLUE},
-    ];
-    stages.forEach((st,i)=>{
-      const sx=420+i*540, sy=790;
-      drawPanel(sx-210,sy-48,420,96,10,st.on?st.col:'rgba(255,255,255,0.14)',
-        st.on?'rgba(42,32,14,0.8)':'rgba(18,16,12,0.55)','rgba(10,9,6,0.85)',st.on?2:1);
-      text(st.t,sx,sy-14,22,st.on?st.col:DIM,1,700);
-      text(st.d,sx,sy+20,16,st.on?IVORY:DIM,0.85);
-    });
-    ctx.restore();
-  }
-
-  /* ---------- 幕 5：制作方法论 -> 终极目标 ---------- */
-  const a5=actAlpha(G,12.52,13.0,14.02,14.42);
-  if(a5>0.005){
-    const goal=seg(G,13.2,14.0);
-    const methods=[
-      {t:'① 反向蒸馏',d:'从做成功的真实对话与案例中\n反向提炼可复用步骤',x:380,y:370},
-      {t:'② 正向构建',d:'直接把成熟的行业 SOP、\n审查清单结构化写入',x:380,y:700},
-      {t:'③ 实战迭代',d:'先跑通最小可用版，在每次\n报错与纠偏中持续打磨',x:1540,y:370},
-      {t:'④ 苏格拉底反诘法',d:'让 AI 不断追问边界条件与例外，\n逼出你的隐性专家经验',x:1540,y:700},
-    ];
-    ctx.save();ctx.globalAlpha=a5;ctx.translate(0,(1-a5)*20);
-    methods.forEach((m,i)=>{
-      const ma=seg(G,12.55+i*0.09,12.95+i*0.09);
-      ctx.save();ctx.globalAlpha*=ma;
-      drawPanel(m.x-220,m.y-85,440,170,12,GOLD);
-      glowText(m.t,m.x,m.y-38,26,GOLD_HI,1,700,0.3);
-      m.d.split('\n').forEach((ln,li)=>text(ln,m.x,m.y+12+li*30,19,IVORY,0.9));
-      if(goal>0.05)arrow(m.x+(m.x<960?220:-220),m.y,960+(m.x<960?-230:230),535,goal,GOLD_HI,amb);
-      ctx.restore();
-    });
-    if(goal>0.02){
-      ctx.save();ctx.globalAlpha*=goal;ctx.translate(0,(1-goal)*18);
-      glow(960,535,230,0.4);
-      drawPanel(960-220,535-175,440,350,18,GOLD_HI,'rgba(44,32,12,0.95)','rgba(16,12,5,0.98)',2.6);
-      glowText('所有方法的共同终点',960,415,26,GOLD_HI,1,700,0.4);
-      const targets=[
-        ['1. 清晰的工作流 (Workflow)','拆解出确定的执行阶段'],
-        ['2. 节点方法与依赖','每一步用什么工具、读什么规则'],
-        ['3. 可验收的质量标准','明确什么是好交付、什么必须打回']
-      ];
-      targets.forEach((tg,i)=>{text(tg[0],960,485+i*76,22,PALE,1,700);text(tg[1],960,515+i*76,16,DIM,1);});
-      ctx.restore();
-    }
-    ctx.restore();
-  }
-
-  /* ---------- 幕 6：元 Skill ---------- */
-  const a6=actAlpha(G,14.52,15.0,null,null);
-  if(a6>0.005){
-    const own=seg(G,15.25,16.0), fin=seg(G,16.2,16.95);
-    ctx.save();ctx.globalAlpha=a6;ctx.translate(0,(1-a6)*20);
-
-    const lx=lerp(960,530,own), ly=520;
-    drawPanel(lx-280,ly-150,560,300,16,'rgba(226,170,66,0.65)');
-    text('起点：Anthropic 官方元 Skill',lx,ly-95,20,DIM,1);
-    glowText('skill-creator',lx,ly-35,44,GOLD_HI,1,700,0.4);
-    text('专门用来“生产 Skill”的 Skill',lx,ly+30,22,IVORY,1);
-    text('把对话需求自动转化为标准目录与 SKILL.md',lx,ly+75,18,DIM,1);
-
-    if(own>0.02){
-      const rx=1350, ry=520;
-      arrow(lx+290,ly,rx-320,ry,own,GOLD_HI,amb);
-      ctx.save();ctx.globalAlpha*=own;ctx.translate((1-own)*30,0);
-      glow(rx,ry,260,0.45);
-      drawPanel(rx-310,ry-175,620,350,18,GOLD_HI,'rgba(44,31,11,0.95)','rgba(16,11,5,0.98)',2.8);
-      text('进阶实战 · 法律与专业领域打磨',rx,ry-115,20,GREEN,1,700);
-      glowText('陈石 · 实战元 Skill 体系',rx,ry-52,38,PALE,1,700,0.45);
-      text('深度融合反向蒸馏、反诘法与高质量验收标准',rx,ry+12,20,IVORY,1);
-      rr(rx-230,ry+58,460,56,28);ctx.fillStyle='rgba(255,208,98,0.18)';ctx.fill();ctx.strokeStyle=GOLD_HI;ctx.lineWidth=1.8;ctx.stroke();
-      glowText('https://skill.chenshi.ai/learn/',rx,ry+86,23,GOLD_HI,1,700,0.3);
-      text('系统学习文档与元 Skill 完整实践参考',rx,ry+142,16,DIM,1);
-      ctx.restore();
-    }
-
-    if(fin>0.02){
-      ctx.save();ctx.globalAlpha*=fin;
-      rich('Prompt 是一次性的口头交代，{Skill} 是可沉淀、可复用的数字资产',W/2,835,34,1,IVORY);
-      brandMark(W/2,935,28,1);
-      ctx.restore();
-    }
-    ctx.restore();
-  }
-
-  // 电影暗角（Vignette）增强暗房聚焦感
-  const vig=ctx.createRadialGradient(W/2,H/2,H*0.38,W/2,H/2,W*0.66);
-  vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,0,0.58)');
-  ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
-
-  /* ---------- 顶部引导语 & 进度 ---------- */
-  const lo=Math.floor(G), hi=Math.min(LAST,Math.ceil(G)), f=G-lo;
-  const ha=STEPS[lo].hint, hb=STEPS[hi].hint;
-  if(ha===hb) rich(ha,W/2,92,34,0.95);
-  else {
-    const aOut=1-ease(clamp(f/0.38)), aIn=ease(clamp((f-0.5)/0.42));
-    if(aOut>0.01) rich(ha,W/2,92-(1-aOut)*10,34,0.95*aOut);
-    if(aIn>0.01) rich(hb,W/2,92+(1-aIn)*10,34,0.95*aIn);
-  }
-
-  const st=STEPS[Math.round(G)];
-  const progLab=`${String(st.scene).padStart(2,'0')} · ${SCENES[st.scene]}    ${Math.round(G)+1} / ${STEPS.length}`;
-  text(progLab,1860,1025,18,'rgba(244,237,223,0.52)',1,400,'right');
-  ctx.fillStyle='rgba(244,237,223,0.16)';ctx.fillRect(1620,1044,240,2);
-  ctx.fillStyle=GOLD;ctx.fillRect(1620,1044,240*G/LAST,2);
-  ctx.restore();
-}
-
-/* ============================== 交互与播控 ============================== */
-let G=0, target=0, anim=null, auto=false; const t0=performance.now();
-const dock=document.getElementById('dock');
-SCENES.forEach((name,idx)=>{
-  const b=document.createElement('button');b.className='sbtn';b.textContent=`${String(idx).padStart(2,'0')} ${name}`;
-  b.addEventListener('pointerdown',e=>e.stopPropagation());
-  b.addEventListener('pointerup',e=>{e.stopPropagation();go(SCENE_FIRST[idx]);});
-  dock.appendChild(b);
-});
-function syncDock(){const sc=STEPS[Math.round(target)].scene;dock.querySelectorAll('.sbtn').forEach((b,i)=>b.classList.toggle('active',i===sc));}
-function go(i){
-  i=clamp(Math.round(i),0,LAST); if(i===target&&!anim)return;
-  const from=G, fwd=i===Math.round(target)+1&&i>from;
-  const dur=fwd?STEPS[i].dur:Math.min(850,350+Math.abs(i-from)*70);
-  target=i; anim={from,to:i,start:performance.now(),dur,linear:fwd}; syncDock();
-}
-function next(){go(target+1);} function prev(){go(target-1);}
-function tick(now){
-  if(anim){
-    const p=clamp((now-anim.start)/anim.dur);
-    G=anim.linear?lerp(anim.from,anim.to,p):lerp(anim.from,anim.to,ease(p));
-    if(p>=1){G=anim.to;anim=null;if(auto&&G<LAST)setTimeout(()=>auto&&go(target+1),750);}
-  }
-  render(G,(now-t0)/1000); requestAnimationFrame(tick);
-}
-
-let idleTimer=null;
-function wake(){document.body.classList.remove('idle');clearTimeout(idleTimer);idleTimer=setTimeout(()=>document.body.classList.add('idle'),3200);}
-['mousemove','pointerdown','keydown'].forEach(ev=>addEventListener(ev,wake)); wake();
-
-const autoBtn=document.getElementById('autoBtn'), cleanBtn=document.getElementById('cleanBtn'), fsBtn=document.getElementById('fsBtn');
-function toggleAuto(){auto=!auto;autoBtn.classList.toggle('on',auto);autoBtn.textContent=auto?'自动中':'自动 A';if(auto)next();}
-function toggleClean(){document.body.classList.toggle('clean');}
-function toggleFS(){const d=document,el=d.documentElement;if(!d.fullscreenElement)el.requestFullscreen?.();else d.exitFullscreen?.();}
-[autoBtn,cleanBtn,fsBtn].forEach(b=>b.addEventListener('pointerdown',e=>e.stopPropagation()));
-autoBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleAuto();});
-cleanBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleClean();});
-fsBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
-
-addEventListener('keydown',e=>{
-  if(e.target.id==='lesson-back')return;
-
-  const k=e.key;
-  if(k==='ArrowRight'||k===' '||k==='Enter'||k==='PageDown'){e.preventDefault();next();}
-  else if(k==='ArrowLeft'||k==='Backspace'||k==='PageUp'){e.preventDefault();prev();}
-  else if(k==='a'||k==='A')toggleAuto();
-  else if(k==='h'||k==='H')toggleClean();
-  else if(k==='f'||k==='F')toggleFS();
-});
-let pd=null;
-cv.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY,b:e.button};});
-cv.addEventListener('pointerup',e=>{if(!pd)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y,b=pd.b;pd=null;
-  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2){dx<0?next():prev();return;}
-  if(Math.abs(dx)<14&&Math.abs(dy)<14){if(b===2)prev();else e.shiftKey?prev():next();}});
-cv.addEventListener('contextmenu',e=>{e.preventDefault();prev();});
-
-syncDock(); requestAnimationFrame(tick);
+const SI={};STEPS.forEach((s,i)=>SI[s.id]=i);const LAST=STEPS.length-1;
+const RULES=['起诉状格式','合同审查清单','律师函口径','引用规范','尽调清单','邮件模板','计费规则','保密要求'];
+const SKILLS=[['合同审查','审合同时使用'],['起诉状','起草起诉状时使用'],['律师函','发函时使用'],['尽调清单','做尽调时使用']];
+let nUser=null,nDisp=4;
+function geo(){const P=LY.port,H=LY.H;
+  if(!P)return{P,a0:120,L:1680,c:810,th:176,bh:132,box:{x:520,y:170,w:880,h:440}};
+  return{P,a0:430,L:H-430-420,c:250,th:380,bh:340,box:{x:470,y:450,w:580,h:900}};}
+const CAP=100;
+function R(g,a0,a1){const u=g.L/CAP;return g.P?[g.c-g.bh/2,g.a0+a0*u,g.bh,(a1-a0)*u]:[g.a0+a0*u,g.c-g.bh/2,(a1-a0)*u,g.bh];}
+function tb(g,a0,a1,lab,st,a,o={}){if(a<=0.01||a1-a0<0.05)return;const [x,y,w,h]=R(g,a0+0.25,a1-0.25);block(x,y,w,h,{style:st,a,dash:o.dash});if(lab&&(g.P?h>36:w>40)){if(g.P)rich(lab,x+w/2,y+h/2,o.fs||26,a,{maxW:w-24,weight:700,color:o.col||IVORY});else rich(lab,x+w/2,y+h/2,o.fs||20,a,{maxW:w-16,weight:700,color:o.col||IVORY});}}
+function render(G,amb,dt){const W=LY.W,H=LY.H,P=LY.port;const g=geo();
+  LE.bg(amb,0,0);
+  LE.title('Skill 到底是什么','把一大段规矩，拆成{按需加载}的文件包',LE.easeOut(clamp(amb/1.8)),seg(G,0.05,0.6),{portLines:['Skill','到底是什么']});
+  if(G<0.3)return;const fin=1-seg(G,LAST-0.7,LAST);const inA=seg(G,0.3,1)*fin;
+  if(P)tape(g.a0-20,g.a0+g.L+20,g.c,g.th,{vert:true,a:inA});else tape(g.a0-20,g.a0+g.L+20,g.c,g.th,{a:inA});
+  const grow=seg(G,0.5,SI.grow);const cut=seg(G,SI.cut-0.85,SI.cut-0.2);const noise=seg(G,SI.noise-0.7,SI.noise-0.1);
+  // ① 巨型提示词
+  if(cut<0.99){const n=RULES.length;const each=8.5;let a=0;RULES.forEach((r,k)=>{const e=seg(grow,k/n*0.8,k/n*0.8+0.25);const len=each*e;const used=k===1;
+      const sh=cut;const [x,y,w,h]=R(g,a,a+len);if(len>0.1){const off=P?{x:sh*300,y:0}:{x:0,y:-sh*320};ctx.save();ctx.translate(off.x*(1+k*0.05),off.y*(1+k*0.05));tb(g,a,a+len,r,used||noise<0.5?'gold':'dim',inA*(1-cut)*(used?1:lerp(1,0.45,noise)));ctx.restore();}a+=len;});
+    const tA=seg(G,SI.noise-0.6,SI.noise-0.2)*(1-cut);if(tA>0.01){tb(g,70,84,'本次任务：审一份租赁合同','ice',inA*tA,{col:ICE});
+      const [x,y,w,h]=R(g,0,68);rich('只有「合同审查清单」用得上',P?g.c+g.th/2+30:x+w/2,P?y+h/2:y-40,P?26:24,inA*tA,{align:P?'left':'center',maxW:P?560:0,hl:GOLD_HI});}
+    const tot=RULES.length*each*grow;if(G<SI.cut)text(`系统提示词 · 占纸带约 ${Math.round(tot)}%（示意）`,P?g.c+g.th/2+30:g.a0,P?g.a0+20:g.c+g.th/2+34,P?24:20,DIM,inA*(1-cut),400,'left');}
+  // ② 文件包
+  const B=g.box;const pk=seg(G,SI.cut-0.6,SI.cut)*(1-seg(G,SI.drag-0.8,SI.drag-0.4)*0.85)*(1-seg(G,SI.make-0.8,SI.make-0.4));
+  if(pk>0.01){card(B.x,B.y,B.w,B.h,{a:pk*inA,stroke:'rgba(255,208,98,0.7)'});glowText('合同审查/',B.x+30,B.y+(P?50:44),P?32:28,GOLD_HI,pk*inA,700,0.3,'left');
+    const an=seg(G,SI.pkg-0.8,SI.pkg-0.1);const items=[['SKILL.md','名称 · 何时使用 · 工作流正文',GOLD_HI],['references/','审查清单.md · 相关法条.md',ICE],['scripts/','计算违约金.py',GREEN],['templates/','审查意见模板.docx',PURPLE]];
+    const hiL1=seg(G,SI.l1-0.6,SI.l1)*(1-seg(G,SI.l2-0.6,SI.l2)),hiL2=bump(G,SI.l2,0.6),hiL3=bump(G,SI.l3,0.6);
+    items.forEach(([n,d,c],k)=>{const e=k===0?seg(G,SI.cut-0.4,SI.cut):seg(an,k*0.15,0.5+k*0.15);const y=B.y+(P?130:110)+k*(P?190:76);const hi=(k===0?Math.max(hiL1,hiL2):(k>0?hiL3*(k<3?1:0):0));
+      if(hi>0.01)glowAdd(B.x+(P?60:60),y,60,0.6*hi*pk);text(n,B.x+(P?40:50),y,P?30:24,c,e*pk*inA,700,'left');rich(d,P?B.x+40:B.x+260,P?y+48:y,P?24:20,e*pk*inA*an,{align:'left',maxW:P?B.w-60:B.w-290,color:DIM,valign:P?'top':undefined});});}
+  // ③ 渐进加载：纸带内容
+  const l1=seg(G,SI.l1-0.7,SI.l1-0.1),l2=seg(G,SI.l2-0.7,SI.l2-0.1),l3=seg(G,SI.l3-0.7,SI.l3-0.1);
+  const dragOn=seg(G,SI.drag-0.6,SI.drag-0.1)*(1-seg(G,SI.make-0.8,SI.make-0.4));
+  if(l1>0.01&&G<SI.drag-0.1){const al=inA*(1-seg(G,SI.drag-0.6,SI.drag-0.1));let a=0;SKILLS.forEach((s,k)=>{const e=seg(l1,k*0.12,0.5+k*0.12);tb(g,a,a+7*e,s[0],k===0&&l2>0.5?'hot':'gold',al*e,{fs:P?24:17});a+=7*e;});
+    tb(g,a,a+4*l1,'',null,0);const q0=a+1;tb(g,q0,q0+12,'任务：审一份租赁合同','ice',al*l1,{col:ICE});let b=q0+12;
+    if(l2>0.01){tb(g,b,b+16*l2,'SKILL.md 正文：审查步骤 1–6','hot',al*l2);b+=16*l2;}
+    if(l3>0.01){tb(g,b,b+12*l3,'读入审查清单','gold',al*l3);b+=12*l3;tb(g,b,b+8*l3,'脚本结果：违约金 6 万','green',al*seg(l3,0.4,1),{col:GREEN});b+=8*l3;}
+    const [x,y,w,h]=R(g,0,b);if(G<SI.drag)text(`占纸带约 ${Math.round(b)}%（示意）`,P?g.c+g.th/2+30:g.a0,P?g.a0+g.L-30:g.c+g.th/2+34,P?24:20,DIM,al,400,'left');
+    if(l3>0.01&&!P){const [sx,sy,sw,sh]=R(g,b-8*l3,b);rich('脚本的代码本身{不进纸带}',sx+sw/2,sy+sh+70,20,al*l3,{hl:GREEN});}}
+  // ④ 动手：对比
+  if(dragOn>0.01){const at=LE.isAt('drag');if(at&&nUser!=null)nDisp=damp(nDisp,nUser,dt,12);else if(!at)nDisp=4;const n=Math.max(1,Math.round(nDisp));
+    const full=n*30,lazy=n*1+30;const T=g;// 纸带上两种方式
+    const half=P?0:0;const pa=dragOn*inA;
+    const bx=P?470:300,by=P?g.box.y:200,bw=P?580:1320;card(bx,by,bw,P?520:330,{a:pa});rich(`已安装 {${n}} 个 Skill（每个正文按 30 份、说明按 1 份计，示意）`,bx+30,by+(P?30:44),P?24:20,pa,{align:'left',maxW:bw-60,valign:P?'top':undefined,color:DIM,lh:34});
+    const rows=[['全塞进提示词',full,RED],['Skill 渐进加载',lazy,GREEN]];rows.forEach(([t,v,c],k)=>{const y=by+(P?150:110)+k*(P?120:90);text(t,bx+30,y,P?28:24,c,pa,700,'left');const maxW=bw-(P?60:420);const L=maxW*Math.min(v,CAP)/CAP;
+      ctx.globalAlpha=pa;rr(bx+(P?30:300),y+(P?30:-14),maxW,28,7);ctx.fillStyle='rgba(244,237,223,0.06)';ctx.fill();rr(bx+(P?30:300),y+(P?30:-14),L,28,7);ctx.fillStyle=c;ctx.fill();ctx.globalAlpha=1;
+      text(v>CAP?`${v}% · 放不下`:`${v}%`,P?bx+bw-30:bx+310+L,y,P?26:22,v>CAP?RED:IVORY,pa,700,P?'right':'left');});
+    const t=dragTrack();LE.line(t.x0,t.y,t.x1,t.y,'rgba(244,237,223,0.3)',4,pa);[1,10,20,30,40].forEach(v=>text(String(v),lerp(t.x0,t.x1,(v-1)/39),t.y+(P?40:32),P?24:18,DIM,pa,700));
+    const kx=lerp(t.x0,t.x1,(nDisp-1)/39);ctx.globalAlpha=pa;ctx.beginPath();ctx.arc(kx,t.y,14,0,7);ctx.fillStyle=GOLD_HI;ctx.fill();ctx.globalAlpha=1;glowAdd(kx,t.y,34,0.8*pa);if(at&&nUser==null)LE.dragHint(kx,t.y,'拖动',amb,1,{dy:-44});
+    // 纸带上同步显示
+    tb(g,0,Math.min(lazy,CAP),'渐进加载：说明 × '+n+' + 1 份正文','green',pa*0.9,{col:GREEN});}
+  // ⑤ 怎么写好
+  const mk=seg(G,SI.make-0.7,SI.make-0.1)*fin;
+  if(mk>0.01){const items=[['何时使用','说明里写清触发场景，模型才知道什么时候读它'],['分步流程','步骤可检查：每步输入、输出、完成标准'],['资料分开','法条、清单放 references/，用到再读'],['脚本兜底','金额、日期等确定性计算交给 scripts/']];
+    items.forEach((it,k)=>{const e=seg(mk,k*0.12,0.5+k*0.12);const x=P?90:200+(k%2)*780,y=P?470+k*230:190+Math.floor(k/2)*190,w=P?900:740;card(x,y,w,P?200:160,{a:e*(1-seg(G,SI.meta-0.8,SI.meta-0.4)*0.6)});
+      glowText(it[0],x+30,y+(P?56:48),P?34:28,GOLD_HI,e,700,0.3,'left');rich(it[1],x+30,y+(P?120:104),P?26:22,e,{align:'left',maxW:w-60,valign:'top'});});}
+  const mt=seg(G,SI.meta-0.6,SI.meta-0.1)*fin;
+  if(mt>0.01){const x=P?90:560,y=P?H*0.5+260:560,w=P?900:800;card(x,y,w,P?200:150,{a:mt,stroke:GOLD_HI});glowText('skill-creator',x+w/2,y+(P?64:52),P?40:34,GOLD_HI,mt,700);text('一个用来创建、改进 Skill 的 Skill',x+w/2,y+(P?130:108),P?26:22,IVORY,mt);}
+  LE.finale(['提示词越写越长，就把规矩{切成 Skill 文件包}','{渐进加载}：先放说明 → 命中再读正文 → 用到再取资料','脚本只回{结果}，纸带上只留这次真正需要的东西'],seg(G,LAST-0.8,LAST),'纸带占比与「每个正文 30 份」均为示意。Skill 的文件结构与加载方式以各产品文档为准（如 Anthropic Agent Skills）。');}
+function dragTrack(){const g=geo();return g.P?{x0:530,x1:990,y:g.box.y+440}:{x0:600,x1:1320,y:470};}
+const drags=[{step:'drag',cursor:'ew-resize',hit:pt=>{const t=dragTrack();return pt.x>t.x0-50&&pt.x<t.x1+50&&Math.abs(pt.y-t.y)<60;},move:pt=>{const t=dragTrack();nUser=1+clamp((pt.x-t.x0)/(t.x1-t.x0))*39;}}];
+LE.run({steps:STEPS,scenes:SCENES,render,drags,onGo:()=>{nUser=null;},onSeek:(g,st)=>{nUser=st.n??null;if(nUser!=null)nDisp=nUser;}});
 })();
+
 </script></body></html>

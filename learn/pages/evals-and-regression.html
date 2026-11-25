@@ -1,432 +1,108 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
-<title>Evals 评测与防退化 · 光学风洞与自动校准靶场</title>
+<title>Evals 评测与防退化 · 改一行提示词，怎么知道没改坏别处</title>
+<meta name="description" content="凭感觉改提示词容易让老场景悄悄退化；用固定测试集、代码判分与模型评审、新旧版本逐题对比和红线闸门，把退化挡在上线前；线上问题再补成新题。">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
-<style>
-/* 将原文件中的两行 @font-face{font-family:'HSerif'...} 粘贴至此即可恢复原版衬线体 */
-html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
-body{position:fixed;inset:0}
-canvas{display:block;touch-action:none}
-#tools{position:fixed;right:16px;top:14px;display:flex;gap:8px;z-index:10;transition:opacity .35s}
-.tbtn{font:13px "HSerif","Songti SC",serif;color:rgba(244,237,223,.52);background:rgba(10,8,4,.62);border:1px solid rgba(226,170,66,.28);border-radius:5px;padding:4px 10px;cursor:pointer;backdrop-filter:blur(4px);transition:all .2s}
-.tbtn:hover,.tbtn.on{color:#FFD062;border-color:#E2AA42;background:rgba(226,170,66,.14)}
-#dock{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:5px;padding:6px 10px;border-radius:10px;background:rgba(8,7,4,.78);border:1px solid rgba(226,170,66,.22);backdrop-filter:blur(8px);z-index:10;max-width:95vw;overflow-x:auto;transition:opacity .4s}
-#dock::-webkit-scrollbar{display:none}
-.sbtn{font:12px "HSerif","Songti SC",serif;color:rgba(244,237,223,.55);background:none;border:1px solid transparent;border-radius:5px;padding:4px 9px;white-space:nowrap;cursor:pointer;transition:all .2s}
-.sbtn:hover{color:#FFE9B8;border-color:rgba(226,170,66,.35)}
-.sbtn.active{color:#FFD062;border-color:rgba(255,208,98,.6);background:rgba(226,170,66,.16);font-weight:700}
-body.idle #tools,body.idle #dock,body.clean #tools,body.clean #dock{opacity:0;pointer-events:none}
-</style><style>
-  #lesson-back {
-    position: fixed;
-    z-index: 10;
-    top: calc(8px + env(safe-area-inset-top));
-    left: calc(12px + env(safe-area-inset-left));
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    box-sizing: border-box;
-    padding: 0 10px;
-    border-radius: 4px;
-    color: #ffe5ad;
-    background: #17130e;
-    font: 14px/1.4 system-ui, sans-serif;
-    text-decoration: none;
-  }
-  #lesson-back:hover { text-decoration: underline; }
-  #lesson-back:focus-visible { outline: 2px solid #ffd062; outline-offset: 2px; }
-  body.clean #lesson-back, :fullscreen #lesson-back { display: none; }
-</style>
+<link rel="preload" href="../assets/fonts/hserif-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/hserif-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/lesson.css">
 </head><body>
 <a id="lesson-back" href="../index.html">← 返回模块目录</a>
-<canvas id="c"></canvas>
-<div id="tools">
-  <button class="tbtn" id="autoBtn" title="自动播放 (A)">自动 A</button>
-  <button class="tbtn" id="cleanBtn" title="纯净录屏 (H)">纯净 H</button>
-  <button class="tbtn" id="fsBtn" title="全屏 (F)">全屏 F</button>
-</div>
-<div id="dock"></div>
+<canvas id="c"></canvas><button id="fs" title="全屏（F）">全屏 F</button>
+<script src="../assets/lesson-engine.js"></script>
 <script>
-(function(){
-'use strict';
-const FONT='"HSerif","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif';
-const IVORY='#F4EDDF', GOLD='#E2AA42', GOLD_HI='#FFD062', PALE='#FFE9B8', DIM='rgba(244,237,223,0.62)', RED='#E86A58', GREEN='#4FD198', BLUE='#6AA9FF', ICE='#7CE8FF';
-
-const SCENES=['开场','盲改困境','黄金测试集','双层裁判透镜','回归校准','评测飞轮'];
-const S=(id,scene,dur,hint)=>({id,scene,dur,hint});
+// @title Evals 评测与防退化 · 改一行提示词，怎么知道没改坏别处
+// @desc 凭感觉改提示词容易让老场景悄悄退化；用固定测试集、代码判分与模型评审、新旧版本逐题对比和红线闸门，把退化挡在上线前；线上问题再补成新题。
+(function(){'use strict';
+const {C,LY,ctx,clamp,lerp,ease,seg,lin,bump,damp,text,glowText,rich,measure,rr,glow,glowAdd,card,block,tape,line,arrowHead,qbez,S}=LE;
+const {IVORY,GOLD,GOLD_HI,PALE,DIM,DIM2,RED,GREEN,ICE,PURPLE}=C;
+const SCENES=['开场','凭感觉改','测试集','两层判分','逐题对比','动手切版本','评测飞轮','收束'];
 const STEPS=[
-  S('title',0,2500,''),
-  S('vibe_edit',1,2200,'传统盲改：调了一行提示词，肉眼试了 2 个案例觉得变好了，准备直接上线'),
-  S('regress_pain',1,2600,'隐性退化（{Regression}）：A 场景修好了，没测到的 B、C 老场景却暗中崩了！'),
-  S('golden_set',2,2500,'工程解法：把真实案件与刁钻边界题沉淀为{黄金测试集 (Golden Dataset)}'),
-  S('wind_tunnel',2,2600,'将新版 Skill 放入{光学风洞}，并发射入全部标准考题，拒绝“凭感觉”'),
-  S('code_grader',3,2600,'第一层透镜：{确定性代码裁判}——毫秒级硬校验格式、数学计算与法条引用'),
-  S('llm_judge',3,2600,'第二层透镜：{LLM-as-a-Judge}——由独立裁判模型按评分量表（Rubric）评判逻辑与口径'),
-  S('diff_matrix',4,2800,'{回归校准靶盘}亮起：新版 v1.1 修好了 4 题，但揪出 2 道核心红线题发生退化！'),
-  S('gate_block',4,2400,'发布闸门自动亮红拦截——在用户踩坑之前，把退化死死挡在风洞里'),
-  S('fix_pass',4,2600,'定向修复后重跑风洞：通过率跃升至 {97%}、红线退化归零，绿灯放行上线'),
-  S('flywheel',5,2600,'{评测飞轮 (Eval Flywheel)}：线上每次真实报错，都立刻沉淀为第 N+1 道新考题'),
-  S('final',5,2600,''),
+ S('title',0,2600,''),
+ S('vibe',1,3000,'凭感觉改：改了一行提示词，试了 2 个例子都不错，就想上线'),
+ S('regress',1,3000,'可没测到的老场景，可能{悄悄变差}——这叫{退化（Regression）}'),
+ S('golden',2,3000,'解法：把真实案件、刁钻边界、红线题沉淀成一套{固定测试集}，每题写清期望'),
+ S('run',2,2800,'每次改动，都把{整套题}跑一遍，不靠印象'),
+ S('code',3,3000,'第一层：{代码判分}——格式、金额计算、引用编号这类能写成规则的，直接用程序校验'),
+ S('judge',3,3000,'第二层：{模型评审}——按评分细则（Rubric）打分；评审本身也要人工抽查校准'),
+ S('diff',4,3200,'新旧版本{逐题对比}：v1.1 修好了 4 题，却有 2 题从通过变成不通过（题目数为示意）'),
+ S('gate',4,2800,'总通过率还上升了，但其中一题是{红线题}——发布闸门不放行'),
+ S('drag',5,1800,'{拖动}版本滑块，对比 v1.0 / v1.1 / v1.2 每道题的结果',true),
+ S('fix',5,2800,'定向修复成 v1.2，{重跑整套题}：红线全过，闸门放行'),
+ S('fly',6,3200,'{评测飞轮}：线上每发现一个新问题，就补成一道新题，测试集越用越厚'),
+ S('final',7,3200,''),
 ];
-const LAST=STEPS.length-1;
-const SCENE_FIRST=SCENES.map((_,i)=>STEPS.findIndex(s=>s.scene===i));
-
-const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
-const lerp=(a,b,t)=>a+(b-a)*t;
-const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-const easeCam=t=>t<.5?16*t**5:1-Math.pow(-2*t+2,5)/2;
-const seg=(G,a,b)=>ease(clamp((G-a)/(b-a)));
-function kf(G,pts,fn=ease){if(G<=pts[0][0])return pts[0][1];for(let i=0;i<pts.length-1;i++){if(G<=pts[i+1][0]){const a=pts[i],b=pts[i+1];return lerp(a[1],b[1],fn((G-a[0])/(b[0]-a[0])));}}return pts[pts.length-1][1];}
-function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
-
-/* ==================== 画布与原版光学贴图 ==================== */
-const cv=document.getElementById('c'), ctx=cv.getContext('2d');
-const W=1920, H=1080; let view={s:1,ox:0,oy:0,dpr:1};
-function resize(){
-  const w=innerWidth,h=innerHeight,dpr=Math.min(window.devicePixelRatio||1,2);
-  cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.width=w+'px';cv.style.height=h+'px';
-  const s=Math.min(w/W,h/H);view={s,ox:(w-W*s)/2,oy:(h-H*s)/2,dpr};
-}
-addEventListener('resize',resize); resize();
-
-const mcache=new Map();
-function font(sz,wt=400){return `${wt} ${sz}px ${FONT}`;}
-function measure(t,sz,wt=400){const k=t+'|'+wt;let v=mcache.get(k);if(v===undefined){ctx.font=font(100,wt);v=ctx.measureText(t).width/100;mcache.set(k,v);}return v*sz;}
-function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
-
-function text(str,x,y,sz,col,a=1,wt=400,al='center'){
-  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
-  const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.font=font(sz,wt);ctx.fillStyle=col;ctx.textAlign=al;ctx.textBaseline='middle';ctx.fillText(str,x,y);ctx.globalAlpha=prev;
-}
-function glowText(str,x,y,sz,col,a=1,wt=700,blur=0.45,al='center'){
-  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
-  ctx.save();ctx.shadowColor=col===ICE?'rgba(124,232,255,0.65)':'rgba(255,186,60,0.6)';ctx.shadowBlur=sz*blur;text(str,x,y,sz,col,a,wt,al);ctx.restore();
-}
-function rich(str,x,y,sz,a=1,col=IVORY){
-  if(ctx.globalAlpha*clamp(a)<=0.004||!str)return;
-  const parts=[];str.split(/(\{[^}]*\})/).forEach(s=>{if(!s)return;if(s[0]==='{')parts.push([s.slice(1,-1),1]);else parts.push([s,0]);});
-  let tw=0;parts.forEach(p=>{p[2]=measure(p[0],sz,p[1]?700:400);tw+=p[2];});let x0=x-tw/2;
-  parts.forEach(p=>{if(p[1])glowText(p[0],x0,y,sz,GOLD_HI,a,700,0.45,'left');else text(p[0],x0,y,sz,col,a,400,'left');x0+=p[2];});
-}
-function brandMark(x,y,sz,a=1){
-  if(ctx.globalAlpha*clamp(a)<=0.004)return;
-  const s1='陈石律师',s2='  ·  ',s3='chenshi.ai';
-  const w1=measure(s1,sz*0.8),w2=measure(s2,sz*0.8),w3=measure(s3,sz,700),tw=w1+w2+w3;let x0=x-tw/2;
-  text(s1,x0,y,sz*0.8,IVORY,a*0.78,400,'left');x0+=w1;text(s2,x0,y,sz*0.8,GOLD,a*0.8,400,'left');x0+=w2;glowText(s3,x0,y,sz,GOLD_HI,a,700,0.3,'left');
-}
-
-function mkSprite(stops){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),gr=g.createRadialGradient(64,64,0,64,64,64);stops.forEach(s=>gr.addColorStop(s[0],s[1]));g.fillStyle=gr;g.fillRect(0,0,128,128);return c;}
-const SPR_HALO=mkSprite([[0,'rgba(255,228,170,0.9)'],[0.14,'rgba(255,196,96,0.52)'],[1,'rgba(200,120,30,0)']]);
-const SPR_CORE=mkSprite([[0,'rgba(255,250,235,1)'],[0.25,'rgba(255,226,160,0.9)'],[1,'rgba(255,170,60,0)']]);
-const SPR_RED =mkSprite([[0,'rgba(255,195,185,0.92)'],[0.2,'rgba(232,106,88,0.5)'],[1,'rgba(180,40,30,0)']]);
-const SPR_GRN =mkSprite([[0,'rgba(180,255,220,0.92)'],[0.2,'rgba(79,209,152,0.5)'],[1,'rgba(20,120,80,0)']]);
-const SPR_ICE =mkSprite([[0,'rgba(210,248,255,0.95)'],[0.2,'rgba(124,232,255,0.52)'],[1,'rgba(40,140,200,0)']]);
-function glow(x,y,r,a=1,spr=SPR_HALO){const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||r<=0.5)return;const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.drawImage(spr,x-r,y-r,2*r,2*r);ctx.globalAlpha=prev;}
-function core(x,y,r,a=1){glow(x,y,r,a,SPR_CORE);}
-
-const DUST=(()=>{const r=mulberry(2038);return Array.from({length:60},()=>({x:r(),y:r(),vx:(r()-0.5)*0.004,vy:-0.003-r()*0.006,r:1.2+r()*2.5,a:0.1+r()*0.22,ph:r()*6.28}));})();
-
-// 32 格测试靶盘（4 列 × 8 行）：固定标出 4 个新修复格与 2 个隐性退化红线格
-const CELLS = Array.from({length:32},(_,i)=>({
-  col: i % 4, row: Math.floor(i / 4),
-  improved: [3, 11, 18, 26].includes(i),
-  regressed: [9, 22].includes(i),
-}));
-
-// 绘制光学裁判透镜（弧形玻璃感）
-function drawLens(x, y, h, col, title, sub, a){
-  if(a<=0.01)return;
-  ctx.save();ctx.globalAlpha*=a;
-  const w=26;
-  ctx.beginPath();
-  ctx.moveTo(x, y-h/2);
-  ctx.quadraticCurveTo(x+w, y, x, y+h/2);
-  ctx.quadraticCurveTo(x-w, y, x, y-h/2);
-  ctx.closePath();
-  const g=ctx.createLinearGradient(x-w,y-h/2,x+w,y+h/2);
-  g.addColorStop(0,'rgba(255,255,255,0.22)');g.addColorStop(0.5,'rgba(124,232,255,0.08)');g.addColorStop(1,'rgba(255,255,255,0.22)');
-  ctx.fillStyle=g;ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=2.2;ctx.stroke();
-  ctx.globalCompositeOperation='lighter';glow(x,y,80,0.35,col===ICE?SPR_ICE:SPR_HALO);ctx.globalCompositeOperation='source-over';
-  glowText(title, x, y-h/2-34, 19, col, 1, 700, 0.3);
-  text(sub, x, y+h/2+26, 14, DIM, 1);
-  ctx.restore();
-}
-
-/* ============================== 主渲染 ============================== */
-function render(G,amb){
-  const {s,ox,oy,dpr}=view;
-  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
-  ctx.setTransform(s*dpr,0,0,s*dpr,ox*dpr,oy*dpr);
-  ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();
-  ctx.fillStyle='#030304';ctx.fillRect(0,0,W,H);
-
-  // 背景精密网格 + 暖光 + 金尘
-  ctx.strokeStyle='rgba(226,170,66,0.022)';ctx.lineWidth=1;
-  for(let x=0;x<=W;x+=64){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-  for(let y=0;y<=H;y+=64){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-  const bg=ctx.createRadialGradient(W/2,H*0.5,0,W/2,H*0.5,960);
-  bg.addColorStop(0,'rgba(120,84,26,0.15)');bg.addColorStop(0.6,'rgba(24,48,68,0.06)');bg.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  ctx.save();ctx.globalCompositeOperation='lighter';
-  DUST.forEach(d=>{const dx=((d.x+amb*d.vx)%1+1)%1*W,dy=((d.y+amb*d.vy)%1+1)%1*H;glow(dx,dy,d.r*3,d.a*(0.55+0.45*Math.sin(amb*1.4+d.ph)));});
-  ctx.restore();
-
-  /* ---------- 0. 开场标题 (0 -> 0.55) ---------- */
-  const a0=1-seg(G,0.02,0.55);
-  if(a0>0.005){
-    const intro=clamp(amb/2.4), out=seg(G,0.02,0.55);
-    const title='Evals 评测与防退化', fs=98, tw=measure(title,fs,700);
-    let x=W/2-tw/2; const rnd=mulberry(53); let ci=0;
-    ctx.save();
-    for(const ch of title){
-      const cw=measure(ch,fs,700), ca=seg(intro,0.06+ci*0.028,0.34+ci*0.028);
-      const dx=(rnd()-0.5)*220*out, dy=-(35+rnd()*140)*out;
-      glowText(ch,x+cw/2+dx,445+(1-ca)*24+dy,fs,PALE,ca*(1-out),700,0.35);
-      x+=cw; ci++;
-    }
-    const lw=820*seg(intro,0.28,0.82)*(1-out);
-    ctx.globalCompositeOperation='lighter';
-    const lg=ctx.createLinearGradient(W/2-lw/2,0,W/2+lw/2,0);lg.addColorStop(0,'rgba(124,232,255,0)');lg.addColorStop(0.5,`rgba(124,232,255,${0.95*(1-out)})`);lg.addColorStop(1,'rgba(124,232,255,0)');
-    ctx.fillStyle=lg;ctx.fillRect(W/2-lw/2,540,lw,2);glow(W/2,541,60,0.7*(1-out),SPR_ICE);ctx.globalCompositeOperation='source-over';
-    rich('{光学风洞} · {双层裁判透镜} · {回归校准靶盘}',W/2,605,31,seg(intro,0.55,1)*(1-out),DIM);
-    brandMark(W/2,870,28,seg(intro,0.7,1)*(1-out));
-    ctx.restore();
-  }
-
-  /* ---------- 1. 盲改打地鼠困境 (G: 0.45 -> 2.65) ---------- */
-  const vibeA=seg(G,0.45,1.0)*(1-seg(G,2.2,2.75));
-  if(vibeA>0.005){
-    const pReg=seg(G,1.2,2.0);
-    ctx.save();ctx.globalAlpha=vibeA;
-    // 左侧：改了一行 Prompt
-    rr(220,380,440,280,14);ctx.fillStyle='rgba(28,22,11,0.92)';ctx.fill();ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2;ctx.stroke();
-    glowText('Prompt / Skill v1.1',440,445,26,GOLD_HI,1,700,0.35);
-    text('“加了一句：请重点审查违约金比例”',440,515,19,IVORY,1);
-    text('肉眼抽测 2 个案例 → 感觉不错！',440,585,18,GREEN,1,700);
-
-    // 右侧：3 个真实场景（A 亮绿，B/C 暗中闪红崩溃！）
-    const cases=[
-      {t:'场景 A · 违约金审查', ok:true,  y:345},
-      {t:'场景 B · 诉讼时效核查', ok:false, y:520},
-      {t:'场景 C · 管辖条款审查', ok:false, y:695},
-    ];
-    cases.forEach(cs=>{
-      const bad = !cs.ok && pReg>0.2;
-      ctx.strokeStyle=bad?RED:GREEN;ctx.lineWidth=2;
-      ctx.beginPath();ctx.moveTo(665,520);ctx.lineTo(1060,cs.y);ctx.stroke();
-      rr(1065,cs.y-52,580,104,12);
-      ctx.fillStyle=bad?'rgba(85,20,16,0.78)':'rgba(14,56,42,0.68)';ctx.fill();
-      ctx.strokeStyle=bad?RED:GREEN;ctx.lineWidth=2;ctx.stroke();
-      if(bad){ctx.globalCompositeOperation='lighter';glow(1355,cs.y,110,0.4*pReg,SPR_RED);ctx.globalCompositeOperation='source-over';}
-      text(cs.t,1355,cs.y-14,21,bad?RED:GREEN,1,700);
-      text(bad?'✕ 隐性退化：原本正常，改完后反而漏判！':'✓ 抽测通过',1355,cs.y+20,16,IVORY,0.95);
-    });
-    ctx.restore();
-  }
-
-  /* ---------- 2~5. 光学风洞连续摄影机舞台 (G >= 2.5) ---------- */
-  const windA=seg(G,2.5,3.1);
-  if(windA>0.005){
-    // 五次方运镜：Step 5-6 推近双层裁判透镜，Step 7-9 移向右侧回归靶盘，Step 10 拉远看评测飞轮
-    const camX = kf(G,[[3,960],[4,960],[5,1050],[6,1120],[7,1340],[9,1340],[10,960],[11,960]], easeCam);
-    const camY = kf(G,[[3,540],[4,540],[5,540],[6,540],[7,540],[9,540],[10,540],[11,540]], easeCam);
-    const camZ = kf(G,[[3,1.0],[4,1.0],[5,1.18],[6,1.18],[7,1.16],[9,1.16],[10,0.94],[11,0.92]], easeCam);
-
-    const pBeams = seg(G,3.2,4.0);
-    const pCode  = seg(G,4.2,5.0);
-    const pJudge = seg(G,5.2,6.0);
-    const pDiff  = seg(G,6.2,7.0);
-    const pBlock = seg(G,7.2,8.0)*(1-seg(G,8.3,9.0));
-    const pFix   = seg(G,8.3,9.0);
-    const pWheel = seg(G,9.3,10.0);
-    const pFin   = seg(G,10.4,11.0);
-
-    ctx.save();ctx.globalAlpha=windA;
-    ctx.translate(W/2,H/2);ctx.scale(camZ,camZ);ctx.translate(-camX,-camY);
-
-    const srcX=230, agentX=610, lens1X=920, lens2X=1150, gridX=1410;
-
-    // 1. 左侧：黄金测试集发射器（Golden Dataset）
-    rr(srcX-130,275,260,530,14);ctx.fillStyle='rgba(26,20,10,0.9)';ctx.fill();ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2.2;ctx.stroke();
-    glowText('Golden Set',srcX,330,24,GOLD_HI,1,700,0.35);
-    text('黄金测试集 (100 题)',srcX,364,15,DIM,1);
-    ['• 历史真实案件','• 刁钻边界陷阱','• 必守合规红线','• 格式与计算题'].forEach((it,i)=>{
-      text(it,srcX-95,435+i*62,17,IVORY,0.9,400,'left');
-    });
-    if(pWheel>0.2){
-      text('+ 第 101 题 (线上新错题)',srcX,735,16,GREEN,pWheel,700);
-    }
-
-    // 2. 光学风洞并发光束（从 Golden Set 射穿 Agent 与双层透镜，直达右侧靶盘）
-    if(pBeams>0.01){
-      const endX = lerp(srcX+135, gridX-25, pBeams);
-      for(let i=0;i<9;i++){
-        const y=320+i*55;
-        const isRegBeam = (i===2 || i===6) && pDiff>0.2 && pFix<0.5;
-        const col = isRegBeam ? 'rgba(232,106,88,0.65)' : (pFix>0.5 ? 'rgba(79,209,152,0.52)' : 'rgba(255,208,98,0.38)');
-        ctx.strokeStyle=col;ctx.lineWidth=isRegBeam?2.4:1.4;
-        ctx.beginPath();ctx.moveTo(srcX+132,y);ctx.lineTo(endX,y);ctx.stroke();
-        // 流动光粒
-        const pt=((amb*0.7+i*0.13)%1);
-        const px=lerp(srcX+132,endX,pt);
-        ctx.save();ctx.globalCompositeOperation='lighter';
-        glow(px,y,16,0.75,isRegBeam?SPR_RED:(pFix>0.5?SPR_GRN:SPR_HALO));
-        ctx.restore();
-      }
-    }
-
-    // 3. 风洞中央：被测 Agent / Skill 核心
-    ctx.save();
-    ctx.globalCompositeOperation='lighter';glow(agentX,540,115,0.55);core(agentX,540,28,0.95);ctx.globalCompositeOperation='source-over';
-    ctx.strokeStyle=pFix>0.5?GREEN:GOLD_HI;ctx.lineWidth=2.4;ctx.beginPath();ctx.arc(agentX,540,44,0,Math.PI*2);ctx.stroke();
-    glowText(pFix>0.5?'Skill v1.2':'Skill v1.1',agentX,540,20,pFix>0.5?GREEN:PALE,1,700,0.3);
-    text('风洞被测版本',agentX,608,16,DIM,1);
-    ctx.restore();
-
-    // 4. 双层裁判透镜（Code Grader & LLM-as-a-Judge）
-    drawLens(lens1X, 540, 470, ICE, 'Code Grader', '确定性校验 · 格式/数学/引用', pCode);
-    drawLens(lens2X, 540, 470, GOLD_HI, 'LLM-as-a-Judge', '按量表评判逻辑、口径与完整性', pJudge);
-
-    // 5. 右侧：32 格回归校准靶盘（Step 7 起亮起）
-    if(pDiff>0.01){
-      const cw=68, ch=52, gap=10;
-      const gW=4*cw+3*gap, gH=8*ch+7*gap;
-      const gx0=gridX, gy0=540-gH/2;
-
-      ctx.save();ctx.globalAlpha*=pDiff;
-      rr(gx0-18,gy0-52,gW+36,gH+112,14);ctx.fillStyle='rgba(16,14,9,0.92)';ctx.fill();
-      ctx.strokeStyle=pBlock>0.2?RED:(pFix>0.5?GREEN:GOLD);ctx.lineWidth=2.2;ctx.stroke();
-      text(pFix>0.5?'✓ 回归靶盘 (v1.2 · 全绿通过)':'回归校准靶盘 (v1.1 vs v1.0)',gx0+gW/2,gy0-24,18,pFix>0.5?GREEN:PALE,1,700);
-
-      CELLS.forEach(c=>{
-        const cx=gx0+c.col*(cw+gap), cy=gy0+c.row*(ch+gap);
-        const isRed = c.regressed && pFix < 0.5;
-        const isImp = c.improved || (c.regressed && pFix >= 0.5);
-        rr(cx,cy,cw,ch,5);
-        ctx.fillStyle = isRed ? 'rgba(232,106,88,0.42)' : (isImp ? 'rgba(79,209,152,0.34)' : 'rgba(79,209,152,0.14)');
-        ctx.fill();
-        ctx.strokeStyle = isRed ? RED : (isImp ? GREEN : 'rgba(79,209,152,0.45)');
-        ctx.lineWidth = (isRed||isImp) ? 2 : 1;ctx.stroke();
-        if(isRed){
-          ctx.globalCompositeOperation='lighter';glow(cx+cw/2,cy+ch/2,36,0.75,SPR_RED);ctx.globalCompositeOperation='source-over';
-          text('退化!',cx+cw/2,cy+ch/2,14,RED,1,700);
-        } else if(isImp){
-          text('↑ 修复',cx+cw/2,cy+ch/2,13,GREEN,1,700);
-        } else {
-          text('✓',cx+cw/2,cy+ch/2,15,GREEN,0.75);
-        }
-      });
-
-      // 靶盘底部统计与发布闸门状态
-      const footY=gy0+gH+30;
-      if(pBlock>0.1){
-        text('⛔ 发现 2 项红线退化 · 阻断上线！',gx0+gW/2,footY,17,RED,1,700);
-      } else if(pFix>0.4){
-        text('🚀 通过率 97% · 0 退化 · 绿灯放行',gx0+gW/2,footY,17,GREEN,pFix,700);
-      } else {
-        text('修复 +4 题  |  隐性退化 -2 题',gx0+gW/2,footY,16,GOLD_HI,1,700);
-      }
-      ctx.restore();
-    }
-
-    // 6. Step 10: 评测飞轮回流弧线（线上新错题 -> 回到左侧 Golden Set）
-    if(pWheel>0.02){
-      ctx.save();ctx.globalAlpha*=pWheel;
-      ctx.strokeStyle=GREEN;ctx.lineWidth=2.6;ctx.setLineDash([10,7]);ctx.lineDashOffset=-amb*45;
-      ctx.beginPath();ctx.moveTo(gridX+140,830);ctx.quadraticCurveTo(960,965,srcX,810);ctx.stroke();ctx.setLineDash([]);
-      text('↺ 线上真实报错自动沉淀为新考题 · 靶场越打越厚（Eval Flywheel）',960,905,20,GREEN,1,700);
-      ctx.restore();
-    }
-
-    ctx.restore(); // 结束摄影机变换
-  }
-
-  /* ---------- 终局收束落版 (Step 11) ---------- */
-  const finA=seg(G,10.4,11.0);
-  if(finA>0.01){
-    ctx.save();ctx.globalAlpha=finA;
-    rich('没有 {Evals} 的迭代叫盲人摸象，有了 {Evals} 才是真正的工程演进',W/2,92,32,1,IVORY);
-    brandMark(W/2,965,26,1);
-    ctx.restore();
-  }
-
-  // 电影暗角
-  const vig=ctx.createRadialGradient(W/2,H/2,H*0.38,W/2,H/2,W*0.66);
-  vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,0,0.55)');
-  ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
-
-  /* ---------- 顶部引导语（先退后进，零叠字） & 进度 ---------- */
-  const lo=Math.floor(G), hi=Math.min(LAST,Math.ceil(G)), f=G-lo;
-  const ha=STEPS[lo].hint, hb=STEPS[hi].hint;
-  if(ha===hb) rich(ha,W/2,92,33,0.95);
-  else {
-    const aOut=1-ease(clamp(f/0.38)), aIn=ease(clamp((f-0.5)/0.42));
-    if(aOut>0.01) rich(ha,W/2,92-(1-aOut)*10,33,0.95*aOut);
-    if(aIn>0.01) rich(hb,W/2,92+(1-aIn)*10,33,0.95*aIn);
-  }
-  const st=STEPS[Math.round(G)];
-  text(`${String(st.scene).padStart(2,'0')} · ${SCENES[st.scene]}    ${Math.round(G)+1} / ${STEPS.length}`,1860,1025,18,'rgba(244,237,223,0.52)',1,400,'right');
-  ctx.fillStyle='rgba(244,237,223,0.16)';ctx.fillRect(1620,1044,240,2);
-  ctx.fillStyle=GOLD;ctx.fillRect(1620,1044,240*G/LAST,2);
-  ctx.restore();
-}
-
-/* ==================== 交互与播控 ==================== */
-let G=0, target=0, anim=null, auto=false; const t0=performance.now();
-const dock=document.getElementById('dock');
-SCENES.forEach((name,idx)=>{
-  const b=document.createElement('button');b.className='sbtn';b.textContent=`${String(idx).padStart(2,'0')} ${name}`;
-  b.addEventListener('pointerdown',e=>e.stopPropagation());
-  b.addEventListener('pointerup',e=>{e.stopPropagation();go(SCENE_FIRST[idx]);});
-  dock.appendChild(b);
-});
-function syncDock(){const sc=STEPS[Math.round(target)].scene;dock.querySelectorAll('.sbtn').forEach((b,i)=>b.classList.toggle('active',i===sc));}
-function go(i){
-  i=clamp(Math.round(i),0,LAST);if(i===target&&!anim)return;
-  const from=G, fwd=i===Math.round(target)+1&&i>from;
-  target=i;anim={from,to:i,start:performance.now(),dur:fwd?STEPS[i].dur:Math.min(850,350+Math.abs(i-from)*60),linear:fwd};syncDock();
-}
-function next(){go(target+1);} function prev(){go(target-1);}
-function tick(now){
-  if(anim){
-    const p=clamp((now-anim.start)/anim.dur);
-    G=anim.linear?lerp(anim.from,anim.to,p):lerp(anim.from,anim.to,ease(p));
-    if(p>=1){G=anim.to;anim=null;if(auto&&G<LAST)setTimeout(()=>auto&&go(target+1),700);}
-  }
-  render(G,(now-t0)/1000);requestAnimationFrame(tick);
-}
-let idleTimer=null;
-function wake(){document.body.classList.remove('idle');clearTimeout(idleTimer);idleTimer=setTimeout(()=>document.body.classList.add('idle'),3200);}
-['mousemove','pointerdown','keydown'].forEach(ev=>addEventListener(ev,wake)); wake();
-
-const autoBtn=document.getElementById('autoBtn'), cleanBtn=document.getElementById('cleanBtn'), fsBtn=document.getElementById('fsBtn');
-function toggleAuto(){auto=!auto;autoBtn.classList.toggle('on',auto);autoBtn.textContent=auto?'自动中':'自动 A';if(auto)next();}
-function toggleClean(){document.body.classList.toggle('clean');}
-function toggleFS(){const d=document,el=d.documentElement;if(!d.fullscreenElement)el.requestFullscreen?.();else d.exitFullscreen?.();}
-[autoBtn,cleanBtn,fsBtn].forEach(b=>b.addEventListener('pointerdown',e=>e.stopPropagation()));
-autoBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleAuto();});
-cleanBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleClean();});
-fsBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
-
-addEventListener('keydown',e=>{
-  if(e.target.id==='lesson-back')return;
-
-  const k=e.key;
-  if(['ArrowRight',' ','PageDown','Enter','ArrowDown'].includes(k)){e.preventDefault();next();}
-  else if(['ArrowLeft','PageUp','Backspace','ArrowUp'].includes(k)){e.preventDefault();prev();}
-  else if(k==='Home')go(0); else if(k==='End')go(LAST);
-  else if(k==='f'||k==='F')toggleFS();
-  else if(k==='a'||k==='A')toggleAuto();
-  else if(k==='h'||k==='H')toggleClean();
-});
-let pd=null;
-cv.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY,b:e.button};});
-cv.addEventListener('pointerup',e=>{if(!pd)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y,b=pd.b;pd=null;
-  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2){dx<0?next():prev();return;}
-  if(Math.abs(dx)<14&&Math.abs(dy)<14){if(b===2)prev();else e.shiftKey?prev():next();}});
-cv.addEventListener('contextmenu',e=>{e.preventDefault();prev();});
-
-syncDock(); requestAnimationFrame(tick);
+const SI={};STEPS.forEach((s,i)=>SI[s.id]=i);const LAST=STEPS.length-1;
+const N=20,RL=new Set([2,5,9,14]);
+const FAILS=[new Set([3,7,11,15,18]),new Set([5,12,18]),new Set([18])];const VER=['v1.0','v1.1','v1.2'];
+const CAT=i=>RL.has(i)?'红线':(i<8?'真实案件':'边界题');
+let vUser=null,vDisp=1;
+function geo(){const P=LY.port,H=LY.H;
+  if(!P)return{P,cols:5,cw:180,ch:92,gx:200,gy:108,gc:{x:860,y:620},tape:{y:240,x0:420,x1:1500},gate:{x:1640,y:610},track:{x0:560,x1:1240,y:930}};
+  return{P,cols:4,cw:200,ch:96,gx:220,gy:112,gc:{x:540,y:H*0.5+40},tape:{y:470,x0:110,x1:970},gate:{x:540,y:H*0.5+40+330+150},track:{x0:200,x1:880,y:H-330}};}
+function cpos(g,i){const r=Math.floor(i/g.cols),c=i%g.cols;const rows=Math.ceil(N/g.cols);return{x:g.gc.x+(c-(g.cols-1)/2)*g.gx,y:g.gc.y+(r-(rows-1)/2)*g.gy};}
+function status(ver,i){return FAILS[ver].has(i)?0:1;}
+function render(G,amb,dt){const W=LY.W,H=LY.H,P=LY.port;const g=geo();
+  LE.bg(amb,0,0);
+  LE.title('Evals 评测与防退化','改一行提示词，怎么知道{没改坏别处}',LE.easeOut(clamp(amb/1.8)),seg(G,0.05,0.6),{portLines:['Evals','评测与防退化']});
+  if(G<0.3)return;const fin=1-seg(G,LAST-0.7,LAST);const inA=seg(G,0.3,1)*fin;
+  // 版本纸带（提示词）
+  const T=g.tape;const tw=T.x1-T.x0;tape(T.x0-20,T.x1+20,T.y,P?100:96,{a:inA});const parts=['角色设定','分析步骤','输出格式','注意事项'];
+  // 当前版本
+  let ver=G<SI.diff-0.5?1:(G<SI.fix-0.5?1:2);const at=LE.isAt('drag');if(at){const tgt=vUser==null?1:vUser;vDisp=damp(vDisp,tgt,dt,12);ver=Math.round(vDisp);}else vDisp=ver;
+  if(G>SI.drag+0.01&&G<SI.fix-0.5)ver=1;
+  parts.forEach((p,k)=>{const x=T.x0+k*tw/4+8,w=tw/4-16;const ed=k===1;const glowE=ed?bump(G,SI.vibe-0.2,0.6):0;block(x,T.y-(P?36:34),w,P?72:68,{style:ed&&G>SI.vibe-0.5?'hot':'gold',a:inA});text(p,x+w/2,T.y,P?26:22,IVORY,inA,700);if(glowE>0)glowAdd(x+w/2,T.y,90,0.6*glowE*inA);});
+  glowText(at?VER[Math.round(vDisp)]:(G<SI.vibe-0.4?'v1.0':VER[ver]),P?T.x0+30:T.x0-110,P?T.y-90:T.y,P?32:30,GOLD_HI,inA,700,0.4,P?'left':'center');
+  // 两个手测样例
+  const vb=seg(G,SI.vibe-0.6,SI.vibe-0.1)*(1-seg(G,SI.regress-0.9,SI.regress-0.5));
+  if(vb>0.01){[0,1].forEach(k=>{const x=P?140+k*420:640+k*460,y=P?700:420,w=P?380:400;card(x,y,w,P?110:96,{a:vb*inA});text(`手测样例 ${k+1}`,x+24,y+(P?36:32),P?24:19,DIM,vb*inA,400,'left');glowText('✓ 看起来不错',x+24,y+(P?78:68),P?28:24,GREEN,vb*inA,700,0.3,'left');});}
+  // 测试题网格
+  const gA=seg(G,SI.regress-0.7,SI.regress-0.2)*inA*(1-seg(G,SI.fly-0.85,SI.fly-0.4));
+  const known=G<SI.run-0.5;const runP=seg(G,SI.run-0.8,SI.run-0.1);const cd=seg(G,SI.code-0.8,SI.code-0.1),jd=seg(G,SI.judge-0.8,SI.judge-0.1);const df=seg(G,SI.diff-0.8,SI.diff-0.2)*(1-seg(G,SI.fly-0.8,SI.fly-0.4));
+  const gold=seg(G,SI.golden-0.8,SI.golden-0.2);
+  for(let i=0;i<N;i++){const p=cpos(g,i);const e=seg(gA,i*0.02,0.6+i*0.02);if(e<=0.01)continue;const x=p.x-g.cw/2,y=p.y-g.ch/2;
+    let st='dim';let label=`Q${i+1}`;let s=status(ver,i);
+    if(known){if(G>SI.regress-0.4&&(i===5||i===12))st='red';else if(gold>0.5)st='gold';}
+    else{const reached=runP>=(i+1)/N*0.9;st=reached?(s?'green':'red'):'gold';}
+    block(x,y,g.cw,g.ch,{style:st,a:e,lw:RL.has(i)&&gold>0.3?2.4:1.4});
+    text(label,x+(P?18:14),y+(P?26:22),P?24:18,IVORY,e,700,'left');if(gold>0.01)text(CAT(i),x+g.cw-(P?16:12),y+(P?26:22),P?20:15,RL.has(i)?RED:DIM,e*gold,700,'right');
+    if(known&&(i===5||i===12)&&G>SI.regress-0.4){text('变差了',x+g.cw/2,y+g.ch*0.68,P?24:18,RED,e*seg(G,SI.regress-0.4,SI.regress),700);}
+    else if(known&&G>SI.regress-0.4&&gold<0.5)text('没测',x+g.cw/2,y+g.ch*0.68,P?22:16,DIM2,e*(1-gold),400);
+    if(!known&&runP>0.9){const yy=y+g.ch*0.68;
+      if(cd>0.01&&jd<0.5)text(s||i!==18?'✓ 格式 ✓ 计算':'✗ 计算错误',x+g.cw/2,yy,P?20:15,s?GREEN:RED,e*cd,700);
+      if(jd>0.01&&df<0.3){const sc=s?(4+(i%2)):2;text(`评审 ${sc}/5`,x+g.cw/2,yy,P?22:16,sc>=4?GREEN:RED,e*jd*(1-df),700);}
+      if(df>0.01){const prev=status(0,i),now=status(ver,i);const tag=prev===now?'':(now?'修好 ↑':'退化 ↓');if(tag)glowText(tag,x+g.cw/2,yy,P?24:18,now?GREEN:RED,e*df,700,0.3);else text(now?'—':'仍失败',x+g.cw/2,yy,P?20:15,DIM2,e*df,400);}}}
+  // 题库说明
+  if(gold>0.01&&G<SI.run){rich('每题写清{期望}：结论、依据、金额、不能出现的说法',P?540:g.gc.x,P?cpos(g,N-1).y+g.ch/2+70:cpos(g,N-1).y+g.ch/2+50,P?28:24,gold*inA*(1-seg(G,SI.run-0.6,SI.run-0.2)),{maxW:P?960:0});}
+  // 透镜扫描
+  const sweep=(t,col,lab)=>{if(t<=0.01||t>=0.999)return;const first=cpos(g,0),last=cpos(g,N-1);const yy=lerp(first.y-g.ch,last.y+g.ch,t);ctx.globalAlpha=0.8*inA;const gr=ctx.createLinearGradient(0,yy-30,0,yy+30);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(0.5,col);gr.addColorStop(1,'rgba(0,0,0,0)');ctx.fillStyle=gr;ctx.fillRect(first.x-g.cw,yy-30,(last.x-first.x)+g.cw*2,60);ctx.globalAlpha=1;text(lab,first.x-g.cw/2-14,yy,P?24:20,IVORY,inA,700,'right');};
+  sweep(lin(G,SI.code-0.7,SI.code-0.15),'rgba(91,214,160,0.45)',P?'':'代码判分');sweep(lin(G,SI.judge-0.7,SI.judge-0.15),'rgba(195,160,255,0.45)',P?'':'模型评审');
+  const rub=jd*(1-seg(G,SI.diff-0.8,SI.diff-0.3));if(rub>0.01){const x=P?90:1270,y=P?cpos(g,N-1).y+g.ch/2+40:300,w=P?900:540;if(!P){}
+    card(P?x:1500-0,P?y:250,P?w:380,P?200:300,{a:rub*inA,stroke:'rgba(195,160,255,0.7)'});const bx=P?x:1500,by=P?y:250;text('评分细则（示意）',bx+24,by+38,P?24:20,PURPLE,rub*inA,700,'left');
+    ['结论是否明确','依据是否引到条文','金额是否算对','风险是否提示'].forEach((r,k)=>text('· '+r,bx+24+(P&&k%2?440:0),by+(P?90+Math.floor(k/2)*50:84+k*46),P?24:20,IVORY,rub*inA,400,'left'));}
+  // 通过率 + 闸门
+  const gt=seg(G,SI.gate-0.7,SI.gate-0.1)*fin*(1-seg(G,SI.fly-0.8,SI.fly-0.4));
+  const rate=v=>Math.round((N-FAILS[v].size)/N*100);
+  if(df>0.01){const vprev=0;const x=P?540:g.gate.x,y=P?cpos(g,0).y-g.ch/2-70:g.gc.y-260;rich(`通过率 ${rate(vprev)}% → {${rate(ver)}%}`,x,y,P?30:28,df*inA);}
+  if(gt>0.01){const redFail=[...RL].some(i=>FAILS[ver].has(i));const ok=!redFail;const x=g.gate.x,y=P?g.gate.y:g.gate.y;
+    const w=P?600:260,h=P?150:300;card(x-w/2,y-h/2+(P?0:40),w,h,{a:gt,stroke:ok?'rgba(91,214,160,0.9)':'rgba(240,122,98,0.9)'});glowAdd(x,y-(P?20:40),P?50:60,0.8*gt*(0.7+0.3*Math.sin(amb*4)),ok?LE.SPR.GREEN:LE.SPR.RED);
+    ctx.globalAlpha=gt;ctx.beginPath();ctx.arc(x,y-(P?20:40),P?22:26,0,7);ctx.fillStyle=ok?GREEN:RED;ctx.fill();ctx.globalAlpha=1;
+    glowText(ok?'放行':'拦截',x,y+(P?40:40),P?36:34,ok?GREEN:RED,gt,700);text(ok?'红线题全部通过':'红线题 Q6 退化',x,y+(P?78:96),P?24:20,IVORY,gt,400);text('发布闸门',x,y-(P?60:130),P?24:20,DIM,gt,700);}
+  // 版本滑块
+  const tk=seg(G,SI.drag-0.6,SI.drag-0.1)*(1-seg(G,SI.fly-0.8,SI.fly-0.4))*fin;
+  if(tk>0.01){const t=g.track;LE.line(t.x0,t.y,t.x1,t.y,'rgba(244,237,223,0.35)',4,tk);VER.forEach((v,k)=>{const x=lerp(t.x0,t.x1,k/2);ctx.globalAlpha=tk;ctx.beginPath();ctx.arc(x,t.y,10,0,7);ctx.fillStyle=GOLD;ctx.fill();ctx.globalAlpha=1;text(v,x,t.y+(P?44:36),P?26:20,IVORY,tk,700);});
+    const kx=lerp(t.x0,t.x1,(at?vDisp:ver)/2);glowAdd(kx,t.y,40,0.8*tk);ctx.globalAlpha=tk;ctx.beginPath();ctx.arc(kx,t.y,16,0,7);ctx.fillStyle=GOLD_HI;ctx.fill();ctx.globalAlpha=1;if(at&&vUser==null)LE.dragHint(kx,t.y,'拖动',amb,1,{dy:P?-50:-40});}
+  // 飞轮
+  const fl=seg(G,SI.fly-0.7,SI.fly-0.1)*fin;
+  if(fl>0.01){const cx=P?540:g.gc.x,cy=P?g.gc.y+20:g.gc.y,R=P?380:330;const nodes=['线上发现新问题','补成第 21 题','加入测试集','改版本、跑全套','闸门判断上线'];
+    ctx.globalAlpha=fl*0.6;ctx.strokeStyle=GOLD;ctx.lineWidth=3;ctx.setLineDash([10,10]);ctx.lineDashOffset=-amb*40;ctx.beginPath();ctx.arc(cx,cy,R,0,7);ctx.stroke();ctx.setLineDash([]);ctx.lineDashOffset=0;ctx.globalAlpha=1;
+    nodes.forEach((n,k)=>{const an=-Math.PI/2+k*2*Math.PI/5;const x=cx+Math.cos(an)*R,y=cy+Math.sin(an)*R;const e=seg(fl,k*0.1,0.5+k*0.1);const w=P?300:270;block(x-w/2,y-(P?40:34),w,P?80:68,{style:k===0?'red':(k===1?'hot':'gold'),a:e});text(n,x,y,P?26:22,IVORY,e,700);});
+    const mv=(amb*0.15)%1;const an=-Math.PI/2+mv*2*Math.PI;glowAdd(cx+Math.cos(an)*R,cy+Math.sin(an)*R,30,0.9*fl);
+    glowText(`${N+1} 题`,cx,cy-10,P?60:54,GOLD_HI,fl,700);text('测试集越用越厚',cx,cy+(P?50:44),P?26:22,DIM,fl);}
+  LE.finale(['凭感觉改，最怕没测到的{老场景悄悄退化}','{固定测试集} + {代码判分} + {模型评审}，每次改动跑全套','{逐题对比}新旧版本，红线退化就{不放行}；线上问题再补成新题'],seg(G,LAST-0.8,LAST),'题目数量、通过率、评审分数与版本号均为示意。模型评审（LLM-as-a-Judge）有偏差，需要定期用人工判分校准。');}
+const drags=[{step:'drag',cursor:'ew-resize',hit:pt=>{const t=geo().track;return pt.x>t.x0-60&&pt.x<t.x1+60&&Math.abs(pt.y-t.y)<70;},move:pt=>{const t=geo().track;vUser=clamp((pt.x-t.x0)/(t.x1-t.x0))*2;},end:()=>{if(vUser!=null)vUser=Math.round(vUser);}}];
+LE.run({steps:STEPS,scenes:SCENES,render,drags,onGo:()=>{vUser=null;},onSeek:(g,st)=>{vUser=st.v??null;if(vUser!=null)vDisp=vUser;}});
 })();
+
 </script></body></html>

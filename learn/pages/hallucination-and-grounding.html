@@ -1,415 +1,133 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
-<title>幻觉的本质与溯源工程 · 有损压缩星云与强锚定拉索</title>
+<title>幻觉与溯源 · 为什么会一本正经地编，怎样让它有据可查</title>
+<meta name="description" content="训练是有损压缩，模型没见过的东西也会照样生成；把原文放上纸带、逐句标出处、区分材料与记忆、找不到就说未提及，再由人终审。">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
-<style>
-/* 将原文件中的两行 @font-face{font-family:'HSerif'...} 粘贴至此即可恢复原版衬线体 */
-html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
-body{position:fixed;inset:0}
-canvas{display:block;touch-action:none}
-#tools{position:fixed;right:16px;top:14px;display:flex;gap:8px;z-index:10;transition:opacity .35s}
-.tbtn{font:13px "HSerif","Songti SC",serif;color:rgba(244,237,223,.52);background:rgba(10,8,4,.62);border:1px solid rgba(226,170,66,.28);border-radius:5px;padding:4px 10px;cursor:pointer;backdrop-filter:blur(4px);transition:all .2s}
-.tbtn:hover,.tbtn.on{color:#FFD062;border-color:#E2AA42;background:rgba(226,170,66,.14)}
-#dock{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:5px;padding:6px 10px;border-radius:10px;background:rgba(8,7,4,.78);border:1px solid rgba(226,170,66,.22);backdrop-filter:blur(8px);z-index:10;max-width:95vw;overflow-x:auto;transition:opacity .4s}
-#dock::-webkit-scrollbar{display:none}
-.sbtn{font:12px "HSerif","Songti SC",serif;color:rgba(244,237,223,.55);background:none;border:1px solid transparent;border-radius:5px;padding:4px 9px;white-space:nowrap;cursor:pointer;transition:all .2s}
-.sbtn:hover{color:#FFE9B8;border-color:rgba(226,170,66,.35)}
-.sbtn.active{color:#FFD062;border-color:rgba(255,208,98,.6);background:rgba(226,170,66,.16);font-weight:700}
-body.idle #tools,body.idle #dock,body.clean #tools,body.clean #dock{opacity:0;pointer-events:none}
-</style><style>
-  #lesson-back {
-    position: fixed;
-    z-index: 10;
-    top: calc(8px + env(safe-area-inset-top));
-    left: calc(12px + env(safe-area-inset-left));
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    box-sizing: border-box;
-    padding: 0 10px;
-    border-radius: 4px;
-    color: #ffe5ad;
-    background: #17130e;
-    font: 14px/1.4 system-ui, sans-serif;
-    text-decoration: none;
-  }
-  #lesson-back:hover { text-decoration: underline; }
-  #lesson-back:focus-visible { outline: 2px solid #ffd062; outline-offset: 2px; }
-  body.clean #lesson-back, :fullscreen #lesson-back { display: none; }
-</style>
+<link rel="preload" href="../assets/fonts/hserif-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/hserif-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/lesson.css">
 </head><body>
 <a id="lesson-back" href="../index.html">← 返回模块目录</a>
-<canvas id="c"></canvas>
-<div id="tools">
-  <button class="tbtn" id="autoBtn" title="自动播放 (A)">自动 A</button>
-  <button class="tbtn" id="cleanBtn" title="纯净录屏 (H)">纯净 H</button>
-  <button class="tbtn" id="fsBtn" title="全屏 (F)">全屏 F</button>
-</div>
-<div id="dock"></div>
+<canvas id="c"></canvas><button id="fs" title="全屏（F）">全屏 F</button>
+<script src="../assets/lesson-engine.js"></script>
 <script>
-(function(){
-'use strict';
-const FONT='"HSerif","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif';
-const IVORY='#F4EDDF', GOLD='#E2AA42', GOLD_HI='#FFD062', PALE='#FFE9B8', DIM='rgba(244,237,223,0.62)', RED='#E86A58', GREEN='#4FD198', BLUE='#6AA9FF', ICE='#7CE8FF';
-
-const SCENES=['开场','有损压缩','概率脑补','强锚定拉索','拒答安全阀','终局本质'];
-const S=(id,scene,dur,hint)=>({id,scene,dur,hint});
+// @title 幻觉与溯源 · 为什么会一本正经地编，怎样让它有据可查
+// @desc 训练是有损压缩，模型没见过的东西也会照样生成；把原文放上纸带、逐句标出处、区分材料与记忆、找不到就说未提及，再由人终审。
+(function(){'use strict';
+const {C,LY,ctx,clamp,lerp,ease,seg,lin,bump,damp,text,glowText,rich,measure,rr,glow,glowAdd,card,block,tape,line,arrowHead,qbez,S}=LE;
+const {IVORY,GOLD,GOLD_HI,PALE,DIM,DIM2,RED,GREEN,ICE,PURPLE}=C;
+const SCENES=['开场','有损压缩','照样生成','幻觉','动手放资料','溯源','拒答','人工终审','收束'];
 const STEPS=[
-  S('title',0,2500,''),
-  S('lossy',1,2400,'大模型不是精确数据库，而是把万亿级人类文本{有损压缩}进有限参数的概率星云'),
-  S('blur_gap',1,2500,'常识主干极其清晰，但具体案号、冷门条款与最新数字，在星云里全是{模糊空洞}'),
-  S('hallucinate',2,2600,'当提问落进空洞，自回归机制不会停机——它会顺着“最像人话”的概率{平滑脑补}'),
-  S('fake_case',2,2600,'于是诞生了「{幻觉 (Hallucination)}」：格式极其专业、语气极其笃定，内容却纯属捏造'),
-  S('ground_base',3,2500,'工程解法：{溯源工程 (Grounding)}——在底部铺设不可篡改的{客观事实底座}'),
-  S('cable_cite',3,2600,'拉索 ① {原文强锚定}：每句断言必须拉出物理引用线，直连原文页码与条款坐标'),
-  S('cable_iso',3,2600,'拉索 ② {内外事实隔离}：把“文档内事实”与“模型自带记忆”硬性切开，严禁跨界混编'),
-  S('valve_abs',4,2600,'拉索 ③ {拒答安全阀}：当底部找不到事实锚点时，强制亮蓝灯回答「材料中未提及」'),
-  S('verify',4,2500,'最终交付：带可点击溯源锚点的结论 + {人类终审校验}，把失误率压到工程可控线'),
-  S('essence',5,2600,'看清本质：幻觉不是偶然的 Bug，而是概率生成的物理本性——必须靠{外置拉索}驯服'),
-  S('final',5,2600,''),
+ S('title',0,2600,''),
+ S('compress',1,3200,'训练时，海量文本被{压缩}进有限的参数里——这种压缩是{有损}的'),
+ S('blur',1,2800,'常见知识记得牢；具体案号、冷门条款、最新数字，往往只剩{模糊印象}'),
+ S('ask',2,3400,'问它「这份合同的违约金上限是多少」：它{没见过}这份合同，但生成不会停，照样挑概率高的词'),
+ S('fake',3,2800,'于是出现{幻觉}：格式像模像样、语气笃定，内容却是编的'),
+ S('drag',4,1800,'{拖动}检索到的合同原文，放上纸带，看回答怎么变',true),
+ S('ground',5,3000,'{溯源}第一步：检索（RAG / 搜索 / Grep）把{原文}放进上下文，让回答有据可依'),
+ S('cite',5,2800,'每句结论{标出处}：指向原文的条款与页码，方便核对'),
+ S('iso',5,3000,'区分{材料里写的}和{模型自己记得的}：后者单独标注，另行核实'),
+ S('abstain',6,3000,'材料里找不到依据时，宁可答{「材料中未提及」}，也不要补全'),
+ S('verify',7,2800,'最后由{人}点开出处逐条核对：AI 负责找和写，人负责签字'),
+ S('final',8,3200,''),
 ];
-const LAST=STEPS.length-1;
-const SCENE_FIRST=SCENES.map((_,i)=>STEPS.findIndex(s=>s.scene===i));
-
-const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
-const lerp=(a,b,t)=>a+(b-a)*t;
-const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-const seg=(G,a,b)=>ease(clamp((G-a)/(b-a)));
-function actAlpha(G,inS,inE,outS,outE){
-  const fi=inS===null?1:seg(G,inS,inE);
-  const fo=outS===null?1:(1-seg(G,outS,outE));
-  return fi*fo;
-}
-function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
-function gauss(r){let u=0,v=0;while(!u)u=r();while(!v)v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
-
-/* ==================== 画布与原版光学贴图 ==================== */
-const cv=document.getElementById('c'), ctx=cv.getContext('2d');
-const W=1920, H=1080; let view={s:1,ox:0,oy:0,dpr:1};
-function resize(){
-  const w=innerWidth,h=innerHeight,dpr=Math.min(window.devicePixelRatio||1,2);
-  cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.width=w+'px';cv.style.height=h+'px';
-  const s=Math.min(w/W,h/H);view={s,ox:(w-W*s)/2,oy:(h-H*s)/2,dpr};
-}
-addEventListener('resize',resize); resize();
-
-const mcache=new Map();
-function font(sz,wt=400){return `${wt} ${sz}px ${FONT}`;}
-function measure(t,sz,wt=400){const k=t+'|'+wt;let v=mcache.get(k);if(v===undefined){ctx.font=font(100,wt);v=ctx.measureText(t).width/100;mcache.set(k,v);}return v*sz;}
-function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
-
-function text(str,x,y,sz,col,a=1,wt=400,al='center'){
-  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
-  const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.font=font(sz,wt);ctx.fillStyle=col;ctx.textAlign=al;ctx.textBaseline='middle';ctx.fillText(str,x,y);ctx.globalAlpha=prev;
-}
-function glowText(str,x,y,sz,col,a=1,wt=700,blur=0.45,al='center'){
-  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
-  ctx.save();ctx.shadowColor=col===ICE?'rgba(124,232,255,0.65)':(col===RED?'rgba(232,106,88,0.6)':'rgba(255,186,60,0.6)');ctx.shadowBlur=sz*blur;text(str,x,y,sz,col,a,wt,al);ctx.restore();
-}
-function rich(str,x,y,sz,a=1,col=IVORY){
-  if(ctx.globalAlpha*clamp(a)<=0.004||!str)return;
-  const parts=[];str.split(/(\{[^}]*\})/).forEach(s=>{if(!s)return;if(s[0]==='{')parts.push([s.slice(1,-1),1]);else parts.push([s,0]);});
-  let tw=0;parts.forEach(p=>{p[2]=measure(p[0],sz,p[1]?700:400);tw+=p[2];});let x0=x-tw/2;
-  parts.forEach(p=>{if(p[1])glowText(p[0],x0,y,sz,GOLD_HI,a,700,0.45,'left');else text(p[0],x0,y,sz,col,a,400,'left');x0+=p[2];});
-}
-function brandMark(x,y,sz,a=1){
-  if(ctx.globalAlpha*clamp(a)<=0.004)return;
-  const s1='陈石律师',s2='  ·  ',s3='chenshi.ai';
-  const w1=measure(s1,sz*0.8),w2=measure(s2,sz*0.8),w3=measure(s3,sz,700),tw=w1+w2+w3;let x0=x-tw/2;
-  text(s1,x0,y,sz*0.8,IVORY,a*0.78,400,'left');x0+=w1;text(s2,x0,y,sz*0.8,GOLD,a*0.8,400,'left');x0+=w2;glowText(s3,x0,y,sz,GOLD_HI,a,700,0.3,'left');
-}
-function drawBox(x,y,w,h,r=12,stroke=GOLD,topC='rgba(28,22,11,0.92)',botC='rgba(12,10,6,0.95)',lw=1.8){
-  ctx.save();
-  const g=ctx.createLinearGradient(0,y,0,y+h);g.addColorStop(0,topC);g.addColorStop(1,botC);
-  rr(x,y,w,h,r);ctx.fillStyle=g;ctx.fill();ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();
-  ctx.strokeStyle='rgba(255,235,185,0.2)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x+r,y+1);ctx.lineTo(x+w-r,y+1);ctx.stroke();
-  ctx.restore();
-}
-
-function mkSprite(stops){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),gr=g.createRadialGradient(64,64,0,64,64,64);stops.forEach(s=>gr.addColorStop(s[0],s[1]));g.fillStyle=gr;g.fillRect(0,0,128,128);return c;}
-const SPR_HALO=mkSprite([[0,'rgba(255,228,170,0.9)'],[0.14,'rgba(255,196,96,0.52)'],[1,'rgba(200,120,30,0)']]);
-const SPR_RED =mkSprite([[0,'rgba(255,195,185,0.92)'],[0.2,'rgba(232,106,88,0.5)'],[1,'rgba(180,40,30,0)']]);
-const SPR_GRN =mkSprite([[0,'rgba(180,255,220,0.92)'],[0.2,'rgba(79,209,152,0.5)'],[1,'rgba(20,120,80,0)']]);
-const SPR_ICE =mkSprite([[0,'rgba(210,248,255,0.95)'],[0.2,'rgba(124,232,255,0.52)'],[1,'rgba(40,140,200,0)']]);
-function glow(x,y,r,a=1,spr=SPR_HALO){const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||r<=0.5)return;const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.drawImage(spr,x-r,y-r,2*r,2*r);ctx.globalAlpha=prev;}
-
-const DUST=(()=>{const r=mulberry(2046);return Array.from({length:56},()=>({x:r(),y:r(),vx:(r()-0.5)*0.004,vy:-0.003-r()*0.006,r:1.2+r()*2.5,a:0.1+r()*0.22,ph:r()*6.28}));})();
-
-// 3D 有损压缩概率星云（150 颗粒子）
-const NEBULA=(()=>{
-  const r=mulberry(808);
-  return Array.from({length:150},(_,i)=>{
-    const rad=0.35+Math.abs(gauss(r))*0.52, th=r()*Math.PI*2, ph=Math.acos(2*r()-1);
-    return {x:rad*Math.sin(ph)*Math.cos(th), y:rad*Math.sin(ph)*Math.sin(th), z:rad*Math.cos(ph), sz:2.2+r()*2.8, gap:(i%4===0)};
-  });
+const SI={};STEPS.forEach((s,i)=>SI[s.id]=i);const LAST=STEPS.length-1;
+const FRAG=['判决书','法条','教科书','新闻','论文','合同范本','问答帖','裁定书','评论','百科'];
+const CANDS=[['20%',0.31],['30%',0.27],['10%',0.22],['5%',0.12],['其他',0.08]];
+const rnd=LE.mulberry(5);const DOTS=[];for(let i=0;i<520;i++)DOTS.push({u:rnd(),v:rnd(),s:0.6+rnd()*1.4,ph:rnd()*6.28});
+const ZONES=[{u:0.3,v:0.42,r:0.2,clear:1,t:'常识 · 基本法理'},{u:0.72,v:0.3,r:0.13,clear:0,t:'具体案号'},{u:0.66,v:0.72,r:0.12,clear:0,t:'冷门条款'},{u:0.9,v:0.55,r:0.09,clear:0,t:'最新数字'}];
+let docUser=null,docOn=0;
+function geo(){const P=LY.port,H=LY.H;
+  if(!P)return{P,field:{x:620,y:220,w:1100,h:640},badge:{x:170,y:320,w:220,h:128},tape:{y:650,x0:120,x1:1800,th:150,bh:108},
+    ans:{x:960,y:200,w:840,h:300},doc:{x:1330,y:850,w:470,h:150},slot:[180,520]};
+  return{P,field:{x:90,y:520,w:900,h:900},badge:{x:90,y:440,w:280,h:120},tape:{x:270,y0:620,y1:H-560,th:330,bh:290},
+    ans:{x:460,y:620,w:590,h:640},doc:{x:460,y:H-520,w:590,h:200},slot:[150,600]};}
+// 纸带槽位：a0..a1（沿纸带）
+function slotRect(g,a0,a1){const t=g.tape;return g.P?[t.x-t.bh/2,t.y0+a0,t.bh,a1-a0]:[t.x0+a0,t.y-t.bh/2,a1-a0,t.bh];}
+function tblock(g,a0,a1,lab,sub,st,a,col){if(a<=0.01)return;const [x,y,w,h]=slotRect(g,a0,a1);block(x,y,w,h,{style:st,a,lw:1.6});
+  if(g.P){rich(lab,x+w/2,y+h/2-(sub?20:0),28,a,{maxW:w-30,color:col||IVORY,weight:700});if(sub)text(sub,x+w/2,y+h-28,22,DIM,a);}
+  else{text(lab,x+w/2,y+h/2-(sub?14:0),22,col||IVORY,a,700);if(sub)text(sub,x+w/2,y+h/2+22,17,DIM,a);}}
+function field(g,G,amb,a,shrink){if(a<=0.01)return;const F=g.field,B=g.badge;const fx=lerp(F.x,B.x,shrink),fy=lerp(F.y,B.y,shrink),fw=lerp(F.w,B.w,shrink),fh=lerp(F.h,B.h,shrink);
+  card(fx,fy,fw,fh,{a:a*(0.4+0.6*shrink),stroke:'rgba(195,160,255,0.45)',fill:['rgba(26,18,40,0.6)','rgba(10,8,18,0.7)']});
+  const bl=seg(G,SI.blur-0.8,SI.blur-0.2);
+  DOTS.forEach((d,i)=>{let cl=0.55;for(const z of ZONES){const dd=Math.hypot(d.u-z.u,(d.v-z.v)*fh/fw);if(dd<z.r)cl=z.clear?1:0.12;}
+    const fill=clamp(seg(G,SI.compress-0.9,SI.compress)*1.4-i/DOTS.length*0.4);const br=lerp(0.55,cl,bl)*fill;if(br<=0.02)return;
+    const x=fx+16+d.u*(fw-32),y=fy+16+d.v*(fh-32);const jit=(1-cl)*bl*6*(1-shrink);ctx.globalAlpha=a*br*(0.6+0.4*Math.sin(amb*1.5+d.ph));ctx.fillStyle=cl>0.9&&bl>0.5?'#FFE2A0':'#C9B6FF';ctx.fillRect(x+Math.sin(amb*3+d.ph)*jit,y,d.s*lerp(3.4,1.4,shrink),d.s*lerp(3.4,1.4,shrink));});
+  ctx.globalAlpha=1;
+  if(bl>0.01&&shrink<0.99)ZONES.forEach(z=>{const x=fx+16+z.u*(fw-32),y=fy+16+z.v*(fh-32),r=z.r*(fw-32);ctx.globalAlpha=a*bl*(1-shrink)*0.7;ctx.setLineDash(z.clear?[]:[6,6]);ctx.strokeStyle=z.clear?GOLD_HI:'rgba(244,237,223,0.5)';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;
+    text(z.t,x,y,g.P?30:24,z.clear?GOLD_HI:IVORY,a*bl*(1-shrink),700);if(!z.clear)text('模糊',x,y+(g.P?38:30),g.P?22:17,DIM,a*bl*(1-shrink));});
+  text(shrink>0.5?'模型（参数）':'参数：有限的空间',fx+fw/2,fy+(shrink>0.5?fh/2:-26),g.P?(shrink>0.5?28:28):(shrink>0.5?22:22),PURPLE,a,700);}
+function answer(g,G,amb,a,mode){// mode: 0 幻觉 … 1 有据
+  if(a<=0.01)return;const A=g.ans,P=g.P;card(A.x,A.y,A.w,A.h,{a,stroke:mode>0.5?'rgba(91,214,160,0.7)':'rgba(240,122,98,0.6)'});
+  text('模型的回答',A.x+(P?30:28),A.y+(P?44:36),P?24:19,DIM,a,400,'left');
+  const fs=P?32:28,op={align:'left',maxW:A.w-(P?60:56),valign:'top',lh:fs*1.5};
+  const h0=1-seg(mode,0,0.5),h1=seg(mode,0.5,1);
+  if(h0>0.01){const n=rich('根据合同约定，违约金上限为合同总价的 {20%}。',A.x+(P?30:28),A.y+(P?100:84),fs,a*h0,op);
+    const st=seg(G,SI.fake-0.6,SI.fake)*h0;if(st>0.01){const sx=A.x+A.w-(P?200:190),sy=A.y+A.h-(P?90:70);ctx.save();ctx.translate(sx,sy);ctx.rotate(-0.12);ctx.globalAlpha=a*st;ctx.strokeStyle=RED;ctx.lineWidth=3;rr(-(P?150:140),-(P?36:30),P?300:280,P?72:60,8);ctx.stroke();ctx.globalAlpha=1;text('编的（示意）',0,0,P?30:26,RED,a*st,700);ctx.restore();
+      text('它根本没读过这份合同',A.x+(P?30:28),A.y+A.h-(P?60:44),P?24:19,RED,a*st,700,'left');}}
+  if(h1>0.01){rich('合同第 12.3 条约定：违约金累计不超过合同总价的 {10%}。',A.x+(P?30:28),A.y+(P?100:84),fs,a*h1,op);
+    const ci=seg(G,SI.cite-0.7,SI.cite-0.1);const cy=A.y+(P?320:180);if(ci>0.01){card(A.x+(P?30:28),cy-24,P?460:420,48,{a:a*h1*ci,r:24,stroke:GOLD_HI,fill:'rgba(60,44,14,0.9)',shadow:false});text('出处：示例合同 · 第 8 页 · 第 12.3 条',A.x+(P?50:46),cy,P?22:18,GOLD_HI,a*h1*ci,700,'left');}
+    const io=seg(G,SI.iso-0.7,SI.iso-0.1);const iy=A.y+(P?400:236);if(io>0.01){rich('补充（{模型记忆，需核实}）：约定违约金超过损失 30% 的，一般可认定为过分高于。',A.x+(P?30:28),iy,P?24:19,a*h1*io,{align:'left',maxW:A.w-(P?60:56),valign:'top',hl:PURPLE,color:'rgba(214,196,255,0.9)',lh:P?36:28});}}}
+function render(G,amb,dt){const W=LY.W,H=LY.H,P=LY.port;const g=geo();
+  LE.bg(amb,0,0);
+  LE.title('幻觉与溯源','为什么会{一本正经地编}，怎样让它{有据可查}',LE.easeOut(clamp(amb/1.8)),seg(G,0.05,0.6),{portLines:['幻觉与溯源']});
+  if(G<0.3)return;const fin=1-seg(G,LAST-0.7,LAST);
+  const fA=seg(G,0.3,1)*fin,shrink=seg(G,SI.ask-0.85,SI.ask-0.3);
+  // 文本碎片飞入（有损）
+  const cp=G>SI.compress-1&&G<SI.blur?1:0;if(cp){const F=g.field;for(let k=0;k<26;k++){const t=((amb*0.35+k/26)%1);const lost=k%3===0;const sx=P?60+((k*97)%960):-40,sy=P?380:F.y+((k*53)%F.h);
+      const ex=F.x+60+((k*131)%(F.w-120)),ey=F.y+60+((k*71)%(F.h-120));const x=P?lerp(sx,ex,t):lerp(sx,ex,t),y=P?lerp(sy,ey,t):lerp(sy,ey,t);const al=fA*Math.sin(Math.PI*t)*(lost?(1-t):1)*(1-seg(G,SI.compress,SI.blur-0.5));
+      if(al>0.02)text(FRAG[k%FRAG.length],x,y,P?24:18,lost?DIM2:PALE,al,700);}}
+  field(g,G,amb,fA,shrink);
+  // 纸带
+  const tA=seg(G,SI.ask-0.8,SI.ask-0.3)*fin;
+  if(tA>0.01){const t=g.tape;if(P)tape(t.y0-20,t.y1+20,t.x,t.th,{vert:true,a:tA});else tape(t.x0-20,t.x1+20,t.y,t.th,{a:tA});
+    // 槽位：System | (资料) | 问题 | 回答
+    const dk=docOn;const L=P?(t.y1-t.y0):(t.x1-t.x0);const s1=P?160:220,docL=(P?380:560)*dk,qL=P?380:560,gap=12;
+    const a1=s1+gap,a2=a1+docL+(dk>0.01?gap:0),a3=a2+qL+gap;
+    tblock(g,0,s1,'System','法律助手','gold',tA);
+    if(dk>0.01)tblock(g,a1,a1+docL,'合同原文（检索片段）',P?'第 12.3 条 …':'第 8 页 · 第 12.3 条 违约金累计不超过…','hot',tA*dk,GOLD_HI);
+    const ab=seg(G,SI.abstain-0.8,SI.abstain-0.3);
+    tblock(g,a2,a2+qL,ab>0.5?'合同约定了仲裁地吗？':'这份合同的违约金上限是多少？','用户提问','ice',tA,ICE);
+    // 生成中的词
+    const gen=seg(G,SI.ask-0.5,SI.ask);const r2=L-a3;const [gx,gy,gw,gh]=slotRect(g,a3,a3+Math.min(r2,P?300:420)*gen);
+    if(gen>0.01){block(gx,gy,gw,gh,{style:docOn>0.5?'green':(G>SI.ask-0.2?'red':'gold'),a:tA*0.9});text(ab>0.5?'材料中未提及':(docOn>0.5?'回答（有出处）':'回答 …'),gx+gw/2,gy+gh/2,P?28:22,IVORY,tA*gen,700);}
+    // 拖入的资料（drag 前在纸带外）
+    if(G>SI.fake-0.4&&G<SI.ground+0.5){const D=g.doc;const showOff=seg(G,SI.drag-0.6,SI.drag-0.1);const [sx,sy,sw,sh]=slotRect(g,a1,a1+(P?380:560));
+      let px=D.x,py=D.y;if(docUser){px=docUser.x-D.w/2;py=docUser.y-D.h/2;}
+      const k=docOn;const x=lerp(px,sx,k),y=lerp(py,sy,k);const offA=showOff*(1-k);
+      if(offA>0.01){card(x,y,D.w,D.h,{a:offA,stroke:GOLD_HI});text('检索结果 · 示例合同.pdf',x+(P?28:24),y+(P?44:36),P?26:20,GOLD_HI,offA,700,'left');rich('第 12.3 条：违约金累计不超过合同总价的 10%',x+(P?28:24),y+(P?86:74),P?24:19,offA,{align:'left',maxW:D.w-(P?56:48),valign:'top',lh:P?34:28});
+        if(LE.isAt('drag')&&!docUser)LE.dragHint(x+D.w/2,y-(P?30:26),'拖到纸带上',amb,1,{dy:P?-44:-36,dx:0});}}
+    // 引用线
+    const ci=seg(G,SI.cite-0.7,SI.cite-0.1)*(1-seg(G,SI.abstain-0.8,SI.abstain-0.4))*docOn;if(ci>0.01){const [dx,dy,dw,dh]=slotRect(g,a1,a1+docL);const A=g.ans;const cx=A.x+(P?30:28)+(P?230:210),cy=A.y+(P?320:180);
+      const p0={x:P?dx+dw:dx+dw/2,y:P?dy+dh/2:dy},p2={x:cx,y:cy+24};ctx.globalAlpha=ci*0.85;ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2.4;ctx.setLineDash([8,6]);ctx.lineDashOffset=-amb*30;ctx.beginPath();ctx.moveTo(p0.x,p0.y);ctx.quadraticCurveTo(P?(p0.x+p2.x)/2:p0.x,P?p0.y:p2.y+60,p2.x,p2.y);ctx.stroke();ctx.setLineDash([]);ctx.lineDashOffset=0;ctx.globalAlpha=1;glowAdd(p0.x,p0.y,40,0.6*ci);}
+    // 记忆连线（iso）
+    const io=seg(G,SI.iso-0.7,SI.iso-0.1)*(1-seg(G,SI.abstain-0.8,SI.abstain-0.4));if(io>0.01){const B=g.badge,A=g.ans;ctx.globalAlpha=io*0.7;ctx.strokeStyle=PURPLE;ctx.lineWidth=2;ctx.setLineDash([3,7]);ctx.beginPath();ctx.moveTo(B.x+B.w,B.y+B.h/2);ctx.quadraticCurveTo((B.x+A.x)/2,P?B.y-40:A.y+260,A.x+(P?20:20),A.y+(P?420:250));ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;}}
+  // 概率面板（ask）
+  const pA=seg(G,SI.ask-0.4,SI.ask)*(1-seg(G,SI.fake-0.8,SI.fake-0.4))*fin;
+  if(pA>0.01){const A=g.ans;card(A.x,A.y,A.w,A.h,{a:pA});rich('……违约金上限为合同总价的 {？}',A.x+(P?30:28),A.y+(P?50:40),P?28:24,pA,{align:'left',maxW:A.w-60,valign:'top'});
+    CANDS.forEach(([t,p],i)=>{const y=A.y+(P?150:104)+i*(P?66:36);text(t,A.x+(P?30:28),y,P?28:20,i===0?GOLD_HI:IVORY,pA,700,'left');const bw=(A.w-(P?260:220))*p/0.35*seg(G,SI.ask-0.3+i*0.04,SI.ask);ctx.globalAlpha=pA;rr(A.x+(P?130:100),y-(P?12:9),bw,P?24:18,5);ctx.fillStyle=i===0?GOLD_HI:'rgba(244,237,223,0.35)';ctx.fill();ctx.globalAlpha=1;text(Math.round(p*100)+'%',A.x+(P?140:110)+bw,y,P?24:18,DIM,pA,400,'left');});
+    text('分布很平 = 其实拿不准；但输出里看不出来（概率为示意）',A.x+(P?30:28),A.y+A.h-(P?40:30),P?22:18,DIM,pA,400,'left');}
+  // 回答卡
+  const aA=seg(G,SI.fake-0.6,SI.fake-0.1)*(1-seg(G,SI.abstain-0.8,SI.abstain-0.4))*fin;
+  answer(g,G,amb,aA,docOn);
+  // 拒答卡
+  const bA=seg(G,SI.abstain-0.6,SI.abstain-0.1)*fin;
+  if(bA>0.01){const A=g.ans;card(A.x,A.y,A.w,P?420:A.h,{a:bA,stroke:'rgba(143,216,255,0.8)',fill:['rgba(14,30,44,0.92)','rgba(8,14,22,0.95)']});text('模型的回答',A.x+(P?30:28),A.y+(P?44:36),P?24:19,DIM,bA,400,'left');
+    rich('{材料中未提及}仲裁地。建议向对方确认，或查阅补充协议。',A.x+(P?30:28),A.y+(P?100:84),P?32:28,bA,{align:'left',maxW:A.w-(P?60:56),valign:'top',hl:ICE,lh:P?48:42});
+    text('在原文里没找到可锚定的句子 → 不补全',A.x+(P?30:28),A.y+(P?340:A.h-44),P?22:18,ICE,bA,700,'left');}
+  // 人工终审
+  const vA=seg(G,SI.verify-0.7,SI.verify-0.1)*fin;
+  if(vA>0.01){const items=['回答里的每个数字，都能在原文找到','出处的条款号、页码与原文一致','标为「模型记忆」的部分，已另行查证','「未提及」的问题，已转人工跟进'];
+    const x0=P?90:120,y0=P?H-520:752,w=P?900:840;card(x0,y0,w,P?330:262,{a:vA,stroke:'rgba(91,214,160,0.7)'});text('人工终审清单',x0+28,y0+(P?44:38),P?28:22,GREEN,vA,700,'left');
+    items.forEach((it,i)=>{const e=seg(G,SI.verify-0.5+i*0.1,SI.verify-0.25+i*0.1)*vA;text('✓',x0+34,y0+(P?110:86)+i*(P?54:44),P?30:24,GREEN,e,700,'left');text(it,x0+80,y0+(P?110:86)+i*(P?54:44),P?26:21,IVORY,vA,400,'left');});}
+  LE.finale(['模型没见过、记不清的内容，也会照样{生成得很像真的}','{把原文放上纸带}，逐句{标出处}；材料与记忆{分开标}','找不到依据就说{「未提及」}，最后由{人}核对签字'],seg(G,LAST-0.8,LAST),'文中合同、条款、概率分布均为示例。补充所引规则见 法释〔2023〕13号 第65条第2款，使用时以原文为准。');}
+function docPos(){return docUser;}
+const drags=[{step:'drag',cursor:'grab',hit:pt=>{const g=geo(),D=g.doc;const p=docUser||{x:D.x+D.w/2,y:D.y+D.h/2};return Math.abs(pt.x-p.x)<D.w/2+30&&Math.abs(pt.y-p.y)<D.h/2+30&&docOn<0.5;},
+  move:pt=>{docUser={x:pt.x,y:pt.y};},end:()=>{const g=geo(),t=g.tape;const on=g.P?Math.abs(docUser.x-t.x)<t.th/2+40:Math.abs(docUser.y-t.y)<t.th/2+40;if(on){docTarget=1;}else docUser=null;}}];
+let docTarget=0;
+function upd(G,dt){if(G<SI.drag-0.01)docOn=0;else if(G<=SI.drag+0.0001)docOn=damp(docOn,docTarget,dt,9);else docOn=Math.max(docOn>0.99?1:0,lerp(docTarget,1,seg(G,SI.drag,SI.ground-0.4)));}
+LE.run({steps:STEPS,scenes:SCENES,render:(G,amb,dt)=>{upd(G,dt);render(G,amb,dt);},drags,onGo:i=>{if(i<=SI.drag){docTarget=0;docUser=null;}},onSeek:(g,st)=>{docTarget=st.doc?1:0;docUser=null;docOn=g>=SI.ground?1:docTarget;}});
 })();
-function proj3D(p,yaw,cx,cy,sc){
-  const c=Math.cos(yaw), s=Math.sin(yaw);
-  const x1=c*p.x+s*p.z, z1=-s*p.x+c*p.z;
-  const f=sc/(3.4+z1);
-  return {x:cx+x1*f, y:cy+p.y*f, s:f/sc*3.4, z:z1};
-}
 
-/* ============================== 主渲染 ============================== */
-function render(G,amb){
-  const {s,ox,oy,dpr}=view;
-  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
-  ctx.setTransform(s*dpr,0,0,s*dpr,ox*dpr,oy*dpr);
-  ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();
-  ctx.fillStyle='#030304';ctx.fillRect(0,0,W,H);
-
-  // 背景精密网格 + 暖光 + 金尘
-  ctx.strokeStyle='rgba(226,170,66,0.022)';ctx.lineWidth=1;
-  for(let x=0;x<=W;x+=64){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-  for(let y=0;y<=H;y+=64){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-  const bg=ctx.createRadialGradient(W/2,H*0.5,0,W/2,H*0.5,960);
-  bg.addColorStop(0,'rgba(128,84,22,0.15)');bg.addColorStop(0.55,'rgba(60,38,10,0.05)');bg.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  ctx.save();ctx.globalCompositeOperation='lighter';
-  DUST.forEach(d=>{const dx=((d.x+amb*d.vx)%1+1)%1*W,dy=((d.y+amb*d.vy)%1+1)%1*H;glow(dx,dy,d.r*3,d.a*(0.55+0.45*Math.sin(amb*1.4+d.ph)));});
-  ctx.restore();
-
-  /* ---------- 幕 0：开场 (0 -> 0.48) ---------- */
-  const a0=actAlpha(G,null,null,0.02,0.48);
-  if(a0>0.005){
-    const intro=clamp(amb/2.2), out=1-a0;
-    const title='幻觉的本质与溯源工程', fs=92, tw=measure(title,fs,700);
-    let x=W/2-tw/2; const rnd=mulberry(83); let ci=0;
-    ctx.save();
-    for(const ch of title){
-      const cw=measure(ch,fs,700), ca=seg(intro,0.05+ci*0.024,0.3+ci*0.024);
-      const dx=(rnd()-0.5)*200*out, dy=-(30+rnd()*120)*out;
-      glowText(ch,x+cw/2+dx,445+(1-ca)*24+dy,fs,PALE,ca*a0,700,0.35);
-      x+=cw; ci++;
-    }
-    const lw=840*seg(intro,0.28,0.82)*a0;
-    ctx.globalCompositeOperation='lighter';
-    const lg=ctx.createLinearGradient(W/2-lw/2,0,W/2+lw/2,0);lg.addColorStop(0,'rgba(255,200,90,0)');lg.addColorStop(0.5,`rgba(255,214,120,${0.95*a0})`);lg.addColorStop(1,'rgba(255,200,90,0)');
-    ctx.fillStyle=lg;ctx.fillRect(W/2-lw/2,540,lw,2);glow(W/2,541,60,0.7*a0);ctx.globalCompositeOperation='source-over';
-    rich('{有损压缩的概率星云} · {强锚定拉索 (Grounding)} · {拒答安全阀}',W/2,605,31,seg(intro,0.5,0.95)*a0,DIM);
-    brandMark(W/2,870,28,seg(intro,0.65,1)*a0);
-    ctx.restore();
-  }
-
-  /* ---------- 幕 1~2：有损压缩星云与概率脑补 (0.52 -> 4.42) ---------- */
-  const a1=actAlpha(G,0.52,1.0,4.05,4.45);
-  if(a1>0.005){
-    const pGap=seg(G,1.2,2.0), pHal=seg(G,2.2,3.0), pFake=seg(G,3.2,4.0);
-    ctx.save();ctx.globalAlpha=a1;
-    const cx=lerp(960,560,pHal), cy=540, sc=600, yaw=amb*0.24;
-
-    // 概率星云
-    ctx.save();ctx.globalCompositeOperation='lighter';
-    NEBULA.forEach(p=>{
-      const pr=proj3D(p,yaw,cx,cy,sc);
-      const br=clamp(1-(pr.z+1.2)/2.6);
-      const isRed = pHal>0.2 && p.gap;
-      glow(pr.x,pr.y,p.sz*4.2*pr.s,(0.35+br*0.65)*(pGap>0.2&&p.gap?0.45:1),isRed?SPR_RED:SPR_HALO);
-    });
-    ctx.restore();
-
-    // 星云中的模糊空洞提示（Step 2）
-    if(pGap>0.05 && pHal<0.8){
-      ctx.save();ctx.globalAlpha*=pGap*(1-pHal*1.2);
-      ctx.strokeStyle=RED;ctx.setLineDash([6,6]);ctx.lineWidth=2;
-      ctx.beginPath();ctx.arc(cx+55,cy-20,68,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
-      text('模糊空洞（未精确记忆的案号/数字）',cx+55,cy+75,18,RED,1,700);
-      ctx.restore();
-    }
-    glowText('有损压缩的概率星云 (Base LLM)',cx,815,22,GOLD_HI,1,700,0.35);
-
-    // 右侧：概率脑补出逼真的假判例（Step 3-4）
-    if(pHal>0.02){
-      ctx.save();ctx.globalAlpha*=pHal;ctx.translate((1-pHal)*24,0);
-      drawBox(1020,310,760,440,16,RED,'rgba(65,18,14,0.75)','rgba(20,7,6,0.95)',2.4);
-      glow(1400,530,180,0.35,SPR_RED);
-      glowText('⚠ 概率平滑脑补 → 幻觉输出',1400,380,25,RED,1,700,0.35);
-      text('提问：请引用 2025 年某高院关于该条款的最新判例案号',1400,445,18,DIM,1);
-      drawBox(1065,490,670,155,10,RED,'rgba(36,12,10,0.88)','rgba(18,7,6,0.94)',1.6);
-      text('“根据（2025）浙民终第 1482 号判决书……”',1400,540,22,PALE,1,700);
-      text(pFake>0.2?'✕ 查无此案！模型只是按概率拼出了最像真的案号格式':'正在顺着高概率词元平滑生成…',1400,600,17,RED,1,700);
-      if(pFake>0.2){
-        text('高危特征：语气越专业、格式越工整，越具有欺骗性！',1400,695,18,GOLD_HI,pFake,700);
-      }
-      ctx.restore();
-    }
-    ctx.restore();
-  }
-
-  /* ---------- 幕 3~4：强锚定拉索（Grounding）与拒答安全阀 (4.52 -> 9.42) ---------- */
-  const a2=actAlpha(G,4.52,5.0,9.05,9.45);
-  if(a2>0.005){
-    const pCite=seg(G,5.2,6.0), pIso=seg(G,6.2,7.0), pValve=seg(G,7.2,8.0), pVer=seg(G,8.2,9.0);
-    ctx.save();ctx.globalAlpha=a2;ctx.translate(0,(1-a2)*18);
-
-    // 上方悬浮的星云/生成结论（被拉索死死钉住，不再乱飘！）
-    const floatY = 305 + (pCite>0.3 ? 0 : Math.sin(amb*2.5)*14);
-    drawBox(460,floatY-85,1000,170,16,pVer>0.3?GREEN:GOLD_HI,'rgba(28,22,10,0.92)','rgba(12,9,5,0.96)',2.4);
-    glowText('AI 生成结论层（受控概率输出）',960,floatY-36,24,pVer>0.3?GREEN:GOLD_HI,1,700,0.35);
-    text(pValve>0.3?'结论 1：违约金上限 30% [锚点 P12]   |   结论 2：未约定的赔偿项 → 「材料中未提及」':'结论 1：违约金上限 30% [锚点 P12]   |   结论 2：免责范围见附件二 [锚点 P28]',960,floatY+24,19,PALE,1,700);
-
-    // 底部：客观事实底座（不可篡改的原始文档切片）
-    const baseY=765;
-    drawBox(180,baseY-75,1560,150,14,GREEN,'rgba(14,48,34,0.82)','rgba(7,20,14,0.95)',2.4);
-    glowText('客观事实底座（Ground Truth · 原始合同 / 现行法条 / 检索原文）',960,baseY-34,22,GREEN,1,700,0.3);
-    const anchors=[
-      {t:'锚点 A · 合同第 8 条 (P12)', x:460},
-      {t:'锚点 B · 附件二免责清单 (P28)', x:960},
-      {t:'空白区 · 文档中无此记录', x:1460, empty:true},
-    ];
-    anchors.forEach(an=>{
-      rr(an.x-190,baseY-2,380,54,8);
-      ctx.fillStyle=an.empty?'rgba(20,34,54,0.65)':'rgba(79,209,152,0.16)';ctx.fill();
-      ctx.strokeStyle=an.empty?ICE:GREEN;ctx.lineWidth=1.6;ctx.stroke();
-      text(an.t,an.x,baseY+25,17,an.empty?ICE:PALE,1,700);
-    });
-
-    // 拉索 ①：强锚定光学拉索（Step 6）
-    if(pCite>0.02){
-      ctx.save();ctx.globalAlpha*=pCite;
-      [460,960].forEach(ax=>{
-        ctx.strokeStyle=GOLD_HI;ctx.lineWidth=3.5;
-        ctx.beginPath();ctx.moveTo(ax,floatY+85);ctx.lineTo(ax,baseY-75);ctx.stroke();
-        ctx.globalCompositeOperation='lighter';glow(ax,baseY-75,32,0.75,SPR_GRN);glow(ax,floatY+85,32,0.75);ctx.globalCompositeOperation='source-over';
-      });
-      text('⛓ 拉索 ① 原文引用锚定（可一键溯源回原件）',710,540,19,GOLD_HI,1,700);
-      ctx.restore();
-    }
-
-    // 拉索 ②：内外事实隔离盾（Step 7）
-    if(pIso>0.02){
-      ctx.save();ctx.globalAlpha*=pIso;
-      rr(120,490,260,96,10);ctx.fillStyle='rgba(24,20,10,0.9)';ctx.fill();ctx.strokeStyle=GOLD;ctx.lineWidth=1.8;ctx.stroke();
-      text('拉索 ② 事实隔离',250,522,18,GOLD_HI,1,700);
-      text('文档内事实 ≠ 外部常识',250,554,15,IVORY,0.92);
-      ctx.restore();
-    }
-
-    // 拉索 ③：拒答安全阀（Step 8：右侧空白区触发蓝灯拒答）
-    if(pValve>0.02){
-      ctx.save();ctx.globalAlpha*=pValve;
-      ctx.strokeStyle=ICE;ctx.lineWidth=3;ctx.setLineDash([8,6]);
-      ctx.beginPath();ctx.moveTo(1460,floatY+85);ctx.lineTo(1460,baseY-75);ctx.stroke();ctx.setLineDash([]);
-      rr(1285,495,350,86,10);ctx.fillStyle='rgba(14,38,62,0.92)';ctx.fill();ctx.strokeStyle=ICE;ctx.lineWidth=2.2;ctx.stroke();
-      ctx.globalCompositeOperation='lighter';glow(1460,538,85,0.45,SPR_ICE);ctx.globalCompositeOperation='source-over';
-      glowText('🛡 拉索 ③ 拒答安全阀',1460,522,19,ICE,1,700,0.35);
-      text('无锚点 → 直接说“未提及”',1460,554,16,PALE,1,700);
-      ctx.restore();
-    }
-
-    // Step 9: 人工终审徽章
-    if(pVer>0.05){
-      rr(W/2-340,865,680,62,8);ctx.fillStyle='rgba(14,56,42,0.85)';ctx.fill();ctx.strokeStyle=GREEN;ctx.lineWidth=1.8;ctx.stroke();
-      text('✓ 最终防线：可追溯原文锚点 + 专业人士终审核验',W/2,896,19,GREEN,pVer,700);
-    }
-    ctx.restore();
-  }
-
-  /* ---------- 幕 5：终局本质收束 (9.52 -> 11) ---------- */
-  const a3=actAlpha(G,9.52,10.0,null,null);
-  if(a3>0.005){
-    const pFin=seg(G,10.35,11.0);
-    ctx.save();ctx.globalAlpha=a3;ctx.translate(0,(1-a3)*18);
-
-    const pillars=[
-      {t:'承认物理本性', sub:'大模型是概率压缩机', desc:'不要指望靠纯提示词消灭幻觉', x:360, c:RED},
-      {t:'建立溯源拉索', sub:'Grounding 三件套', desc:'原文引用 · 内外隔离 · 缺失拒答', x:960, c:GOLD_HI},
-      {t:'守住人机边界', sub:'AI 产出 + 人类核验', desc:'让每一条关键结论都能一秒查证', x:1560, c:GREEN},
-    ];
-    pillars.forEach((pl,i)=>{
-      drawBox(pl.x-235,335,470,340,16,pl.c,'rgba(22,18,10,0.92)','rgba(10,8,5,0.96)',2.4);
-      glowText(pl.t,pl.x,415,26,pl.c,1,700,0.35);
-      text(pl.sub,pl.x,495,21,PALE,1,700);
-      text(pl.desc,pl.x,565,18,IVORY,0.92);
-      if(i<2) glowText('→',pl.x+300,505,40,GOLD,0.85,700,0.25);
-    });
-
-    if(pFin>0.02){
-      ctx.save();ctx.globalAlpha*=pFin;
-      rich('幻觉是概率星云的{自由漂移}，Grounding 是把它锁进事实的{工程拉索}',W/2,795,31,1,IVORY);
-      brandMark(W/2,905,28,1);
-      ctx.restore();
-    }
-    ctx.restore();
-  }
-
-  // 电影暗角
-  const vig=ctx.createRadialGradient(W/2,H/2,H*0.38,W/2,H/2,W*0.66);
-  vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,0,0.55)');
-  ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
-
-  /* ---------- 顶部引导语（先退后进，零叠字） & 进度 ---------- */
-  const lo=Math.floor(G), hi=Math.min(LAST,Math.ceil(G)), f=G-lo;
-  const ha=STEPS[lo].hint, hb=STEPS[hi].hint;
-  if(ha===hb) rich(ha,W/2,92,33,0.95);
-  else {
-    const aOut=1-ease(clamp(f/0.38)), aIn=ease(clamp((f-0.5)/0.42));
-    if(aOut>0.01) rich(ha,W/2,92-(1-aOut)*10,33,0.95*aOut);
-    if(aIn>0.01) rich(hb,W/2,92+(1-aIn)*10,33,0.95*aIn);
-  }
-  const st=STEPS[Math.round(G)];
-  text(`${String(st.scene).padStart(2,'0')} · ${SCENES[st.scene]}    ${Math.round(G)+1} / ${STEPS.length}`,1860,1025,18,'rgba(244,237,223,0.52)',1,400,'right');
-  ctx.fillStyle='rgba(244,237,223,0.16)';ctx.fillRect(1620,1044,240,2);
-  ctx.fillStyle=GOLD;ctx.fillRect(1620,1044,240*G/LAST,2);
-  ctx.restore();
-}
-
-/* ==================== 交互与播控 ==================== */
-let G=0, target=0, anim=null, auto=false; const t0=performance.now();
-const dock=document.getElementById('dock');
-SCENES.forEach((name,idx)=>{
-  const b=document.createElement('button');b.className='sbtn';b.textContent=`${String(idx).padStart(2,'0')} ${name}`;
-  b.addEventListener('pointerdown',e=>e.stopPropagation());
-  b.addEventListener('pointerup',e=>{e.stopPropagation();go(SCENE_FIRST[idx]);});
-  dock.appendChild(b);
-});
-function syncDock(){const sc=STEPS[Math.round(target)].scene;dock.querySelectorAll('.sbtn').forEach((b,i)=>b.classList.toggle('active',i===sc));}
-function go(i){
-  i=clamp(Math.round(i),0,LAST);if(i===target&&!anim)return;
-  const from=G, fwd=i===Math.round(target)+1&&i>from;
-  target=i;anim={from,to:i,start:performance.now(),dur:fwd?STEPS[i].dur:Math.min(850,350+Math.abs(i-from)*60),linear:fwd};syncDock();
-}
-function next(){go(target+1);} function prev(){go(target-1);}
-function tick(now){
-  if(anim){
-    const p=clamp((now-anim.start)/anim.dur);
-    G=anim.linear?lerp(anim.from,anim.to,p):lerp(anim.from,anim.to,ease(p));
-    if(p>=1){G=anim.to;anim=null;if(auto&&G<LAST)setTimeout(()=>auto&&go(target+1),700);}
-  }
-  render(G,(now-t0)/1000);requestAnimationFrame(tick);
-}
-let idleTimer=null;
-function wake(){document.body.classList.remove('idle');clearTimeout(idleTimer);idleTimer=setTimeout(()=>document.body.classList.add('idle'),3200);}
-['mousemove','pointerdown','keydown'].forEach(ev=>addEventListener(ev,wake)); wake();
-
-const autoBtn=document.getElementById('autoBtn'), cleanBtn=document.getElementById('cleanBtn'), fsBtn=document.getElementById('fsBtn');
-function toggleAuto(){auto=!auto;autoBtn.classList.toggle('on',auto);autoBtn.textContent=auto?'自动中':'自动 A';if(auto)next();}
-function toggleClean(){document.body.classList.toggle('clean');}
-function toggleFS(){const d=document,el=d.documentElement;if(!d.fullscreenElement)el.requestFullscreen?.();else d.exitFullscreen?.();}
-[autoBtn,cleanBtn,fsBtn].forEach(b=>b.addEventListener('pointerdown',e=>e.stopPropagation()));
-autoBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleAuto();});
-cleanBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleClean();});
-fsBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
-
-addEventListener('keydown',e=>{
-  if(e.target.id==='lesson-back')return;
-
-  const k=e.key;
-  if(['ArrowRight',' ','PageDown','Enter','ArrowDown'].includes(k)){e.preventDefault();next();}
-  else if(['ArrowLeft','PageUp','Backspace','ArrowUp'].includes(k)){e.preventDefault();prev();}
-  else if(k==='Home')go(0); else if(k==='End')go(LAST);
-  else if(k==='f'||k==='F')toggleFS();
-  else if(k==='a'||k==='A')toggleAuto();
-  else if(k==='h'||k==='H')toggleClean();
-});
-let pd=null;
-cv.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY,b:e.button};});
-cv.addEventListener('pointerup',e=>{if(!pd)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y,b=pd.b;pd=null;
-  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2){dx<0?next():prev();return;}
-  if(Math.abs(dx)<14&&Math.abs(dy)<14){if(b===2)prev();else e.shiftKey?prev():next();}});
-cv.addEventListener('contextmenu',e=>{e.preventDefault();prev();});
-
-syncDock(); requestAnimationFrame(tick);
-})();
 </script></body></html>

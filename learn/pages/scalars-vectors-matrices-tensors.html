@@ -1,471 +1,148 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
-<title>标量、向量、矩阵与张量 · 维度的几何升维</title>
+<title>标量、向量、矩阵与张量 · 从一个数到一摞表</title>
+<meta name="description" content="一个数是标量，一串数是向量，一张表是矩阵，一摞表是张量。词元怎样变成向量、一句话怎样变成矩阵、矩阵乘法在做什么、张量形状 (批量, 句长, 维度) 怎么读。">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
-<style>
-/* 将原文件中的两行 @font-face{font-family:'HSerif'...} 粘贴至此即可恢复原版衬线体 */
-html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
-body{position:fixed;inset:0}
-canvas{display:block;touch-action:none}
-#tools{position:fixed;right:16px;top:14px;display:flex;gap:8px;z-index:10;transition:opacity .35s}
-.tbtn{font:13px "HSerif","Songti SC",serif;color:rgba(244,237,223,.52);background:rgba(10,8,4,.62);border:1px solid rgba(226,170,66,.28);border-radius:5px;padding:4px 10px;cursor:pointer;backdrop-filter:blur(4px);transition:all .2s}
-.tbtn:hover,.tbtn.on{color:#FFD062;border-color:#E2AA42;background:rgba(226,170,66,.14)}
-#dock{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:5px;padding:6px 10px;border-radius:10px;background:rgba(8,7,4,.78);border:1px solid rgba(226,170,66,.22);backdrop-filter:blur(8px);z-index:10;max-width:95vw;overflow-x:auto;transition:opacity .4s}
-#dock::-webkit-scrollbar{display:none}
-.sbtn{font:12px "HSerif","Songti SC",serif;color:rgba(244,237,223,.55);background:none;border:1px solid transparent;border-radius:5px;padding:4px 9px;white-space:nowrap;cursor:pointer;transition:all .2s}
-.sbtn:hover{color:#FFE9B8;border-color:rgba(226,170,66,.35)}
-.sbtn.active{color:#FFD062;border-color:rgba(255,208,98,.6);background:rgba(226,170,66,.16);font-weight:700}
-body.idle #tools,body.idle #dock,body.clean #tools,body.clean #dock{opacity:0;pointer-events:none}
-</style><style>
-  #lesson-back {
-    position: fixed;
-    z-index: 10;
-    top: calc(8px + env(safe-area-inset-top));
-    left: calc(12px + env(safe-area-inset-left));
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    box-sizing: border-box;
-    padding: 0 10px;
-    border-radius: 4px;
-    color: #ffe5ad;
-    background: #17130e;
-    font: 14px/1.4 system-ui, sans-serif;
-    text-decoration: none;
-  }
-  #lesson-back:hover { text-decoration: underline; }
-  #lesson-back:focus-visible { outline: 2px solid #ffd062; outline-offset: 2px; }
-  body.clean #lesson-back, :fullscreen #lesson-back { display: none; }
-</style>
+<link rel="preload" href="../assets/fonts/hserif-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/hserif-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/lesson.css">
 </head><body>
 <a id="lesson-back" href="../index.html">← 返回模块目录</a>
-<canvas id="c"></canvas>
-<div id="tools">
-  <button class="tbtn" id="autoBtn" title="自动播放 (A)">自动 A</button>
-  <button class="tbtn" id="cleanBtn" title="纯净录屏 (H)">纯净 H</button>
-  <button class="tbtn" id="fsBtn" title="全屏 (F)">全屏 F</button>
-</div>
-<div id="dock"></div>
+<canvas id="c"></canvas><button id="fs" title="全屏（F）">全屏 F</button>
+<script src="../assets/lesson-engine.js"></script>
 <script>
-(function(){
-'use strict';
-const FONT='"HSerif","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif';
-const IVORY='#F4EDDF', GOLD='#E2AA42', GOLD_HI='#FFD062', PALE='#FFE9B8', DIM='rgba(244,237,223,0.62)', GREEN='#4FD198', BLUE='#6AA9FF', ICE='#7CE8FF';
-
-const SCENES=['开场','0D 标量','1D 向量','2D 矩阵','3D 张量','维度全景'];
-const S=(id,scene,dur,hint)=>({id,scene,dur,hint});
+// @title 标量、向量、矩阵与张量 · 从一个数到一摞表
+// @desc 一个数是标量，一串数是向量，一张表是矩阵，一摞表是张量。词元怎样变成向量、一句话怎样变成矩阵、矩阵乘法在做什么、张量形状 (批量, 句长, 维度) 怎么读。
+(function(){'use strict';
+const {C,LY,ctx,clamp,lerp,ease,seg,lin,bump,damp,text,glowText,rich,measure,rr,glow,glowAdd,card,block,tape,line,arrowHead,S}=LE;
+const {IVORY,GOLD,GOLD_HI,PALE,DIM,DIM2,RED,GREEN,ICE,PURPLE}=C;
+const SCENES=['开场','0 维 · 标量','1 维 · 向量','动手量夹角','2 维 · 矩阵','3 维 · 张量','全景','收束'];
 const STEPS=[
-  S('title',0,2500,''),
-  S('scalar',1,2200,'0 维 · {标量 (Scalar)}：一个孤立的数字，只有大小，没有方向（如温度 0.7）'),
-  S('vec_arrow',2,2400,'1 维 · {向量 (Vector)}：把多个数字排成一列，在空间中拉出带长度与方向的箭头'),
-  S('vec_sem',2,2600,'在 AI 里，每个词元都是一根高维向量——{语义越相近，箭头夹角越小}'),
-  S('mat_grid',3,2600,'2 维 · {矩阵 (Matrix)}：把一整句话的词向量并排织成一张平面光幕（句长 × 维度）'),
-  S('mat_mul',3,2600,'神经网络的本质：让句子矩阵穿过{权重矩阵}，在空间里发生旋转、拉伸与提纯'),
-  S('ten_stack',4,2800,'3 维 · {张量 (Tensor)}：把多张矩阵沿纵深堆叠，形成一座悬浮的{3D 发光晶格魔方}'),
-  S('ten_shape',4,2600,'GPU 一次并行处理多句话，数据形状就是 3D 张量：{(Batch, Seq_Len, Dim)}'),
-  S('ten_nd',4,2400,'再往高维延伸（图像、视频、多头注意力），统统装进同一个统一容器——{高维张量}'),
-  S('all_four',5,2800,'从点到体：{0D 标量} → {1D 向量} → {2D 矩阵} → {3D+ 张量}，逐级升维'),
-  S('final',5,2600,''),
+ S('title',0,2600,''),
+ S('scalar',1,2400,'0 维 · {标量}：就是一个数，只有大小（例如温度 0.7）'),
+ S('vector',2,3000,'1 维 · {向量}：一串有顺序的数；取前两个数画在平面上，就是一根{箭头}'),
+ S('word',2,3000,'模型里每个词元都对应一个向量（真实模型有上千维，这里只画 8 维，数值为示意）'),
+ S('drag',3,1800,'{拖动}「违约金」的箭头：夹角越小，余弦相似度越高，通常意思越接近（示意）',true),
+ S('matrix',4,3000,'2 维 · {矩阵}：一句话的词向量排成一张表——{行数是句长，列数是维度}'),
+ S('matmul',4,3600,'模型里大量计算是{矩阵乘法}：每个新格子 = 左表一行 · 右表一列（逐项相乘再相加）'),
+ S('tensor',5,3000,'3 维 · {张量}：一次处理好几句话，就把好几张表{叠起来}'),
+ S('shape',5,2800,'它的形状写作 {(批量, 句长, 维度)}，这里是 (4, 5, 8)'),
+ S('heads',5,3000,'还能再加一维：多头注意力把 8 维拆成 2 个头，形状变成 {(批量, 头数, 句长, 每头维度)}'),
+ S('all',6,3000,'{0 维}一个数 → {1 维}一串 → {2 维}一张表 → {3 维及以上}一摞表'),
+ S('final',7,3200,''),
 ];
-const LAST=STEPS.length-1;
-const SCENE_FIRST=SCENES.map((_,i)=>STEPS.findIndex(s=>s.scene===i));
-
-const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
-const lerp=(a,b,t)=>a+(b-a)*t;
-const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-const seg=(G,a,b)=>ease(clamp((G-a)/(b-a)));
-function actAlpha(G,inS,inE,outS,outE){
-  const fi=inS===null?1:seg(G,inS,inE);
-  const fo=outS===null?1:(1-seg(G,outS,outE));
-  return fi*fo;
-}
-function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
-
-/* ==================== 画布与原版光学贴图 ==================== */
-const cv=document.getElementById('c'), ctx=cv.getContext('2d');
-const W=1920, H=1080; let view={s:1,ox:0,oy:0,dpr:1};
-function resize(){
-  const w=innerWidth,h=innerHeight,dpr=Math.min(window.devicePixelRatio||1,2);
-  cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.width=w+'px';cv.style.height=h+'px';
-  const s=Math.min(w/W,h/H);view={s,ox:(w-W*s)/2,oy:(h-H*s)/2,dpr};
-}
-addEventListener('resize',resize); resize();
-
-const mcache=new Map();
-function font(sz,wt=400){return `${wt} ${sz}px ${FONT}`;}
-function measure(t,sz,wt=400){const k=t+'|'+wt;let v=mcache.get(k);if(v===undefined){ctx.font=font(100,wt);v=ctx.measureText(t).width/100;mcache.set(k,v);}return v*sz;}
-function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
-
-function text(str,x,y,sz,col,a=1,wt=400,al='center'){
-  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
-  const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.font=font(sz,wt);ctx.fillStyle=col;ctx.textAlign=al;ctx.textBaseline='middle';ctx.fillText(str,x,y);ctx.globalAlpha=prev;
-}
-function glowText(str,x,y,sz,col,a=1,wt=700,blur=0.45,al='center'){
-  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
-  ctx.save();ctx.shadowColor=col===ICE?'rgba(124,232,255,0.65)':'rgba(255,186,60,0.6)';ctx.shadowBlur=sz*blur;text(str,x,y,sz,col,a,wt,al);ctx.restore();
-}
-function rich(str,x,y,sz,a=1,col=IVORY){
-  if(ctx.globalAlpha*clamp(a)<=0.004||!str)return;
-  const parts=[];str.split(/(\{[^}]*\})/).forEach(s=>{if(!s)return;if(s[0]==='{')parts.push([s.slice(1,-1),1]);else parts.push([s,0]);});
-  let tw=0;parts.forEach(p=>{p[2]=measure(p[0],sz,p[1]?700:400);tw+=p[2];});let x0=x-tw/2;
-  parts.forEach(p=>{if(p[1])glowText(p[0],x0,y,sz,GOLD_HI,a,700,0.45,'left');else text(p[0],x0,y,sz,col,a,400,'left');x0+=p[2];});
-}
-function brandMark(x,y,sz,a=1){
-  if(ctx.globalAlpha*clamp(a)<=0.004)return;
-  const s1='陈石律师',s2='  ·  ',s3='chenshi.ai';
-  const w1=measure(s1,sz*0.8),w2=measure(s2,sz*0.8),w3=measure(s3,sz,700),tw=w1+w2+w3;let x0=x-tw/2;
-  text(s1,x0,y,sz*0.8,IVORY,a*0.78,400,'left');x0+=w1;text(s2,x0,y,sz*0.8,GOLD,a*0.8,400,'left');x0+=w2;glowText(s3,x0,y,sz,GOLD_HI,a,700,0.3,'left');
-}
-
-function mkSprite(stops){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),gr=g.createRadialGradient(64,64,0,64,64,64);stops.forEach(s=>gr.addColorStop(s[0],s[1]));g.fillStyle=gr;g.fillRect(0,0,128,128);return c;}
-const SPR_HALO=mkSprite([[0,'rgba(255,228,170,0.9)'],[0.14,'rgba(255,196,96,0.52)'],[1,'rgba(200,120,30,0)']]);
-const SPR_CORE=mkSprite([[0,'rgba(255,250,235,1)'],[0.25,'rgba(255,226,160,0.9)'],[1,'rgba(255,170,60,0)']]);
-const SPR_BLU =mkSprite([[0,'rgba(180,225,255,0.92)'],[0.2,'rgba(106,169,255,0.5)'],[1,'rgba(40,90,180,0)']]);
-const SPR_GRN =mkSprite([[0,'rgba(180,255,220,0.92)'],[0.2,'rgba(79,209,152,0.5)'],[1,'rgba(20,120,80,0)']]);
-function glow(x,y,r,a=1,spr=SPR_HALO){const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||r<=0.5)return;const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.drawImage(spr,x-r,y-r,2*r,2*r);ctx.globalAlpha=prev;}
-function core(x,y,r,a=1){glow(x,y,r,a,SPR_CORE);}
-
-function drawArrow(x1,y1,x2,y2,prog,col,lw=3){
-  if(prog<=0.005)return;
-  const ex=lerp(x1,x2,prog), ey=lerp(y1,y2,prog);
-  const ang=Math.atan2(y2-y1,x2-x1), head=15*clamp(prog*2);
-  ctx.save();ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=lw;
-  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(ex-Math.cos(ang)*head*0.65,ey-Math.sin(ang)*head*0.65);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(ex,ey);
-  ctx.lineTo(ex-head*Math.cos(ang-0.38),ey-head*Math.sin(ang-0.38));
-  ctx.lineTo(ex-head*Math.cos(ang+0.38),ey-head*Math.sin(ang+0.38));
-  ctx.closePath();ctx.fill();ctx.restore();
-}
-
-const DUST=(()=>{const r=mulberry(2039);return Array.from({length:60},()=>({x:r(),y:r(),vx:(r()-0.5)*0.004,vy:-0.003-r()*0.006,r:1.2+r()*2.5,a:0.1+r()*0.22,ph:r()*6.28}));})();
-
-// 3D 张量晶格点（4 × 4 × 4 = 64 个发光节点）
-const CUBE_PTS=(()=>{
-  const pts=[];
-  for(let x=-1.5;x<=1.5;x+=1)for(let y=-1.5;y<=1.5;y+=1)for(let z=-1.5;z<=1.5;z+=1) pts.push([x,y,z]);
-  return pts;
-})();
-function proj3D(p,yaw,pitch,cx,cy,sc){
-  const cyw=Math.cos(yaw), syw=Math.sin(yaw);
-  const x1=cyw*p[0]+syw*p[2], z1=-syw*p[0]+cyw*p[2];
-  const cp=Math.cos(pitch), sp=Math.sin(pitch);
-  const y2=cp*p[1]-sp*z1, z2=sp*p[1]+cp*z1;
-  const f=sc/(6.2+z2);
-  return {x:cx+x1*f, y:cy+y2*f, s:f/sc*6.2, z:z2};
-}
-
-const MAT_VALS=[
-  [0.21,-0.73, 0.88, 0.14,-0.32],
-  [0.19,-0.68, 0.91, 0.11,-0.28],
-  [-0.54,0.42,-0.12, 0.77, 0.05],
-  [0.63, 0.15,-0.44,-0.21, 0.82],
-];
-const MAT_WORDS=['违约金','赔偿金','合同','法院'];
-
-/* ============================== 主渲染 ============================== */
-function render(G,amb){
-  const {s,ox,oy,dpr}=view;
-  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
-  ctx.setTransform(s*dpr,0,0,s*dpr,ox*dpr,oy*dpr);
-  ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();
-  ctx.fillStyle='#030304';ctx.fillRect(0,0,W,H);
-
-  // 背景精密网格 + 暖光 + 金尘
-  ctx.strokeStyle='rgba(226,170,66,0.022)';ctx.lineWidth=1;
-  for(let x=0;x<=W;x+=64){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-  for(let y=0;y<=H;y+=64){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-  const bg=ctx.createRadialGradient(W/2,H*0.5,0,W/2,H*0.5,960);
-  bg.addColorStop(0,'rgba(128,84,22,0.16)');bg.addColorStop(0.55,'rgba(60,38,10,0.05)');bg.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  ctx.save();ctx.globalCompositeOperation='lighter';
-  DUST.forEach(d=>{const dx=((d.x+amb*d.vx)%1+1)%1*W,dy=((d.y+amb*d.vy)%1+1)%1*H;glow(dx,dy,d.r*3,d.a*(0.55+0.45*Math.sin(amb*1.4+d.ph)));});
+const SI={};STEPS.forEach((s,i)=>SI[s.id]=i);const LAST=STEPS.length-1;
+const TOK=['违约金','过高','可','请求','适当'];const R=5,D=8;
+const rnd=LE.mulberry(21);const VAL=[];for(let i=0;i<R;i++){VAL.push([]);for(let j=0;j<D;j++)VAL[i].push(Math.round((rnd()*2-1)*100)/100);}
+VAL[0][0]=0.74;VAL[0][1]=0.43;VAL[0][2]=0.70; // 第 0 格兼作「标量」示意
+const Wm=[];for(let i=0;i<D;i++){Wm.push([]);for(let j=0;j<D;j++)Wm[i].push(Math.round((rnd()-0.5)*100)/100);}
+const OUT=VAL.map(r=>Wm[0].map((_,j)=>Math.round(r.reduce((s,v,k)=>s+v*Wm[k][j],0)*100)/100));
+const WORDS=[{t:'赔偿金',ang:44,c:GREEN},{t:'定金',ang:68,c:ICE},{t:'西瓜',ang:152,c:RED}];
+let angUser=null,angDisp=30;
+const f2=v=>(v<0?'−':'')+Math.abs(v).toFixed(2);
+function geo(){const P=LY.port,H=LY.H;
+  if(!P)return{P,cw:90,ch:52,gx:96,gy:58,cen:{x:960,y:560},col:{x:960,y:560},colL:{x:200,y:620},mx:{x:600,y:430},tape:{y:250,x0:520,x1:1400},
+    plane:{x:1380,y:560,r:210},plane2:{x:1250,y:610,r:300},W:{x:1500,y:380,cw:56,ch:44,gx:60,gy:50},O:{x:2100,y:430}};
+  return{P,cw:80,ch:56,gx:86,gy:64,cen:{x:540,y:H*0.4},col:{x:540,y:H*0.4},colL:{x:240,y:660},mx:{x:240,y:780},tape:{y:500,x0:120,x1:960},
+    plane:{x:540,y:H*0.4+480,r:220},plane2:{x:540,y:H*0.66,r:370},W:{x:300,y:1240,cw:60,ch:46,gx:66,gy:52},O:{x:240,y:1720}};}
+function cell(x,y,w,h,v,a,st='gold',fs=20,col){if(a<=0.01)return;block(x-w/2,y-h/2,w,h,{style:st,a,r:6});text(f2(v),x,y,fs,col||(v<0?'#F4C9B8':PALE),a,700);}
+function tokX(g,i){return lerp(g.tape.x0,g.tape.x1,(i+0.5)/R);}
+// 第 i 行第 j 格（向量是第 0 行）的位置
+function cpos(g,G,i,j){const sc=seg(G,SI.scalar-0.9,SI.scalar-0.3),vc=seg(G,SI.vector-0.85,SI.vector-0.35),wd=seg(G,SI.word-0.85,SI.word-0.3),mt=seg(G,SI.matrix-0.85,SI.matrix-0.25);
+  const mxp={x:g.mx.x+j*g.gx,y:g.mx.y+i*g.gy};
+  if(i>0){const tx=tokX(g,i);const e=seg(G,SI.matrix-0.8+i*0.06,SI.matrix-0.25+i*0.04);return{x:lerp(tx,mxp.x,e),y:lerp(g.tape.y,mxp.y,e),a:e};}
+  const p0={x:g.cen.x,y:g.cen.y};const colp={x:g.col.x,y:g.col.y+(j-3.5)*(g.P?64:56)};
+  let p=j===0?p0:{x:p0.x,y:p0.y};p={x:lerp(p.x,colp.x,vc),y:lerp(p.y,colp.y,vc)};
+  const wp=g.P?{x:g.mx.x+j*g.gx,y:g.mx.y}:{x:g.colL.x,y:g.colL.y+(j-3.5)*56};p={x:lerp(p.x,wp.x,wd),y:lerp(p.y,wp.y,wd)};
+  p={x:lerp(p.x,mxp.x,mt),y:lerp(p.y,mxp.y,mt)};return{x:p.x,y:p.y,a:j===0?sc:vc};}
+function plane(g,G,P0,r,a,amb,showWords,ang){if(a<=0.01)return;ctx.globalAlpha=a*0.5;ctx.strokeStyle='rgba(244,237,223,0.35)';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(P0.x-r,P0.y);ctx.lineTo(P0.x+r,P0.y);ctx.moveTo(P0.x,P0.y-r);ctx.lineTo(P0.x,P0.y+r);ctx.stroke();
+  ctx.setLineDash([3,6]);ctx.beginPath();ctx.arc(P0.x,P0.y,r*0.85,0,7);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;
+  const arrow=(deg,col,lab,al,lw=4)=>{const t=deg*Math.PI/180,L=r*0.85,x=P0.x+Math.cos(t)*L,y=P0.y-Math.sin(t)*L;ctx.globalAlpha=al;ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.beginPath();ctx.moveTo(P0.x,P0.y);ctx.lineTo(x-Math.cos(t)*10,y+Math.sin(t)*10);ctx.stroke();ctx.globalAlpha=1;
+    LE.arrowHead(x,y,Math.atan2(y-P0.y,x-P0.x),g.P?26:20,col,al);glowAdd(x,y,30,0.5*al);
+    const lx=P0.x+Math.cos(t)*(L+(g.P?62:48)),ly=P0.y-Math.sin(t)*(L+(g.P?44:34));text(lab,lx,ly,g.P?30:22,col,al,700);return{x,y};};
+  if(showWords>0.01)WORDS.forEach(w=>arrow(w.ang,w.c,w.t,a*showWords,3));
+  const tip=arrow(ang,GOLD_HI,'违约金',a,5);return tip;}
+function render(G,amb,dt){const W=LY.W,H=LY.H,P=LY.port;const g=geo();
+  LE.bg(amb,0,0);
+  LE.title('标量、向量、矩阵与张量','从{一个数}，到{一摞表}',LE.easeOut(clamp(amb/1.8)),seg(G,0.05,0.6),{portLines:['标量、向量','矩阵与张量']});
+  if(G<0.3)return;
+  const mm=seg(G,SI.matmul-0.85,SI.matmul-0.2)*(1-seg(G,SI.tensor-0.85,SI.tensor-0.3));
+  const allT=seg(G,SI.all-0.85,SI.all-0.2);
+  ctx.save();
+  if(!P)LE.camera(lerp(960,1660,mm),lerp(540,560,mm),lerp(1,0.7,mm));else LE.camera(540,H/2,lerp(1,0.9,mm),540,H/2);
+  const main=1-allT;const fin=1-seg(G,LAST-0.7,LAST);
+  // 纸带（词元来源）
+  const tA=seg(G,SI.word-0.8,SI.word-0.3)*(1-seg(G,SI.tensor-0.8,SI.tensor-0.3));
+  if(tA>0.01){tape(g.tape.x0-40,g.tape.x1+40,g.tape.y,g.P?110:96,{a:tA});TOK.forEach((t,i)=>{const x=tokX(g,i),w=(g.tape.x1-g.tape.x0)/R-18;block(x-w/2,g.tape.y-(g.P?38:32),w,g.P?76:64,{style:i===0?'hot':'gold',a:tA});text(t,x,g.tape.y,g.P?30:24,i===0?GOLD_HI:IVORY,tA,700);});
+    const wd=seg(G,SI.word-0.6,SI.word);const p=cpos(g,G,0,0);if(wd>0.01&&G<SI.matrix-0.5){ctx.globalAlpha=0.6*wd*tA;ctx.setLineDash([5,6]);ctx.strokeStyle=GOLD_HI;ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(tokX(g,0),g.tape.y+(g.P?40:34));ctx.lineTo(p.x,p.y-(g.P?34:30));ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;}}
+  // 平面箭头
+  const plA=seg(G,SI.vector-0.5,SI.vector)*(1-seg(G,SI.matrix-0.8,SI.matrix-0.4))*main;
+  if(plA>0.01){const k=seg(G,SI.drag-0.85,SI.drag-0.2);const P0={x:lerp(g.plane.x,g.plane2.x,k),y:lerp(g.plane.y,g.plane2.y,k)},r=lerp(g.plane.r,g.plane2.r,k);
+    if(LE.isAt('drag')&&angUser!=null)angDisp=damp(angDisp,angUser,dt,14);else if(!LE.isAt('drag'))angDisp=30;
+    const tip=plane(g,G,P0,r,plA,amb,k,angDisp);
+    if(k<0.5){text('(0.74, 0.43)',tip.x+(g.P?10:16),tip.y+(g.P?44:34),g.P?26:19,DIM,plA*(1-k*2),400,'left');text('只画前两个数',P0.x,P0.y+r+(g.P?40:30),g.P?24:18,DIM2,plA*(1-k*2));}
+    if(k>0.01){const rows=WORDS.map(w=>{const d=Math.abs(((angDisp-w.ang+540)%360)-180);return{w,d,cos:Math.cos(d*Math.PI/180)};}).sort((a,b)=>b.cos-a.cos);
+      const best=rows[0];const t0=angDisp*Math.PI/180,t1=best.w.ang*Math.PI/180;ctx.globalAlpha=plA*k;ctx.strokeStyle=best.w.c;ctx.lineWidth=3;ctx.beginPath();ctx.arc(P0.x,P0.y,r*0.32,-Math.max(t0,t1),-Math.min(t0,t1));ctx.stroke();ctx.globalAlpha=1;
+      const bx=g.P?90:330,by=g.P?P0.y+r+90:330;card(bx,by,g.P?900:470,g.P?220:196,{a:plA*k});text('与「违约金」的余弦相似度（示意）',bx+(g.P?30:24),by+(g.P?40:32),g.P?26:19,DIM,plA*k,400,'left');
+      rows.forEach((r2,i)=>{const yy=by+(g.P?92:80)+i*(g.P?44:38);text(r2.w.t,bx+(g.P?30:24),yy,g.P?28:21,r2.w.c,plA*k,700,'left');const bw=(g.P?520:270)*clamp((r2.cos+1)/2);ctx.globalAlpha=plA*k*0.9;rr(bx+(g.P?160:110),yy-9,bw,18,5);ctx.fillStyle=r2.w.c;ctx.fill();ctx.globalAlpha=1;
+        text(f2(r2.cos),bx+(g.P?160:110)+bw+12,yy,g.P?26:19,IVORY,plA*k,700,'left');});
+      if(LE.isAt('drag')){const t=angDisp*Math.PI/180;LE.dragHint(P0.x+Math.cos(t)*r*0.85,P0.y-Math.sin(t)*r*0.85,angUser==null?'拖动箭头':'',amb,1,{dy:g.P?70:56});}}}
+  // 矩阵（含向量、标量）
+  const hd=seg(G,SI.heads-0.85,SI.heads-0.2);
+  const cellsA=main*fin;
+  if(cellsA>0.01){for(let i=0;i<R;i++)for(let j=0;j<D;j++){const p=cpos(g,G,i,j);if(p.a<=0.01)continue;let x=p.x,y=p.y;if(j>=4)x+=hd*(g.P?24:40);
+      const hot=G<SI.word-0.4&&i===0&&j===0&&G<SI.vector?1:0;const big=i===0&&j===0?lerp(2.4,1,seg(G,SI.vector-0.85,SI.vector-0.3)):1;
+      let st=i===0&&G<SI.matrix-0.3?'hot':'gold';if(hd>0.5&&j>=4)st='ice';
+      const rowHi=mm>0.5&&i===1;cell(x,y,g.cw*big,g.ch*big,(i===0&&j===0&&G<SI.vector-0.4)?0.7:VAL[i][j],p.a*cellsA,rowHi?'hot':st,(g.P?22:20)*big);
+      if(i===0&&j===0&&G<SI.vector-0.2){glowAdd(x,y,120,0.4*p.a*(1-seg(G,SI.vector-0.8,SI.vector-0.3)));text('温度',x,y-(g.P?110:100),g.P?28:22,DIM,p.a*(1-seg(G,SI.vector-0.8,SI.vector-0.4)),700);}}
+    // 行标签
+    const lA=seg(G,SI.matrix-0.4,SI.matrix)*cellsA;TOK.forEach((t,i)=>text(t,g.mx.x-g.cw/2-14,g.mx.y+i*g.gy,g.P?26:22,i===1&&mm>0.5?GOLD_HI:IVORY,lA,700,'right'));
+    const wl=seg(G,SI.word-0.4,SI.word)*(1-seg(G,SI.matrix-0.8,SI.matrix-0.4));if(wl>0.01){const p=cpos(g,G,0,0);text(g.P?'「违约金」的向量':'「违约金」的向量',g.P?540:p.x,g.P?p.y-60:p.y-(4*56)-10,g.P?26:22,GOLD_HI,wl*cellsA,700);}
+    if(lA>0.01&&G<SI.tensor-0.5){text(`${R} 行（句长）× ${D} 列（维度）`,g.mx.x+(D-1)*g.gx/2,g.mx.y+R*g.gy+(g.P?6:4),g.P?26:20,DIM,lA*(1-mm),400);}}
+  // 矩阵乘法
+  if(mm>0.01){const w=g.W;const prog=lin(G,SI.matmul-0.2,SI.matmul)*0+1;const cyc=(amb*1.1)%D,jc=Math.floor(cyc);
+    text('×',g.P?540:w.x-70,g.P?w.y-70:w.y+3.5*w.gy,g.P?56:56,GOLD_HI,mm,700);
+    for(let i=0;i<D;i++)for(let j=0;j<D;j++){const x=(g.P?w.x+j*w.gx:w.x+j*w.gx),y=w.y+i*w.gy;cell(x,y,w.cw,w.ch,Wm[i][j],mm,j===jc?'ice':'dim',15);}
+    text('权重矩阵 W（8 × 8，训练学到的数）',w.x+3.5*w.gx,w.y-w.gy+(g.P?-4:4),g.P?26:20,DIM,mm,400);
+    const o=g.O;text('=',g.P?540:o.x-90,g.P?o.y-70:o.y+2*g.gy,56,GOLD_HI,mm,700);
+    for(let i=0;i<R;i++)for(let j=0;j<D;j++){const on=i<1||(i===1&&j<=jc)?1:0;const sh=i===1&&j===jc;cell(o.x+j*g.gx,o.y+i*g.gy,g.cw,g.ch,OUT[i][j],mm*(i===1?(on?1:0.12):0.12),sh?'hot':'gold',20);}
+    text('新的表（5 × 8）',o.x+3.5*g.gx,o.y+R*g.gy+4,g.P?26:20,DIM,mm,400);
+    const fx=g.mx.x+7*g.gx+g.cw/2;// 连线
+    const px=o.x+jc*g.gx,py=o.y+g.gy,wx=w.x+jc*w.gx,wy=w.y+3.5*w.gy;ctx.globalAlpha=0.7*mm;ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2;ctx.setLineDash([6,6]);ctx.beginPath();ctx.moveTo(fx+8,g.mx.y+g.gy);ctx.quadraticCurveTo((fx+px)/2,(g.P?py-200:g.mx.y-140),px,py);ctx.moveTo(wx,w.y+7*w.gy+w.ch/2+6);ctx.lineTo(px,py-g.ch/2-4);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;glowAdd(px,py,60,0.6*mm);
+    const dsum=VAL[1].map((v,k)=>`${f2(v)}×${f2(Wm[k][jc])}`).slice(0,2).join(' + ');rich(`「过高」这一行 · 第 ${jc+1} 列：${dsum} + … = {${f2(OUT[1][jc])}}`,g.P?540:1660,g.P?o.y+R*g.gy+70:o.y+R*g.gy+90,g.P?26:30,mm,{maxW:g.P?960:0});}
+  // 张量：叠层
+  const tn=seg(G,SI.tensor-0.85,SI.tensor-0.15)*main;
+  if(tn>0.01){const dx=g.P?22:40,dy=g.P?-30:-36;for(let d=3;d>=1;d--){const e=seg(tn,(3-d)*0.15,0.55+(3-d)*0.15);if(e<=0.01)continue;ctx.save();ctx.translate(dx*d*e,dy*d*e);
+      for(let i=0;i<R;i++)for(let j=0;j<D;j++){let x=g.mx.x+j*g.gx;if(j>=4)x+=hd*(g.P?24:40);const st=hd>0.5&&j>=4?'ice':'dim';block(x-g.cw/2,g.mx.y+i*g.gy-g.ch/2,g.cw,g.ch,{style:st,a:e*cellsA*(0.55+0.1*d),r:6});}
+      if(!g.P)text(`第 ${d+1} 句`,g.mx.x+(D-1)*g.gx+(hd*(g.P?24:40))+g.cw/2+12,g.mx.y-g.ch/2+6,g.P?22:18,DIM,e*cellsA*seg(G,SI.tensor-0.3,SI.tensor),400,'left');ctx.restore();}
+    if(!P)text('第 1 句',g.mx.x+(D-1)*g.gx+(hd*(g.P?24:40))+g.cw/2+12,g.mx.y+g.ch/2+12,g.P?22:18,DIM,cellsA*seg(G,SI.tensor-0.3,SI.tensor),400,'left');
+    // 轴标签
+    const sA=seg(G,SI.shape-0.7,SI.shape-0.1)*cellsA;if(sA>0.01){const x0=g.mx.x-g.cw/2,y1=g.mx.y+(R-1)*g.gy+g.ch/2,xR=g.mx.x+(D-1)*g.gx+g.cw/2+hd*(g.P?24:40);
+      const ax=(x1,y1_,x2,y2,col,lab,lx,ly,al='center')=>{LE.line(x1,y1_,x2,y2,col,3,sA);LE.arrowHead(x2,y2,Math.atan2(y2-y1_,x2-x1),16,col,sA);text(lab,lx,ly,g.P?26:22,col,sA,700,al);};
+      ax(x0,y1+24,xR,y1+24,GREEN,'维度 8',(x0+xR)/2,y1+(g.P?58:54));
+      if(g.P)ax(x0-130,g.mx.y-g.ch/2,x0-130,y1,ICE,'句长 5',x0-130,g.mx.y-g.ch/2-30);else ax(x0-150,g.mx.y-g.ch/2,x0-150,y1,ICE,'句长 5',x0-162,(g.mx.y+y1)/2,'right');
+      ax(xR+16,y1+10,xR+16+dx*3,y1+10+dy*3,GOLD_HI,'批量 4',g.P?xR+16+dx*3:xR+30+dx*3,g.P?y1+dy*3+10+40:y1+dy*3+16,g.P?'center':'left');
+      const sy=g.P?g.mx.y+R*g.gy+170:g.mx.y+R*g.gy+130;
+      if(hd<0.5)rich('形状 {(4, 5, 8)} =（批量, 句长, 维度）',g.P?540:960,sy,g.P?34:32,sA*(1-hd*2));
+      else rich('形状 {(4, 2, 5, 4)} =（批量, 头数, 句长, 每头维度）',g.P?540:960,sy,g.P?32:32,sA*(hd*2-1),{maxW:g.P?960:0});
+      if(hd>0.01){text('头 1',g.mx.x+1.5*g.gx,g.mx.y-g.ch/2-(g.P?96:110),g.P?26:22,GOLD_HI,hd*sA,700);text('头 2',g.mx.x+5.5*g.gx+(g.P?24:40),g.mx.y-g.ch/2-(g.P?96:110),g.P?26:22,ICE,hd*sA,700);}}}
   ctx.restore();
-
-  /* ---------- 幕 0：开场 (0 -> 0.52) ---------- */
-  const a0=actAlpha(G,null,null,0.02,0.48);
-  if(a0>0.005){
-    const intro=clamp(amb/2.2), out=1-a0;
-    const title='标量 · 向量 · 矩阵 · 张量', fs=90, tw=measure(title,fs,700);
-    let x=W/2-tw/2; const rnd=mulberry(61); let ci=0;
-    ctx.save();
-    for(const ch of title){
-      const cw=measure(ch,fs,700), ca=seg(intro,0.05+ci*0.024,0.3+ci*0.024);
-      const dx=(rnd()-0.5)*200*out, dy=-(30+rnd()*120)*out;
-      glowText(ch,x+cw/2+dx,445+(1-ca)*24+dy,fs,PALE,ca*a0,700,0.35);
-      x+=cw; ci++;
-    }
-    const lw=840*seg(intro,0.28,0.82)*a0;
-    ctx.globalCompositeOperation='lighter';
-    const lg=ctx.createLinearGradient(W/2-lw/2,0,W/2+lw/2,0);lg.addColorStop(0,'rgba(255,200,90,0)');lg.addColorStop(0.5,`rgba(255,214,120,${0.95*a0})`);lg.addColorStop(1,'rgba(255,200,90,0)');
-    ctx.fillStyle=lg;ctx.fillRect(W/2-lw/2,540,lw,2);glow(W/2,541,60,0.7*a0);ctx.globalCompositeOperation='source-over';
-    rich('从一颗{光点}到一座{3D 发光魔方}：看懂 AI 世界的全部数据形态',W/2,605,31,seg(intro,0.5,0.95)*a0,DIM);
-    brandMark(W/2,870,28,seg(intro,0.65,1)*a0);
-    ctx.restore();
-  }
-
-  /* ---------- 幕 1：0D 标量 (0.52 -> 1.42) ---------- */
-  const a1=actAlpha(G,0.52,1.0,1.08,1.45);
-  if(a1>0.005){
-    ctx.save();ctx.globalAlpha=a1;
-    const cx=960, cy=540;
-    ctx.globalCompositeOperation='lighter';
-    glow(cx,cy,140*(1+0.08*Math.sin(amb*2.5)),0.75);
-    core(cx,cy,32,1);
-    ctx.globalCompositeOperation='source-over';
-    ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2;ctx.beginPath();ctx.arc(cx,cy,44,0,Math.PI*2);ctx.stroke();
-    glowText('0.7',cx,cy,34,PALE,1,700,0.35);
-    glowText('0D · 标量 (Scalar)',cx,cy-125,34,GOLD_HI,1,700,0.35);
-    text('孤立的单个数值：没有方向、没有维度（如 Temperature = 0.7，违约金比例 = 30%）',cx,cy+125,22,IVORY,0.92);
-    ctx.restore();
-  }
-
-  /* ---------- 幕 2：1D 向量 (1.52 -> 3.42) ---------- */
-  const a2=actAlpha(G,1.52,2.0,3.05,3.45);
-  if(a2>0.005){
-    const pSem=seg(G,2.2,3.0);
-    ctx.save();ctx.globalAlpha=a2;
-
-    // 左侧：数字列形态 [0.21, -0.73, 0.88]
-    const lx=430, ly=540;
-    rr(lx-190,ly-155,380,310,14);ctx.fillStyle='rgba(24,18,8,0.88)';ctx.fill();ctx.strokeStyle=GOLD;ctx.lineWidth=2;ctx.stroke();
-    text('代数形态：一列有序数字',lx,ly-115,18,GOLD,1,700);
-    glowText('[ 0.21,  -0.73,  0.88 ]',lx,ly-35,28,PALE,1,700,0.3);
-    text('词元「违约金」的向量坐标',lx,ly+35,19,IVORY,0.92);
-    text('（真实大模型中一列有 4,096 个数字）',lx,ly+85,15,DIM,1);
-
-    // 右侧：几何形态（笛卡尔坐标系 + 发光向量箭头）
-    const ox=1160, oy=620;
-    ctx.strokeStyle='rgba(255,255,255,0.28)';ctx.lineWidth=1.8;
-    ctx.beginPath();ctx.moveTo(ox-220,oy);ctx.lineTo(ox+380,oy);ctx.moveTo(ox,oy+140);ctx.lineTo(ox,oy-320);ctx.stroke();
-    text('语义几何空间',ox+340,oy+30,16,DIM,1,'right');
-
-    // 主向量：违约金
-    drawArrow(ox,oy,ox+240,oy-210,1,GOLD_HI,3.6);
-    glow(ox+240,oy-210,36,0.75);
-    text('「违约金」',ox+258,oy-215,21,GOLD_HI,1,700,'left');
-
-    // Step 3: 语义相近的「赔偿金」紧贴在一起，无关的「香蕉」指向远处
-    if(pSem>0.02){
-      ctx.save();ctx.globalAlpha*=pSem;
-      drawArrow(ox,oy,ox+265,oy-145,pSem,GREEN,3.2);
-      glow(ox+265,oy-145,32,0.7,SPR_GRN);
-      text('「赔偿金」（夹角极小 · 语义近）',ox+282,oy-145,19,GREEN,1,700,'left');
-
-      drawArrow(ox,oy,ox-165,oy-155,pSem,BLUE,2.4);
-      text('「香蕉」（方向截然不同）',ox-180,oy-165,18,BLUE,0.9,400,'right');
-      ctx.restore();
-    }
-    ctx.restore();
-  }
-
-  /* ---------- 幕 3：2D 矩阵 (3.52 -> 5.42) ---------- */
-  const a3=actAlpha(G,3.52,4.0,5.05,5.45);
-  if(a3>0.005){
-    const pMul=seg(G,4.2,5.0);
-    ctx.save();ctx.globalAlpha=a3;
-    const mx=lerp(960,540,pMul), my=540, cw=112, ch=74;
-
-    // 句子矩阵（4 × 5 光幕）
-    const gW=5*cw, gH=4*ch;
-    const x0=mx-gW/2, y0=my-gH/2;
-    text('句子矩阵 (Seq_Len × Dim)',mx,y0-42,22,GOLD_HI,1,700);
-    for(let r=0;r<4;r++){
-      text(MAT_WORDS[r],x0-22,y0+r*ch+ch/2,19,PALE,1,700,'right');
-      for(let c=0;c<5;c++){
-        const val=MAT_VALS[r][c], cx=x0+c*cw, cy=y0+r*ch;
-        rr(cx+3,cy+3,cw-6,ch-6,6);
-        ctx.fillStyle=val>0?`rgba(226,170,66,${0.12+Math.abs(val)*0.32})`:`rgba(106,169,255,${0.12+Math.abs(val)*0.32})`;
-        ctx.fill();ctx.strokeStyle='rgba(226,170,66,0.45)';ctx.lineWidth=1.2;ctx.stroke();
-        text(val.toFixed(2),cx+cw/2,cy+ch/2,18,IVORY,0.95);
-      }
-    }
-
-    // Step 5: 矩阵乘法（× 权重矩阵 W → 提纯后的新特征矩阵）
-    if(pMul>0.02){
-      ctx.save();ctx.globalAlpha*=pMul;
-      glowText('×',905,my,48,GOLD_HI,1,700,0.4);
-      // 权重矩阵 W
-      rr(970,my-148,290,296,12);ctx.fillStyle='rgba(18,38,72,0.68)';ctx.fill();ctx.strokeStyle=BLUE;ctx.lineWidth=2.2;ctx.stroke();
-      glowText('权重矩阵 W',1115,my-32,26,BLUE,1,700,0.3);
-      text('神经网络的参数本体',1115,my+16,17,IVORY,0.9);
-      text('空间旋转 · 拉伸 · 投影',1115,my+54,15,DIM,1);
-
-      glowText('=',1325,my,48,GOLD_HI,1,700,0.4);
-      // 输出矩阵
-      rr(1390,my-148,370,296,12);ctx.fillStyle='rgba(14,56,42,0.68)';ctx.fill();ctx.strokeStyle=GREEN;ctx.lineWidth=2.2;ctx.stroke();
-      glow(1575,my,130,0.35,SPR_GRN);
-      glowText('提纯后的新特征矩阵',1575,my-26,24,GREEN,1,700,0.35);
-      text('GPU 最擅长的事：毫秒级完成',1575,my+24,17,PALE,0.95);
-      text('数以亿计的矩阵并行乘加！',1575,my+58,17,IVORY,0.9);
-      ctx.restore();
-    }
-    ctx.restore();
-  }
-
-  /* ---------- 幕 4：3D 张量晶格魔方 (5.52 -> 8.42) ---------- */
-  const a4=actAlpha(G,5.52,6.0,8.05,8.45);
-  if(a4>0.005){
-    const pShape=seg(G,6.2,7.0), pND=seg(G,7.2,8.0);
-    ctx.save();ctx.globalAlpha=a4;
-
-    const cx=lerp(960,640,pShape), cy=540, sc=680;
-    const yaw=amb*0.45+0.6, pitch=0.35+Math.sin(amb*0.3)*0.08;
-
-    // 投影并按深度排序渲染 64 个晶格节点与连线
-    const proj=CUBE_PTS.map(p=>proj3D(p,yaw,pitch,cx,cy,sc));
-    // 画外轮廓晶格边
-    ctx.strokeStyle='rgba(226,170,66,0.28)';ctx.lineWidth=1.2;
-    for(let i=0;i<CUBE_PTS.length;i++){
-      for(let j=i+1;j<CUBE_PTS.length;j++){
-        const d=Math.abs(CUBE_PTS[i][0]-CUBE_PTS[j][0])+Math.abs(CUBE_PTS[i][1]-CUBE_PTS[j][1])+Math.abs(CUBE_PTS[i][2]-CUBE_PTS[j][2]);
-        if(Math.abs(d-1)<0.01){
-          ctx.beginPath();ctx.moveTo(proj[i].x,proj[i].y);ctx.lineTo(proj[j].x,proj[j].y);ctx.stroke();
-        }
-      }
-    }
-    // 画发光节点
-    ctx.save();ctx.globalCompositeOperation='lighter';
-    proj.forEach((pt,idx)=>{
-      const br=clamp(1-(pt.z+2.2)/4.5);
-      glow(pt.x,pt.y,14*pt.s,0.35+br*0.65, idx%16<4?SPR_BLU:SPR_HALO);
-    });
-    ctx.restore();
-
-    text('3D 发光晶格魔方 · Tensor',cx,835,24,GOLD_HI,1,700);
-
-    // 右侧：维度解析卡片（Step 7-8）
-    if(pShape>0.02){
-      ctx.save();ctx.globalAlpha*=pShape;ctx.translate((1-pShape)*24,0);
-      rr(1080,275,680,530,16);ctx.fillStyle='rgba(22,17,9,0.92)';ctx.fill();ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2;ctx.stroke();
-      glowText('大模型里的标准 3D 张量形状',1420,338,26,GOLD_HI,1,700,0.35);
-      glowText('[ Batch,  Seq_Len,  Dim ]',1420,405,30,ICE,1,700,0.3);
-
-      const dims=[
-        ['X 轴 · Dim (4,096)','单个词元的语义特征深度',GOLD_HI],
-        ['Y 轴 · Seq_Len (2,048)','一句话包含的词元序列长度',GREEN],
-        ['Z 轴 · Batch (32)','GPU 同时并行处理的对话批次数',BLUE],
-      ];
-      dims.forEach(([t,d,c],i)=>{
-        text(t,1140,490+i*76,21,c,1,700,'left');
-        text(d,1140,522+i*76,16,DIM,1,400,'left');
-      });
-
-      if(pND>0.05){
-        rr(1125,706,590,68,8);ctx.fillStyle='rgba(124,232,255,0.12)';ctx.fill();ctx.strokeStyle=ICE;ctx.lineWidth=1.5;ctx.stroke();
-        text('4D 图像 [B, C, H, W] · 5D 视频 [B, T, C, H, W] 皆为张量',1420,740,17,ICE,pND,700);
-      }
-      ctx.restore();
-    }
-    ctx.restore();
-  }
-
-  /* ---------- 幕 5：四态升维全景 & 终局落版 (8.52 -> 10) ---------- */
-  const a5=actAlpha(G,8.52,9.0,null,null);
-  if(a5>0.005){
-    const pFin=seg(G,9.35,10.0);
-    ctx.save();ctx.globalAlpha=a5;ctx.translate(0,(1-a5)*18);
-
-    const cards=[
-      {dim:'0D', t:'标量 Scalar', sub:'一颗光点', ex:'单个数值：0.7', x:300, col:IVORY},
-      {dim:'1D', t:'向量 Vector', sub:'一根箭头', ex:'一个词元：[4096]', x:740, col:GOLD_HI},
-      {dim:'2D', t:'矩阵 Matrix', sub:'一张光幕', ex:'一整句话：[N × 4096]', x:1180, col:BLUE},
-      {dim:'3D+',t:'张量 Tensor', sub:'一座魔方', ex:'批量并行：[B × N × 4096]', x:1620, col:GREEN},
-    ];
-    cards.forEach((c,i)=>{
-      rr(c.x-175,320,350,360,16);ctx.fillStyle='rgba(20,16,9,0.9)';ctx.fill();ctx.strokeStyle=c.col;ctx.lineWidth=2;ctx.stroke();
-      glowText(c.dim,c.x,395,52,c.col,1,700,0.4);
-      text(c.t,c.x,475,24,PALE,1,700);
-      text(c.sub,c.x,530,20,c.col,0.95);
-      text(c.ex,c.x,605,17,DIM,1);
-      if(i<3) glowText('→',c.x+220,500,36,GOLD,0.8,700,0.2);
-    });
-
-    if(pFin>0.02){
-      ctx.save();ctx.globalAlpha*=pFin;
-      rich('张量不是神秘的高数怪兽，它只是把{点、线、面、体}统一装进 GPU 的多维数字容器',W/2,795,30,1,IVORY);
-      brandMark(W/2,905,28,1);
-      ctx.restore();
-    }
-    ctx.restore();
-  }
-
-  // 电影暗角
-  const vig=ctx.createRadialGradient(W/2,H/2,H*0.38,W/2,H/2,W*0.66);
-  vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,0,0.55)');
-  ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
-
-  /* ---------- 顶部引导语（先退后进，零叠字） & 进度 ---------- */
-  const lo=Math.floor(G), hi=Math.min(LAST,Math.ceil(G)), f=G-lo;
-  const ha=STEPS[lo].hint, hb=STEPS[hi].hint;
-  if(ha===hb) rich(ha,W/2,92,33,0.95);
-  else {
-    const aOut=1-ease(clamp(f/0.38)), aIn=ease(clamp((f-0.5)/0.42));
-    if(aOut>0.01) rich(ha,W/2,92-(1-aOut)*10,33,0.95*aOut);
-    if(aIn>0.01) rich(hb,W/2,92+(1-aIn)*10,33,0.95*aIn);
-  }
-  const st=STEPS[Math.round(G)];
-  text(`${String(st.scene).padStart(2,'0')} · ${SCENES[st.scene]}    ${Math.round(G)+1} / ${STEPS.length}`,1860,1025,18,'rgba(244,237,223,0.52)',1,400,'right');
-  ctx.fillStyle='rgba(244,237,223,0.16)';ctx.fillRect(1620,1044,240,2);
-  ctx.fillStyle=GOLD;ctx.fillRect(1620,1044,240*G/LAST,2);
-  ctx.restore();
-}
-
-/* ==================== 交互与播控 ==================== */
-let G=0, target=0, anim=null, auto=false; const t0=performance.now();
-const dock=document.getElementById('dock');
-SCENES.forEach((name,idx)=>{
-  const b=document.createElement('button');b.className='sbtn';b.textContent=`${String(idx).padStart(2,'0')} ${name}`;
-  b.addEventListener('pointerdown',e=>e.stopPropagation());
-  b.addEventListener('pointerup',e=>{e.stopPropagation();go(SCENE_FIRST[idx]);});
-  dock.appendChild(b);
-});
-function syncDock(){const sc=STEPS[Math.round(target)].scene;dock.querySelectorAll('.sbtn').forEach((b,i)=>b.classList.toggle('active',i===sc));}
-function go(i){
-  i=clamp(Math.round(i),0,LAST);if(i===target&&!anim)return;
-  const from=G, fwd=i===Math.round(target)+1&&i>from;
-  target=i;anim={from,to:i,start:performance.now(),dur:fwd?STEPS[i].dur:Math.min(850,350+Math.abs(i-from)*60),linear:fwd};syncDock();
-}
-function next(){go(target+1);} function prev(){go(target-1);}
-function tick(now){
-  if(anim){
-    const p=clamp((now-anim.start)/anim.dur);
-    G=anim.linear?lerp(anim.from,anim.to,p):lerp(anim.from,anim.to,ease(p));
-    if(p>=1){G=anim.to;anim=null;if(auto&&G<LAST)setTimeout(()=>auto&&go(target+1),700);}
-  }
-  render(G,(now-t0)/1000);requestAnimationFrame(tick);
-}
-let idleTimer=null;
-function wake(){document.body.classList.remove('idle');clearTimeout(idleTimer);idleTimer=setTimeout(()=>document.body.classList.add('idle'),3200);}
-['mousemove','pointerdown','keydown'].forEach(ev=>addEventListener(ev,wake)); wake();
-
-const autoBtn=document.getElementById('autoBtn'), cleanBtn=document.getElementById('cleanBtn'), fsBtn=document.getElementById('fsBtn');
-function toggleAuto(){auto=!auto;autoBtn.classList.toggle('on',auto);autoBtn.textContent=auto?'自动中':'自动 A';if(auto)next();}
-function toggleClean(){document.body.classList.toggle('clean');}
-function toggleFS(){const d=document,el=d.documentElement;if(!d.fullscreenElement)el.requestFullscreen?.();else d.exitFullscreen?.();}
-[autoBtn,cleanBtn,fsBtn].forEach(b=>b.addEventListener('pointerdown',e=>e.stopPropagation()));
-autoBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleAuto();});
-cleanBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleClean();});
-fsBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
-
-addEventListener('keydown',e=>{
-  if(e.target.id==='lesson-back')return;
-
-  const k=e.key;
-  if(['ArrowRight',' ','PageDown','Enter','ArrowDown'].includes(k)){e.preventDefault();next();}
-  else if(['ArrowLeft','PageUp','Backspace','ArrowUp'].includes(k)){e.preventDefault();prev();}
-  else if(k==='Home')go(0); else if(k==='End')go(LAST);
-  else if(k==='f'||k==='F')toggleFS();
-  else if(k==='a'||k==='A')toggleAuto();
-  else if(k==='h'||k==='H')toggleClean();
-});
-let pd=null;
-cv.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY,b:e.button};});
-cv.addEventListener('pointerup',e=>{if(!pd)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y,b=pd.b;pd=null;
-  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2){dx<0?next():prev();return;}
-  if(Math.abs(dx)<14&&Math.abs(dy)<14){if(b===2)prev();else e.shiftKey?prev():next();}});
-cv.addEventListener('contextmenu',e=>{e.preventDefault();prev();});
-
-syncDock(); requestAnimationFrame(tick);
+  // 全景
+  if(allT>0.01){const a=allT*fin;const P2=P;const spots=P2?[[300,H*0.3],[780,H*0.3],[300,H*0.6],[780,H*0.6]]:[[330,520],[730,520],[1150,520],[1600,520]];
+    const labs=[['0 维','标量'],['1 维','向量'],['2 维','矩阵'],['3 维及以上','张量']];
+    spots.forEach(([x,y],k)=>{const e=seg(allT,k*0.15,0.5+k*0.15)*a;if(e<=0.01)return;const cw=P2?62:58,ch=P2?40:38;
+      if(k===0)cell(x,y,cw*1.3,ch*1.3,0.7,e,'hot',18);
+      if(k===1)for(let j=0;j<4;j++)cell(x,y+(j-1.5)*(ch+6),cw,ch,VAL[0][j],e,'hot',15);
+      if(k===2)for(let i=0;i<3;i++)for(let j=0;j<3;j++)cell(x+(j-1)*(cw+6),y+(i-1)*(ch+6),cw,ch,VAL[i][j],e,'gold',15);
+      if(k===3){for(let d=2;d>=0;d--)for(let i=0;i<3;i++)for(let j=0;j<3;j++){const xx=x+(j-1)*(cw+6)+d*24-24,yy=y+(i-1)*(ch+6)-d*22+22;if(d===0)cell(xx,yy,cw,ch,VAL[i][j],e,'gold',15);else block(xx-cw/2,yy-ch/2,cw,ch,{style:'dim',a:e*0.8,r:6});}}
+      glowText(labs[k][0],x,y+(P2?220:200),P2?40:34,GOLD_HI,e,700);text(labs[k][1],x,y+(P2?272:246),P2?30:24,IVORY,e,700);
+      if(k<3&&!P2)text('→',x+200,y,40,GOLD,e,700);});
+    rich('标量、向量、矩阵其实都是张量：分别是 {0、1、2 维}的张量',W/2,P?H*0.78:860,P?30:28,a*seg(allT,0.6,1),{maxW:P?940:0});}
+  LE.finale(['{标量}一个数，{向量}一串数，{矩阵}一张表','词元变成向量，一句话就是一张表；计算主要是{矩阵乘法}','一次处理多句话，就是{张量}：(批量, 句长, 维度)'],seg(G,LAST-0.8,LAST),'向量数值、维度（8 维）与相似度均为示意；真实模型的词向量通常有上千维，相似与否也要看具体模型。');}
+const drags=[{step:'drag',cursor:'grab',hit:pt=>{const g=geo();return Math.hypot(pt.x-g.plane2.x,pt.y-g.plane2.y)<g.plane2.r*1.15;},
+  move:pt=>{const g=geo();let a=Math.atan2(-(pt.y-g.plane2.y),pt.x-g.plane2.x)*180/Math.PI;if(a<0)a+=360;angUser=a;}}];
+LE.run({steps:STEPS,scenes:SCENES,render,drags,onGo:()=>{angUser=null;},onSeek:(g,st)=>{angUser=st.ang??null;if(angUser!=null)angDisp=angUser;}});
 })();
+
 </script></body></html>

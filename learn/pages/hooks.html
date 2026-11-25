@@ -1,363 +1,106 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
-<title>Hooks 到底是什么 · 告示牌与机械闭门器</title>
+<title>Hooks 到底是什么 · 提示词是告示牌，Hook 是门锁</title>
+<meta name="description" content="Agent 循环里，提示词里的规矩可能被忽略；Hook 是挂在固定节点、由运行框架执行的脚本：工具前拦截并把理由反馈给模型、工具后自动检查、结束前验收。可拖动请求路径看拦截效果。">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
-<style>
-/* 将原文件中的两行 @font-face{font-family:'HSerif'...} 粘贴至此即可恢复原版衬线体 */
-html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
-body{position:fixed;inset:0}
-canvas{display:block;touch-action:none}
-#fs{position:fixed;right:16px;top:14px;font:13px "HSerif","Songti SC",serif;color:rgba(244,237,223,.38);background:none;border:1px solid rgba(226,170,66,.26);border-radius:4px;padding:4px 10px;cursor:pointer;z-index:5}
-#fs:hover{color:#FFD062;border-color:#E2AA42}
-:fullscreen #fs{display:none}
-</style><style>
-  #lesson-back {
-    position: fixed;
-    z-index: 10;
-    top: calc(8px + env(safe-area-inset-top));
-    left: calc(12px + env(safe-area-inset-left));
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    box-sizing: border-box;
-    padding: 0 10px;
-    border-radius: 4px;
-    color: #ffe5ad;
-    background: #17130e;
-    font: 14px/1.4 system-ui, sans-serif;
-    text-decoration: none;
-  }
-  #lesson-back:hover { text-decoration: underline; }
-  #lesson-back:focus-visible { outline: 2px solid #ffd062; outline-offset: 2px; }
-  body.clean #lesson-back, :fullscreen #lesson-back { display: none; }
-</style>
+<link rel="preload" href="../assets/fonts/hserif-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/hserif-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/lesson.css">
 </head><body>
 <a id="lesson-back" href="../index.html">← 返回模块目录</a>
 <canvas id="c"></canvas><button id="fs" title="全屏（F）">全屏 F</button>
+<script src="../assets/lesson-engine.js"></script>
 <script>
-(function(){
-'use strict';
-const FONT='"HSerif","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif';
-const IVORY='#F4EDDF', GOLD='#E2AA42', GOLD_HI='#FFD062', PALE='#FFE9B8', DIM='rgba(244,237,223,0.62)', RED='#E86A58', GREEN='#4FD198', BLUE='#6AA9FF';
-
-const SCENES=['开场','告示牌的失灵','物理闭门器','全生命周期工位','终局本质'];
-const S=(id,scene,dur,hint)=>({id,scene,dur,hint});
+// @title Hooks 到底是什么 · 提示词是告示牌，Hook 是门锁
+// @desc Agent 循环里，提示词里的规矩可能被忽略；Hook 是挂在固定节点、由运行框架执行的脚本：工具前拦截并把理由反馈给模型、工具后自动检查、结束前验收。可拖动请求路径看拦截效果。
+(function(){'use strict';
+const {C,LY,ctx,clamp,lerp,ease,seg,lin,bump,damp,text,glowText,rich,measure,rr,glow,glowAdd,card,block,tape,line,arrowHead,qbez,S}=LE;
+const {IVORY,GOLD,GOLD_HI,PALE,DIM,DIM2,RED,GREEN,ICE,PURPLE}=C;
+const SCENES=['开场','Agent 循环','告示牌失灵','挂上 Hook','动手试路径','更多挂载点','收束'];
 const STEPS=[
-  S('title',0,2600,''),
-  S('loop_in',1,2000,'这是一条正在高速运转的 {Agent Loop}：模型吐出工具请求，底座去执行'),
-  S('prompt_sign',1,2200,'我们在提示词里贴了张告示牌：「{请勿直接覆盖正式合同}」'),
-  S('prompt_fail',1,2600,'但大模型本质是概率预测——上下文一长，光点直接{无视告示牌}冲了过去！'),
-  S('hook_weld',2,2600,'工程解法：在光轨上焊死一道物理闸门——{Hooks（确定性钩子）}'),
-  S('hook_block',2,2800,'{PreToolUse 钩子}：执行与否不由模型决定！违规请求撞上闸门，瞬间亮红拦截'),
-  S('hook_bounce',2,2400,'拦截日志自动{反弹回传给模型}，倒逼它改用安全方案重新提交'),
-  S('hook_post',3,2600,'{PostToolUse 钩子}：工具执行完自动触发脚本（格式化、脱敏、合规校验），转绿放行'),
-  S('hook_stop',3,2400,'{Stop 钩子}：模型准备给出最终回答前，做最后一道硬性交付验收'),
-  S('hook_all',3,2600,'拉远看全环：5 大固定生命周期节点，由 {Harness} 按时强制触发，100% 确定执行'),
-  S('compare',4,2600,'本质区别：Prompt 是「{请随手关门}」的告示，Hook 是强制落锁的「{闭门器}」'),
-  S('final',4,2600,''),
+ S('title',0,2600,''),
+ S('loop',1,3000,'Agent 在一个{循环}里工作：模型读纸带、提出工具请求，运行框架去执行，结果写回纸带'),
+ S('sign',2,2600,'我们在提示词里写：「{不要直接覆盖正式合同}」'),
+ S('fail',2,3000,'可模型是按概率生成的：上下文一长，这句话{可能被忽略}，请求照样执行了'),
+ S('gate',3,3000,'{Hook}：在循环的固定节点挂一段{脚本}，由运行框架执行，不靠模型自觉'),
+ S('block',3,2800,'{PreToolUse}：工具执行前检查——命中规则就{拦下}，不执行'),
+ S('bounce',3,3000,'拦截理由{反馈给模型}，它改成写入草稿副本，重新提交，通过'),
+ S('drag',4,1800,'{拖动}请求里的文件路径，看 Hook 放不放行',true),
+ S('post',5,2800,'{PostToolUse}：工具执行后自动跑脚本——格式化、脱敏、合规检查'),
+ S('stop',5,2800,'{Stop}：准备结束前做最后验收；不达标，可以让它继续干'),
+ S('all',5,3000,'常见挂载点：会话开始、提交提问、工具前、工具后、结束前……（以 Claude Code 为例）'),
+ S('compare',6,3000,'区别：提示词是「{请随手关门}」的告示，Hook 是{装上的门锁}——锁的规则也要写对'),
+ S('final',6,3200,''),
 ];
-const LAST=STEPS.length-1;
-
-const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
-const lerp=(a,b,t)=>a+(b-a)*t;
-const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-const easeCam=t=>t<.5?16*t**5:1-Math.pow(-2*t+2,5)/2;
-const seg=(G,a,b)=>ease(clamp((G-a)/(b-a)));
-function kf(G,pts,fn=ease){if(G<=pts[0][0])return pts[0][1];for(let i=0;i<pts.length-1;i++){if(G<=pts[i+1][0]){const a=pts[i],b=pts[i+1];return lerp(a[1],b[1],fn((G-a[0])/(b[0]-a[0])));}}return pts[pts.length-1][1];}
-function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
-
-/* ==================== 画布与原版光学贴图 ==================== */
-const cv=document.getElementById('c'), ctx=cv.getContext('2d');
-const W=1920, H=1080; let view={s:1,ox:0,oy:0,dpr:1};
-function resize(){
-  const w=innerWidth,h=innerHeight,dpr=Math.min(window.devicePixelRatio||1,2);
-  cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.width=w+'px';cv.style.height=h+'px';
-  const s=Math.min(w/W,h/H);view={s,ox:(w-W*s)/2,oy:(h-H*s)/2,dpr};
-}
-addEventListener('resize',resize); resize();
-
-const mcache=new Map();
-function font(sz,wt=400){return `${wt} ${sz}px ${FONT}`;}
-function measure(t,sz,wt=400){const k=t+'|'+wt;let v=mcache.get(k);if(v===undefined){ctx.font=font(100,wt);v=ctx.measureText(t).width/100;mcache.set(k,v);}return v*sz;}
-function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
-
-function text(str,x,y,sz,col,a=1,wt=400,al='center'){
-  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
-  const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.font=font(sz,wt);ctx.fillStyle=col;ctx.textAlign=al;ctx.textBaseline='middle';ctx.fillText(str,x,y);ctx.globalAlpha=prev;
-}
-function glowText(str,x,y,sz,col,a=1,wt=700,blur=0.45,al='center'){
-  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
-  ctx.save();ctx.shadowColor='rgba(255,186,60,0.6)';ctx.shadowBlur=sz*blur;text(str,x,y,sz,col,a,wt,al);ctx.restore();
-}
-function rich(str,x,y,sz,a=1,col=IVORY){
-  if(ctx.globalAlpha*clamp(a)<=0.004||!str)return;
-  const parts=[];str.split(/(\{[^}]*\})/).forEach(s=>{if(!s)return;if(s[0]==='{')parts.push([s.slice(1,-1),1]);else parts.push([s,0]);});
-  let tw=0;parts.forEach(p=>{p[2]=measure(p[0],sz,p[1]?700:400);tw+=p[2];});let x0=x-tw/2;
-  parts.forEach(p=>{if(p[1])glowText(p[0],x0,y,sz,GOLD_HI,a,700,0.45,'left');else text(p[0],x0,y,sz,col,a,400,'left');x0+=p[2];});
-}
-function brandMark(x,y,sz,a=1){
-  if(ctx.globalAlpha*clamp(a)<=0.004)return;
-  const s1='陈石律师',s2='  ·  ',s3='chenshi.ai';
-  const w1=measure(s1,sz*0.8),w2=measure(s2,sz*0.8),w3=measure(s3,sz,700),tw=w1+w2+w3;let x0=x-tw/2;
-  text(s1,x0,y,sz*0.8,IVORY,a*0.78,400,'left');x0+=w1;text(s2,x0,y,sz*0.8,GOLD,a*0.8,400,'left');x0+=w2;glowText(s3,x0,y,sz,GOLD_HI,a,700,0.3,'left');
-  const L1=sz*2.2,gap=sz*0.9;ctx.save();ctx.globalAlpha*=a*0.7;
-  [[x-tw/2-gap-L1,x-tw/2-gap,0],[x+tw/2+gap,x+tw/2+gap+L1,1]].forEach(([u,v,dir])=>{const g=ctx.createLinearGradient(u,0,v,0);g.addColorStop(dir?1:0,'rgba(226,170,66,0)');g.addColorStop(dir?0:1,'rgba(226,170,66,0.9)');ctx.fillStyle=g;ctx.fillRect(u,y-0.75,v-u,1.5);});
+const SI={};STEPS.forEach((s,i)=>SI[s.id]=i);const LAST=STEPS.length-1;
+const PATHS=[['合同/正式合同.docx',0,'正式合同不许直接覆盖'],['合同/草稿/修订稿.docx',1,'草稿目录，放行'],['~/.ssh/id_rsa',0,'案件目录之外，禁止访问']];
+let pUser=null,pDisp=0;
+function geo(){const P=LY.port,H=LY.H;if(!P)return{P,cx:960,cy:620,rx:600,ry:300};return{P,cx:540,cy:H*0.52,rx:390,ry:640};}
+function E(g,deg){const t=deg*Math.PI/180;return{x:g.cx+g.rx*Math.cos(t),y:g.cy+g.ry*Math.sin(t)};}
+// 节点角度（land 与 port 用同一套角度；port 椭圆竖长）
+const ND=[['纸带（上下文）',180,'gold'],['模型',-90,'hot'],['工具请求',-35,'ice'],['执行工具',35,'gold'],['结果写回纸带',90,'green']];
+function nodeBox(g,p,lab,st,a){if(a<=0.01)return;const w=g.P?Math.max(200,measure(lab,26,700)+36):Math.max(170,measure(lab,24,700)+40),h=g.P?72:64;block(p.x-w/2,p.y-h/2,w,h,{style:st,a,lw:1.8});text(lab,p.x,p.y,g.P?26:24,IVORY,a,700);}
+function gateAt(g,deg,col,lab,a,amb,closed){if(a<=0.01)return;const p=E(g,deg);const t=deg*Math.PI/180;const nx=Math.cos(t)*(g.P?1:1),ny=Math.sin(t);// 法向近似为径向
+  const L=g.P?90:80;ctx.globalAlpha=a;ctx.strokeStyle=col;ctx.lineWidth=8;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(p.x-nx*L,p.y-ny*L);ctx.lineTo(p.x+nx*L,p.y+ny*L);ctx.stroke();ctx.lineCap='butt';ctx.globalAlpha=1;
+  glowAdd(p.x,p.y,60,0.5*a*(0.7+0.3*Math.sin(amb*4)),col===RED?LE.SPR.RED:(col===GREEN?LE.SPR.GREEN:LE.SPR.HALO));
+  if(g.P){const lp={x:p.x-nx*(L+16),y:p.y-ny*(L+16)-34};text(lab,lp.x,lp.y,26,col,a,700,nx>0.3?'right':(nx<-0.3?'left':'center'));}else{const lp={x:p.x+nx*(L+20),y:p.y+ny*(L+20)};text(lab,lp.x,lp.y,22,col,a,700,nx>0.3?'left':(nx<-0.3?'right':'center'));}}
+function render(G,amb,dt){const W=LY.W,H=LY.H,P=LY.port;const g=geo();
+  LE.bg(amb,0,0);
+  LE.title('Hooks 到底是什么','提示词是{告示牌}，Hook 是{门锁}',LE.easeOut(clamp(amb/1.8)),seg(G,0.05,0.6),{portLines:['Hooks','到底是什么']});
+  if(G<0.3)return;const fin=1-seg(G,LAST-0.7,LAST);const cmp=seg(G,SI.compare-0.8,SI.compare-0.3);const rA=seg(G,0.4,1)*fin*(1-cmp);
+  const zoom=seg(G,SI.all-0.8,SI.all-0.2);ctx.save();LE.camera(g.cx,g.cy,1-0.1*zoom,g.cx,g.cy);
+  // 轨道
+  if(rA>0.01){ctx.globalAlpha=rA*0.5;ctx.strokeStyle=GOLD;ctx.lineWidth=3;ctx.setLineDash([2,10]);ctx.lineDashOffset=-amb*30;ctx.beginPath();ctx.ellipse(g.cx,g.cy,g.rx,g.ry,0,0,7);ctx.stroke();ctx.setLineDash([]);ctx.lineDashOffset=0;ctx.globalAlpha=1;
+    ND.forEach((n,k)=>nodeBox(g,E(g,n[1]),n[0],n[2],rA*seg(G,SI.loop-0.8+k*0.08,SI.loop-0.4+k*0.08)));
+    // 光点循环
+    if(G<SI.sign-0.3||G>SI.all-0.5){for(let k=0;k<3;k++){const d=((amb*40+k*120)%360)-180;glowAdd(E(g,d).x,E(g,d).y,26,0.8*rA);}}}
+  // 告示牌
+  const sg=seg(G,SI.sign-0.7,SI.sign-0.1)*(1-seg(G,SI.gate-0.6,SI.gate-0.1)*0.5)*(1-seg(G,SI.post-0.8,SI.post-0.4))*rA;
+  if(sg>0.01){const p=E(g,180);const x=P?p.x+60:p.x-120,y=P?p.y+80:p.y+60;card(x,y,P?380:300,P?120:100,{a:sg,stroke:'rgba(255,208,98,0.7)'});text('提示词里写着：',x+20,y+(P?34:28),P?22:18,DIM,sg,400,'left');rich('「不要直接覆盖正式合同」',x+20,y+(P?82:68),P?24:20,sg,{align:'left',maxW:P?340:270,color:PALE,weight:700});}
+  // 请求光点（fail / block / bounce / drag）
+  const center={x:g.cx,y:g.cy};
+  const st=Math.round(G);const sid=STEPS[clamp(st,0,LAST)].id;
+  const gt=seg(G,SI.gate-0.7,SI.gate-0.1);
+  let decision=null;// 当前请求与结果
+  if(G>SI.fail-0.8&&G<SI.post-0.4){let path=0,phase=0;
+    if(G<SI.gate-0.5){phase=lin(G,SI.fail-0.6,SI.fail);path=0;decision={pass:true,hook:false};}
+    else if(G<SI.bounce-0.5){phase=lin(G,SI.block-0.7,SI.block-0.1);path=0;decision={pass:false,hook:true};}
+    else if(G<SI.drag-0.5){phase=lin(G,SI.bounce-0.5,SI.bounce-0.05);path=1;decision={pass:true,hook:true,retry:true};}
+    else{const at=LE.isAt('drag');if(at&&pUser!=null)pDisp=damp(pDisp,pUser,dt,12);else pDisp=0;path=clamp(Math.round(pDisp),0,2);phase=at?((amb*0.4)%1):1;decision={pass:!!PATHS[path][1],hook:true};}
+    const req=PATHS[path];const from=-35,gateD=0,to=35;let d;const blocked=decision.hook&&!decision.pass;
+    if(blocked){d=lerp(from,gateD-4,clamp(phase*1.6));}else d=lerp(from,to,phase);
+    const pp=E(g,d);glowAdd(pp.x,pp.y,40,0.95*rA,blocked&&phase>0.6?LE.SPR.RED:LE.SPR.HALO);
+    if(blocked&&phase>0.55){// 反弹回模型
+      const bp=lin(phase,0.6,1);const q=qbez(E(g,-4),center,E(g,-90),bp);glowAdd(q.x,q.y,26,0.8*rA,LE.SPR.RED);}
+    // 中央说明卡
+    const cw=P?620:640,ch=P?330:230,cx0=g.cx-cw/2,cy0=g.cy-ch/2;const ca=rA*seg(G,SI.fail-0.6,SI.fail-0.2);
+    card(cx0,cy0,cw,ch,{a:ca,stroke:decision.pass?(decision.hook?'rgba(91,214,160,0.8)':'rgba(240,122,98,0.8)'):'rgba(240,122,98,0.9)'});
+    text(decision.retry?'工具请求（重新提交）':'工具请求',cx0+28,cy0+36,P?22:18,DIM,ca,400,'left');text(`写入  ${req[0]}`,cx0+28,cy0+(P?84:78),P?28:24,PALE,ca,700,'left');
+    let res;if(!decision.hook)res=['已执行：正式合同被覆盖','提示词里的规矩没拦住',RED];else if(decision.pass)res=['Hook 检查通过 → 执行',req[2],GREEN];else res=['Hook 拦截 → 不执行',req[2]+'（理由反馈给模型）',RED];
+    glowText(res[0],cx0+28,cy0+(P?150:136),P?30:26,res[2],ca,700,0.3,'left');rich(res[1],cx0+28,cy0+(P?200:180),P?24:20,ca,{align:'left',maxW:cw-56,color:IVORY});
+    if(LE.isAt('drag')){const t=dragTrack(g);LE.line(t.x0,t.y,t.x1,t.y,'rgba(244,237,223,0.3)',4,ca);PATHS.forEach((p,k)=>{const x=lerp(t.x0,t.x1,k/2);text(['正式合同','草稿副本','密钥文件'][k],x,t.y+(P?40:32),P?24:18,k===path?GOLD_HI:DIM,ca,700);});
+      const kx=lerp(t.x0,t.x1,pDisp/2);ctx.beginPath();ctx.arc(kx,t.y,14,0,7);ctx.fillStyle=GOLD_HI;ctx.fill();glowAdd(kx,t.y,34,0.8);if(pUser==null)LE.dragHint(kx,t.y,'拖动',amb,1,{dy:-40});}
+    if(!decision.hook&&phase>0.7){const p=E(g,35);glowAdd(p.x,p.y,90,0.7*rA,LE.SPR.RED);}}
+  // 闸门们
+  const pre=gt*rA;if(pre>0.01){const col=decision&&decision.hook?(decision.pass?GREEN:RED):GOLD_HI;gateAt(g,0,col,'PreToolUse',pre,amb);}
+  const po=seg(G,SI.post-0.7,SI.post-0.1)*rA;if(po>0.01){gateAt(g,62,GREEN,'PostToolUse',po,amb);if(G<SI.stop-0.4){const cw=P?620:640,cx0=g.cx-cw/2,cy0=g.cy-(P?150:100);const pa=po*(1-seg(G,SI.stop-0.8,SI.stop-0.4));card(cx0,cy0,cw,P?300:200,{a:pa,stroke:'rgba(91,214,160,0.8)'});
+      text('工具执行后，自动运行：',cx0+28,cy0+36,P?22:18,DIM,pa,400,'left');['格式化文件','检查是否含身份证号等敏感信息','核对文件是否写在案件目录内'].forEach((t,k)=>{text('✓ '+t,cx0+28,cy0+(P?90:80)+k*(P?56:40),P?26:21,GREEN,pa*seg(G,SI.post-0.5+k*0.1,SI.post-0.2+k*0.1),700,'left');});}}
+  const sp=seg(G,SI.stop-0.7,SI.stop-0.1)*rA;if(sp>0.01){const p=E(g,-90);const ex={x:p.x+(P?0:0),y:p.y-(P?170:150)};LE.line(p.x,p.y-36,ex.x,ex.y+36,GOLD,3,sp);LE.arrowHead(ex.x,ex.y+30,-Math.PI/2,16,GOLD,sp);
+    const lab='最终回答';text(lab,ex.x+(P?0:0),ex.y,P?26:22,PALE,sp,700);const gp={x:p.x,y:(p.y-36+ex.y+36)/2};ctx.globalAlpha=sp;ctx.strokeStyle=PURPLE;ctx.lineWidth=8;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(gp.x-60,gp.y);ctx.lineTo(gp.x+60,gp.y);ctx.stroke();ctx.lineCap='butt';ctx.globalAlpha=1;text('Stop',gp.x+80,gp.y,P?26:22,PURPLE,sp,700,'left');
+    if(G<SI.all-0.4){const cw=P?620:640,cx0=g.cx-cw/2,cy0=g.cy-(P?150:100);const pa=sp*(1-seg(G,SI.all-0.8,SI.all-0.4));card(cx0,cy0,cw,P?300:200,{a:pa,stroke:'rgba(195,160,255,0.8)'});text('结束前验收（示例规则）：',cx0+28,cy0+36,P?22:18,DIM,pa,400,'left');
+      [['每个结论都有出处',1],['金额已用脚本复算',1],['待办清单为空',0]].forEach(([t,ok],k)=>text((ok?'✓ ':'✗ ')+t,cx0+28,cy0+(P?90:80)+k*(P?56:40),P?26:21,ok?GREEN:RED,pa,700,'left'));text('→ 未通过：继续干',cx0+cw-28,cy0+(P?260:166),P?24:20,RED,pa,700,'right');}}
+  const al=zoom*rA;if(al>0.01){[[180,'SessionStart',ICE,1],[150,'UserPromptSubmit',ICE,1]].forEach(([d,l,c])=>{const p=E(g,d);const q={x:p.x+(P?-0:-0),y:p.y};gateAt(g,d===180?205:150,c,l,al,amb);});
+    rich('Hook 是普通{脚本}：由运行框架在这些节点{必然触发}；拦不拦、怎么拦，取决于脚本写的规则',P?540:g.cx,P?g.cy+g.ry+150:g.cy,P?28:26,al,{maxW:P?900:620});}
   ctx.restore();
-}
-
-function mkSprite(stops){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),gr=g.createRadialGradient(64,64,0,64,64,64);stops.forEach(s=>gr.addColorStop(s[0],s[1]));g.fillStyle=gr;g.fillRect(0,0,128,128);return c;}
-const SPR_HALO=mkSprite([[0,'rgba(255,228,170,0.9)'],[0.12,'rgba(255,196,96,0.55)'],[0.4,'rgba(226,150,46,0.16)'],[1,'rgba(200,120,30,0)']]);
-const SPR_CORE=mkSprite([[0,'rgba(255,250,235,1)'],[0.25,'rgba(255,226,160,0.9)'],[0.6,'rgba(255,190,80,0.25)'],[1,'rgba(255,170,60,0)']]);
-const SPR_RED =mkSprite([[0,'rgba(255,195,185,0.9)'],[0.2,'rgba(232,106,88,0.5)'],[1,'rgba(180,40,30,0)']]);
-const SPR_GRN =mkSprite([[0,'rgba(180,255,220,0.9)'],[0.2,'rgba(79,209,152,0.5)'],[1,'rgba(20,120,80,0)']]);
-function glow(x,y,r,a=1,spr=SPR_HALO){const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||r<=0.5)return;const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.drawImage(spr,x-r,y-r,2*r,2*r);ctx.globalAlpha=prev;}
-function core(x,y,r,a=1){glow(x,y,r,a,SPR_CORE);}
-
-const DUST=(()=>{const r=mulberry(2031);return Array.from({length:65},()=>({x:r(),y:r(),vx:(r()-0.5)*0.004,vy:-0.003-r()*0.006,r:1.2+r()*2.6,a:0.1+r()*0.25,ph:r()*6.28}));})();
-
-// Agent Loop 椭圆轨道辅助函数（顶部 0° 顺时针）
-const RX=520, RY=235, LCX=960, LCY=545;
-function ringPt(deg){const t=deg*Math.PI/180;return{x:LCX+RX*Math.sin(t),y:LCY-RY*Math.cos(t)};}
-
-// 5 个固定 Hook 生命周期工位
-const HOOK_STATIONS=[
-  {id:'start',  ang:310, name:'SessionStart',     zh:'会话开始 · 注入环境',   col:GOLD_HI},
-  {id:'prompt', ang:340, name:'UserPromptSubmit', zh:'提交提问 · 预处理校验', col:GOLD_HI},
-  {id:'pre',    ang:80,  name:'PreToolUse',       zh:'调用前 · 拦截危险操作', col:RED},
-  {id:'post',   ang:180, name:'PostToolUse',      zh:'调用后 · 自动格式化/脱敏', col:GREEN},
-  {id:'stop',   ang:255, name:'Stop',             zh:'回答结束 · 最终质量门禁', col:BLUE},
-];
-
-// 绘制物理机械闸门（Hook Gate）
-function drawGate(x,y,col,a,labelTop,labelBot,closed=1){
-  if(a<=0.005)return;
-  ctx.save();ctx.globalAlpha*=a;
-  // 菱形光学锁扣
-  const r=22;
-  ctx.save();ctx.translate(x,y);ctx.rotate(Math.PI/4);
-  ctx.fillStyle='#100c05';ctx.fillRect(-r,-r,2*r,2*r);
-  ctx.strokeStyle=col;ctx.lineWidth=2.6;ctx.strokeRect(-r,-r,2*r,2*r);
-  ctx.restore();
-  ctx.globalCompositeOperation='lighter';
-  glow(x,y,68,0.55*(0.6+0.4*closed),col===RED?SPR_RED:(col===GREEN?SPR_GRN:SPR_HALO));
-  ctx.globalCompositeOperation='source-over';
-  if(labelTop) glowText(labelTop,x,y-44,20,col,1,700,0.35);
-  if(labelBot) text(labelBot,x,y+44,16,IVORY,0.92);
-  ctx.restore();
-}
-
-/* ============================== 主渲染 ============================== */
-function render(G,amb){
-  const {s,ox,oy,dpr}=view;
-  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
-  ctx.setTransform(s*dpr,0,0,s*dpr,ox*dpr,oy*dpr);
-  ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();
-  ctx.fillStyle='#030303';ctx.fillRect(0,0,W,H);
-
-  // 背景暖光 + 金尘
-  const bg=ctx.createRadialGradient(W/2,H*0.5,0,W/2,H*0.5,960);
-  bg.addColorStop(0,'rgba(128,84,22,0.16)');bg.addColorStop(0.55,'rgba(60,38,10,0.05)');bg.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  ctx.save();ctx.globalCompositeOperation='lighter';
-  DUST.forEach(d=>{const dx=((d.x+amb*d.vx)%1+1)%1*W,dy=((d.y+amb*d.vy)%1+1)%1*H;glow(dx,dy,d.r*3,d.a*(0.55+0.45*Math.sin(amb*1.4+d.ph)));});
-  ctx.restore();
-
-  /* ---------- 0. 原版复刻级开场 (0 -> 0.55) ---------- */
-  const a0=1-seg(G,0.02,0.55);
-  if(a0>0.005){
-    const intro=clamp(amb/2.4), out=seg(G,0.02,0.55);
-    const title='Hooks 到底是什么', fs=104, tw=measure(title,fs,700);
-    let x=W/2-tw/2; const rnd=mulberry(21); let ci=0;
-    ctx.save();
-    for(const ch of title){
-      const cw=measure(ch,fs,700), ca=seg(intro,0.08+ci*0.036,0.38+ci*0.036);
-      const dx=(rnd()-0.5)*220*out, dy=-(35+rnd()*140)*out;
-      glowText(ch,x+cw/2+dx,445+(1-ca)*24+dy,fs,PALE,ca*(1-out),700,0.35);
-      x+=cw; ci++;
-    }
-    const sw=((amb*0.18)%1.6)-0.3;
-    if(intro>0.85&&out<0.4){
-      ctx.save();ctx.globalCompositeOperation='lighter';
-      const gx=W/2-tw/2+sw*tw, g=ctx.createLinearGradient(gx-160,0,gx+160,0);
-      g.addColorStop(0,'rgba(255,240,200,0)');g.addColorStop(0.5,'rgba(255,240,200,0.55)');g.addColorStop(1,'rgba(255,240,200,0)');
-      ctx.font=font(fs,700);ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillStyle=g;ctx.globalAlpha=1-out*2.5;ctx.fillText(title,W/2-tw/2,445);ctx.restore();
-    }
-    const lw=820*seg(intro,0.28,0.82)*(1-out);
-    ctx.globalCompositeOperation='lighter';
-    const lg=ctx.createLinearGradient(W/2-lw/2,0,W/2+lw/2,0);lg.addColorStop(0,'rgba(255,200,90,0)');lg.addColorStop(0.5,`rgba(255,214,120,${0.95*(1-out)})`);lg.addColorStop(1,'rgba(255,200,90,0)');
-    ctx.fillStyle=lg;ctx.fillRect(W/2-lw/2,540,lw,2);glow(W/2,541,60,0.7*(1-out));ctx.globalCompositeOperation='source-over';
-    rich('「请随手关门」的{告示牌}，与强制落锁的{机械闭门器}',W/2,605,32,seg(intro,0.55,1)*(1-out),DIM);
-    brandMark(W/2,870,28,seg(intro,0.7,1)*(1-out));
-    ctx.restore();
-  }
-
-  /* ---------- 1~4. Agent Loop 连续摄影机空间 (G >= 0.45) ---------- */
-  const worldA=seg(G,0.45,1.0);
-  if(worldA>0.005){
-    // 五次方运镜：Step 4-6 推近右侧 PreToolUse 闸门，Step 7 移到底部 PostToolUse，Step 9 拉远看全环
-    const pPre  = ringPt(80), pPost = ringPt(180), pStop = ringPt(255);
-    const camX = kf(G,[[1,960],[3,960],[4,1320],[6,1320],[7,960],[8,620],[9,960],[11,960]], easeCam);
-    const camY = kf(G,[[1,545],[3,545],[4,515],[6,515],[7,720],[8,610],[9,545],[11,545]], easeCam);
-    const camZ = kf(G,[[1,1.0],[3,1.0],[4,1.32],[6,1.32],[7,1.25],[8,1.25],[9,0.96],[11,0.94]], easeCam);
-
-    const pSign   = seg(G,1.2,2.0)*(1-seg(G,3.4,4.0));
-    const pFail   = seg(G,2.2,3.0)*(1-seg(G,3.4,4.0));
-    const pWeld   = seg(G,3.3,4.0);
-    const pBlock  = seg(G,4.2,5.0)*(1-seg(G,6.3,7.0));
-    const pBounce = seg(G,5.2,6.0)*(1-seg(G,6.3,7.0));
-    const pPostOn = seg(G,6.3,7.0);
-    const pStopOn = seg(G,7.3,8.0);
-    const pAllOn  = seg(G,8.3,9.0);
-    const pCmp    = seg(G,9.3,10.0);
-    const pFin    = seg(G,10.4,11.0);
-
-    ctx.save();ctx.globalAlpha=worldA;
-    ctx.translate(W/2,H/2);ctx.scale(camZ,camZ);ctx.translate(-camX,-camY);
-
-    // 1. Agent Loop 椭圆形光学主轨
-    ctx.save();
-    ctx.strokeStyle='rgba(226,170,66,0.55)';ctx.lineWidth=2.5;ctx.setLineDash([12,10]);ctx.lineDashOffset=-amb*34;
-    ctx.beginPath();ctx.ellipse(LCX,LCY,RX,RY,0,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
-    ctx.restore();
-
-    // 顶部星核：大模型 (LLM)
-    const pTop=ringPt(0);
-    ctx.save();ctx.globalCompositeOperation='lighter';glow(pTop.x,pTop.y,95,0.65);core(pTop.x,pTop.y,26,0.95);ctx.globalCompositeOperation='source-over';
-    ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2;ctx.beginPath();ctx.arc(pTop.x,pTop.y,32,0,Math.PI*2);ctx.stroke();
-    glowText('大模型 (LLM)',pTop.x,pTop.y-52,24,GOLD_HI,1,700,0.35);
-    ctx.restore();
-
-    // 右下工位：执行工具 (Harness)
-    const pExec=ringPt(130);
-    rr(pExec.x-105,pExec.y-28,210,56,28);ctx.fillStyle='rgba(16,14,8,0.92)';ctx.fill();ctx.strokeStyle=pFail>0.3?RED:GOLD;ctx.lineWidth=1.8;ctx.stroke();
-    text(pFail>0.3?'✕ 正式合同被覆盖！':'执行工具 (write_file)',pExec.x,pExec.y,17,pFail>0.3?RED:IVORY,1,700);
-
-    // 2. 漂浮告示牌（Prompt 软约束，Step 2-3，Step 4 拆掉）
-    if(pSign>0.01){
-      ctx.save();ctx.globalAlpha*=pSign;
-      rr(pPre.x-135,pPre.y-95,270,64,8);ctx.fillStyle='rgba(40,30,10,0.72)';ctx.fill();
-      ctx.strokeStyle='rgba(255,208,98,0.65)';ctx.setLineDash([5,4]);ctx.lineWidth=1.5;ctx.stroke();ctx.setLineDash([]);
-      text('📌 Prompt 告示牌',pPre.x,pPre.y-75,15,GOLD_HI,1,700);
-      text('“请勿覆盖正式合同”',pPre.x,pPre.y-49,16,IVORY,0.92);
-      ctx.restore();
-    }
-
-    // 3. 环上流动的模型请求光点
-    if(pBlock<0.1){
-      // 自由绕环流动（Step 3 冲过告示牌时变红警示）
-      const th=(amb*62)%360;
-      const pt=ringPt(th);
-      const isDanger=(pFail>0.2 && th>75 && th<155);
-      ctx.save();ctx.globalCompositeOperation='lighter';
-      glow(pt.x,pt.y,36,0.95,isDanger?SPR_RED:SPR_HALO);core(pt.x,pt.y,8,1);
-      ctx.restore();
-    } else {
-      // Step 5-6：光点撞上 PreToolUse 闸门被硬生生弹回！
-      const cyc=(amb*0.95)%1;
-      const ang = cyc<0.5 ? lerp(15, 74, cyc*2) : lerp(74, 15, (cyc-0.5)*2);
-      const pt=ringPt(ang);
-      ctx.save();ctx.globalCompositeOperation='lighter';
-      glow(pt.x,pt.y,42,1,SPR_RED);core(pt.x,pt.y,9,1);
-      ctx.restore();
-      if(pBounce>0.05){
-        ctx.save();ctx.globalAlpha*=pBounce;
-        text('↺ 违规拦截！错误原因已写回纸带，要求模型重试',LCX+230,LCY-140,18,RED,1,700);
-        ctx.restore();
-      }
-    }
-
-    // 4. 焊死物理闭门器（Hooks 各个工位）
-    if(pWeld>0.01){
-      drawGate(pPre.x,pPre.y,RED,pWeld,'PreToolUse','调用前 · 物理拦截',pBlock>0.2?1:0.5);
-    }
-    if(pPostOn>0.01){
-      drawGate(pPost.x,pPost.y,GREEN,pPostOn,'PostToolUse','调用后 · 自动格式化/脱敏',1);
-    }
-    if(pStopOn>0.01){
-      drawGate(pStop.x,pStop.y,BLUE,pStopOn,'Stop Hook','交付前 · 最终质量门禁',1);
-    }
-    if(pAllOn>0.01){
-      HOOK_STATIONS.slice(0,2).forEach(st=>{
-        const pt=ringPt(st.ang);
-        drawGate(pt.x,pt.y,st.col,pAllOn,st.name,st.zh,0.8);
-      });
-    }
-
-    // 中央核心铭文（Step 10 对比总结）
-    if(pCmp>0.02){
-      ctx.save();ctx.globalAlpha*=pCmp;
-      glowText('Harness',LCX,LCY-36,68,GOLD_HI,1,700,0.45);
-      rich('Prompt 是概率性的{建议} · Hook 是确定性的{强制执行}',LCX,LCY+32,24,1,IVORY);
-      text('把安全红线与格式规范焊死在 Hook 里，把推理与创造力留给模型',LCX,LCY+74,18,DIM,1);
-      ctx.restore();
-    }
-
-    ctx.restore(); // 结束摄影机变换
-  }
-
-  /* ---------- 终局收束落版 (Step 11) ---------- */
-  const finA=seg(G,10.4,11.0);
-  if(finA>0.01){
-    ctx.save();ctx.globalAlpha=finA;
-    rich('把底线交给 {Hooks}，把创造力留给模型',W/2,92,34,1,IVORY);
-    brandMark(W/2,990,26,1);
-    ctx.restore();
-  }
-
-  /* ---------- 顶部引导语（先退后进，零叠字） & 右下角进度 ---------- */
-  const lo=Math.floor(G), hi=Math.min(LAST,Math.ceil(G)), f=G-lo;
-  const ha=STEPS[lo].hint, hb=STEPS[hi].hint;
-  if(ha===hb) rich(ha,W/2,92,34,0.95);
-  else {
-    const aOut=1-ease(clamp(f/0.38)), aIn=ease(clamp((f-0.5)/0.42));
-    if(aOut>0.01) rich(ha,W/2,92-(1-aOut)*10,34,0.95*aOut);
-    if(aIn>0.01) rich(hb,W/2,92+(1-aIn)*10,34,0.95*aIn);
-  }
-  const st=STEPS[Math.round(G)];
-  text(`${String(st.scene).padStart(2,'0')} · ${SCENES[st.scene]}    ${Math.round(G)+1} / ${STEPS.length}`,1860,1040,18,'rgba(244,237,223,0.52)',1,400,'right');
-  ctx.fillStyle='rgba(244,237,223,0.16)';ctx.fillRect(1660,1058,200,2);
-  ctx.fillStyle=GOLD;ctx.fillRect(1660,1058,200*G/LAST,2);
-  ctx.restore();
-}
-
-/* ==================== 交互（与原版完全一致） ==================== */
-let G=0, target=0, anim=null, auto=false; const t0=performance.now();
-function go(i){
-  i=clamp(Math.round(i),0,LAST);if(i===target&&!anim)return;
-  const from=G, fwd=i===Math.round(target)+1&&i>from;
-  target=i;anim={from,to:i,start:performance.now(),dur:fwd?STEPS[i].dur:Math.min(850,350+Math.abs(i-from)*60),linear:fwd};
-}
-function next(){go(target+1);} function prev(){go(target-1);}
-function tick(now){
-  if(anim){
-    const p=clamp((now-anim.start)/anim.dur);
-    G=anim.linear?lerp(anim.from,anim.to,p):lerp(anim.from,anim.to,ease(p));
-    if(p>=1){G=anim.to;anim=null;if(auto&&G<LAST)setTimeout(()=>auto&&go(target+1),700);}
-  }
-  render(G,(now-t0)/1000);requestAnimationFrame(tick);
-}
-addEventListener('keydown',e=>{
-  if(e.target.id==='lesson-back')return;
-
-  const k=e.key;
-  if(['ArrowRight',' ','PageDown','Enter','ArrowDown'].includes(k)){e.preventDefault();next();}
-  else if(['ArrowLeft','PageUp','Backspace','ArrowUp'].includes(k)){e.preventDefault();prev();}
-  else if(k==='Home')go(0); else if(k==='End')go(LAST);
-  else if(k==='f'||k==='F')toggleFS();
-  else if(k==='a'||k==='A'){auto=!auto;if(auto)next();}
-});
-let pd=null;
-cv.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY,b:e.button};});
-cv.addEventListener('pointerup',e=>{if(!pd)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y,b=pd.b;pd=null;
-  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2){dx<0?next():prev();return;}
-  if(Math.abs(dx)<14&&Math.abs(dy)<14){if(b===2)prev();else e.shiftKey?prev():next();}});
-cv.addEventListener('contextmenu',e=>{e.preventDefault();prev();});
-const fsBtn=document.getElementById('fs');
-function toggleFS(){const d=document,el=d.documentElement;if(!d.fullscreenElement)el.requestFullscreen?.();else d.exitFullscreen?.();}
-fsBtn.addEventListener('pointerdown',e=>e.stopPropagation());
-fsBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
-
-requestAnimationFrame(tick);
+  // 对比
+  if(cmp>0.01){const a=cmp*fin;const xs=P?[[90,H*0.22],[90,H*0.55]]:[[220,300],[1000,300]];const ww=P?900:700,hh=P?460:440;
+    [['提示词 · 告示牌','「请随手关门」','写在纸带上，模型{可能遵守}，也可能忽略','适合：偏好、风格、一般要求',PALE],['Hook · 门锁','门自动锁上','运行框架{一定执行}这段脚本','适合：红线、必须检查的步骤',GREEN]].forEach((c,k)=>{const [x,y]=xs[k];const e=seg(cmp,k*0.2,0.6+k*0.2)*a;card(x,y,ww,hh,{a:e,stroke:k?'rgba(91,214,160,0.8)':undefined});
+      glowText(c[0],x+ww/2,y+(P?70:70),P?40:36,c[4],e,700);text(c[1],x+ww/2,y+(P?150:150),P?30:28,IVORY,e,700);rich(c[2],x+ww/2,y+(P?240:240),P?28:24,e,{maxW:ww-80});text(c[3],x+ww/2,y+(P?360:340),P?26:22,DIM,e);});}
+  LE.finale(['提示词里的规矩是{告示}：上下文一长，可能被忽略','{Hook} 是挂在循环节点上的{脚本}：由运行框架执行','工具前{拦截}并反馈理由，工具后{检查}，结束前{验收}'],seg(G,LAST-0.8,LAST),'挂载点名称以 Claude Code 为例（另有 Notification、SubagentStop、PreCompact、SessionEnd 等）；其他产品叫法不同。示例路径与规则为示意。');}
+function dragTrack(g){return g.P?{x0:g.cx-240,x1:g.cx+240,y:g.cy+250}:{x0:g.cx-220,x1:g.cx+220,y:g.cy+170};}
+const drags=[{step:'drag',cursor:'ew-resize',hit:pt=>{const t=dragTrack(geo());return pt.x>t.x0-60&&pt.x<t.x1+60&&Math.abs(pt.y-t.y)<60;},move:pt=>{const t=dragTrack(geo());pUser=clamp((pt.x-t.x0)/(t.x1-t.x0))*2;},end:()=>{if(pUser!=null)pUser=Math.round(pUser);}}];
+LE.run({steps:STEPS,scenes:SCENES,render,drags,onGo:()=>{pUser=null;},onSeek:(g,st)=>{pUser=st.p??null;if(pUser!=null)pDisp=pUser;}});
 })();
+
 </script></body></html>

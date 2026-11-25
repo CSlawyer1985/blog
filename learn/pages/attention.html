@@ -1,423 +1,171 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
-<title>Attention 到底是什么 · 光学聚光灯与迷失在中间</title>
+<title>Attention 注意力 · 回看整根纸带，以及「迷失在中间」</title>
+<meta name="description" content="生成每个词时，模型怎样回看上下文：Q·K 匹配、softmax 权重、V 加权混合；长上下文里关键信息放在中间为何更容易被漏看。">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
-<style>
-/* 将原文件中的两行 @font-face{font-family:'HSerif'...} 粘贴至此即可恢复原版衬线体 */
-html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
-body{position:fixed;inset:0}
-canvas{display:block;touch-action:none}
-#fs{position:fixed;right:16px;top:14px;font:13px "HSerif","Songti SC",serif;color:rgba(244,237,223,.38);background:none;border:1px solid rgba(226,170,66,.26);border-radius:4px;padding:4px 10px;cursor:pointer;z-index:5}
-#fs:hover{color:#FFD062;border-color:#E2AA42}
-:fullscreen #fs{display:none}
-</style><style>
-  #lesson-back {
-    position: fixed;
-    z-index: 10;
-    top: calc(8px + env(safe-area-inset-top));
-    left: calc(12px + env(safe-area-inset-left));
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    box-sizing: border-box;
-    padding: 0 10px;
-    border-radius: 4px;
-    color: #ffe5ad;
-    background: #17130e;
-    font: 14px/1.4 system-ui, sans-serif;
-    text-decoration: none;
-  }
-  #lesson-back:hover { text-decoration: underline; }
-  #lesson-back:focus-visible { outline: 2px solid #ffd062; outline-offset: 2px; }
-  body.clean #lesson-back, :fullscreen #lesson-back { display: none; }
-</style>
+<link rel="preload" href="../assets/fonts/hserif-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/hserif-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/lesson.css">
 </head><body>
 <a id="lesson-back" href="../index.html">← 返回模块目录</a>
 <canvas id="c"></canvas><button id="fs" title="全屏（F）">全屏 F</button>
+<script src="../assets/lesson-engine.js"></script>
 <script>
-(function(){
-'use strict';
-const FONT='"HSerif","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif';
-const IVORY='#F4EDDF', GOLD='#E2AA42', GOLD_HI='#FFD062', PALE='#FFE9B8', DIM='rgba(244,237,223,0.62)', RED='#E86A58', GREEN='#4FD198';
-
-const SCENES=['开场','纸带与光束','QKV 原理','迷失在中间','物理挪位实验','上下文排布铁律'];
-const S=(id,scene,dur,hint)=>({id,scene,dur,hint});
+// @title Attention 注意力 · 回看整根纸带，以及「迷失在中间」
+// @desc 生成每个词时，模型怎样回看上下文：Q·K 匹配、softmax 权重、V 加权混合；长上下文里关键信息放在中间为何更容易被漏看。
+(function(){'use strict';
+const {C,LY,ctx,clamp,lerp,ease,seg,kf,lin,bump,damp,text,glowText,rich,measure,rr,glow,glowAdd,card,block,tape,line,arrowHead,qbez,S}=LE;
+const {IVORY,GOLD,GOLD_HI,PALE,DIM,DIM2,RED,GREEN,ICE,PURPLE}=C;
+const SCENES=['开场','回看纸带','Q · K · V','多个头','迷失在中间','动手挪位','收束'];
 const STEPS=[
-  S('title',0,2600,''),
-  S('tape_in',1,2000,'纸带上排满了一长串上下文：角色、合同原文、历史对话与{当前提问}'),
-  S('arcs',1,2400,'生成下一个词时，模型不会平均看待每个字，而是射出{注意力光束 (Attention)}'),
-  S('qkv_zoom',2,2600,'推近看原理：末尾提问发出探照光 {Query}，去扫描前面每个词的标签 {Key}'),
-  S('qkv_val',2,2400,'匹配度越高，光束越亮越粗，把对应的信息 {Value} 重点拉回末尾'),
-  S('multihead',2,2400,'真实模型同时开启{多头注意力}：一束盯法条，一束盯数字，一束盯语法'),
-  S('long_ctx',3,2600,'拉远全景：当纸带越来越长，模型内部的注意力分布呈现一个残酷的 {U 型曲线}'),
-  S('lost_mid',3,2600,'开头与末尾亮如白昼，正中间沉入暗影——这就是著名的{「迷失在中间」}'),
-  S('mid_fail',3,2600,'藏在正中间的关键约束「{上限 15%}」权重跌至 0.04，模型直接视而不见'),
-  S('bad_out',3,2400,'结果：模型忽略了中间红线，在末尾按惯性吐出错误的「{30%}」'),
-  S('move_up',4,2800,'物理挪位实验：把「{上限 15%}」从中间暗影拽出，挪到纸带最前端高光区'),
-  S('relock',4,2400,'光束瞬间重新锁死！注意力权重从 0.04 飙升至 {0.89}'),
-  S('good_out',4,2400,'什么模型都没换，只改了信息位置，末尾输出立刻拉直为「{15%}」'),
-  S('final',5,2800,''),
+ S('title',0,2600,''),
+ S('tape',1,2200,'纸带上排着这次对话的全部上下文：规则、合同条款、历史对话，最后是{当前提问}'),
+ S('beams',1,2600,'生成下一个词时，模型会回看前面{所有位置}，按相关程度分配注意力（粗细为示意）'),
+ S('qk',2,3000,'当前位置发出{查询 Q}，和每个位置的{键 K}逐一比对，得出匹配分'),
+ S('soft',2,2600,'softmax 把匹配分换成{权重}，合计 100%（数值为示意）'),
+ S('val',2,3000,'再按权重把各位置的{值 V}混合，带回当前位置——这就是一次注意力'),
+ S('heads',3,2800,'模型里有很多{注意力头}同时在算，各自学到不同的关注方式（颜色仅示意）'),
+ S('long',4,3000,'实验发现：上下文很长时，关键信息在{开头或结尾}更容易被用上，在中间表现明显下降'),
+ S('mid',4,2600,'关键约束「上限 15%」埋在中间：更容易被漏看，可能答成{30%}（示意）'),
+ S('drag',5,1800,'{拖动}「上限 15%」，换个位置试试',true),
+ S('front',5,2800,'挪到开头，或在提问前{再重申一次}：模型没换，结果更可能对（但不保证）'),
+ S('final',6,3200,''),
 ];
-const LAST=STEPS.length-1;
-
-const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
-const lerp=(a,b,t)=>a+(b-a)*t;
-const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-const easeCam=t=>t<.5?16*t**5:1-Math.pow(-2*t+2,5)/2;
-const seg=(G,a,b)=>ease(clamp((G-a)/(b-a)));
-function kf(G,pts,fn=ease){if(G<=pts[0][0])return pts[0][1];for(let i=0;i<pts.length-1;i++){if(G<=pts[i+1][0]){const a=pts[i],b=pts[i+1];return lerp(a[1],b[1],fn((G-a[0])/(b[0]-a[0])));}}return pts[pts.length-1][1];}
-function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
-
-/* ==================== 画布与原版光学贴图 ==================== */
-const cv=document.getElementById('c'), ctx=cv.getContext('2d');
-const W=1920, H=1080; let view={s:1,ox:0,oy:0,dpr:1};
-function resize(){
-  const w=innerWidth,h=innerHeight,dpr=Math.min(window.devicePixelRatio||1,2);
-  cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.width=w+'px';cv.style.height=h+'px';
-  const s=Math.min(w/W,h/H);view={s,ox:(w-W*s)/2,oy:(h-H*s)/2,dpr};
-}
-addEventListener('resize',resize); resize();
-
-const mcache=new Map();
-function font(sz,wt=400){return `${wt} ${sz}px ${FONT}`;}
-function measure(t,sz,wt=400){const k=t+'|'+wt;let v=mcache.get(k);if(v===undefined){ctx.font=font(100,wt);v=ctx.measureText(t).width/100;mcache.set(k,v);}return v*sz;}
-function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
-
-function text(str,x,y,sz,col,a=1,wt=400,al='center'){
-  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
-  const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.font=font(sz,wt);ctx.fillStyle=col;ctx.textAlign=al;ctx.textBaseline='middle';ctx.fillText(str,x,y);ctx.globalAlpha=prev;
-}
-function glowText(str,x,y,sz,col,a=1,wt=700,blur=0.45,al='center'){
-  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
-  ctx.save();ctx.shadowColor='rgba(255,186,60,0.6)';ctx.shadowBlur=sz*blur;text(str,x,y,sz,col,a,wt,al);ctx.restore();
-}
-function rich(str,x,y,sz,a=1,col=IVORY){
-  if(ctx.globalAlpha*clamp(a)<=0.004||!str)return;
-  const parts=[];str.split(/(\{[^}]*\})/).forEach(s=>{if(!s)return;if(s[0]==='{')parts.push([s.slice(1,-1),1]);else parts.push([s,0]);});
-  let tw=0;parts.forEach(p=>{p[2]=measure(p[0],sz,p[1]?700:400);tw+=p[2];});let x0=x-tw/2;
-  parts.forEach(p=>{if(p[1])glowText(p[0],x0,y,sz,GOLD_HI,a,700,0.45,'left');else text(p[0],x0,y,sz,col,a,400,'left');x0+=p[2];});
-}
-function brandMark(x,y,sz,a=1){
-  if(ctx.globalAlpha*clamp(a)<=0.004)return;
-  const s1='陈石律师',s2='  ·  ',s3='chenshi.ai';
-  const w1=measure(s1,sz*0.8),w2=measure(s2,sz*0.8),w3=measure(s3,sz,700),tw=w1+w2+w3;let x0=x-tw/2;
-  text(s1,x0,y,sz*0.8,IVORY,a*0.78,400,'left');x0+=w1;text(s2,x0,y,sz*0.8,GOLD,a*0.8,400,'left');x0+=w2;glowText(s3,x0,y,sz,GOLD_HI,a,700,0.3,'left');
-  const L1=sz*2.2,gap=sz*0.9;ctx.save();ctx.globalAlpha*=a*0.7;
-  [[x-tw/2-gap-L1,x-tw/2-gap,0],[x+tw/2+gap,x+tw/2+gap+L1,1]].forEach(([u,v,dir])=>{const g=ctx.createLinearGradient(u,0,v,0);g.addColorStop(dir?1:0,'rgba(226,170,66,0)');g.addColorStop(dir?0:1,'rgba(226,170,66,0.9)');ctx.fillStyle=g;ctx.fillRect(u,y-0.75,v-u,1.5);});
-  ctx.restore();
-}
-
-function mkSprite(stops){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),gr=g.createRadialGradient(64,64,0,64,64,64);stops.forEach(s=>gr.addColorStop(s[0],s[1]));g.fillStyle=gr;g.fillRect(0,0,128,128);return c;}
-const SPR_HALO=mkSprite([[0,'rgba(255,228,170,0.9)'],[0.12,'rgba(255,196,96,0.55)'],[0.4,'rgba(226,150,46,0.16)'],[1,'rgba(200,120,30,0)']]);
-const SPR_CORE=mkSprite([[0,'rgba(255,250,235,1)'],[0.25,'rgba(255,226,160,0.9)'],[0.6,'rgba(255,190,80,0.25)'],[1,'rgba(255,170,60,0)']]);
-const SPR_RED =mkSprite([[0,'rgba(255,195,185,0.9)'],[0.2,'rgba(232,106,88,0.5)'],[1,'rgba(180,40,30,0)']]);
-const SPR_GRN =mkSprite([[0,'rgba(180,255,220,0.9)'],[0.2,'rgba(79,209,152,0.5)'],[1,'rgba(20,120,80,0)']]);
-function glow(x,y,r,a=1,spr=SPR_HALO){const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||r<=0.5)return;const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.drawImage(spr,x-r,y-r,2*r,2*r);ctx.globalAlpha=prev;}
-
-const FIBER=(()=>{const c=document.createElement('canvas');c.width=512;c.height=128;const g=c.getContext('2d'),r=mulberry(7);
-  for(let i=0;i<900;i++){const x=r()*512,y=r()*128,l=6+r()*40;g.strokeStyle=`rgba(255,215,150,${0.015+r()*0.04})`;g.lineWidth=0.6+r()*0.8;g.beginPath();g.moveTo(x,y);g.lineTo(x+l,y+(r()-0.5)*3);g.stroke();}return c;})();
-let FIBER_PAT=null;
-const DUST=(()=>{const r=mulberry(2028);return Array.from({length:60},()=>({x:r(),y:r(),vx:(r()-0.5)*0.004,vy:-0.003-r()*0.006,r:1.2+r()*2.6,a:0.1+r()*0.25,ph:r()*6.28}));})();
-
-// 纸带上的 9 个上下文词块（第 4 块是藏在中间的“关键约束：上限 15%”，在 Step 10 会物理飞到最前面！）
-const BLOCKS=[
-  {id:'sys',  t:'System',     sub:'法律助手',     baseW:0.86, slot:0},
-  {id:'bg1',  t:'工程概况',    sub:'背景描述',     baseW:0.32, slot:1},
-  {id:'bg2',  t:'付款节点',    sub:'第5条原文',    baseW:0.18, slot:2},
-  {id:'bg3',  t:'工期顺延',    sub:'第7条原文',    baseW:0.10, slot:3},
-  {id:'rule', t:'上限 15%',   sub:'关键约束！',   baseW:0.04, slot:4, isKey:true},
-  {id:'bg4',  t:'质保金 3%',  sub:'第12条原文',   baseW:0.09, slot:5},
-  {id:'bg5',  t:'签证流程',    sub:'附件二',       baseW:0.22, slot:6},
-  {id:'bg6',  t:'历史对话',    sub:'前两轮问答',   baseW:0.48, slot:7},
-  {id:'q',    t:'当前提问',    sub:'违约金多少？', baseW:0.95, slot:8, isQuery:true},
+const SI={};STEPS.forEach((s,i)=>SI[s.id]=i);const LAST=STEPS.length-1;
+const NAMED=[
+ {id:'sys',t:'System',s:'法律助手',sc:1.2},
+ {id:'b1',t:'工程概况',s:'背景',sc:0.8},
+ {id:'b2',t:'付款节点',s:'第 5 条',sc:2.1},
+ {id:'b3',t:'工期顺延',s:'第 7 条',sc:0.5},
+ {id:'key',t:'上限 15%',s:'违约金约束',sc:3.0,key:1},
+ {id:'b4',t:'质保金',s:'第 12 条',sc:1.0},
+ {id:'b5',t:'签证流程',s:'附件二',sc:0.3},
+ {id:'b6',t:'历史对话',s:'前两轮',sc:1.6},
+ {id:'q',t:'当前提问',s:'违约金最多多少？',sc:1.4,q:1},
 ];
-// U 型曲线函数：两端高（~0.92），中间低（~0.08）
-function uCurve(u){const d=2*u-1;return 0.08+0.84*Math.pow(Math.abs(d),2.2);}
+const EXPS=NAMED.map(b=>Math.exp(b.sc)),ESUM=EXPS.reduce((a,b)=>a+b,0);NAMED.forEach((b,i)=>b.w=EXPS[i]/ESUM);
+const HEADS=[[GOLD_HI,null],[ICE,[.05,.03,.04,.03,.06,.05,.04,.62,.08]],[PURPLE,[.55,.06,.05,.04,.06,.04,.05,.05,.10]]];
+const ORDER=['sys','b1','f','f','f','b2','f','f','f','b3','f','f','b4','f','f','f','b5','f','f','b6','f','q'];
+const ITEMS=ORDER.map((id,i)=>id==='f'?{id:'f'+i,fill:1}:NAMED.find(b=>b.id===id));
+const KEY=NAMED.find(b=>b.key);
+const acc=p=>0.5+0.33*Math.pow(Math.abs(2*p-1),1.7)-0.03*p; // U 型（示意）
+let pUser=null,pDisp=null,CAM={x:960,y:540,z:1};
 
-function drawArc(x1,y1,x2,y2,h,col,lw,a,amb,flow=false){
-  if(a<=0.005)return;
-  const cx=(x1+x2)/2, cy=Math.min(y1,y2)-h;
-  ctx.save();ctx.globalAlpha*=clamp(a);
-  ctx.strokeStyle=col;ctx.lineWidth=lw;
-  ctx.beginPath();ctx.moveTo(x1,y1);ctx.quadraticCurveTo(cx,cy,x2,y2);ctx.stroke();
-  if(flow){
-    const t=(amb*0.65)%1;
-    const px=(1-t)*(1-t)*x1+2*(1-t)*t*cx+t*t*x2;
-    const py=(1-t)*(1-t)*y1+2*(1-t)*t*cy+t*t*y2;
-    ctx.globalCompositeOperation='lighter';glow(px,py,18+lw*3,0.9);ctx.globalCompositeOperation='source-over';
-  }
+function geo(G){const P=LY.port,H=LY.H,Lf=seg(G,SI.heads+0.25,SI.long);
+  if(!P)return{P,a0:150,L:1620,c:620,th:176,bh:132,gap:14,Lf,chart:{top:250,base:470}};
+  const c=lerp(440,232,Lf),bh=lerp(640,330,Lf);
+  return{P,a0:430,L:H-430-360,c,th:bh+60,bh,gap:12,Lf,chart:{x0:470,x1:1010}};}
+function M(g,a,b=0){return g.P?{x:g.c+b,y:g.a0+a}:{x:g.a0+a,y:g.c+b};}
+function rectOf(g,a0,a1,h){return g.P?[g.c-h/2,g.a0+a0,h,a1-a0]:[g.a0+a0,g.c-h/2,a1-a0,h];}
+function layout(g,G,pKey){const Lf=g.Lf;const fixW=g.P?118:150;
+  const shortW=(g.L-8*g.gap)/9;
+  const unitW=it=>{if(it.id==='key'||it.id==='q')return lerp(shortW,fixW,Lf);
+    const lw=(g.L-g.gap*(ITEMS.length)-2*fixW)/(ITEMS.length-2);return (it.fill?Lf:1)*lerp(shortW,lw,Lf);};
+  const pos={};const rest=ITEMS.filter(it=>it.id!=='q'&&it.id!=='key');let s=0;const base=[];
+  rest.forEach(it=>{const w=unitW(it);base.push([it,s,w]);s+=w+(w>0.5?g.gap:0);});
+  const Lo=s,kW=unitW(KEY);const nat=base.find(b=>b[0].id==='b4')[1];
+  const aK=pKey==null?nat:clamp(pKey,0,1)*(Lo-0.001);
+  base.forEach(([it,s0,w])=>{const c=s0+w/2;const t=clamp((c-aK)/Math.max(kW,1)+0.5);const sh=(kW+g.gap)*t*t*(3-2*t);pos[it.id]=[s0+sh,s0+sh+w];});
+  pos.key=[aK,aK+kW];const qa=Lo+kW+g.gap;pos.q=[qa,Math.min(g.L,qa+unitW(NAMED[8]))];
+  return {pos,Lo,nat};}
+
+function drawBlock(g,it,a0,a1,alpha,G,amb,o={}){const [x,y,w,h]=rectOf(g,a0,a1,g.bh);if(w<1||h<1)return;
+  const st=it.fill?'dim':(it.q?'hot':(it.key?(o.keyStyle||'gold'):'gold'));block(x,y,w,h,{style:st,a:alpha,lw:it.key||it.q?1.8:1.3});
+  if(it.fill){ctx.globalAlpha=alpha*0.5;ctx.fillStyle='rgba(244,237,223,0.25)';if(g.P){for(let k=0;k<3;k++)ctx.fillRect(x+16,y+h*(0.3+k*0.2),w-32,2);}else{for(let k=0;k<4;k++)ctx.fillRect(x+8,y+28+k*22,w-16,2);}ctx.globalAlpha=1;return;}
+  const showSub=g.P?(h>70):(w>110), la=alpha*(it.key||it.q?1:clamp(1-g.Lf*1.3));
+  const cx=x+w/2,cy=y+h/2,tf=g.P?(g.Lf>0.5?30:36):24,sf=g.P?26:18;
+  const col=it.q?GOLD_HI:(it.key?(o.keyCol||PALE):IVORY);
+  if(showSub&&g.Lf<0.5){text(it.t,cx,cy-(g.P?18:16),tf,col,la,700);text(it.s,cx,cy+(g.P?24:20),sf,DIM,la);}
+  else text(it.t,cx,cy,g.P?30:(w<130?20:24),col,la,700);}
+function beam(g,a1,a2,w,col,alpha,amb,hOff=0,flow=0){if(alpha<=0.01)return;let p1,p2,cp;const d=Math.abs(a2-a1);
+  if(g.P){const x=g.c+g.bh/2+4;p1={x,y:g.a0+a1};p2={x,y:g.a0+a2};cp={x:x+Math.min(230,50+0.24*d)+hOff*0.35,y:(p1.y+p2.y)/2};}
+  else{const y=g.c-g.bh/2-4;p1={x:g.a0+a1,y};p2={x:g.a0+a2,y};cp={x:(p1.x+p2.x)/2,y:y-50-0.30*d-hOff};}
+  ctx.save();ctx.globalCompositeOperation='lighter';ctx.globalAlpha=alpha*(0.25+0.75*Math.min(1,w*2.2));ctx.strokeStyle=col;ctx.lineWidth=1.2+w*(g.P?22:26);ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.quadraticCurveTo(cp.x,cp.y,p2.x,p2.y);ctx.stroke();ctx.restore();
+  if(flow>0){const n=Math.max(1,Math.round(w*14));for(let k=0;k<n;k++){const t=((amb*0.45+k/n+a1*0.001)%1);const q=qbez(p1,cp,p2,t);glowAdd(q.x,q.y,7+w*20,flow*0.9*Math.sin(Math.PI*t),col===ICE?LE.SPR.ICE:(col===PURPLE?LE.SPR.PURPLE:LE.SPR.HALO));}}}
+
+function render(G,amb,dt){const W=LY.W,H=LY.H,P=LY.port;const g=geo(G);
+  const qkZ=bump(G,SI.qk,0.9);let cam;
+  { const L=layout(g,G,null);const kc=M(g,(L.pos.key[0]+L.pos.key[1])/2),qc=M(g,(L.pos.q[0]+L.pos.q[1])/2);
+    const fc=P?{x:540,y:(kc.y+qc.y)/2}:{x:(kc.x+qc.x)/2+40,y:g.c-40};const base=P?{x:540,y:H/2+40}:{x:960,y:540};
+    const z=1+(P?0.22:0.42)*ease(qkZ);cam={x:lerp(base.x,fc.x,ease(qkZ)),y:lerp(base.y,fc.y,ease(qkZ)),z};if(G<0.6)cam.z*=lerp(1.08,1,seg(G,0,0.6));}
+  CAM=cam;LE.bg(amb,(cam.x-W/2)*cam.z,(cam.y-H/2)*cam.z);
+  LE.title('Attention 注意力','模型怎样{回看}整根纸带，又为什么会{迷失在中间}',LE.easeOut(clamp(amb/1.8)),seg(G,0.05,0.6),{portLines:['Attention','注意力']});
+  if(G<0.25)return;
+  ctx.save();LE.camera(cam.x,cam.y,cam.z);
+  const L0=layout(g,G,null);const natP=L0.nat/(L0.Lo||1);
+  let pT=kf(G,[[SI.long,natP],[SI.mid,0.5],[SI.drag,0.5],[SI.front,0]]);if(LE.isAt('drag')&&pUser!=null)pT=pUser;if(G<SI.long)pT=natP;
+  pDisp=pDisp==null?pT:damp(pDisp,pT,dt,10);if(!LE.isAt('drag')||pUser==null)pDisp=pT;
+  const Lk=layout(g,G,G<SI.long?null:pDisp);const pos=Lk.pos;const inA=seg(G,0.3,1.0);
+  const tapeEnd=lerp(0,g.L,LE.easeOut(seg(G,0.3,1.1)));tape(g.a0-20,g.a0-20+tapeEnd+40,g.c,g.th,{vert:P,a:inA});
+  const ord=ITEMS.slice();ord.push(KEY);const centers={};
+  ord.forEach(it=>{const p=pos[it.id];if(!p)return;const k=it.fill?0:NAMED.indexOf(it);const a=it.fill?g.Lf:seg(G,0.45+k*0.06,0.85+k*0.06);
+    const drop=(1-a)*-60;ctx.save();if(P)ctx.translate(drop,0);else ctx.translate(0,drop);
+    const keyLost=it.key?seg(G,SI.mid-0.6,SI.mid)*(1-clamp((acc(pDisp)-0.6)/0.12)):0;
+    drawBlock(g,it,p[0],p[1],a,G,amb,{keyStyle:keyLost>0.5?'red':(it.key&&G>SI.mid?'green':'gold'),keyCol:keyLost>0.5?RED:PALE});ctx.restore();centers[it.id]=(p[0]+p[1])/2;});
+  const qa=centers.q;
+  const bA=seg(G,SI.beams-0.6,SI.beams)*(1-seg(G,SI.heads+0.3,SI.long-0.2));const headsA=seg(G,SI.heads-0.7,SI.heads);
+  if(bA>0.01){NAMED.forEach((b,i)=>{if(b.q)return;const a=bA*seg(G,SI.beams-0.6+i*0.05,SI.beams-0.2+i*0.05);const qkDim=1-0.75*bump(G,SI.qk,0.7);
+      beam(g,qa,centers[b.id],b.w,GOLD_HI,a*qkDim*(1-headsA*0.4),amb,0,seg(G,SI.val-0.8,SI.val)*(1-headsA));
+      if(headsA>0.01)HEADS.slice(1).forEach(([col,ws],h)=>beam(g,qa,centers[b.id],ws[i],col,a*headsA,amb,(h+1)*(P?70:46),headsA*0.8));});}
+  const qkA=seg(G,SI.qk-0.8,SI.qk-0.2)*(1-seg(G,SI.soft-0.2,SI.soft+0.4));const qkCap=seg(G,SI.qk-0.3,SI.qk)*(1-seg(G,SI.qk+0.05,SI.qk+0.35));
+  const scA=seg(G,SI.qk-0.4,SI.qk)*(1-seg(G,SI.heads-0.5,SI.heads)),wA=seg(G,SI.soft-0.7,SI.soft)*(1-seg(G,SI.heads-0.5,SI.heads));
+  NAMED.forEach((b,i)=>{if(b.q)return;const [x,y,w,h]=rectOf(g,pos[b.id][0],pos[b.id][1],g.bh);
+    const kp=P?{x:x-34,y:y+h/2}:{x:x+w/2,y:y+h+30};
+    if(qkA>0.01){ctx.globalAlpha=qkA;rr(kp.x-26,kp.y-17,52,34,6);ctx.fillStyle='rgba(143,216,255,0.12)';ctx.fill();ctx.strokeStyle=ICE;ctx.lineWidth=1.2;ctx.stroke();ctx.globalAlpha=1;text('K',kp.x,kp.y,P?24:20,ICE,qkA,700);}
+    const lp=P?{x:x+w+60,y:y+h/2}:{x:x+w/2,y:y-34};const sw=wA,txt=sw>0.5?Math.round(b.w*100)+'%':b.sc.toFixed(1);const a=Math.max(scA*(1-sw),sw)*seg(G,SI.qk-0.5+i*0.04,SI.qk-0.1+i*0.04);
+    if(a>0.01){if(P)text(txt,lp.x-14,lp.y,30,sw>0.5?GOLD_HI:ICE,a,700,'left');else text(txt,lp.x,lp.y,24,sw>0.5?GOLD_HI:ICE,a,700);}
+    if(sw>0.01){if(P){const bw=180*b.w/0.42;ctx.globalAlpha=sw;ctx.fillStyle='rgba(255,208,98,0.75)';ctx.fillRect(x+w+20,y+h/2+24,bw,8);ctx.globalAlpha=1;}
+      else{const bh2=110*b.w/0.42;ctx.globalAlpha=sw*0.9;const gr=ctx.createLinearGradient(0,y-60-bh2,0,y-60);gr.addColorStop(0,GOLD_HI);gr.addColorStop(1,'rgba(226,150,46,0.2)');ctx.fillStyle=gr;ctx.fillRect(x+w/2-10,y-56-bh2,20,bh2);ctx.globalAlpha=1;}}});
+  if(qkA>0.01){const [x,y,w,h]=rectOf(g,pos.q[0],pos.q[1],g.bh);const qp=P?{x:x-34,y:y+h/2}:{x:x+w/2,y:y+h+30};
+    ctx.globalAlpha=qkA;rr(qp.x-26,qp.y-17,52,34,6);ctx.fillStyle='rgba(255,208,98,0.2)';ctx.fill();ctx.strokeStyle=GOLD_HI;ctx.lineWidth=1.4;ctx.stroke();ctx.globalAlpha=1;text('Q',qp.x,qp.y,P?24:20,GOLD_HI,qkA,700);
+    const t=lin(G,SI.qk-0.55,SI.qk-0.05);if(t>0&&t<1){const idx=t*8;const i=Math.floor(idx),f=idx-i;const b0=NAMED[clamp(i,0,7)],b1=NAMED[clamp(i+1,0,7)];
+      const k0=rectOf(g,pos[b0.id][0],pos[b0.id][1],g.bh),k1=rectOf(g,pos[b1.id][0],pos[b1.id][1],g.bh);
+      const pt0=P?{x:k0[0]-34,y:k0[1]+k0[3]/2}:{x:k0[0]+k0[2]/2,y:k0[1]+k0[3]+30},pt1=P?{x:k1[0]-34,y:k1[1]+k1[3]/2}:{x:k1[0]+k1[2]/2,y:k1[1]+k1[3]+30};
+      const xx=lerp(pt0.x,pt1.x,f),yy=lerp(pt0.y,pt1.y,f);glowAdd(xx,yy,40,0.9);glowAdd(xx,yy,12,1,LE.SPR.CORE);}
+    if(P)rich('匹配分 = {Q · K}：越像，分越高（示意）',540,g.a0+g.L+120,32,qkCap,{maxW:900});
+    else rich('匹配分 = {Q · K}：两组数字越「对得上」，分越高（示意）',(rectOf(g,pos.key[0],pos.key[1],1)[0]+x+w)/2,g.c+g.bh/2+110,24,qkCap);}
+  const smCap=seg(G,SI.soft-0.3,SI.soft)*(1-seg(G,SI.soft+0.05,SI.soft+0.35));
+  if(smCap>0.01){if(P)rich('权重合计 {100%}',540,g.a0+g.L+120,34,smCap);else rich('权重合计 {100%}；「上限 15%」这一格分最高，拿到的权重也最多',960,g.c+g.bh/2+110,24,smCap);}
+  const vA=seg(G,SI.val-0.7,SI.val)*(1-seg(G,SI.heads-0.4,SI.heads));const vCap=seg(G,SI.val-0.3,SI.val)*(1-seg(G,SI.val+0.05,SI.val+0.35));
+  if(vA>0.01){const [x,y,w,h]=rectOf(g,pos.q[0],pos.q[1],g.bh);const mx=P?540:x+w/2-150,my=P?y+h+150:y+h+90;const cw=P?50:30,n=8,tw=n*cw;ctx.globalAlpha=vA;
+    for(let k=0;k<n;k++){const v=0.25+0.75*Math.abs(Math.sin(k*1.7+2));const hh=(P?70:46)*v*lin(G,SI.val-0.5,SI.val);ctx.fillStyle=k%2?'rgba(255,208,98,0.85)':'rgba(226,170,66,0.95)';ctx.fillRect(mx-tw/2+k*cw+4,my-hh,cw-8,hh);}
+    ctx.globalAlpha=1;text('混合后的新向量 → 交给下一层',mx,my+(P?40:28),P?30:20,PALE,vA,700);
+    if(P)rich('V：每个位置携带的{内容}，按权重加权求和',540,g.a0+g.L+120,32,vCap,{maxW:900});else rich('V：每个位置携带的{内容}，按权重加权求和',760,g.c+g.bh/2+110,24,vCap);}
+  if(headsA>0.01){const hA=headsA*(1-seg(G,SI.long-0.7,SI.long-0.3));const lx=P?540:960,ly=P?g.a0+g.L+130:g.c+g.bh/2+110;
+    [['头 1',GOLD_HI],['头 2',ICE],['头 3',PURPLE]].forEach(([t,c],i)=>{const x=lx+(i-1)*(P?220:180);ctx.globalAlpha=hA;ctx.fillStyle=c;ctx.fillRect(x-60,ly-2,34,4);ctx.globalAlpha=1;text(t,x+10,ly,P?30:22,c,hA,700);});
+    text('不同的头关注不同的位置；它们具体学到了什么，往往无法简单命名',lx,ly+(P?60:42),P?26:19,DIM,hA*(P?0:1));}
+  const uA=seg(G,SI.long-0.5,SI.long)*(1-seg(G,LAST-0.6,LAST));if(uA>0.01)drawU(g,G,amb,uA,Lk);
+  const rA=seg(G,SI.mid-0.4,SI.mid)*(1-seg(G,LAST-0.6,LAST));
+  if(rA>0.01){const ac=acc(pDisp),ok=clamp((ac-0.62)/0.1);const [x,y,w,h]=rectOf(g,pos.q[0],pos.q[1],g.bh);
+    const bx=P?560:x+w-370,by=P?y+h+60:y+h+56,bw=P?480:420,bh=P?150:96;
+    card(bx-(P?bw/2:0),by,bw,bh,{a:rA,stroke:ok>0.5?GREEN:RED,fill:ok>0.5?['rgba(20,60,40,0.9)','rgba(8,24,16,0.94)']:['rgba(70,24,16,0.9)','rgba(26,10,6,0.94)']});
+    const cx=bx-(P?0:-bw/2);text('模型回答（示意）',cx,by+(P?38:26),P?26:18,DIM,rA);glowText(ok>0.5?'违约金最多 15%':'违约金最多 30%？',cx,by+(P?96:62),P?44:32,ok>0.5?GREEN:RED,rA,700,0.3);}
   ctx.restore();
-}
-
-/* ============================== 主渲染 ============================== */
-function render(G,amb){
-  const {s,ox,oy,dpr}=view;
-  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
-  ctx.setTransform(s*dpr,0,0,s*dpr,ox*dpr,oy*dpr);
-  ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();
-  ctx.fillStyle='#030303';ctx.fillRect(0,0,W,H);
-
-  // 背景暖光 + 漂浮金尘
-  const bg=ctx.createRadialGradient(W/2,H*0.5,0,W/2,H*0.5,960);
-  bg.addColorStop(0,'rgba(128,84,22,0.16)');bg.addColorStop(0.55,'rgba(60,38,10,0.05)');bg.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  ctx.save();ctx.globalCompositeOperation='lighter';
-  DUST.forEach(d=>{const dx=((d.x+amb*d.vx)%1+1)%1*W,dy=((d.y+amb*d.vy)%1+1)%1*H;glow(dx,dy,d.r*3,d.a*(0.55+0.45*Math.sin(amb*1.4+d.ph)));});
-  ctx.restore();
-
-  /* ---------- 0. 原版复刻级开场 (0 -> 0.55) ---------- */
-  const a0=1-seg(G,0.02,0.55);
-  if(a0>0.005){
-    const intro=clamp(amb/2.4), out=seg(G,0.02,0.55);
-    const title='Attention 到底是什么', fs=98, tw=measure(title,fs,700);
-    let x=W/2-tw/2; const rnd=mulberry(8); let ci=0;
-    ctx.save();
-    for(const ch of title){
-      const cw=measure(ch,fs,700), ca=seg(intro,0.08+ci*0.032,0.36+ci*0.032);
-      const dx=(rnd()-0.5)*220*out, dy=-(35+rnd()*140)*out;
-      glowText(ch,x+cw/2+dx,445+(1-ca)*24+dy,fs,PALE,ca*(1-out),700,0.35);
-      x+=cw; ci++;
-    }
-    const sw=((amb*0.18)%1.6)-0.3;
-    if(intro>0.85&&out<0.4){
-      ctx.save();ctx.globalCompositeOperation='lighter';
-      const gx=W/2-tw/2+sw*tw, g=ctx.createLinearGradient(gx-160,0,gx+160,0);
-      g.addColorStop(0,'rgba(255,240,200,0)');g.addColorStop(0.5,'rgba(255,240,200,0.55)');g.addColorStop(1,'rgba(255,240,200,0)');
-      ctx.font=font(fs,700);ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillStyle=g;ctx.globalAlpha=1-out*2.5;ctx.fillText(title,W/2-tw/2,445);ctx.restore();
-    }
-    const lw=840*seg(intro,0.28,0.82)*(1-out);
-    ctx.globalCompositeOperation='lighter';
-    const lg=ctx.createLinearGradient(W/2-lw/2,0,W/2+lw/2,0);lg.addColorStop(0,'rgba(255,200,90,0)');lg.addColorStop(0.5,`rgba(255,214,120,${0.95*(1-out)})`);lg.addColorStop(1,'rgba(255,200,90,0)');
-    ctx.fillStyle=lg;ctx.fillRect(W/2-lw/2,540,lw,2);glow(W/2,541,60,0.7*(1-out));ctx.globalCompositeOperation='source-over';
-    rich('从{光学聚光灯}，看懂大模型如何阅读与为何「{迷失在中间}」',W/2,605,32,seg(intro,0.55,1)*(1-out),DIM);
-    brandMark(W/2,870,28,seg(intro,0.7,1)*(1-out));
-    ctx.restore();
-  }
-
-  /* ---------- 1~5. 单一连续摄影机空间 (G >= 0.45) ---------- */
-  const worldA=seg(G,0.45,1.0);
-  if(worldA>0.005){
-    // 五次方运镜：Step 3-5 推近 QKV 细节，Step 6 起拉远看整根长纸带与 U 型聚光灯
-    const camX = kf(G,[[1,960],[2,960],[3,1180],[5,1180],[6,960],[13,960]], easeCam);
-    const camY = kf(G,[[1,600],[2,580],[3,540],[5,540],[6,560],[13,560]], easeCam);
-    const camZ = kf(G,[[1,1.0],[2,1.0],[3,1.28],[5,1.28],[6,0.96],[13,0.96]], easeCam);
-
-    const pArcs   = seg(G,1.2,2.0);
-    const pQKV    = seg(G,2.2,3.0)*(1-seg(G,5.2,5.8));
-    const pMulti  = seg(G,4.2,5.0)*(1-seg(G,5.3,5.8));
-    const pUCurve = seg(G,5.2,6.0);
-    const pShadow = seg(G,6.2,7.0);
-    const pMidBad = seg(G,7.2,8.0)*(1-seg(G,9.2,9.8));
-    const pBadOut = seg(G,8.2,9.0)*(1-seg(G,9.2,9.8));
-    const pMove   = seg(G,9.2,10.0); // 关键约束从 slot 4 物理飞到 slot 1（最前端高光区！）
-    const pRelock = seg(G,10.2,11.0);
-    const pGoodOut= seg(G,11.2,12.0);
-    const pFinal  = seg(G,12.3,13.0);
-
-    ctx.save();ctx.globalAlpha=worldA;
-    ctx.translate(W/2,H/2);ctx.scale(camZ,camZ);ctx.translate(-camX,-camY);
-
-    const tapeY=650, tapeH=134, x0=110, x1=1810, tw=x1-x0;
-
-    // 1. 纸带主体（原版纤维纹理 + 齿孔 + 金属双边线）
-    ctx.save();ctx.shadowColor='rgba(0,0,0,0.88)';ctx.shadowBlur=38;ctx.shadowOffsetY=14;
-    const tgr=ctx.createLinearGradient(0,tapeY-tapeH/2,0,tapeY+tapeH/2);
-    tgr.addColorStop(0,'rgba(82,58,20,0.72)');tgr.addColorStop(0.5,'rgba(24,17,7,0.78)');tgr.addColorStop(1,'rgba(82,58,20,0.72)');
-    ctx.fillStyle=tgr;ctx.fillRect(x0,tapeY-tapeH/2,tw,tapeH);ctx.restore();
-    if(!FIBER_PAT)FIBER_PAT=ctx.createPattern(FIBER,'repeat');
-    ctx.fillStyle=FIBER_PAT;ctx.fillRect(x0,tapeY-tapeH/2,tw,tapeH);
-    ctx.strokeStyle='rgba(236,184,78,0.9)';ctx.lineWidth=1.8;
-    ctx.beginPath();ctx.moveTo(x0,tapeY-tapeH/2);ctx.lineTo(x1,tapeY-tapeH/2);ctx.moveTo(x0,tapeY+tapeH/2);ctx.lineTo(x1,tapeY+tapeH/2);ctx.stroke();
-    for(let hx=x0+20;hx<x1-12;hx+=36){[tapeY-tapeH/2+9,tapeY+tapeH/2-9].forEach(hy=>{ctx.fillStyle='#030303';ctx.fillRect(hx-2,hy-2,4,4);});}
-
-    // 2. U 型聚光灯光学曲线与暗影罩（Step 6 起显现）
-    if(pUCurve>0.01){
-      ctx.save();ctx.globalAlpha*=pUCurve;
-      // 绘制 U 型注意力权重曲线
-      ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2.6;
-      ctx.beginPath();
-      for(let i=0;i<=80;i++){
-        const u=i/80, px=x0+40+u*(tw-80), py=tapeY-100-uCurve(u)*240;
-        i?ctx.lineTo(px,py):ctx.moveTo(px,py);
-      }
-      ctx.stroke();
-      // 左右两端聚光灯锥光束
-      if(pShadow>0.02){
-        ctx.save();ctx.globalCompositeOperation='lighter';ctx.globalAlpha*=pShadow;
-        glow(x0+180,tapeY-40,260,0.45);
-        glow(x1-180,tapeY-40,260,0.45);
-        ctx.restore();
-        // 中间深渊暗影标注
-        text('高关注区 (Primacy)',x0+160,tapeY-365,18,GOLD_HI,pShadow,700);
-        text('高关注区 (Recency)',x1-160,tapeY-365,18,GOLD_HI,pShadow,700);
-        text('▼ 迷失在中间（Lost in the Middle · 注意力低谷）',W/2,tapeY-155,20,RED,pShadow*(1-pFinal*0.5),700);
-      }
-      ctx.restore();
-    }
-
-    // 3. 计算 9 个词块的位置（核心：第 4 块「上限 15%」在 Step 10 物理飞跃到 slot 1！）
-    const slotW = (tw - 60) / 9;
-    const slotX = idx => x0 + 30 + idx * slotW + slotW/2;
-    const qX = slotX(8);
-
-    const posMap = BLOCKS.map(b => {
-      let idx = b.slot;
-      let arcLift = 0;
-      if(b.isKey){
-        // 从 slot 4 沿抛物线飞到 slot 1
-        idx = lerp(4, 1, pMove);
-        arcLift = Math.sin(pMove * Math.PI) * 140;
-      } else if(b.slot >= 1 && b.slot <= 3){
-        // 原来的 1,2,3 顺次右移 1 格腾出高光位！
-        idx = lerp(b.slot, b.slot + 1, pMove);
-      }
-      const x = slotX(idx);
-      const y = tapeY - arcLift;
-      // 动态计算该词块当前的光学亮度（两端亮，中间暗）
-      const u = idx / 8;
-      const attW = b.isKey ? lerp(0.04, 0.89, pRelock) : uCurve(u);
-      return { b, x, y, attW };
-    });
-
-    // 4. 绘制注意力光学弧线（从末尾 Query 射向前面的词块）
-    if(pArcs>0.01){
-      posMap.forEach(({b,x,y,attW}, i) => {
-        if(b.isQuery) return;
-        const h = 70 + (8 - i) * 26;
-        let w = attW;
-        if(pShadow < 0.1) w = (b.isKey || b.id==='sys' || b.id==='bg6') ? 0.78 : 0.22;
-        const col = (b.isKey && pRelock > 0.3) ? GREEN : (w > 0.5 ? GOLD_HI : 'rgba(226,170,66,0.38)');
-        const lw = 1 + w * 3.8;
-        drawArc(qX, tapeY-48, x, y-48, h, col, lw, pArcs * (0.18 + w*0.82), amb, w > 0.65);
-
-        // Multi-Head 多头光束示意（Step 5）
-        if(pMulti > 0.05 && (b.isKey || b.id==='bg2' || b.id==='bg6')){
-          drawArc(qX-18, tapeY-48, x+10, y-48, h+32, 'rgba(130,210,255,0.65)', 1.8, pMulti*0.75, amb+0.3, true);
-        }
-      });
-    }
-
-    // 5. 绘制 9 个纸带词块
-    posMap.forEach(({b,x,y,attW}) => {
-      const w = slotW - 14, h = 86;
-      // 迷失在中间的暗影压暗效果
-      const dimMid = (pShadow > 0.1 && !b.isQuery) ? lerp(0.28, 1.0, attW) : 1.0;
-      const isKeyLit = b.isKey && pRelock > 0.3;
-      const isKeyFail = b.isKey && pMidBad > 0.2;
-      const stroke = isKeyLit ? GREEN : (isKeyFail ? RED : (b.isQuery ? GOLD_HI : 'rgba(226,170,66,0.65)'));
-
-      ctx.save();ctx.globalAlpha *= (isKeyFail ? 0.85 : dimMid);
-      rr(x-w/2, y-h/2, w, h, 7);
-      ctx.fillStyle = isKeyLit ? 'rgba(18,74,52,0.82)' : (isKeyFail ? 'rgba(90,24,20,0.72)' : (b.isQuery ? 'rgba(110,78,22,0.75)' : 'rgba(14,11,6,0.85)'));
-      ctx.fill();ctx.strokeStyle = stroke;ctx.lineWidth = (b.isKey||b.isQuery) ? 2.2 : 1.3;ctx.stroke();
-
-      if(isKeyLit || b.isQuery){
-        ctx.globalCompositeOperation='lighter';
-        glow(x,y,75,0.45,isKeyLit?SPR_GRN:SPR_HALO);
-        ctx.globalCompositeOperation='source-over';
-      }
-      text(b.t, x, y-13, 18, isKeyLit?GREEN:(isKeyFail?RED:(b.isQuery?GOLD_HI:IVORY)), 1, 700);
-      text(b.sub, x, y+16, 13, DIM, 0.9);
-
-      // Q / K / V 标签（Step 3-4）
-      if(pQKV > 0.05){
-        if(b.isQuery) text('Query (探照光)', x, y+68, 16, GOLD_HI, pQKV, 700);
-        else if(b.isKey || b.id==='bg6') text('Key · Value', x, y+68, 15, PALE, pQKV, 700);
-      }
-      // 关键约束权重实时读数（Step 8-12）
-      if(b.isKey && (pMidBad > 0.05 || pRelock > 0.05)){
-        const wNum = lerp(0.04, 0.89, pRelock).toFixed(2);
-        const wCol = pRelock > 0.4 ? GREEN : RED;
-        text(`注意力权重: ${wNum}`, x, y+68, 17, wCol, Math.max(pMidBad, pRelock), 700);
-      }
-      ctx.restore();
-    });
-
-    // 6. 纸带下方：模型输出对比框（Step 9 红色幻觉 -> Step 12 绿色正确）
-    if(pBadOut > 0.02 || pGoodOut > 0.02){
-      const oy = 835;
-      if(pBadOut > 0.02){
-        ctx.save();ctx.globalAlpha *= pBadOut;
-        rr(W/2-340, oy-38, 680, 76, 10);ctx.fillStyle='rgba(75,20,16,0.78)';ctx.fill();ctx.strokeStyle=RED;ctx.lineWidth=2;ctx.stroke();
-        glow(W/2,oy,120,0.35,SPR_RED);
-        text('✕ 模型输出：“违约金按常规 30% 计算”（中间的 15% 约束被漏看！）', W/2, oy, 20, RED, 1, 700);
-        ctx.restore();
-      }
-      if(pGoodOut > 0.02){
-        ctx.save();ctx.globalAlpha *= pGoodOut;
-        rr(W/2-360, oy-38, 720, 76, 10);ctx.fillStyle='rgba(14,62,42,0.82)';ctx.fill();ctx.strokeStyle=GREEN;ctx.lineWidth=2.2;ctx.stroke();
-        glow(W/2,oy,120,0.4,SPR_GRN);
-        text('✓ 模型输出：“严格按 15% 上限执行”（同一模型，只因放对了高光位！）', W/2, oy, 20, GREEN, 1, 700);
-        ctx.restore();
-      }
-    }
-
-    ctx.restore(); // 结束摄影机变换
-  }
-
-  /* ---------- 终局收束落版 (Step 13) ---------- */
-  const finA=seg(G,12.4,13.0);
-  if(finA>0.01){
-    ctx.save();ctx.globalAlpha=finA;
-    rich('上下文排布铁律：{开头定规矩，末尾放指令，中间别藏雷}',W/2,92,34,1,IVORY);
-    brandMark(W/2,970,26,1);
-    ctx.restore();
-  }
-
-  /* ---------- 顶部引导语（先退后进，零叠字） & 右下角进度 ---------- */
-  const lo=Math.floor(G), hi=Math.min(LAST,Math.ceil(G)), f=G-lo;
-  const ha=STEPS[lo].hint, hb=STEPS[hi].hint;
-  if(ha===hb) rich(ha,W/2,92,34,0.95);
-  else {
-    const aOut=1-ease(clamp(f/0.38)), aIn=ease(clamp((f-0.5)/0.42));
-    if(aOut>0.01) rich(ha,W/2,92-(1-aOut)*10,34,0.95*aOut);
-    if(aIn>0.01) rich(hb,W/2,92+(1-aIn)*10,34,0.95*aIn);
-  }
-  const st=STEPS[Math.round(G)];
-  text(`${String(st.scene).padStart(2,'0')} · ${SCENES[st.scene]}    ${Math.round(G)+1} / ${STEPS.length}`,1860,1040,18,'rgba(244,237,223,0.52)',1,400,'right');
-  ctx.fillStyle='rgba(244,237,223,0.16)';ctx.fillRect(1660,1058,200,2);
-  ctx.fillStyle=GOLD;ctx.fillRect(1660,1058,200*G/LAST,2);
-  ctx.restore();
-}
-
-/* ==================== 交互（与原版一致） ==================== */
-let G=0, target=0, anim=null, auto=false; const t0=performance.now();
-function go(i){
-  i=clamp(Math.round(i),0,LAST);if(i===target&&!anim)return;
-  const from=G, fwd=i===Math.round(target)+1&&i>from;
-  target=i;anim={from,to:i,start:performance.now(),dur:fwd?STEPS[i].dur:Math.min(850,350+Math.abs(i-from)*60),linear:fwd};
-}
-function next(){go(target+1);} function prev(){go(target-1);}
-function tick(now){
-  if(anim){
-    const p=clamp((now-anim.start)/anim.dur);
-    G=anim.linear?lerp(anim.from,anim.to,p):lerp(anim.from,anim.to,ease(p));
-    if(p>=1){G=anim.to;anim=null;if(auto&&G<LAST)setTimeout(()=>auto&&go(target+1),700);}
-  }
-  render(G,(now-t0)/1000);requestAnimationFrame(tick);
-}
-addEventListener('keydown',e=>{
-  if(e.target.id==='lesson-back')return;
-
-  const k=e.key;
-  if(['ArrowRight',' ','PageDown','Enter','ArrowDown'].includes(k)){e.preventDefault();next();}
-  else if(['ArrowLeft','PageUp','Backspace','ArrowUp'].includes(k)){e.preventDefault();prev();}
-  else if(k==='Home')go(0); else if(k==='End')go(LAST);
-  else if(k==='f'||k==='F')toggleFS();
-  else if(k==='a'||k==='A'){auto=!auto;if(auto)next();}
-});
-let pd=null;
-cv.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY,b:e.button};});
-cv.addEventListener('pointerup',e=>{if(!pd)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y,b=pd.b;pd=null;
-  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2){dx<0?next():prev();return;}
-  if(Math.abs(dx)<14&&Math.abs(dy)<14){if(b===2)prev();else e.shiftKey?prev():next();}});
-cv.addEventListener('contextmenu',e=>{e.preventDefault();prev();});
-const fsBtn=document.getElementById('fs');
-function toggleFS(){const d=document,el=d.documentElement;if(!d.fullscreenElement)el.requestFullscreen?.();else d.exitFullscreen?.();}
-fsBtn.addEventListener('pointerdown',e=>e.stopPropagation());
-fsBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
-
-requestAnimationFrame(tick);
+  LE.finale(['注意力：每生成一个词，都按{相关度}回看整根纸带','长上下文里，{开头和结尾}更容易被用上，中间容易被漏看','要紧的约束：{放在开头，提问前再重申一次}'],seg(G,LAST-0.8,LAST),'U 型曲线为示意，形状参考 Liu et al., 2023《Lost in the Middle》；不同模型、不同任务差异很大。文中分数、权重与百分比均为示意。');}
+function drawU(g,G,amb,uA,Lk){const P=g.P;const N=80;ctx.save();
+  const A=p=>p*Lk.Lo,axV=v=>P?lerp(g.chart.x0,g.chart.x1,(v-0.35)/0.6):lerp(g.chart.base,g.chart.top,(v-0.35)/0.6);
+  const pt=(p,v)=>P?{x:axV(v),y:g.a0+A(p)}:{x:g.a0+A(p),y:axV(v)};
+  const o=pt(0,0.35),e1=pt(1,0.35),e2=pt(0,0.95);ctx.globalAlpha=uA*0.5;ctx.strokeStyle='rgba(244,237,223,0.5)';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(e2.x,e2.y);ctx.lineTo(o.x,o.y);ctx.lineTo(e1.x,e1.y);ctx.stroke();ctx.globalAlpha=1;
+  const draw=lin(G,SI.long-0.45,SI.long-0.05);
+  ctx.globalAlpha=uA;ctx.strokeStyle=GOLD_HI;ctx.lineWidth=3;ctx.beginPath();for(let i=0;i<=N*draw;i++){const p=i/N,q=pt(p,acc(p));i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y);}ctx.stroke();
+  ctx.globalAlpha=uA*0.12;ctx.fillStyle=GOLD;ctx.beginPath();const z0=pt(0,0.35);ctx.moveTo(z0.x,z0.y);for(let i=0;i<=N*draw;i++){const p=i/N,q=pt(p,acc(p));ctx.lineTo(q.x,q.y);}const z1=pt(draw,0.35);ctx.lineTo(z1.x,z1.y);ctx.fill();ctx.globalAlpha=1;
+  if(P){text('答对率 →',g.chart.x1,g.a0-40,28,DIM,uA,400,'right');text('开头',g.chart.x0-12,g.a0+30,26,DIM,uA,400,'left');text('结尾',g.chart.x0-12,g.a0+Lk.Lo-20,26,DIM,uA,400,'left');
+    rich('中间{最容易被漏看}',lerp(g.chart.x0,g.chart.x1,0.55),g.a0+A(0.5),30,uA*seg(G,SI.long-0.1,SI.long));text('示意 · 参考 Liu et al., 2023',g.chart.x1,g.a0+g.L+40,24,DIM2,uA,400,'right');}
+  else{text('答对率',g.a0-12,g.chart.top-6,20,DIM,uA,400,'left');text('关键信息在上下文中的位置 →',g.a0+Lk.Lo,g.chart.base+22,18,DIM2,uA,400,'right');
+    rich('中间{最容易被漏看}',g.a0+A(0.5),axV(acc(0.5))-34,24,uA*seg(G,SI.long-0.1,SI.long));text('示意 · 形状参考 Liu et al., 2023',g.a0+Lk.Lo,g.chart.top-6,18,DIM2,uA,400,'right');}
+  const mA=uA*seg(G,SI.mid-0.6,SI.mid);if(mA>0.01){const p=clamp(pDisp,0,1);const kc=(Lk.pos.key[0]+Lk.pos.key[1])/2;const qq=P?{x:axV(acc(p)),y:g.a0+kc}:{x:g.a0+kc,y:axV(acc(p))};
+    const ok=acc(p)>0.67;ctx.globalAlpha=mA*0.5;ctx.setLineDash([5,6]);ctx.strokeStyle=ok?GREEN:RED;ctx.lineWidth=1.4;ctx.beginPath();const t0=M(g,kc,P?g.bh/2:-g.bh/2);ctx.moveTo(t0.x,t0.y);ctx.lineTo(qq.x,qq.y);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;
+    glowAdd(qq.x,qq.y,30,0.8*mA,ok?LE.SPR.GREEN:LE.SPR.RED);ctx.globalAlpha=mA;ctx.beginPath();ctx.arc(qq.x,qq.y,8,0,7);ctx.fillStyle=ok?GREEN:RED;ctx.fill();ctx.globalAlpha=1;
+    if(STEPS[Math.round(G)].id==='drag'){const [x,y,w,h]=rectOf(g,Lk.pos.key[0],Lk.pos.key[1],g.bh);
+      LE.dragHint(x+w/2,y+h/2,pUser==null?(P?'↕ 拖动':'← 拖动 →'):'',amb,LE.isAt('drag')?1:0,{dy:P?0:g.bh/2+34,dx:P?-g.bh/2-90:0,r:34});}}
+  ctx.restore();}
+function w2(pt){return{x:(pt.x-LY.W/2)/CAM.z+CAM.x,y:(pt.y-LY.H/2)/CAM.z+CAM.y};}
+const drags=[{step:'drag',cursor:'grab',
+  hit:pt=>{const g=geo(SI.drag);const p=w2(pt);if(LY.port)return Math.abs(p.x-g.c)<g.bh/2+120&&p.y>g.a0-40&&p.y<g.a0+g.L;return Math.abs(p.y-g.c)<g.bh/2+120&&p.x>g.a0-40&&p.x<g.a0+g.L;},
+  move:pt=>{const g=geo(SI.drag);const L=layout(g,SI.drag,0.5);const p=w2(pt);const a=(LY.port?p.y:p.x)-g.a0-(LY.port?58:75);pUser=clamp(a/L.Lo,0,1);}}];
+LE.run({steps:STEPS,scenes:SCENES,render,drags,onGo:()=>{pUser=null;},onSeek:(g,st)=>{pUser=st.p??null;pDisp=null;}});
 })();
+
 </script></body></html>

@@ -1,458 +1,139 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
-<title>强化学习：RL、RLHF 与 GRPO · 光学迷宫与奖惩光场</title>
+<title>强化学习：RL、RLHF 与 GRPO · 不给答案，只给打分</title>
+<meta name="description" content="微调给标准答案，强化学习只对尝试打分；迷宫里的策略怎样形成；RLHF 用人类偏好训练奖励模型；GRPO 让一组回答比组内平均分，规则判分即可训练推理。">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
-<style>
-/* 将原文件中的两行 @font-face{font-family:'HSerif'...} 粘贴至此即可恢复原版衬线体 */
-html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
-body{position:fixed;inset:0}
-canvas{display:block;touch-action:none}
-#tools{position:fixed;right:16px;top:14px;display:flex;gap:8px;z-index:10;transition:opacity .35s}
-.tbtn{font:13px "HSerif","Songti SC",serif;color:rgba(244,237,223,.52);background:rgba(10,8,4,.62);border:1px solid rgba(226,170,66,.28);border-radius:5px;padding:4px 10px;cursor:pointer;backdrop-filter:blur(4px);transition:all .2s}
-.tbtn:hover,.tbtn.on{color:#FFD062;border-color:#E2AA42;background:rgba(226,170,66,.14)}
-#dock{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:5px;padding:6px 10px;border-radius:10px;background:rgba(8,7,4,.78);border:1px solid rgba(226,170,66,.22);backdrop-filter:blur(8px);z-index:10;max-width:95vw;overflow-x:auto;transition:opacity .4s}
-#dock::-webkit-scrollbar{display:none}
-.sbtn{font:12px "HSerif","Songti SC",serif;color:rgba(244,237,223,.55);background:none;border:1px solid transparent;border-radius:5px;padding:4px 9px;white-space:nowrap;cursor:pointer;transition:all .2s}
-.sbtn:hover{color:#FFE9B8;border-color:rgba(226,170,66,.35)}
-.sbtn.active{color:#FFD062;border-color:rgba(255,208,98,.6);background:rgba(226,170,66,.16);font-weight:700}
-body.idle #tools,body.idle #dock,body.clean #tools,body.clean #dock{opacity:0;pointer-events:none}
-</style><style>
-  #lesson-back {
-    position: fixed;
-    z-index: 10;
-    top: calc(8px + env(safe-area-inset-top));
-    left: calc(12px + env(safe-area-inset-left));
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    box-sizing: border-box;
-    padding: 0 10px;
-    border-radius: 4px;
-    color: #ffe5ad;
-    background: #17130e;
-    font: 14px/1.4 system-ui, sans-serif;
-    text-decoration: none;
-  }
-  #lesson-back:hover { text-decoration: underline; }
-  #lesson-back:focus-visible { outline: 2px solid #ffd062; outline-offset: 2px; }
-  body.clean #lesson-back, :fullscreen #lesson-back { display: none; }
-</style>
+<link rel="preload" href="../assets/fonts/hserif-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/hserif-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/lesson.css">
 </head><body>
 <a id="lesson-back" href="../index.html">← 返回模块目录</a>
-<canvas id="c"></canvas>
-<div id="tools">
-  <button class="tbtn" id="autoBtn" title="自动播放 (A)">自动 A</button>
-  <button class="tbtn" id="cleanBtn" title="纯净录屏 (H)">纯净 H</button>
-  <button class="tbtn" id="fsBtn" title="全屏 (F)">全屏 F</button>
-</div>
-<div id="dock"></div>
+<canvas id="c"></canvas><button id="fs" title="全屏（F）">全屏 F</button>
+<script src="../assets/lesson-engine.js"></script>
 <script>
-(function(){
-'use strict';
-const FONT='"HSerif","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif';
-const IVORY='#F4EDDF', GOLD='#E2AA42', GOLD_HI='#FFD062', PALE='#FFE9B8', DIM='rgba(244,237,223,0.62)', RED='#E86A58', GREEN='#4FD198', BLUE='#6AA9FF', ICE='#7CE8FF';
-
-const SCENES=['开场','光学迷宫探索','策略演化','RLHF 人类对齐','GRPO 组内进化','训练全景'];
-const S=(id,scene,dur,hint)=>({id,scene,dur,hint});
+// @title 强化学习：RL、RLHF 与 GRPO · 不给答案，只给打分
+// @desc 微调给标准答案，强化学习只对尝试打分；迷宫里的策略怎样形成；RLHF 用人类偏好训练奖励模型；GRPO 让一组回答比组内平均分，规则判分即可训练推理。
+(function(){'use strict';
+const {C,LY,ctx,clamp,lerp,ease,seg,lin,bump,damp,text,glowText,rich,measure,rr,glow,glowAdd,card,block,tape,line,arrowHead,qbez,S}=LE;
+const {IVORY,GOLD,GOLD_HI,PALE,DIM,DIM2,RED,GREEN,ICE,PURPLE}=C;
+const SCENES=['开场','打分而非答案','迷宫里的策略','RLHF','GRPO','动手打分','顿悟时刻','全流程','收束'];
 const STEPS=[
-  S('title',0,2500,''),
-  S('rl_vs_sft',1,2400,'微调（SFT）是手把手给标准答案；{强化学习 (RL)} 不给答案，只给环境与{奖惩信号}'),
-  S('maze_try',1,2600,'智能体在暗黑迷宫中向四周试探：碰壁亮红扣分（{−1}），命中目标亮绿加分（{+10}）'),
-  S('policy_opt',2,2600,'千次迭代后，扣分路径枯萎暗淡，高回报路径汇聚成粗壮的{金色策略主干 (Policy)}'),
-  S('rlhf_ab',3,2500,'落回大模型 ① {RLHF}：同一道题让模型吐出 A/B 两个回答，由人类裁判挑出更好的那份'),
-  S('rlhf_rm',3,2600,'把人类偏好训练成{奖励模型 (Reward Model)}，在幕后批量打分，牵引大模型对齐人类价值观'),
-  S('grpo_intro',4,2500,'落回大模型 ② {GRPO（DeepSeek-R1 范式）}：数学、代码、法理有客观对错，无需昂贵人类打分！'),
-  S('grpo_group',4,2600,'{组内并发采样 (Group)}：同一道题，模型一次性并发探索 4 条完全不同的思考路径'),
-  S('grpo_adv',4,2800,'客观规则直接验对错，在{组内算相对优势}——省掉庞大的 Critic 模型，算力直降一半！'),
-  S('aha_moment',4,2600,'纯奖惩驱动下，模型自己演化出了反思、验算与自我纠错——这就是著名的「{顿悟时刻}」'),
-  S('three_gen',5,2600,'大模型三步成神：{预训练}学知识 → {SFT 微调}学格式 → {RL 强化学习}学对齐与深度推理'),
-  S('final',5,2600,''),
+ S('title',0,2600,''),
+ S('vs',1,3200,'{微调（SFT）}给标准答案，让模型照着学；{强化学习（RL）}不给答案，只对它的尝试{打分}'),
+ S('maze',2,3600,'经典例子：在迷宫里反复尝试，撞墙扣分，走到终点加分（分值为示意）'),
+ S('policy',2,3000,'试得多了，得分高的走法被{加强}，得分低的被削弱——这套走法就叫{策略}'),
+ S('ab',3,3000,'落到大模型 ①：{RLHF}——同一个问题生成两份回答，由人挑出更好的那份'),
+ S('rm',3,3200,'大量「人更喜欢哪份」的数据训练出{奖励模型}，由它给新回答打分，推动模型调整'),
+ S('grpo',4,3000,'落到大模型 ②：{GRPO}——有客观对错的题（计算、代码），可以{用规则直接判分}'),
+ S('group',4,3000,'同一道题一次{采样一组}回答（这里画 4 个，实际常更多），逐个判分'),
+ S('adv',4,3200,'不另训「价值模型」，而以{组内平均分}为基准：高于平均的被加强，低于的被削弱'),
+ S('drag',5,1800,'{拖动}每个回答的得分条，看谁被加强、谁被削弱',true),
+ S('aha',6,3200,'DeepSeek-R1-Zero 报告：只用这类规则奖励训练，思考变长，并出现了{回头检查}（论文称「顿悟时刻」）'),
+ S('pipe',7,3000,'常见流程：{预训练}学语言与知识 → {SFT}学格式与指令 → {RL}按偏好或对错继续优化'),
+ S('final',8,3200,''),
 ];
-const LAST=STEPS.length-1;
-const SCENE_FIRST=SCENES.map((_,i)=>STEPS.findIndex(s=>s.scene===i));
-
-const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
-const lerp=(a,b,t)=>a+(b-a)*t;
-const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-const seg=(G,a,b)=>ease(clamp((G-a)/(b-a)));
-function actAlpha(G,inS,inE,outS,outE){
-  const fi=inS===null?1:seg(G,inS,inE);
-  const fo=outS===null?1:(1-seg(G,outS,outE));
-  return fi*fo;
-}
-function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
-
-/* ==================== 画布与原版光学贴图 ==================== */
-const cv=document.getElementById('c'), ctx=cv.getContext('2d');
-const W=1920, H=1080; let view={s:1,ox:0,oy:0,dpr:1};
-function resize(){
-  const w=innerWidth,h=innerHeight,dpr=Math.min(window.devicePixelRatio||1,2);
-  cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.width=w+'px';cv.style.height=h+'px';
-  const s=Math.min(w/W,h/H);view={s,ox:(w-W*s)/2,oy:(h-H*s)/2,dpr};
-}
-addEventListener('resize',resize); resize();
-
-const mcache=new Map();
-function font(sz,wt=400){return `${wt} ${sz}px ${FONT}`;}
-function measure(t,sz,wt=400){const k=t+'|'+wt;let v=mcache.get(k);if(v===undefined){ctx.font=font(100,wt);v=ctx.measureText(t).width/100;mcache.set(k,v);}return v*sz;}
-function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
-
-function text(str,x,y,sz,col,a=1,wt=400,al='center'){
-  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
-  const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.font=font(sz,wt);ctx.fillStyle=col;ctx.textAlign=al;ctx.textBaseline='middle';ctx.fillText(str,x,y);ctx.globalAlpha=prev;
-}
-function glowText(str,x,y,sz,col,a=1,wt=700,blur=0.45,al='center'){
-  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
-  ctx.save();ctx.shadowColor=col===GREEN?'rgba(79,209,152,0.6)':(col===RED?'rgba(232,106,88,0.6)':'rgba(255,186,60,0.6)');ctx.shadowBlur=sz*blur;text(str,x,y,sz,col,a,wt,al);ctx.restore();
-}
-function rich(str,x,y,sz,a=1,col=IVORY){
-  if(ctx.globalAlpha*clamp(a)<=0.004||!str)return;
-  const parts=[];str.split(/(\{[^}]*\})/).forEach(s=>{if(!s)return;if(s[0]==='{')parts.push([s.slice(1,-1),1]);else parts.push([s,0]);});
-  let tw=0;parts.forEach(p=>{p[2]=measure(p[0],sz,p[1]?700:400);tw+=p[2];});let x0=x-tw/2;
-  parts.forEach(p=>{if(p[1])glowText(p[0],x0,y,sz,GOLD_HI,a,700,0.45,'left');else text(p[0],x0,y,sz,col,a,400,'left');x0+=p[2];});
-}
-function brandMark(x,y,sz,a=1){
-  if(ctx.globalAlpha*clamp(a)<=0.004)return;
-  const s1='陈石律师',s2='  ·  ',s3='chenshi.ai';
-  const w1=measure(s1,sz*0.8),w2=measure(s2,sz*0.8),w3=measure(s3,sz,700),tw=w1+w2+w3;let x0=x-tw/2;
-  text(s1,x0,y,sz*0.8,IVORY,a*0.78,400,'left');x0+=w1;text(s2,x0,y,sz*0.8,GOLD,a*0.8,400,'left');x0+=w2;glowText(s3,x0,y,sz,GOLD_HI,a,700,0.3,'left');
-}
-function drawBox(x,y,w,h,r=12,stroke=GOLD,topC='rgba(28,22,11,0.92)',botC='rgba(12,10,6,0.95)',lw=1.8){
-  ctx.save();
-  const g=ctx.createLinearGradient(0,y,0,y+h);g.addColorStop(0,topC);g.addColorStop(1,botC);
-  rr(x,y,w,h,r);ctx.fillStyle=g;ctx.fill();ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();
-  ctx.strokeStyle='rgba(255,235,185,0.2)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x+r,y+1);ctx.lineTo(x+w-r,y+1);ctx.stroke();
-  ctx.restore();
-}
-function arrow(x1,y1,x2,y2,col=GOLD,lw=2.2,dash=false,amb=0){
-  ctx.save();ctx.strokeStyle=col;ctx.lineWidth=lw;
-  if(dash){ctx.setLineDash([8,6]);ctx.lineDashOffset=-amb*40;}
-  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.setLineDash([]);
-  const ang=Math.atan2(y2-y1,x2-x1);ctx.fillStyle=col;
-  ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-13*Math.cos(ang-0.42),y2-13*Math.sin(ang-0.42));ctx.lineTo(x2-13*Math.cos(ang+0.42),y2-13*Math.sin(ang+0.42));ctx.closePath();ctx.fill();
-  ctx.restore();
-}
-
-function mkSprite(stops){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),gr=g.createRadialGradient(64,64,0,64,64,64);stops.forEach(s=>gr.addColorStop(s[0],s[1]));g.fillStyle=gr;g.fillRect(0,0,128,128);return c;}
-const SPR_HALO=mkSprite([[0,'rgba(255,228,170,0.9)'],[0.14,'rgba(255,196,96,0.52)'],[1,'rgba(200,120,30,0)']]);
-const SPR_CORE=mkSprite([[0,'rgba(255,250,235,1)'],[0.25,'rgba(255,226,160,0.9)'],[1,'rgba(255,170,60,0)']]);
-const SPR_RED =mkSprite([[0,'rgba(255,195,185,0.92)'],[0.2,'rgba(232,106,88,0.5)'],[1,'rgba(180,40,30,0)']]);
-const SPR_GRN =mkSprite([[0,'rgba(180,255,220,0.92)'],[0.2,'rgba(79,209,152,0.5)'],[1,'rgba(20,120,80,0)']]);
-const SPR_BLU =mkSprite([[0,'rgba(180,225,255,0.92)'],[0.2,'rgba(106,169,255,0.5)'],[1,'rgba(40,90,180,0)']]);
-function glow(x,y,r,a=1,spr=SPR_HALO){const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||r<=0.5)return;const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.drawImage(spr,x-r,y-r,2*r,2*r);ctx.globalAlpha=prev;}
-function core(x,y,r,a=1){glow(x,y,r,a,SPR_CORE);}
-
-const DUST=(()=>{const r=mulberry(2044);return Array.from({length:56},()=>({x:r(),y:r(),vx:(r()-0.5)*0.004,vy:-0.003-r()*0.006,r:1.2+r()*2.5,a:0.1+r()*0.22,ph:r()*6.28}));})();
-
-// 迷宫探索路径（4 条：2 条碰壁扣分，1 条绕远微奖，1 条最优高奖）
-const MAZE_PATHS=[
-  {pts:[[300,540],[620,320],[960,260],[1120,260]], ok:false, rew:'−1 碰壁'},
-  {pts:[[300,540],[600,480],[980,440],[1340,480],[1580,540]], ok:true, best:true, rew:'+10 最优解'},
-  {pts:[[300,540],[640,680],[980,760],[1260,720]], ok:false, rew:'−1 死胡同'},
-  {pts:[[300,540],[580,590],[920,620],[1280,620],[1580,540]], ok:true, best:false, rew:'+3 绕远'},
+const SI={};STEPS.forEach((s,i)=>SI[s.id]=i);const LAST=STEPS.length-1;
+// 迷宫 9×5：1=墙
+const MZ=['000010000','011010110','000000100','010111100','010000000'];const MC=9,MR=5;
+const START=[0,2],GOAL=[8,4];
+const PATHS=[ // 探索路径（格坐标），最后一格若是墙/死路则扣分
+ {p:[[0,2],[1,2],[2,2],[2,1]],r:-1},
+ {p:[[0,2],[0,1],[0,0],[1,0],[2,0],[3,0],[4,0]],r:-1},
+ {p:[[0,2],[0,3],[0,4],[1,4]],r:-1},
+ {p:[[0,2],[1,2],[2,2],[3,2],[4,2],[5,2],[6,2]],r:-1},
+ {p:[[0,2],[1,2],[2,2],[2,3],[2,4],[3,4],[4,4],[5,4],[6,4],[7,4],[8,4]],r:10},
+ {p:[[0,2],[1,2],[2,2],[3,2],[4,2],[5,2],[5,1],[5,0],[6,0],[7,0],[8,0],[8,1],[8,2],[8,3],[8,4]],r:10},
 ];
-
-/* ============================== 主渲染 ============================== */
-function render(G,amb){
-  const {s,ox,oy,dpr}=view;
-  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
-  ctx.setTransform(s*dpr,0,0,s*dpr,ox*dpr,oy*dpr);
-  ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();
-  ctx.fillStyle='#030304';ctx.fillRect(0,0,W,H);
-
-  // 背景精密网格 + 暖光 + 金尘
-  ctx.strokeStyle='rgba(226,170,66,0.022)';ctx.lineWidth=1;
-  for(let x=0;x<=W;x+=64){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-  for(let y=0;y<=H;y+=64){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-  const bg=ctx.createRadialGradient(W/2,H*0.5,0,W/2,H*0.5,960);
-  bg.addColorStop(0,'rgba(128,84,22,0.15)');bg.addColorStop(0.55,'rgba(60,38,10,0.05)');bg.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  ctx.save();ctx.globalCompositeOperation='lighter';
-  DUST.forEach(d=>{const dx=((d.x+amb*d.vx)%1+1)%1*W,dy=((d.y+amb*d.vy)%1+1)%1*H;glow(dx,dy,d.r*3,d.a*(0.55+0.45*Math.sin(amb*1.4+d.ph)));});
+const ANS=[{t:'200 × 10% = 20 万',ok:1},{t:'200 × 10% = 2 万',ok:0},{t:'上限 10%，即 20 万',ok:1},{t:'违约金就是 200 万',ok:0}];
+let rUser=null;const rDisp=[1,0,1,0];
+function geo(){const P=LY.port,H=LY.H;// 三个场景：迷宫 A，RLHF B，GRPO C
+  if(!P)return{P,A:{x:960,y:560},B:{x:960+2300,y:560},Cc:{x:960+4600,y:560},cs:104};
+  return{P,A:{x:540,y:H*0.5},B:{x:540,y:H*0.5+H*1.1},Cc:{x:540,y:H*0.5+H*2.2},cs:108};}
+function camAt(g,G){const k1=LE.easeCam(clamp((G-(SI.ab-0.9))/0.8)),k2=LE.easeCam(clamp((G-(SI.grpo-0.9))/0.8)),k3=LE.easeCam(clamp((G-(SI.aha-0.9))/0.8));
+  const x=lerp(lerp(lerp(g.A.x,g.B.x,k1),g.Cc.x,k2),g.Cc.x,k3),y=lerp(lerp(g.A.y,g.B.y,k1),g.Cc.y,k2);const pull=bump(G,SI.ab-0.5,0.5)*0.12+bump(G,SI.grpo-0.5,0.5)*0.12;return{x,y,z:1-pull};}
+let CAM={x:960,y:540,z:1};
+function mcell(g,c,r){const o=g.A,cs=g.cs;return{x:o.x+(c-(MC-1)/2)*cs,y:o.y+(r-(MR-1)/2)*cs+(g.P?0:30)};}
+function maze(g,G,amb,a){if(a<=0.01)return;const cs=g.cs;
+  for(let r=0;r<MR;r++)for(let c=0;c<MC;c++){const p=mcell(g,c,r);const wall=MZ[r][c]==='1';block(p.x-cs/2+4,p.y-cs/2+4,cs-8,cs-8,{style:wall?'dim':'gold',a:a*(wall?1:0.35),r:8});if(wall){ctx.globalAlpha=a*0.5;ctx.fillStyle='rgba(244,237,223,0.12)';ctx.fillRect(p.x-cs/2+8,p.y-cs/2+8,cs-16,cs-16);ctx.globalAlpha=1;}}
+  const s=mcell(g,...START),e=mcell(g,...GOAL);text('起点',s.x,s.y,g.P?28:22,IVORY,a,700);glowAdd(e.x,e.y,70,0.5*a,LE.SPR.GREEN);text('终点',e.x,e.y,g.P?28:22,GREEN,a,700);
+  const pol=seg(G,SI.policy-0.85,SI.policy-0.2);
+  PATHS.forEach((pt,k)=>{const n=pt.p.length;const cyc=G<SI.policy-0.5?((amb*0.45+k*0.17)%1.25):1.25;const prog=clamp(cyc/1)*(n-1);
+    const best=k===4;const al=a*(best?1:lerp(1,0.12,pol));const lw=best?lerp(3,14,pol):3;const col=pt.r>0?(best?GOLD_HI:GREEN):RED;
+    ctx.globalAlpha=al*(pol>0.5&&!best?1:0.85);ctx.strokeStyle=pol>0.3&&best?GOLD_HI:col;ctx.lineWidth=lw;ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();
+    for(let i=0;i<=Math.floor(prog);i++){const q=mcell(g,...pt.p[i]);const off=(k-2.5)*5*(1-pol*(best?1:0));i?ctx.lineTo(q.x+off,q.y+off):ctx.moveTo(q.x+off,q.y+off);}
+    const fi=Math.floor(prog),fr=prog-fi;if(fi<n-1){const q0=mcell(g,...pt.p[fi]),q1=mcell(g,...pt.p[fi+1]);ctx.lineTo(lerp(q0.x,q1.x,fr),lerp(q0.y,q1.y,fr));}ctx.stroke();ctx.lineCap='butt';ctx.globalAlpha=1;
+    if(cyc>=1&&cyc<1.25&&pol<0.5){const q=mcell(g,...pt.p[n-1]);const f=1-(cyc-1)/0.25;glowAdd(q.x,q.y,60*f+20,0.8*f*a,pt.r>0?LE.SPR.GREEN:LE.SPR.RED);glowText(pt.r>0?'+10':'−1',q.x,q.y-40-(1-f)*30,g.P?36:30,pt.r>0?GREEN:RED,a*f,700);}});
+  if(pol>0.01){const q=mcell(g,4,4);rich('{策略}：在每个格子该往哪走',g.A.x,mcell(g,0,MR-1).y+(g.P?140:110),g.P?32:26,a*pol);}}
+function vsScene(g,G,a){if(a<=0.01)return;const P=g.P,o=g.A;const rows=P?[[o.y-420,'微调 SFT'],[o.y+120,'强化学习 RL']]:[[o.y-150,'微调 SFT'],[o.y+150,'强化学习 RL']];
+  rows.forEach(([y,lab],k)=>{const x0=P?90:240;glowText(lab,P?540:x0+90,P?y-90:y,P?36:28,k?GOLD_HI:ICE,a,700);
+    const bx=P?[90,400,710]:[480,900,1320],bw=P?280:340;const labs=k?['题目','模型自己尝试','打分：+1 / −1']:['题目','标准答案（人写好）','照着学，逐字对齐'];
+    labs.forEach((t,i)=>{const e=seg(G,SI.vs-0.8+i*0.12+k*0.25,SI.vs-0.4+i*0.12+k*0.25)*a;block(bx[i],y-(P?50:44),bw,P?100:88,{style:k?(i===2?'hot':'gold'):(i===1?'ice':'gold'),a:e});rich(t,bx[i]+bw/2,y,P?26:24,e,{maxW:bw-24,weight:700});
+      if(i<2)text('→',bx[i]+bw+(P?15:40),y,P?28:34,GOLD,e,700);});});}
+function rlhf(g,G,amb,a){if(a<=0.01)return;const P=g.P,o=g.B;const ab=seg(G,SI.ab-0.7,SI.ab-0.1),rm=seg(G,SI.rm-0.8,SI.rm-0.2);
+  const q={x:P?90:o.x-760,y:P?o.y-760:o.y-330,w:P?900:1520,h:P?96:84};block(q.x,q.y,q.w,q.h,{style:'ice',a});text('问题：甲方逾期付款，我能主张多少违约金？',q.x+q.w/2,q.y+q.h/2,P?28:26,ICE,a,700);
+  const cards=P?[{x:90,y:o.y-600,w:900,h:300},{x:90,y:o.y-270,w:900,h:300}]:[{x:o.x-760,y:o.y-200,w:700,h:250},{x:o.x+60,y:o.y-200,w:700,h:250}];
+  const texts=['回答 A：可以主张违约金，具体看合同。','回答 B：先看合同约定的违约金条款；若约定过高，对方可请求调减，法院会参考实际损失等因素；请提供合同第几条。'];
+  const pick=seg(G,SI.ab-0.35,SI.ab);
+  cards.forEach((c,i)=>{card(c.x,c.y,c.w,c.h,{a,stroke:i===1&&pick>0.5?'rgba(91,214,160,0.9)':undefined});rich(texts[i],c.x+28,c.y+30,P?28:24,a*ab,{align:'left',valign:'top',maxW:c.w-56,lh:P?42:36});
+    if(i===1&&pick>0.01){glowText('✓ 人更喜欢这份',c.x+c.w-28,c.y+c.h-30,P?28:24,GREEN,a*pick,700,0.4,'right');}
+    if(i===0&&pick>0.01)text('较差',c.x+c.w-28,c.y+c.h-30,P?26:22,DIM,a*pick,700,'right');});
+  // 奖励模型
+  if(rm>0.01){const R={x:P?90:o.x-760,y:P?o.y+100:o.y+110,w:P?900:1520,h:P?520:240};card(R.x,R.y,R.w,R.h,{a:a*rm,stroke:'rgba(255,208,98,0.8)'});
+    glowText('奖励模型',R.x+(P?40:40),R.y+(P?50:46),P?34:28,GOLD_HI,a*rm,700,0.4,'left');text('（用大量「A 和 B 哪个好」的人类偏好训练）',R.x+(P?40:220),R.y+(P?100:46),P?22:18,DIM,a*rm,400,'left');
+    const outs=[['新回答 1',0.82],['新回答 2',0.31],['新回答 3',0.64]];outs.forEach(([t,s],i)=>{const y=R.y+(P?170:110)+i*(P?60:40);const e=seg(rm,0.3+i*0.15,0.7+i*0.15)*a;text(t,R.x+40,y,P?26:20,IVORY,e,700,'left');
+      const bw=(P?480:600)*s;ctx.globalAlpha=e;rr(R.x+(P?200:170),y-10,bw,20,5);ctx.fillStyle=s>0.6?GREEN:RED;ctx.fill();ctx.globalAlpha=1;text(s.toFixed(2),R.x+(P?210:180)+bw,y,P?24:19,IVORY,e,700,'left');});
+    rich('分数{越高}，生成这类回答的倾向就被{加强}（分数为示意）',P?540:R.x+R.w-40,P?R.y+R.h-60:R.y+R.h-40,P?26:22,a*seg(rm,0.6,1),{align:P?'center':'right',maxW:P?840:0});}}
+function grpo(g,G,amb,a,dt){if(a<=0.01)return;const P=g.P,o=g.Cc;const gp=seg(G,SI.group-0.8,SI.group-0.2),ad=seg(G,SI.adv-0.8,SI.adv-0.2);
+  const q={x:P?90:o.x-800,y:P?o.y-820:o.y-340,w:P?900:1600,h:P?120:84};block(q.x,q.y,q.w,q.h,{style:'ice',a});rich('题：合同总价 200 万，违约金上限为总价的 10%，最多能主张多少？',q.x+q.w/2,q.y+q.h/2,P?28:26,a,{maxW:q.w-40,weight:700,color:ICE});
+  const chk={x:P?90:o.x-800,y:P?o.y-660:o.y-230,w:P?900:1600,h:P?64:56};const ck=seg(G,SI.grpo-0.4,SI.grpo);block(chk.x,chk.y,chk.w,chk.h,{style:'green',a:a*ck});text('规则判分：答案 = 20 万 → 1 分，否则 0 分',chk.x+chk.w/2,chk.y+chk.h/2,P?26:22,GREEN,a*ck,700);
+  // 读取当前分数
+  const at=LE.isAt('drag');for(let i=0;i<4;i++){const tgt=at&&rUser?rUser[i]:ANS[i].ok;rDisp[i]=at?damp(rDisp[i],tgt,dt,12):tgt;}
+  const mean=rDisp.reduce((s,v)=>s+v,0)/4,sd=Math.sqrt(rDisp.reduce((s,v)=>s+(v-mean)**2,0)/4)||1e-6;
+  const adv=rDisp.map(r=>sd<0.02?0:(r-mean)/sd);
+  for(let i=0;i<4;i++){const e=seg(gp,i*0.12,0.5+i*0.12)*a;if(e<=0.01)continue;
+    const c=P?{x:90,y:o.y-540+i*250,w:480,h:110}:{x:o.x-800+i*410,y:o.y-130,w:370,h:110};
+    const ok=rDisp[i]>0.5;block(c.x,c.y,c.w,c.h,{style:ck>0.5&&G>SI.group-0.3?(ok?'green':'red'):'gold',a:e});rich(ANS[i].t,c.x+c.w/2,c.y+c.h/2-(P?0:8),P?28:24,e,{maxW:c.w-30,weight:700});
+    if(!P)text(`回答 ${i+1}`,c.x+c.w/2,c.y+c.h-18,16,DIM,e);
+    // 分数条（拖动区）
+    const sb=P?{x:620,y:c.y+10,w:370,h:40}:{x:c.x,y:o.y+40,w:c.w,h:34};const sA=seg(G,SI.group-0.3,SI.group)*e;
+    if(sA>0.01){ctx.globalAlpha=sA;rr(sb.x,sb.y,sb.w,sb.h,8);ctx.fillStyle='rgba(244,237,223,0.08)';ctx.fill();rr(sb.x,sb.y,Math.max(6,sb.w*rDisp[i]),sb.h,8);ctx.fillStyle=rDisp[i]>0.5?GREEN:RED;ctx.fill();ctx.globalAlpha=1;
+      text(`得分 ${rDisp[i].toFixed(2)}`,sb.x+(P?0:sb.w/2),sb.y-(P?-sb.h-26:16),P?24:19,IVORY,sA,700,P?'left':'center');}
+    // 优势
+    const aA=ad*e;if(aA>0.01){const base=P?{x:c.x+c.w+50,y:c.y+c.h/2}:{x:c.x+c.w/2,y:o.y+260};const L=(P?0:90)*adv[i],LP=60*adv[i];
+      if(!P){LE.line(base.x,base.y,base.x,base.y-L,adv[i]>=0?GREEN:RED,10,aA);if(Math.abs(adv[i])>0.05)LE.arrowHead(base.x,base.y-L-(adv[i]>0?12:-12),adv[i]>0?-Math.PI/2:Math.PI/2,26,adv[i]>=0?GREEN:RED,aA);
+        text(`优势 ${adv[i]>=0?'+':'−'}${Math.abs(adv[i]).toFixed(2)}`,base.x,o.y+400,22,adv[i]>=0?GREEN:RED,aA,700);}
+      else{const x=620+185,y=c.y+120;text(`优势 ${adv[i]>=0?'+':'−'}${Math.abs(adv[i]).toFixed(2)} ${adv[i]>0.05?'↑ 加强':(adv[i]<-0.05?'↓ 削弱':'')}`,x,y+20,26,adv[i]>=0?GREEN:RED,aA,700);}}
+    if(at&&i===1&&!rUser)LE.dragHint(sb.x+sb.w*0.5,sb.y+sb.h/2,'拖动得分',amb,1,{dy:P?-50:62});}
+  if(ad>0.01){if(!P){const y=o.y+260;ctx.globalAlpha=a*ad*0.6;ctx.setLineDash([8,8]);ctx.strokeStyle=IVORY;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(o.x-820,y);ctx.lineTo(o.x+820,y);ctx.stroke();ctx.setLineDash([]);ctx.globalAlpha=1;text(`组内平均 ${mean.toFixed(2)}`,o.x-830,y,20,DIM,a*ad,700,'right');}
+    rich('优势 =（得分 − 组内平均）÷ 组内标准差',P?540:o.x,P?o.y+500:o.y+460,P?28:26,a*ad,{maxW:P?960:0});}}
+function aha(g,G,amb,a){if(a<=0.01)return;const P=g.P,o=g.Cc;const x=P?90:o.x-800,w=P?900:1600,y=P?o.y-300:o.y-120;card(x,y,w,P?520:300,{a,stroke:'rgba(195,160,255,0.7)'});
+  text('一段思考（示意）',x+30,y+40,P?24:19,DIM,a,400,'left');
+  const t1='……上限是总价的 10%，200 × 10% = 20，所以是 20 万。';const t2='{等一下，回头检查}：上限是「总价的 10%」还是「每日 10%」？题目说的是总价……确认是 20 万。';
+  rich(t1,x+30,y+(P?100:90),P?30:26,a,{align:'left',valign:'top',maxW:w-60,lh:P?46:40});rich(t2,x+30,y+(P?250:170),P?30:26,a*seg(G,SI.aha-0.4,SI.aha),{align:'left',valign:'top',maxW:w-60,hl:PURPLE,lh:P?46:40});}
+function pipe(g,G,amb,a){if(a<=0.01)return;const P=g.P,o=g.Cc;const st=[['预训练','海量文本 · 学语言与知识','gold'],['SFT 微调','示范答案 · 学格式与指令','ice'],['RL 强化学习','打分 · 按偏好或对错优化','hot']];
+  st.forEach((s,i)=>{const e=seg(G,SI.pipe-0.7+i*0.15,SI.pipe-0.3+i*0.15)*a;const bx=P?90:o.x-780+i*540,by=P?o.y-380+i*300:o.y-80,bw=P?900:480,bh=P?220:200;
+    card(bx,by,bw,bh,{a:e,stroke:i===2?GOLD_HI:undefined});glowText(s[0],bx+bw/2,by+bh*0.38,P?40:34,i===2?GOLD_HI:(i===1?ICE:PALE),e,700);text(s[1],bx+bw/2,by+bh*0.7,P?26:21,IVORY,e);
+    if(i<2)text(P?'↓':'→',P?540:bx+bw+30,P?by+bh+40:by+bh/2,P?40:40,GOLD,e,700);});}
+function render(G,amb,dt){const W=LY.W,H=LY.H,P=LY.port;const g=geo();
+  LE.bg(amb,0,0);
+  LE.title('强化学习：RL、RLHF 与 GRPO','不给标准答案，只给{打分}',LE.easeOut(clamp(amb/1.8)),seg(G,0.05,0.6),{portLines:['强化学习','RL · RLHF · GRPO']});
+  if(G<0.3)return;const fin=1-seg(G,LAST-0.7,LAST);
+  const cam=camAt(g,G);CAM=cam;ctx.save();LE.camera(cam.x,cam.y,cam.z);
+  vsScene(g,G,seg(G,0.4,1)*(1-seg(G,SI.maze-0.85,SI.maze-0.4)));
+  maze(g,G,amb,seg(G,SI.maze-0.6,SI.maze-0.1)*(1-seg(G,SI.ab-0.4,SI.ab)));
+  rlhf(g,G,amb,seg(G,SI.ab-0.6,SI.ab-0.1)*(1-seg(G,SI.grpo-0.4,SI.grpo)));
+  grpo(g,G,amb,seg(G,SI.grpo-0.6,SI.grpo-0.1)*(1-seg(G,SI.aha-0.8,SI.aha-0.4))*fin,dt);
+  aha(g,G,amb,seg(G,SI.aha-0.6,SI.aha-0.1)*(1-seg(G,SI.pipe-0.8,SI.pipe-0.4))*fin);
+  pipe(g,G,amb,seg(G,SI.pipe-0.7,SI.pipe-0.2)*fin);
   ctx.restore();
-
-  /* ---------- 幕 0：开场 (0 -> 0.48) ---------- */
-  const a0=actAlpha(G,null,null,0.02,0.48);
-  if(a0>0.005){
-    const intro=clamp(amb/2.2), out=1-a0;
-    const title='强化学习：RL · RLHF · GRPO', fs=88, tw=measure(title,fs,700);
-    let x=W/2-tw/2; const rnd=mulberry(79); let ci=0;
-    ctx.save();
-    for(const ch of title){
-      const cw=measure(ch,fs,700), ca=seg(intro,0.05+ci*0.022,0.3+ci*0.022);
-      const dx=(rnd()-0.5)*200*out, dy=-(30+rnd()*120)*out;
-      glowText(ch,x+cw/2+dx,445+(1-ca)*24+dy,fs,PALE,ca*a0,700,0.35);
-      x+=cw; ci++;
-    }
-    const lw=840*seg(intro,0.28,0.82)*a0;
-    ctx.globalCompositeOperation='lighter';
-    const lg=ctx.createLinearGradient(W/2-lw/2,0,W/2+lw/2,0);lg.addColorStop(0,'rgba(255,200,90,0)');lg.addColorStop(0.5,`rgba(255,214,120,${0.95*a0})`);lg.addColorStop(1,'rgba(255,200,90,0)');
-    ctx.fillStyle=lg;ctx.fillRect(W/2-lw/2,540,lw,2);glow(W/2,541,60,0.7*a0);ctx.globalCompositeOperation='source-over';
-    rich('{暗黑光学迷宫} · {人类偏好对齐} · {DeepSeek-R1 组内进化}',W/2,605,31,seg(intro,0.5,0.95)*a0,DIM);
-    brandMark(W/2,870,28,seg(intro,0.65,1)*a0);
-    ctx.restore();
-  }
-
-  /* ---------- 幕 1~2：暗黑光学迷宫与策略演化 (0.52 -> 3.42) ---------- */
-  const a1=actAlpha(G,0.52,1.0,3.05,3.45);
-  if(a1>0.005){
-    const pTry=seg(G,1.2,2.0), pOpt=seg(G,2.2,3.0);
-    ctx.save();ctx.globalAlpha=a1;ctx.translate(0,(1-a1)*18);
-
-    // 左侧智能体起点星核
-    ctx.globalCompositeOperation='lighter';glow(300,540,95,0.6);core(300,540,24,0.95);ctx.globalCompositeOperation='source-over';
-    ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2.2;ctx.beginPath();ctx.arc(300,540,34,0,Math.PI*2);ctx.stroke();
-    glowText('智能体 (Agent)',300,605,22,GOLD_HI,1,700,0.3);
-    text('策略 Policy π',300,636,15,DIM,1);
-
-    // 右侧目标光场（Reward +10）
-    ctx.globalCompositeOperation='lighter';glow(1580,540,125,0.65,SPR_GRN);ctx.globalCompositeOperation='source-over';
-    ctx.strokeStyle=GREEN;ctx.lineWidth=2.6;ctx.beginPath();ctx.arc(1580,540,42,0,Math.PI*2);ctx.stroke();
-    glowText('目标 (+10)',1580,540,21,GREEN,1,700,0.35);
-    text('环境奖惩场 (Reward)',1580,612,17,GREEN,0.9,700);
-
-    // 4 条探索路径
-    if(pTry>0.01){
-      MAZE_PATHS.forEach((mp,idx)=>{
-        const fade = mp.best ? 1 : (1 - pOpt*0.82);
-        const lw = mp.best ? lerp(2.8, 6.5, pOpt) : lerp(2.2, 1.0, pOpt);
-        const col = mp.best ? (pOpt>0.3?GOLD_HI:GREEN) : (mp.ok?BLUE:RED);
-
-        ctx.save();ctx.globalAlpha*=pTry*fade;
-        ctx.strokeStyle=col;ctx.lineWidth=lw;
-        if(!mp.best && pOpt>0.3) ctx.setLineDash([6,8]);
-        ctx.beginPath();
-        mp.pts.forEach((pt,i)=> i?ctx.lineTo(pt[0],pt[1]):ctx.moveTo(pt[0],pt[1]));
-        ctx.stroke();ctx.setLineDash([]);
-
-        // 沿最优路径持续流动的金色能量脉冲
-        if(mp.best){
-          const segIdx = Math.floor((amb*1.2)%4), t=(amb*1.2)%1;
-          const p0=mp.pts[segIdx], p1=mp.pts[segIdx+1];
-          const px=lerp(p0[0],p1[0],t), py=lerp(p0[1],p1[1],t);
-          ctx.globalCompositeOperation='lighter';glow(px,py,34,0.95);ctx.globalCompositeOperation='source-over';
-        }
-        const last=mp.pts[mp.pts.length-1];
-        if(!mp.ok){
-          // 碰壁红叉
-          glow(last[0],last[1],42,0.6,SPR_RED);
-          text(`✕ ${mp.rew}`,last[0]+22,last[1],18,RED,1,700,'left');
-        } else if(mp.best && pOpt>0.3){
-          glowText('★ 策略收敛：高回报主干道概率 → 98%',960,395,23,GOLD_HI,pOpt,700,0.35);
-        }
-        ctx.restore();
-      });
-    }
-    text('核心闭环：行动 (Action) → 环境反馈奖惩 (Reward) → 强化高分概率、抑制低分概率',W/2,870,21,DIM,1);
-    ctx.restore();
-  }
-
-  /* ---------- 幕 3：RLHF 人类反馈强化学习 (3.52 -> 5.42) ---------- */
-  const a3=actAlpha(G,3.52,4.0,5.05,5.45);
-  if(a3>0.005){
-    const pRM=seg(G,4.2,5.0);
-    ctx.save();ctx.globalAlpha=a3;ctx.translate(0,(1-a3)*18);
-
-    // 左：策略模型 Policy LLM
-    drawBox(120,420,280,220,14,GOLD_HI);
-    glowText('策略模型 (LLM)',260,505,24,GOLD_HI,1,700,0.35);
-    text('同一问题生成多份回答',260,555,16,DIM,1);
-
-    // 中：回答 A（礼貌严谨）vs 回答 B（敷衍带刺）
-    arrow(405,490,540,390,GREEN,2.4,true,amb);
-    arrow(405,570,540,670,RED,2.4,true,amb);
-    drawBox(550,310,460,160,12,GREEN,'rgba(14,56,42,0.75)','rgba(8,22,16,0.92)',2.2);
-    text('回答 A（严谨 · 客观 · 附法条）',780,365,20,GREEN,1,700);
-    text('人类裁判排序：👍 胜出 (Chosen)',780,418,17,PALE,1,700);
-
-    drawBox(550,590,460,160,12,RED,'rgba(75,20,16,0.72)','rgba(24,8,6,0.92)',1.8);
-    text('回答 B（敷衍 · 编造法条）',780,645,20,RED,1,700);
-    text('人类裁判排序：👎 淘汰 (Rejected)',780,698,17,DIM,1);
-
-    // 右：奖励模型 Reward Model + 回传更新策略模型（Step 5）
-    if(pRM>0.02){
-      ctx.save();ctx.globalAlpha*=pRM;
-      arrow(1015,390,1190,500,GREEN,2.4,true,amb);
-      arrow(1015,670,1190,560,RED,2.4,true,amb);
-      drawBox(1200,395,460,270,14,BLUE,'rgba(18,38,72,0.8)','rgba(8,18,34,0.94)',2.4);
-      glow(1430,530,140,0.35,SPR_BLU);
-      glowText('奖励模型 (Reward Model)',1430,465,24,BLUE,1,700,0.35);
-      text('学会人类的审美与安全红线',1430,520,18,IVORY,0.95);
-      text('自动给海量输出打分：+0.92 / −0.85',1430,570,17,GOLD_HI,1,700);
-
-      // 底部奖惩信号回传给策略模型
-      ctx.strokeStyle=GOLD_HI;ctx.lineWidth=3;ctx.setLineDash([10,6]);ctx.lineDashOffset=-amb*45;
-      ctx.beginPath();ctx.moveTo(1430,670);ctx.lineTo(1430,830);ctx.lineTo(260,830);ctx.lineTo(260,648);ctx.stroke();ctx.setLineDash([]);
-      text('↺ PPO 奖惩梯度回传：让大模型不断向人类偏好对齐',845,865,20,GOLD_HI,1,700);
-      ctx.restore();
-    }
-    ctx.restore();
-  }
-
-  /* ---------- 幕 4：GRPO 与可验证奖励（DeepSeek-R1 范式）(5.52 -> 9.42) ---------- */
-  const a4=actAlpha(G,5.52,6.0,9.05,9.45);
-  if(a4>0.005){
-    const pGrp=seg(G,6.2,7.0), pAdv=seg(G,7.2,8.0), pAha=seg(G,8.2,9.0);
-    ctx.save();ctx.globalAlpha=a4;ctx.translate(0,(1-a4)*18);
-
-    // 左侧：难题输入 + 策略模型
-    drawBox(100,415,280,230,14,GOLD_HI);
-    glowText('策略模型 (Policy)',240,485,22,GOLD_HI,1,700,0.3);
-    text('同一道复杂推理题',240,535,17,PALE,1,700);
-    text('并发采样 1 组 (Group)',240,575,16,DIM,1);
-
-    // 中央：4 条并发思考链（Group Sampling）
-    if(pGrp>0.02){
-      const chains=[
-        {n:'路径 ① · 顺着字面盲算',   ok:false, score:0, adv:'−1.0 (抑制)', y:275},
-        {n:'路径 ② · 反思验算 → 修正', ok:true,  score:1, adv:'+1.0 (强化)', y:445},
-        {n:'路径 ③ · 漏看约束条件',   ok:false, score:0, adv:'−1.0 (抑制)', y:615},
-        {n:'路径 ④ · 多步推演 → 命中', ok:true,  score:1, adv:'+1.0 (强化)', y:785},
-      ];
-      ctx.save();ctx.globalAlpha*=pGrp;
-      chains.forEach(ch=>{
-        const col = pAdv>0.2 ? (ch.ok?GREEN:RED) : GOLD;
-        arrow(385,530,540,ch.y,col,2.2,true,amb);
-        drawBox(550,ch.y-52,540,104,10,col,ch.ok&&pAdv>0.2?'rgba(14,56,42,0.75)':'rgba(24,18,10,0.9)','rgba(10,8,5,0.95)',ch.ok&&pAdv>0.2?2.2:1.6);
-        text(ch.n,820,ch.y-14,19,col,1,700);
-        text(pAdv>0.2?(ch.ok?'✓ 客观规则核验：正确 (Reward = 1)':'✕ 客观规则核验：错误 (Reward = 0)'):'正在生成 <think> 思考链…',820,ch.y+20,15,IVORY,0.9);
-
-        // Step 8: 组内相对优势（Relative Advantage）
-        if(pAdv>0.05){
-          arrow(1095,ch.y,1245,ch.y,col,2.2);
-          rr(1255,ch.y-32,210,64,8);ctx.fillStyle=ch.ok?'rgba(79,209,152,0.18)':'rgba(232,106,88,0.18)';ctx.fill();
-          ctx.strokeStyle=col;ctx.lineWidth=1.8;ctx.stroke();
-          text(ch.adv,1360,ch.y,18,col,pAdv,700);
-        }
-      });
-
-      // 右侧总结卡片：省掉 Critic + Aha Moment
-      if(pAdv>0.15){
-        drawBox(1510,275,310,560,14,pAha>0.3?GOLD_HI:ICE,'rgba(16,28,44,0.82)','rgba(8,14,24,0.94)',2.2);
-        glowText('GRPO 核心突破',1665,345,23,ICE,pAdv,700,0.35);
-        text('1. 客观规则直接验对错',1665,425,18,GREEN,pAdv,700);
-        text('2. 组内互比算相对优势',1665,475,18,IVORY,pAdv);
-        text('3. 砍掉庞大的 Critic 网络',1665,525,18,GOLD_HI,pAdv,700);
-        text('训练显存与算力直降 50%！',1665,570,16,DIM,pAdv);
-
-        if(pAha>0.05){
-          rr(1535,625,260,165,10);ctx.fillStyle='rgba(56,40,14,0.82)';ctx.fill();ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2;ctx.stroke();
-          glow(1665,705,110,0.4*pAha);
-          glowText('✦ Aha Moment',1665,670,22,GOLD_HI,pAha,700,0.4);
-          text('没人教它怎么反思',1665,716,16,PALE,pAha);
-          text('它在奖惩中自己学会了！',1665,750,16,GREEN,pAha,700);
-        }
-      }
-      ctx.restore();
-    }
-    ctx.restore();
-  }
-
-  /* ---------- 幕 5：大模型三步训练全景 & 终局落版 (9.52 -> 11) ---------- */
-  const a5=actAlpha(G,9.52,10.0,null,null);
-  if(a5>0.005){
-    const pFin=seg(G,10.35,11.0);
-    ctx.save();ctx.globalAlpha=a5;ctx.translate(0,(1-a5)*18);
-
-    const stages=[
-      {n:'① 预训练 (Pre-training)', sub:'通读人类互联网', desc:'压缩世界知识与语言规律', x:360, c:BLUE},
-      {n:'② 监督微调 (SFT / LoRA)', sub:'刷专属标准题库', desc:'学会对话格式与专业口径', x:960, c:GOLD_HI},
-      {n:'③ 强化学习 (RLHF / GRPO)', sub:'环境奖惩自主进化', desc:'对齐人类价值观 + 涌现深度思考', x:1560, c:GREEN},
-    ];
-    stages.forEach((st,i)=>{
-      drawBox(st.x-235,335,470,340,16,st.c,'rgba(22,18,10,0.92)','rgba(10,8,5,0.96)',2.4);
-      glowText(st.n,st.x,415,25,st.c,1,700,0.35);
-      text(st.sub,st.x,495,21,PALE,1,700);
-      text(st.desc,st.x,565,18,IVORY,0.92);
-      if(i<2) glowText('→',st.x+300,505,40,GOLD,0.85,700,0.25);
-    });
-
-    if(pFin>0.02){
-      ctx.save();ctx.globalAlpha*=pFin;
-      rich('微调是{模仿老师}，强化学习是{在奖惩中自己悟出超越老师的解法}',W/2,795,31,1,IVORY);
-      brandMark(W/2,905,28,1);
-      ctx.restore();
-    }
-    ctx.restore();
-  }
-
-  // 电影暗角
-  const vig=ctx.createRadialGradient(W/2,H/2,H*0.38,W/2,H/2,W*0.66);
-  vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,0,0.55)');
-  ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
-
-  /* ---------- 顶部引导语（先退后进，零叠字） & 进度 ---------- */
-  const lo=Math.floor(G), hi=Math.min(LAST,Math.ceil(G)), f=G-lo;
-  const ha=STEPS[lo].hint, hb=STEPS[hi].hint;
-  if(ha===hb) rich(ha,W/2,92,33,0.95);
-  else {
-    const aOut=1-ease(clamp(f/0.38)), aIn=ease(clamp((f-0.5)/0.42));
-    if(aOut>0.01) rich(ha,W/2,92-(1-aOut)*10,33,0.95*aOut);
-    if(aIn>0.01) rich(hb,W/2,92+(1-aIn)*10,33,0.95*aIn);
-  }
-  const st=STEPS[Math.round(G)];
-  text(`${String(st.scene).padStart(2,'0')} · ${SCENES[st.scene]}    ${Math.round(G)+1} / ${STEPS.length}`,1860,1025,18,'rgba(244,237,223,0.52)',1,400,'right');
-  ctx.fillStyle='rgba(244,237,223,0.16)';ctx.fillRect(1620,1044,240,2);
-  ctx.fillStyle=GOLD;ctx.fillRect(1620,1044,240*G/LAST,2);
-  ctx.restore();
-}
-
-/* ==================== 交互与播控 ==================== */
-let G=0, target=0, anim=null, auto=false; const t0=performance.now();
-const dock=document.getElementById('dock');
-SCENES.forEach((name,idx)=>{
-  const b=document.createElement('button');b.className='sbtn';b.textContent=`${String(idx).padStart(2,'0')} ${name}`;
-  b.addEventListener('pointerdown',e=>e.stopPropagation());
-  b.addEventListener('pointerup',e=>{e.stopPropagation();go(SCENE_FIRST[idx]);});
-  dock.appendChild(b);
-});
-function syncDock(){const sc=STEPS[Math.round(target)].scene;dock.querySelectorAll('.sbtn').forEach((b,i)=>b.classList.toggle('active',i===sc));}
-function go(i){
-  i=clamp(Math.round(i),0,LAST);if(i===target&&!anim)return;
-  const from=G, fwd=i===Math.round(target)+1&&i>from;
-  target=i;anim={from,to:i,start:performance.now(),dur:fwd?STEPS[i].dur:Math.min(850,350+Math.abs(i-from)*60),linear:fwd};syncDock();
-}
-function next(){go(target+1);} function prev(){go(target-1);}
-function tick(now){
-  if(anim){
-    const p=clamp((now-anim.start)/anim.dur);
-    G=anim.linear?lerp(anim.from,anim.to,p):lerp(anim.from,anim.to,ease(p));
-    if(p>=1){G=anim.to;anim=null;if(auto&&G<LAST)setTimeout(()=>auto&&go(target+1),700);}
-  }
-  render(G,(now-t0)/1000);requestAnimationFrame(tick);
-}
-let idleTimer=null;
-function wake(){document.body.classList.remove('idle');clearTimeout(idleTimer);idleTimer=setTimeout(()=>document.body.classList.add('idle'),3200);}
-['mousemove','pointerdown','keydown'].forEach(ev=>addEventListener(ev,wake)); wake();
-
-const autoBtn=document.getElementById('autoBtn'), cleanBtn=document.getElementById('cleanBtn'), fsBtn=document.getElementById('fsBtn');
-function toggleAuto(){auto=!auto;autoBtn.classList.toggle('on',auto);autoBtn.textContent=auto?'自动中':'自动 A';if(auto)next();}
-function toggleClean(){document.body.classList.toggle('clean');}
-function toggleFS(){const d=document,el=d.documentElement;if(!d.fullscreenElement)el.requestFullscreen?.();else d.exitFullscreen?.();}
-[autoBtn,cleanBtn,fsBtn].forEach(b=>b.addEventListener('pointerdown',e=>e.stopPropagation()));
-autoBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleAuto();});
-cleanBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleClean();});
-fsBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
-
-addEventListener('keydown',e=>{
-  if(e.target.id==='lesson-back')return;
-
-  const k=e.key;
-  if(['ArrowRight',' ','PageDown','Enter','ArrowDown'].includes(k)){e.preventDefault();next();}
-  else if(['ArrowLeft','PageUp','Backspace','ArrowUp'].includes(k)){e.preventDefault();prev();}
-  else if(k==='Home')go(0); else if(k==='End')go(LAST);
-  else if(k==='f'||k==='F')toggleFS();
-  else if(k==='a'||k==='A')toggleAuto();
-  else if(k==='h'||k==='H')toggleClean();
-});
-let pd=null;
-cv.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY,b:e.button};});
-cv.addEventListener('pointerup',e=>{if(!pd)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y,b=pd.b;pd=null;
-  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2){dx<0?next():prev();return;}
-  if(Math.abs(dx)<14&&Math.abs(dy)<14){if(b===2)prev();else e.shiftKey?prev():next();}});
-cv.addEventListener('contextmenu',e=>{e.preventDefault();prev();});
-
-syncDock(); requestAnimationFrame(tick);
+  LE.finale(['强化学习{不给答案，只给打分}：高分的做法被加强','{RLHF}：人类偏好 → 奖励模型 → 给新回答打分','{GRPO}：一组回答比{组内平均}，规则可判对错的题尤其适用'],seg(G,LAST-0.8,LAST),'迷宫分值、奖励模型分数、组大小与思考片段均为示意。GRPO 见 DeepSeekMath（2024），R1-Zero 的「顿悟时刻」见 DeepSeek-R1 技术报告（2025）。');}
+function toWorld(pt){const W=LY.W,H=LY.H;return{x:(pt.x-W/2)/CAM.z+CAM.x,y:(pt.y-H/2)/CAM.z+CAM.y};}
+function barOf(i){const g=geo(),o=g.Cc;if(g.P){const cy=o.y-540+i*250;return{x:620,y:cy+10,w:370,h:40};}const cx=o.x-800+i*410;return{x:cx,y:o.y+40,w:370,h:34};}
+let dragI=-1;
+const drags=[{step:'drag',cursor:'ew-resize',hit:p=>{const w=toWorld(p);for(let i=0;i<4;i++){const b=barOf(i);if(w.x>b.x-20&&w.x<b.x+b.w+20&&w.y>b.y-30&&w.y<b.y+b.h+30){dragI=i;return true;}}return false;},
+  move:p=>{const w=toWorld(p);const b=barOf(dragI);if(!rUser)rUser=ANS.map(a=>a.ok);rUser[dragI]=clamp((w.x-b.x)/b.w);},end:()=>{dragI=-1;}}];
+LE.run({steps:STEPS,scenes:SCENES,render,drags,onGo:()=>{rUser=null;},onSeek:(g,st)=>{rUser=st.r||null;}});
 })();
+
 </script></body></html>

@@ -1,452 +1,108 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
-<title>MCP 到底是什么 · 暗金光学总线</title>
+<title>MCP 到底是什么 · AI 应用接工具的统一插口</title>
+<meta name="description" content="各自对接是 M × N，统一协议后是 M + N（可拖动工具数量对比）；MCP Server 提供工具、资源、提示模板；运行时按 JSON-RPC 调用、结果回传；工具说明放在纸带前部，结果写回纸带末尾。">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
-<style>
-/* 将原文件中的两行 @font-face{font-family:'HSerif'...} 粘贴至此即可恢复原版衬线体 */
-html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
-body{position:fixed;inset:0}
-canvas{display:block;touch-action:none}
-#fs{position:fixed;right:16px;top:14px;font:13px "HSerif","Songti SC",serif;color:rgba(244,237,223,.38);background:none;border:1px solid rgba(226,170,66,.26);border-radius:4px;padding:4px 10px;cursor:pointer;z-index:5}
-#fs:hover{color:#FFD062;border-color:#E2AA42}
-:fullscreen #fs{display:none}
-</style><style>
-  #lesson-back {
-    position: fixed;
-    z-index: 10;
-    top: calc(8px + env(safe-area-inset-top));
-    left: calc(12px + env(safe-area-inset-left));
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    box-sizing: border-box;
-    padding: 0 10px;
-    border-radius: 4px;
-    color: #ffe5ad;
-    background: #17130e;
-    font: 14px/1.4 system-ui, sans-serif;
-    text-decoration: none;
-  }
-  #lesson-back:hover { text-decoration: underline; }
-  #lesson-back:focus-visible { outline: 2px solid #ffd062; outline-offset: 2px; }
-  body.clean #lesson-back, :fullscreen #lesson-back { display: none; }
-</style>
+<link rel="preload" href="../assets/fonts/hserif-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/hserif-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/lesson.css">
 </head><body>
 <a id="lesson-back" href="../index.html">← 返回模块目录</a>
 <canvas id="c"></canvas><button id="fs" title="全屏（F）">全屏 F</button>
+<script src="../assets/lesson-engine.js"></script>
 <script>
-(function(){
-'use strict';
-const FONT='"HSerif","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif';
-const IVORY='#F4EDDF', GOLD='#E2AA42', GOLD_HI='#FFD062', PALE='#FFE9B8', DIM='rgba(244,237,223,0.62)', RED='#E86A58';
-
-const SCENES=['开场','孤岛与乱线','光学总线','总线解剖','运行时闭环','接入纸带','终局'];
-const S=(id,scene,dur,hint)=>({id,scene,dur,hint});
+// @title MCP 到底是什么 · AI 应用接工具的统一插口
+// @desc 各自对接是 M × N，统一协议后是 M + N（可拖动工具数量对比）；MCP Server 提供工具、资源、提示模板；运行时按 JSON-RPC 调用、结果回传；工具说明放在纸带前部，结果写回纸带末尾。
+(function(){'use strict';
+const {C,LY,ctx,clamp,lerp,ease,seg,lin,bump,damp,text,glowText,rich,measure,rr,glow,glowAdd,card,block,tape,line,arrowHead,qbez,S}=LE;
+const {IVORY,GOLD,GOLD_HI,PALE,DIM,DIM2,RED,GREEN,ICE,PURPLE}=C;
+const SCENES=['开场','各自对接','统一协议','动手加工具','Server 里有什么','一次调用','回到纸带','收束'];
 const STEPS=[
-  S('title',0,2600,''),
-  S('hosts',1,1800,'左侧：越来越多的 {AI 应用}（Claude Code、Cursor、法律助手…）'),
-  S('servers',1,1800,'右侧：散落在外部世界的 {工具与数据源}'),
-  S('spaghetti',1,2600,'传统集成：每对之间单独写接口，{M × N} 条线瞬间缠成乱麻'),
-  S('add_pain',1,2400,'只要新增一个「{合同库}」，左侧每个 AI 都要重新适配一遍'),
-  S('bus_rise',2,2800,'破局：拆掉乱线，在中央立起一条标准协议——{MCP 光学总线}'),
-  S('bus_connect',2,2400,'左侧与右侧各自只对接总线，复杂度从 M × N 降维成 {M + N}'),
-  S('bus_plug',2,2400,'再接入「{合同库}」：只需 1 根线吸上总线，左侧所有 AI 瞬间打通'),
-  S('zoom_focus',3,2600,'推近一条通路：任何 {MCP Server} 都通过同一套协议对外暴露能力'),
-  S('prim_tools',3,2000,'标准原语 ①：{Tools（工具）}——模型可请求执行的动作，如检索、读文件'),
-  S('prim_res',3,2000,'标准原语 ②：{Resources（资源）}——可直接挂载的只读数据与文档'),
-  S('prim_prompt',3,2000,'标准原语 ③：{Prompts（模板）}——服务端预置的标准工作流入口'),
-  S('rpc_req',4,2600,'运行时 ①：模型发出标准 {JSON-RPC 请求}，沿总线直达案例库 Server'),
-  S('rpc_res',4,2600,'运行时 ②：Server 在外部执行完毕，将{结构化结果}沿总线回传'),
-  S('to_tape',5,3000,'落回本质：MCP 工具定义写入{纸带前端}，返回结果写回{纸带末尾}'),
-  S('final',6,2600,''),
+ S('title',0,2600,''),
+ S('sides',1,2800,'左边是各种 {AI 应用}，右边是外部的{工具与数据}'),
+ S('mesh',1,3000,'各自对接：每一对都要单独写一套，{M × N}'),
+ S('bus',2,3000,'{MCP}：大家都只对接{同一套协议}，M × N 变成 {M + N}'),
+ S('add',2,2800,'新增「合同库」：写一个 MCP Server，所有支持 MCP 的应用都能接'),
+ S('drag',3,1800,'{拖动}右侧工具的数量，比一比 M × N 和 M + N',true),
+ S('prims',4,3400,'一个 MCP Server 可提供三类东西：{工具}（可执行的动作）、{资源}（可读的数据）、{提示模板}'),
+ S('req',5,3000,'运行时：应用按协议发出调用请求（{JSON-RPC}），例如调用「检索案例」工具'),
+ S('res',5,2800,'Server 在外部执行，把{结构化结果}沿原路送回'),
+ S('tape',6,3200,'落回纸带：工具的{名称、说明、参数格式}放在纸带前部，调用结果写回{纸带末尾}'),
+ S('cost',6,3000,'接的工具越多，前部的说明越长——工具也要{按需接入}'),
+ S('final',7,3200,''),
 ];
-const LAST=STEPS.length-1;
-
-const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
-const lerp=(a,b,t)=>a+(b-a)*t;
-const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-const easeCam=t=>t<.5?16*t**5:1-Math.pow(-2*t+2,5)/2;
-const seg=(G,a,b)=>ease(clamp((G-a)/(b-a)));
-function kf(G,pts,fn=ease){if(G<=pts[0][0])return pts[0][1];for(let i=0;i<pts.length-1;i++){if(G<=pts[i+1][0]){const a=pts[i],b=pts[i+1];return lerp(a[1],b[1],fn((G-a[0])/(b[0]-a[0])));}}return pts[pts.length-1][1];}
-const bump=(G,c,w)=>clamp(1-Math.abs(G-c)/w);
-function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
-
-/* ==================== 画布与原版光学贴图 ==================== */
-const cv=document.getElementById('c'), ctx=cv.getContext('2d');
-const W=1920, H=1080; let view={s:1,ox:0,oy:0,dpr:1};
-function resize(){
-  const w=innerWidth,h=innerHeight,dpr=Math.min(window.devicePixelRatio||1,2);
-  cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.width=w+'px';cv.style.height=h+'px';
-  const s=Math.min(w/W,h/H);view={s,ox:(w-W*s)/2,oy:(h-H*s)/2,dpr};
-}
-addEventListener('resize',resize); resize();
-
-const mcache=new Map();
-function font(sz,wt=400){return `${wt} ${sz}px ${FONT}`;}
-function measure(t,sz,wt=400){const k=t+'|'+wt;let v=mcache.get(k);if(v===undefined){ctx.font=font(100,wt);v=ctx.measureText(t).width/100;mcache.set(k,v);}return v*sz;}
-function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
-
-// 严格乘法透明度，绝不叠字
-function text(str,x,y,sz,col,a=1,wt=400,al='center'){
-  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
-  const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.font=font(sz,wt);ctx.fillStyle=col;ctx.textAlign=al;ctx.textBaseline='middle';ctx.fillText(str,x,y);ctx.globalAlpha=prev;
-}
-function glowText(str,x,y,sz,col,a=1,wt=700,blur=0.45,al='center'){
-  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
-  ctx.save();ctx.shadowColor='rgba(255,186,60,0.6)';ctx.shadowBlur=sz*blur;text(str,x,y,sz,col,a,wt,al);ctx.restore();
-}
-function rich(str,x,y,sz,a=1,col=IVORY){
-  if(ctx.globalAlpha*clamp(a)<=0.004||!str)return;
-  const parts=[];str.split(/(\{[^}]*\})/).forEach(s=>{if(!s)return;if(s[0]==='{')parts.push([s.slice(1,-1),1]);else parts.push([s,0]);});
-  let tw=0;parts.forEach(p=>{p[2]=measure(p[0],sz,p[1]?700:400);tw+=p[2];});let x0=x-tw/2;
-  parts.forEach(p=>{if(p[1])glowText(p[0],x0,y,sz,GOLD_HI,a,700,0.45,'left');else text(p[0],x0,y,sz,col,a,400,'left');x0+=p[2];});
-}
-function brandMark(x,y,sz,a=1){
-  if(ctx.globalAlpha*clamp(a)<=0.004)return;
-  const s1='陈石律师',s2='  ·  ',s3='chenshi.ai';
-  const w1=measure(s1,sz*0.8),w2=measure(s2,sz*0.8),w3=measure(s3,sz,700),tw=w1+w2+w3;let x0=x-tw/2;
-  text(s1,x0,y,sz*0.8,IVORY,a*0.78,400,'left');x0+=w1;text(s2,x0,y,sz*0.8,GOLD,a*0.8,400,'left');x0+=w2;glowText(s3,x0,y,sz,GOLD_HI,a,700,0.3,'left');
-  const L1=sz*2.2,gap=sz*0.9;ctx.save();ctx.globalAlpha*=a*0.7;
-  [[x-tw/2-gap-L1,x-tw/2-gap,0],[x+tw/2+gap,x+tw/2+gap+L1,1]].forEach(([u,v,dir])=>{const g=ctx.createLinearGradient(u,0,v,0);g.addColorStop(dir?1:0,'rgba(226,170,66,0)');g.addColorStop(dir?0:1,'rgba(226,170,66,0.9)');ctx.fillStyle=g;ctx.fillRect(u,y-0.75,v-u,1.5);});
+const SI={};STEPS.forEach((s,i)=>SI[s.id]=i);const LAST=STEPS.length-1;
+const HOSTS=['Claude Code','Cursor','法律助手','客服机器人'];const M=HOSTS.length;
+const SERV=['文件系统','邮箱','日历','数据库','案例库','合同库','网页搜索','飞书','Git','工商查询','裁判文书','知识库'];
+let nUser=null,nDisp=6;
+function geo(){const P=LY.port,H=LY.H;
+  if(!P)return{P,hx:360,sx:1560,bx:960,top:250,bot:900,tapeC:{x:960,y:540+1150}};
+  return{P,hy:560,sy:H-640,by:H*0.5,tapeC:{x:540,y:H*0.5+H*1.1}};}
+function hostPos(g,i){if(!g.P)return{x:g.hx,y:lerp(g.top+60,g.bot-60,(i+0.5)/M-0.5/M+0.5/M*0)};return{x:lerp(150,930,i/(M-1)),y:g.hy};}
+function hp(g,i){if(!g.P){const y=g.top+90+i*((g.bot-g.top-180)/(M-1));return{x:g.hx,y};}return{x:lerp(160,920,i/(M-1)),y:g.hy};}
+function sp(g,j,n){if(!g.P){const y=n<=1?(g.top+g.bot)/2:g.top+40+j*((g.bot-g.top-80)/(n-1));return{x:g.sx,y};}
+  const cols=n<=4?n:Math.ceil(n/2),row=n<=4?0:Math.floor(j/cols),col=n<=4?j:j%cols,cc=n<=4?n:cols;return{x:cc<=1?540:lerp(150,930,col/(cc-1)),y:g.sy+row*120};}
+function node(x,y,lab,st,a,P,fs){if(a<=0.01)return;const w=P?Math.max(170,measure(lab,fs||26,700)+30):Math.max(200,measure(lab,fs||24,700)+40),h=P?70:64;block(x-w/2,y-h/2,w,h,{style:st,a,lw:1.8});text(lab,x,y,fs||(P?24:24),IVORY,a,700);}
+function render(G,amb,dt){const W=LY.W,H=LY.H,P=LY.port;const g=geo();
+  LE.bg(amb,0,0);
+  LE.title('MCP 到底是什么','AI 应用接工具的{统一插口}',LE.easeOut(clamp(amb/1.8)),seg(G,0.05,0.6),{portLines:['MCP','到底是什么']});
+  if(G<0.3)return;const fin=1-seg(G,LAST-0.7,LAST);
+  const pan=LE.easeCam(clamp((G-(SI.tape-0.9))/0.8));const zin=seg(G,SI.prims-0.85,SI.prims-0.2)*(1-seg(G,SI.req-0.85,SI.req-0.3));
+  const at=LE.isAt('drag');if(at&&nUser!=null)nDisp=damp(nDisp,nUser,dt,10);else if(!at)nDisp=G<SI.add-0.5?5:6;
+  let n=G<SI.add-0.5?5:Math.round(nDisp);if(G>SI.drag+0.01)n=6;
+  // 镜头：推近案例库
+  const target=sp(g,4,n);const rqz=P?0:seg(G,SI.req-0.8,SI.req-0.3)*(1-seg(G,SI.tape-0.9,SI.tape-0.5));const cx=lerp(lerp(W/2,target.x-(P?0:260),zin),g.tapeC.x,pan),cy=lerp(lerp(H/2+rqz*110,target.y+(P?-300:0),zin),g.tapeC.y,pan),z=lerp(1,P?1.0:1.25,zin)*(1-0.12*bump(G,SI.tape-0.5,0.5))*(1-0.14*rqz);
+  ctx.save();LE.camera(cx,cy,z);
+  const gA=seg(G,0.4,1)*(1-seg(G,SI.tape-0.5,SI.tape-0.2))*fin;
+  const mesh=seg(G,SI.mesh-0.8,SI.mesh-0.2),bus=seg(G,SI.bus-0.8,SI.bus-0.2);
+  if(gA>0.01){
+    // 连线
+    for(let i=0;i<M;i++){const h=hp(g,i);for(let j=0;j<n;j++){const s=sp(g,j,n);const isNew=j>=5&&G<SI.drag;const ap=isNew?seg(G,SI.add-0.6,SI.add-0.1):1;
+      const mA=mesh*(1-bus)*gA*ap;if(mA>0.01){ctx.globalAlpha=mA*0.55;ctx.strokeStyle=j===5?RED:'rgba(244,237,223,0.6)';ctx.lineWidth=1.3;ctx.beginPath();if(P){ctx.moveTo(h.x,h.y+35);ctx.bezierCurveTo(h.x,g.by,s.x,g.by,s.x,s.y-35);}else{ctx.moveTo(h.x+100,h.y);ctx.bezierCurveTo(g.bx,h.y,g.bx,s.y,s.x-100,s.y);}ctx.stroke();ctx.globalAlpha=1;}}}
+    if(bus>0.01){const ba=bus*gA;// 总线
+      if(!P){const gr=ctx.createLinearGradient(g.bx-14,0,g.bx+14,0);gr.addColorStop(0,'rgba(255,190,80,0)');gr.addColorStop(0.5,'rgba(255,214,120,0.95)');gr.addColorStop(1,'rgba(255,190,80,0)');ctx.globalAlpha=ba;ctx.fillStyle=gr;ctx.fillRect(g.bx-14,g.top-20,28,g.bot-g.top+40);ctx.globalAlpha=1;glowText('MCP',g.bx,g.top-56,40,GOLD_HI,ba*(1-seg(G,SI.req-0.8,SI.req-0.4)*(1-seg(G,SI.tape-0.9,SI.tape-0.6))),700);}
+      else{const gr=ctx.createLinearGradient(0,g.by-14,0,g.by+14);gr.addColorStop(0,'rgba(255,190,80,0)');gr.addColorStop(0.5,'rgba(255,214,120,0.95)');gr.addColorStop(1,'rgba(255,190,80,0)');ctx.globalAlpha=ba;ctx.fillStyle=gr;ctx.fillRect(60,g.by-14,960,28);ctx.globalAlpha=1;glowText('MCP',540,g.by-50,44,GOLD_HI,ba,700);}
+      const ln=(p,isH,ap,col)=>{ctx.globalAlpha=ba*ap;ctx.strokeStyle=col||GOLD;ctx.lineWidth=2.4;ctx.beginPath();if(P){ctx.moveTo(p.x,isH?p.y+35:p.y-35);ctx.lineTo(p.x,g.by);}else{ctx.moveTo(isH?p.x+100:p.x-100,p.y);ctx.lineTo(g.bx,p.y);}ctx.stroke();ctx.globalAlpha=1;};
+      for(let i=0;i<M;i++)ln(hp(g,i),true,1);for(let j=0;j<n;j++){const isNew=j>=5&&G<SI.drag;ln(sp(g,j,n),false,isNew?seg(G,SI.add-0.6,SI.add-0.1):1,j===5&&G<SI.drag+0.5?GOLD_HI:null);}
+      for(let k=0;k<6;k++){const t=((amb*0.4+k/6)%1);if(P)glowAdd(lerp(60,1020,t),g.by,22,0.7*ba);else glowAdd(g.bx,lerp(g.top,g.bot,t),22,0.7*ba);}}
+    for(let i=0;i<M;i++){const h=hp(g,i);node(h.x,h.y,HOSTS[i],'ice',gA*seg(G,SI.sides-0.8+i*0.08,SI.sides-0.4+i*0.08),P);}
+    for(let j=0;j<n;j++){const s=sp(g,j,n);const isNew=j>=5&&G<SI.drag;const ap=isNew?seg(G,SI.add-0.6,SI.add-0.1):1;node(s.x,s.y,SERV[j],j===5&&G<SI.drag+0.5?'hot':(j===4&&zin>0.3?'hot':'gold'),gA*ap*seg(G,SI.sides-0.6+j*0.06,SI.sides-0.2+j*0.06),P);}
+    if(!P){text('AI 应用（M）',g.hx,g.top-40,24,ICE,gA,700);text('工具与数据（N）',g.sx,g.top-40-(n>6?0:0),24,GOLD_HI,gA,700);}
+    else{text('AI 应用（M）',540,g.hy-80,26,ICE,gA,700);text('工具与数据（N）',540,g.sy-80,26,GOLD_HI,gA,700);}
+    // 计数
+    const cA=gA*seg(G,SI.mesh-0.5,SI.mesh)*(1-zin)*(1-seg(G,SI.req-0.9,SI.req-0.6));if(cA>0.01){const x=P?540:g.bx,y=P?g.by+(bus>0.5?110:0):g.bot+80;
+      if(bus<0.5)glowText(`${M} × ${n} = ${M*n} 套对接`,x,P?g.by:y,P?44:40,RED,cA*(1-bus*2),700);
+      else rich(`${M} × ${n} = ${M*n}  →  {${M} + ${n} = ${M+n}}`,x,y,P?40:38,cA*(bus*2-1));}
+    if(at){const t=dragTrack(g);ctx.globalAlpha=gA;LE.line(t.x0,t.y,t.x1,t.y,'rgba(244,237,223,0.3)',4,1);ctx.globalAlpha=1;[1,4,8,12].forEach(v=>text(String(v),lerp(t.x0,t.x1,(v-1)/11),t.y+(P?36:30),P?22:18,DIM,gA,700));
+      const kx=lerp(t.x0,t.x1,(nDisp-1)/11);ctx.globalAlpha=gA;ctx.beginPath();ctx.arc(kx,t.y,14,0,7);ctx.fillStyle=GOLD_HI;ctx.fill();ctx.globalAlpha=1;glowAdd(kx,t.y,34,0.8);if(nUser==null)LE.dragHint(kx,t.y,'拖动：工具数量',amb,1,{dy:-44});}
+    // 三类能力
+    if(zin>0.01){const s=sp(g,4,n);const cw=P?620:520,x=P?s.x-cw/2:s.x-cw-150,y=P?s.y-760:s.y-250;const za=zin*gA;card(x,y,cw,P?600:500,{a:za,stroke:GOLD_HI});glowText('案例库 · MCP Server',x+30,y+50,P?32:28,GOLD_HI,za,700,0.3,'left');
+      const pr=[['工具 Tools','search_cases(关键词) → 检索案例','可执行的动作',GREEN],['资源 Resources','case://2024/某判决书全文','可读取的数据',ICE],['提示模板 Prompts','「类案检索报告」模板','预置的工作流入口',PURPLE]];
+      pr.forEach((p,k)=>{const e=seg(G,SI.prims-0.6+k*0.12,SI.prims-0.3+k*0.12)*za;const yy=y+(P?130:120)+k*(P?150:120);text(p[0],x+30,yy,P?28:24,p[3],e,700,'left');text(p[2],x+cw-30,yy,P?22:18,DIM,e,400,'right');text(p[1],x+30,yy+(P?46:40),P?22:19,IVORY,e,400,'left');});}
+    // 请求/结果
+    const rq=seg(G,SI.req-0.7,SI.req-0.05),rs=seg(G,SI.res-0.7,SI.res-0.05);const showR=seg(G,SI.req-0.8,SI.req-0.4)*(1-seg(G,SI.tape-0.8,SI.tape-0.4));
+    if(showR>0.01){const h=hp(g,0),s=sp(g,4,n);const path=t=>{if(P){if(t<0.5){const u=t/0.5;return{x:h.x,y:lerp(h.y+35,g.by,u)};}const u=(t-0.5)/0.5;return{x:lerp(h.x,s.x,Math.min(1,u*2)),y:u<0.5?g.by:lerp(g.by,s.y-35,(u-0.5)*2)};}
+        if(t<0.3)return{x:lerp(h.x+100,g.bx,t/0.3),y:h.y};if(t<0.7)return{x:g.bx,y:lerp(h.y,s.y,(t-0.3)/0.4)};return{x:lerp(g.bx,s.x-100,(t-0.7)/0.3),y:s.y};};
+      const p1=path(rq*(1-rs)+ (rs>0?1-rs:0)*0);const pk=rs>0.01?path(1-rs):path(rq);glowAdd(pk.x,pk.y,50,0.9*showR*gA,rs>0.01?LE.SPR.GREEN:LE.SPR.HALO);
+      const bx=P?90:600,by=P?g.by+170:g.bot+60,bw=P?900:720;const js=rs<0.3?['{ "method": "tools/call",','  "params": { "name": "search_cases",','    "arguments": { "q": "违约金 调减" } } }']:['{ "result": { "content": [','  { "type": "text", "text": "共 3 件类案：…" } ] } }'];
+      card(bx,by,bw,P?190:170,{a:showR*gA,stroke:rs>0.3?'rgba(91,214,160,0.8)':'rgba(143,216,255,0.8)'});text(rs<0.3?'请求（JSON-RPC，示意）':'结果（示意）',bx+24,by+32,P?22:18,rs<0.3?ICE:GREEN,showR*gA,700,'left');
+      js.forEach((l,k)=>text(l,bx+24,by+(P?76:68)+k*(P?36:30),P?22:19,PALE,showR*gA,400,'left'));}}
+  // 纸带场景
+  const tA=seg(G,SI.tape-0.6,SI.tape-0.1)*fin;
+  if(tA>0.01){const T=g.tapeC;const cs=seg(G,SI.cost-0.8,SI.cost-0.1);const L=P?1500:1700;const a0=P?T.y-L/2:T.x-L/2;if(P)tape(a0,a0+L,T.x-200,330,{vert:true,a:tA});else tape(a0,a0+L,T.y,210,{a:tA});
+    const nt=Math.round(lerp(3,12,cs));const segs=[['System','gold',90]];for(let k=0;k<nt;k++)segs.push([k<3?['search_cases','read_file','send_mail'][k]:`工具 ${k+1}`,'ice',P?lerp(110,70,cs):lerp(130,80,cs)]);
+    segs.push(['用户提问','gold',P?140:200],['调用 search_cases','hot',P?150:220],['结果：3 件类案','green',P?150:220]);
+    let a=a0+20;const total=segs.reduce((s2,x)=>s2+x[2]+8,0);const over=Math.max(0,total-(L-40));
+    segs.forEach(([t,st,w],k)=>{w=w-(k>0&&k<=nt?over/nt:0);const e=seg(tA,Math.min(0.6,k*0.04),Math.min(1,0.4+k*0.04));if(P){block(T.x-200-140,a,280,w,{style:st,a:tA*e});if(w>40)rich(t,T.x-200,a+w/2,22,tA*e,{maxW:250,weight:700});}else{block(a,T.y-76,w,152,{style:st,a:tA*e});rich(t,a+w/2,T.y,20,tA*e,{maxW:w-12,weight:700});}a+=w+8;});
+    const lab=(s,col,frac)=>{if(P)text(s,T.x+0,a0+L*frac,26,col,tA,700,'left');else text(s,a0+L*frac,T.y-150,26,col,tA,700);};
+    lab(cs>0.5?`工具说明 × ${nt}：越接越长`:'工具说明（名称 · 用途 · 参数格式）',ICE,P?0.18:0.22);lab('结果写回末尾',GREEN,P?0.88:0.86);
+    if(cs>0.3)rich('只接这次需要的工具，或用按需加载的方式（如 Skill）',P?540:T.x,P?T.y+L/2+60:T.y+150,P?26:24,tA*cs,{maxW:P?960:0});}
   ctx.restore();
-}
-
-// 原版三层光学精灵贴图
-function mkSprite(stops){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),gr=g.createRadialGradient(64,64,0,64,64,64);stops.forEach(s=>gr.addColorStop(s[0],s[1]));g.fillStyle=gr;g.fillRect(0,0,128,128);return c;}
-const SPR_HALO=mkSprite([[0,'rgba(255,228,170,0.9)'],[0.12,'rgba(255,196,96,0.55)'],[0.4,'rgba(226,150,46,0.16)'],[1,'rgba(200,120,30,0)']]);
-const SPR_CORE=mkSprite([[0,'rgba(255,250,235,1)'],[0.25,'rgba(255,226,160,0.9)'],[0.6,'rgba(255,190,80,0.25)'],[1,'rgba(255,170,60,0)']]);
-const SPR_RED =mkSprite([[0,'rgba(255,195,185,0.9)'],[0.2,'rgba(232,106,88,0.5)'],[1,'rgba(180,40,30,0)']]);
-function glow(x,y,r,a=1,spr=SPR_HALO){const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||r<=0.5)return;const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.drawImage(spr,x-r,y-r,2*r,2*r);ctx.globalAlpha=prev;}
-function core(x,y,r,a=1){glow(x,y,r,a,SPR_CORE);}
-
-// 原版纸带纤维纹理
-const FIBER=(()=>{const c=document.createElement('canvas');c.width=512;c.height=128;const g=c.getContext('2d'),r=mulberry(7);
-  for(let i=0;i<900;i++){const x=r()*512,y=r()*128,l=6+r()*40;g.strokeStyle=`rgba(255,215,150,${0.015+r()*0.04})`;g.lineWidth=0.6+r()*0.8;g.beginPath();g.moveTo(x,y);g.lineTo(x+l,y+(r()-0.5)*3);g.stroke();}return c;})();
-let FIBER_PAT=null;
-
-// 景深星尘
-const DUST=(()=>{const r=mulberry(2026);return Array.from({length:65},()=>({x:r(),y:r(),vx:(r()-0.5)*0.004,vy:-0.003-r()*0.006,r:1.2+r()*2.6,a:0.1+r()*0.25,ph:r()*6.28}));})();
-
-// 节点定义（世界坐标）
-const HOSTS=[
-  {name:'Claude Code', y:310},
-  {name:'Cursor IDE',  y:445},
-  {name:'法律助手',     y:580},
-  {name:'桌面 Agent',  y:715},
-];
-const SERVERS=[
-  {name:'本地文件',   y:310},
-  {name:'最高院案例库',y:445},
-  {name:'飞书 · 日历',y:580},
-  {name:'企业数据库', y:715},
-  {name:'合同库 (新增)',y:835, isNew:true},
-];
-
-// 绘制发光星核节点（复用原版“模型光球”美学）
-function drawOrbNode(x,y,name,a,isHost,hl=0,amb=0){
-  if(a<=0.005)return;
-  ctx.save();ctx.globalAlpha*=a;
-  const r=26+hl*6;
-  ctx.globalCompositeOperation='lighter';
-  glow(x,y,r*3.6*(1+0.08*Math.sin(amb*2+y)),0.55+hl*0.45);
-  core(x,y,r*0.95,0.95);
-  ctx.globalCompositeOperation='source-over';
-  // 极细金属外环
-  ctx.strokeStyle=hl>0.3?GOLD_HI:'rgba(226,170,66,0.75)';ctx.lineWidth=hl>0.3?2:1.2;
-  ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.stroke();
-  text(name,isHost?x-r-22:x+r+22,y,24,hl>0.3?PALE:IVORY,1,hl>0.3?700:400,isHost?'right':'left');
-  ctx.restore();
-}
-
-// 沿路径生长发光光缆
-function drawBeam(x1,y1,x2,y2,prog,col,lw=2,a=1,red=false){
-  if(prog<=0.005||a<=0.005)return;
-  const ex=lerp(x1,x2,prog), ey=lerp(y1,y2,prog);
-  ctx.save();ctx.globalAlpha*=a;
-  ctx.strokeStyle=col;ctx.lineWidth=lw;
-  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(ex,ey);ctx.stroke();
-  if(prog>0.05&&prog<0.98){
-    ctx.globalCompositeOperation='lighter';
-    glow(ex,ey,24,0.85,red?SPR_RED:SPR_HALO);
-    ctx.globalCompositeOperation='source-over';
-  }
-  ctx.restore();
-}
-
-/* ============================== 主渲染（连续摄影机空间） ============================== */
-function render(G,amb){
-  const {s,ox,oy,dpr}=view;
-  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
-  ctx.setTransform(s*dpr,0,0,s*dpr,ox*dpr,oy*dpr);
-  ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();
-  ctx.fillStyle='#030303';ctx.fillRect(0,0,W,H);
-
-  // 背景暖光 + 景深金尘
-  const bg=ctx.createRadialGradient(W/2,H*0.48,0,W/2,H*0.48,960);
-  bg.addColorStop(0,'rgba(128,84,22,0.17)');bg.addColorStop(0.55,'rgba(60,38,10,0.06)');bg.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  ctx.save();ctx.globalCompositeOperation='lighter';
-  DUST.forEach(d=>{const dx=((d.x+amb*d.vx)%1+1)%1*W,dy=((d.y+amb*d.vy)%1+1)%1*H;glow(dx,dy,d.r*3,d.a*(0.55+0.45*Math.sin(amb*1.4+d.ph)));});
-  ctx.restore();
-
-  /* ---------- 0. 原版复刻级电影开场 (0 -> 0.55 退净) ---------- */
-  const a0=1-seg(G,0.02,0.55);
-  if(a0>0.005){
-    const intro=clamp(amb/2.4), out=seg(G,0.02,0.55);
-    const title='MCP 到底是什么', fs=106, tw=measure(title,fs,700);
-    let x=W/2-tw/2; const rnd=mulberry(5); let ci=0;
-    ctx.save();
-    for(const ch of title){
-      const cw=measure(ch,fs,700), ca=seg(intro,0.1+ci*0.04,0.4+ci*0.04);
-      const dx=(rnd()-0.5)*220*out, dy=-(35+rnd()*140)*out;
-      glowText(ch,x+cw/2+dx,445+(1-ca)*24+dy,fs,PALE,ca*(1-out),700,0.35);
-      x+=cw; ci++;
-    }
-    // 金色流光扫字
-    const sw=((amb*0.18)%1.6)-0.3;
-    if(intro>0.85&&out<0.4){
-      ctx.save();ctx.globalCompositeOperation='lighter';
-      const gx=W/2-tw/2+sw*tw, g=ctx.createLinearGradient(gx-160,0,gx+160,0);
-      g.addColorStop(0,'rgba(255,240,200,0)');g.addColorStop(0.5,'rgba(255,240,200,0.55)');g.addColorStop(1,'rgba(255,240,200,0)');
-      ctx.font=font(fs,700);ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillStyle=g;ctx.globalAlpha=1-out*2.5;ctx.fillText(title,W/2-tw/2,445);ctx.restore();
-    }
-    const lw=820*seg(intro,0.28,0.82)*(1-out);
-    ctx.globalCompositeOperation='lighter';
-    const lg=ctx.createLinearGradient(W/2-lw/2,0,W/2+lw/2,0);lg.addColorStop(0,'rgba(255,200,90,0)');lg.addColorStop(0.5,`rgba(255,214,120,${0.95*(1-out)})`);lg.addColorStop(1,'rgba(255,200,90,0)');
-    ctx.fillStyle=lg;ctx.fillRect(W/2-lw/2,540,lw,2);glow(W/2,541,60,0.7*(1-out));ctx.globalCompositeOperation='source-over';
-    rich('从 M × N 乱线，到 AI 世界的{暗金光学总线}',W/2,605,32,seg(intro,0.55,1)*(1-out),DIM);
-    brandMark(W/2,870,28,seg(intro,0.7,1)*(1-out));
-    ctx.restore();
-  }
-
-  /* ---------- 1~6. 连续摄影机世界 (G >= 0.45) ---------- */
-  const worldA=seg(G,0.45,1.0);
-  if(worldA>0.005){
-    // 五次方平滑摄影机：缩放推近核心通路，再拉远纳入底部纸带
-    const camX = kf(G,[[1,960],[7,960],[8,960],[13,960],[14,960]], easeCam);
-    const camY = kf(G,[[1,540],[7,540],[8,385],[13,385],[14,555],[15,540]], easeCam);
-    const camZ = kf(G,[[1,1.0],[7,1.0],[8,1.38],[13,1.38],[14,0.88],[15,0.92]], easeCam);
-
-    // 关键状态进度
-    const aHosts   = seg(G,0.5,1.0);
-    const aServers = seg(G,1.2,2.0);
-    const pSpag    = seg(G,2.15,3.0);                    // M x N 乱线
-    const pNewNode = seg(G,3.15,4.0);                    // 第 5 个节点「合同库」
-    const pBus     = seg(G,4.2,5.0);                     // 拆乱线，立 MCP 总线
-    const pConn    = seg(G,5.15,6.0);                    // M + N 正交接入
-    const pPlug    = seg(G,6.15,7.0);                    // 合同库 1 根线接入
-    const decoDim  = kf(G,[[7.2,0],[8,0.86],[13.3,0.86],[14,0]]); // 景深压暗其余节点
-    const pRpcReq  = seg(G,11.2,12.0);                   // JSON-RPC 请求脉冲
-    const pRpcRes  = seg(G,12.2,13.0);                   // JSON-RPC 结果回传
-    const pTape    = seg(G,13.2,14.0);                   // 底部纸带展开
-    const pFin     = seg(G,14.3,15.0);                   // 终局落版
-
-    ctx.save();
-    ctx.globalAlpha=worldA;
-    ctx.translate(W/2,H/2);ctx.scale(camZ,camZ);ctx.translate(-camX,-camY);
-
-    const lx=460, rx=1460, busX=960;
-
-    // 1. M × N 乱线（Step 3-4，在 Step 5 随 pBus 坍缩消散）
-    const spagVis = pSpag*(1-pBus);
-    if(spagVis>0.01){
-      HOSTS.forEach((h,i)=>{
-        SERVERS.forEach((sv,j)=>{
-          if(sv.isNew && pNewNode<0.05)return;
-          const p = sv.isNew ? pNewNode*(1-pBus) : clamp(spagVis*1.4-(i*0.07+j*0.05));
-          drawBeam(lx+28,h.y,rx-28,sv.y,p,sv.isNew?'rgba(255,140,120,0.85)':'rgba(232,106,88,0.45)',sv.isNew?2:1.3,1-pBus,true);
-        });
-      });
-      text(pNewNode>0.4?'每加 1 个工具，4 个 AI 全部重连！':'M × N = 16 条定制耦合线',busX,885,24,RED,spagVis,700);
-    }
-
-    // 2. 中央暗金光学总线（Step 5 起生长并常驻）
-    if(pBus>0.01){
-      const bTop=245, bBot=lerp(760,865,pPlug);
-      ctx.save();
-      ctx.globalCompositeOperation='lighter';
-      // 总线发光芯
-      const g=ctx.createLinearGradient(busX-36,0,busX+36,0);
-      g.addColorStop(0,'rgba(226,170,66,0)');g.addColorStop(0.5,`rgba(255,208,98,${0.28*pBus})`);g.addColorStop(1,'rgba(226,170,66,0)');
-      ctx.fillStyle=g;ctx.fillRect(busX-36,bTop,72,(bBot-bTop)*pBus);
-      ctx.globalCompositeOperation='source-over';
-      // 双轨金线
-      drawBeam(busX-5,bTop,busX-5,bBot,pBus,GOLD_HI,2.2,1);
-      drawBeam(busX+5,bTop,busX+5,bBot,pBus,GOLD,1.6,0.8);
-      glowText('MCP',busX,bTop-34,30,GOLD_HI,pBus,700,0.45);
-      text('标准光学总线',busX,bTop-8,15,DIM,pBus*(1-decoDim*0.7));
-
-      // M + N 正交光路接入（Step 6）
-      if(pConn>0.01){
-        HOSTS.forEach((h,i)=>{
-          const isF=(i===0), a=isF?1:(1-decoDim);
-          drawBeam(lx+28,h.y,busX-6,h.y,pConn,isF&&decoDim>0.2?GOLD_HI:GOLD,isF&&decoDim>0.2?2.8:1.6,a);
-          if(pConn>0.85){ctx.globalCompositeOperation='lighter';core(busX-6,h.y,6,a);ctx.globalCompositeOperation='source-over';}
-        });
-        SERVERS.forEach((sv,j)=>{
-          if(sv.isNew)return;
-          const isF=(j===1), a=isF?1:(1-decoDim);
-          drawBeam(busX+6,sv.y,rx-28,sv.y,pConn,isF&&decoDim>0.2?GOLD_HI:GOLD,isF&&decoDim>0.2?2.8:1.6,a);
-          if(pConn>0.85){ctx.globalCompositeOperation='lighter';core(busX+6,sv.y,6,a);ctx.globalCompositeOperation='source-over';}
-        });
-      }
-      // 第 5 个工具「合同库」1 根线吸上总线（Step 7）
-      if(pPlug>0.01){
-        const y5=SERVERS[4].y, a5=1-decoDim;
-        drawBeam(rx-28,y5,busX+6,y5,pPlug,GOLD_HI,2.6,a5);
-        if(pPlug>0.8){ctx.globalCompositeOperation='lighter';glow(busX+6,y5,36,a5*0.8);core(busX+6,y5,8,a5);ctx.globalCompositeOperation='source-over';}
-        text('1 根线接入 → 全网打通',1210,y5-28,18,GOLD_HI,pPlug*a5,700);
-      }
-      ctx.restore();
-    }
-
-    // 3. 绘制左右发光星核节点
-    HOSTS.forEach((h,i)=>{
-      const isF=(i===0), a=aHosts*(isF?1:(1-decoDim));
-      drawOrbNode(lx,h.y,h.name,a,true,isF&&decoDim>0.2?1:0,amb);
-    });
-    SERVERS.forEach((sv,j)=>{
-      const baseA=sv.isNew?pNewNode:aServers;
-      const isF=(j===1), a=baseA*(isF?1:(1-decoDim));
-      drawOrbNode(rx,sv.y,sv.name,a,false,(isF&&decoDim>0.2)||(sv.isNew&&pPlug>0.4)?1:0,amb);
-    });
-
-    // 4. 三大标准原语聚焦卡片（Step 9-11，在聚焦态下浮现于总线下方）
-    const prims=[
-      {step:9,  t:'Tools · 工具',     d:'模型可调用的动作：search_cases( ) / read_file( )'},
-      {step:10, t:'Resources · 资源', d:'可直接挂载的只读数据：合同原文 / 法规条文'},
-      {step:11, t:'Prompts · 模板',   d:'服务端预置的标准化提示词与工作流入口'},
-    ];
-    prims.forEach(pr=>{
-      const pa=bump(G,pr.step,0.52); if(pa<=0.01)return;
-      const py=548+(1-pa)*14;
-      ctx.save();ctx.globalAlpha*=pa;
-      rr(busX-320,py-46,640,92,10);ctx.fillStyle='rgba(18,14,6,0.92)';ctx.fill();ctx.strokeStyle=GOLD_HI;ctx.lineWidth=1.8;ctx.stroke();
-      glowText(pr.t,busX,py-14,24,GOLD_HI,1,700,0.4);
-      text(pr.d,busX,py+20,17,IVORY,0.92);
-      ctx.restore();
-    });
-
-    // 5. 运行时 JSON-RPC 光点脉冲（Step 12-13）
-    if(pRpcReq>0.02 && pTape<0.8){
-      const yH=HOSTS[0].y, yS=SERVERS[1].y;
-      const ra=(1-pTape*1.25);
-      ctx.save();ctx.globalAlpha*=clamp(ra);
-      // 请求光点：Host -> Bus -> Server
-      const t1 = pRpcRes<0.1 ? ((amb*0.55)%1) : 1;
-      if(pRpcRes<0.3){
-        let px,py;
-        if(t1<0.4){px=lerp(lx+28,busX,t1/0.4);py=yH;}
-        else if(t1<0.6){px=busX;py=lerp(yH,yS,(t1-0.4)/0.2);}
-        else{px=lerp(busX,rx-28,(t1-0.6)/0.4);py=yS;}
-        ctx.globalCompositeOperation='lighter';glow(px,py,38,1);core(px,py,9,1);ctx.globalCompositeOperation='source-over';
-        text('JSON-RPC 请求：search_cases("第585条")',busX,545,20,GOLD_HI,pRpcReq*(1-pRpcRes*3),700);
-      }
-      // 返回光点：Server -> Bus -> Host
-      if(pRpcRes>0.05){
-        const t2=(amb*0.55)%1; let px,py;
-        if(t2<0.4){px=lerp(rx-28,busX,t2/0.4);py=yS;}
-        else if(t2<0.6){px=busX;py=lerp(yS,yH,(t2-0.4)/0.2);}
-        else{px=lerp(busX,lx+28,(t2-0.6)/0.4);py=yH;}
-        ctx.globalCompositeOperation='lighter';glow(px,py,42,1);core(px,py,10,1);ctx.globalCompositeOperation='source-over';
-        text('JSON-RPC 返回：3 份最高院类案摘要',busX,545,20,PALE,pRpcRes,700);
-      }
-      ctx.restore();
-    }
-
-    // 6. 底部无缝衔接原版纤维打孔纸带（Step 14-15）
-    if(pTape>0.01){
-      const ty=965, th=126, tx=180, tw=1560;
-      ctx.save();ctx.globalAlpha*=pTape;
-      // 纸带本体 + 纤维 + 齿孔
-      const tgr=ctx.createLinearGradient(0,ty-th/2,0,ty+th/2);
-      tgr.addColorStop(0,'rgba(78,56,20,0.72)');tgr.addColorStop(0.5,'rgba(26,18,7,0.76)');tgr.addColorStop(1,'rgba(78,56,20,0.72)');
-      ctx.fillStyle=tgr;ctx.fillRect(tx,ty-th/2,tw,th);
-      if(!FIBER_PAT)FIBER_PAT=ctx.createPattern(FIBER,'repeat');
-      ctx.fillStyle=FIBER_PAT;ctx.fillRect(tx,ty-th/2,tw,th);
-      ctx.strokeStyle='rgba(236,184,78,0.92)';ctx.lineWidth=1.8;
-      ctx.beginPath();ctx.moveTo(tx,ty-th/2);ctx.lineTo(tx+tw,ty-th/2);ctx.moveTo(tx,ty+th/2);ctx.lineTo(tx+tw,ty+th/2);ctx.stroke();
-      for(let hx=tx+20;hx<tx+tw-12;hx+=36){[ty-th/2+9,ty+th/2-9].forEach(hy=>{ctx.fillStyle='#030303';ctx.fillRect(hx-2,hy-2,4,4);});}
-
-      const segs=[
-        [380,'MCP 工具定义（写入前端）','search_cases( ) · read_file( )',GOLD_HI],
-        [480,'用户提问 + 模型发出调用请求','模型自己不运行工具，只写下请求',IVORY],
-        [630,'MCP Server 返回结果（写回末尾）','整根纸带再送回模型 → 生成最终回答',PALE]
-      ];
-      let sx=tx+24;
-      segs.forEach(([w,t,sub,col])=>{
-        rr(sx,ty-42,w,84,7);ctx.fillStyle='rgba(12,10,5,0.72)';ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.stroke();
-        text(t,sx+w/2,ty-12,18,col,1,700);text(sub,sx+w/2,ty+16,14,DIM,1);sx+=w+16;
-      });
-      ctx.restore();
-    }
-
-    ctx.restore(); // 结束摄影机变换
-  }
-
-  /* ---------- 终局收束落版 (Step 15) ---------- */
-  const finA=seg(G,14.4,15.0);
-  if(finA>0.01){
-    ctx.save();ctx.globalAlpha=finA;
-    rich('一次封装，随处接入——{MCP} 让 Agent 真正连上现实世界',W/2,92,34,1,IVORY);
-    brandMark(W/2,1018,24,1);
-    ctx.restore();
-  }
-
-  /* ---------- 顶部引导语（严格先退后进，零叠字） & 右下角进度 ---------- */
-  const lo=Math.floor(G), hi=Math.min(LAST,Math.ceil(G)), f=G-lo;
-  const ha=STEPS[lo].hint, hb=STEPS[hi].hint;
-  if(ha===hb) rich(ha,W/2,92,34,0.95);
-  else {
-    const aOut=1-ease(clamp(f/0.38)), aIn=ease(clamp((f-0.5)/0.42));
-    if(aOut>0.01) rich(ha,W/2,92-(1-aOut)*10,34,0.95*aOut);
-    if(aIn>0.01) rich(hb,W/2,92+(1-aIn)*10,34,0.95*aIn);
-  }
-  const st=STEPS[Math.round(G)];
-  text(`${String(st.scene).padStart(2,'0')} · ${SCENES[st.scene]}    ${Math.round(G)+1} / ${STEPS.length}`,1860,1040,18,'rgba(244,237,223,0.52)',1,400,'right');
-  ctx.fillStyle='rgba(244,237,223,0.16)';ctx.fillRect(1660,1058,200,2);
-  ctx.fillStyle=GOLD;ctx.fillRect(1660,1058,200*G/LAST,2);
-  ctx.restore();
-}
-
-/* ==================== 交互（与你原版完全一致的手感） ==================== */
-let G=0, target=0, anim=null, auto=false; const t0=performance.now();
-function go(i){
-  i=clamp(Math.round(i),0,LAST);if(i===target&&!anim)return;
-  const from=G, fwd=i===Math.round(target)+1&&i>from;
-  target=i;anim={from,to:i,start:performance.now(),dur:fwd?STEPS[i].dur:Math.min(850,350+Math.abs(i-from)*60),linear:fwd};
-}
-function next(){go(target+1);} function prev(){go(target-1);}
-function tick(now){
-  if(anim){
-    const p=clamp((now-anim.start)/anim.dur);
-    G=anim.linear?lerp(anim.from,anim.to,p):lerp(anim.from,anim.to,ease(p));
-    if(p>=1){G=anim.to;anim=null;if(auto&&G<LAST)setTimeout(()=>auto&&go(target+1),700);}
-  }
-  render(G,(now-t0)/1000);requestAnimationFrame(tick);
-}
-addEventListener('keydown',e=>{
-  if(e.target.id==='lesson-back')return;
-
-  const k=e.key;
-  if(['ArrowRight',' ','PageDown','Enter','ArrowDown'].includes(k)){e.preventDefault();next();}
-  else if(['ArrowLeft','PageUp','Backspace','ArrowUp'].includes(k)){e.preventDefault();prev();}
-  else if(k==='Home')go(0); else if(k==='End')go(LAST);
-  else if(k==='f'||k==='F')toggleFS();
-  else if(k==='a'||k==='A'){auto=!auto;if(auto)next();}
-});
-let pd=null;
-cv.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY,b:e.button};});
-cv.addEventListener('pointerup',e=>{if(!pd)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y,b=pd.b;pd=null;
-  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2){dx<0?next():prev();return;}
-  if(Math.abs(dx)<14&&Math.abs(dy)<14){if(b===2)prev();else e.shiftKey?prev():next();}});
-cv.addEventListener('contextmenu',e=>{e.preventDefault();prev();});
-const fsBtn=document.getElementById('fs');
-function toggleFS(){const d=document,el=d.documentElement;if(!d.fullscreenElement)el.requestFullscreen?.();else d.exitFullscreen?.();}
-fsBtn.addEventListener('pointerdown',e=>e.stopPropagation());
-fsBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
-
-requestAnimationFrame(tick);
+  LE.finale(['各自对接是 {M × N}，统一走 {MCP} 是 {M + N}','Server 提供{工具}、{资源}、{提示模板}；调用走 {JSON-RPC}','落回纸带：{工具说明}在前部，{调用结果}写回末尾'],seg(G,LAST-0.8,LAST),'MCP（Model Context Protocol）由 Anthropic 于 2024 年发布；示例中的工具名、请求与结果为示意，以官方规范为准。');}
+function dragTrack(g){return g.P?{x0:160,x1:920,y:g.sy+300}:{x0:1300,x1:1820,y:g.bot+90};}
+const drags=[{step:'drag',cursor:'ew-resize',hit:pt=>{const t=dragTrack(geo());return pt.x>t.x0-50&&pt.x<t.x1+50&&Math.abs(pt.y-t.y)<60;},move:pt=>{const t=dragTrack(geo());nUser=1+clamp((pt.x-t.x0)/(t.x1-t.x0))*11;}}];
+LE.run({steps:STEPS,scenes:SCENES,render,drags,onGo:()=>{nUser=null;},onSeek:(g,st)=>{nUser=st.n??null;if(nUser!=null)nDisp=nUser;}});
 })();
+
 </script></body></html>

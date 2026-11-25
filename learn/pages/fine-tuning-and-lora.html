@@ -1,477 +1,132 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
-<title>微调与 LoRA 到底是怎么做的 · 做题改参数与并联旁路补丁</title>
+<title>微调、LoRA 与 RAG / Skill · 什么时候改模型，什么时候给资料</title>
+<meta name="description" content="微调怎么做（示范数据、损失、反向更新）、全量微调的代价、LoRA 冻结原矩阵加低秩旁路（可拖动秩 r 看参数量）、热插拔；微调擅长写法与习惯，会变的事实交给检索与 Skill。">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#000000">
-<style>
-/* 将原文件中的两行 @font-face{font-family:'HSerif'...} 粘贴至此即可恢复原版衬线体 */
-html,body{margin:0;height:100%;background:#000;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-user-select:none;user-select:none}
-body{position:fixed;inset:0}
-canvas{display:block;touch-action:none}
-#tools{position:fixed;right:16px;top:14px;display:flex;gap:8px;z-index:10;transition:opacity .35s}
-.tbtn{font:13px "HSerif","Songti SC",serif;color:rgba(244,237,223,.52);background:rgba(10,8,4,.62);border:1px solid rgba(226,170,66,.28);border-radius:5px;padding:4px 10px;cursor:pointer;backdrop-filter:blur(4px);transition:all .2s}
-.tbtn:hover,.tbtn.on{color:#FFD062;border-color:#E2AA42;background:rgba(226,170,66,.14)}
-#dock{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:5px;padding:6px 10px;border-radius:10px;background:rgba(8,7,4,.78);border:1px solid rgba(226,170,66,.22);backdrop-filter:blur(8px);z-index:10;max-width:95vw;overflow-x:auto;transition:opacity .4s}
-#dock::-webkit-scrollbar{display:none}
-.sbtn{font:12px "HSerif","Songti SC",serif;color:rgba(244,237,223,.55);background:none;border:1px solid transparent;border-radius:5px;padding:4px 9px;white-space:nowrap;cursor:pointer;transition:all .2s}
-.sbtn:hover{color:#FFE9B8;border-color:rgba(226,170,66,.35)}
-.sbtn.active{color:#FFD062;border-color:rgba(255,208,98,.6);background:rgba(226,170,66,.16);font-weight:700}
-body.idle #tools,body.idle #dock,body.clean #tools,body.clean #dock{opacity:0;pointer-events:none}
-</style><style>
-  #lesson-back {
-    position: fixed;
-    z-index: 10;
-    top: calc(8px + env(safe-area-inset-top));
-    left: calc(12px + env(safe-area-inset-left));
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    box-sizing: border-box;
-    padding: 0 10px;
-    border-radius: 4px;
-    color: #ffe5ad;
-    background: #17130e;
-    font: 14px/1.4 system-ui, sans-serif;
-    text-decoration: none;
-  }
-  #lesson-back:hover { text-decoration: underline; }
-  #lesson-back:focus-visible { outline: 2px solid #ffd062; outline-offset: 2px; }
-  body.clean #lesson-back, :fullscreen #lesson-back { display: none; }
-</style>
+<link rel="preload" href="../assets/fonts/hserif-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/hserif-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/lesson.css">
 </head><body>
 <a id="lesson-back" href="../index.html">← 返回模块目录</a>
-<canvas id="c"></canvas>
-<div id="tools">
-  <button class="tbtn" id="autoBtn" title="自动播放 (A)">自动 A</button>
-  <button class="tbtn" id="cleanBtn" title="纯净录屏 (H)">纯净 H</button>
-  <button class="tbtn" id="fsBtn" title="全屏 (F)">全屏 F</button>
-</div>
-<div id="dock"></div>
+<canvas id="c"></canvas><button id="fs" title="全屏（F）">全屏 F</button>
+<script src="../assets/lesson-engine.js"></script>
 <script>
-(function(){
-'use strict';
-const FONT='"HSerif","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC","SimSun",serif';
-const IVORY='#F4EDDF', GOLD='#E2AA42', GOLD_HI='#FFD062', PALE='#FFE9B8', DIM='rgba(244,237,223,0.62)', RED='#E86A58', GREEN='#4FD198', ICE='#7CE8FF', FIRE='#FF8C42';
-
-const SCENES=['开场','微调四步循环','全量微调代价','LoRA 旁路补丁','边界与收束'];
-const S=(id,scene,dur,hint)=>({id,scene,dur,hint});
+// @title 微调、LoRA 与 RAG / Skill · 什么时候改模型，什么时候给资料
+// @desc 微调怎么做（示范数据、损失、反向更新）、全量微调的代价、LoRA 冻结原矩阵加低秩旁路（可拖动秩 r 看参数量）、热插拔；微调擅长写法与习惯，会变的事实交给检索与 Skill。
+(function(){'use strict';
+const {C,LY,ctx,clamp,lerp,ease,seg,lin,bump,damp,text,glowText,rich,measure,rr,glow,glowAdd,card,block,tape,line,arrowHead,qbez,S}=LE;
+const {IVORY,GOLD,GOLD_HI,PALE,DIM,DIM2,RED,GREEN,ICE,PURPLE}=C;
+const SCENES=['开场','微调怎么做','全量微调','LoRA','动手调秩','热插拔','边界','组合与选型','收束'];
 const STEPS=[
-  S('title',0,2500,''),
-  S('sft_data',1,2200,'微调（SFT）第一步：准备专属{标准题库}——成千上万组「输入 → 理想输出」配对'),
-  S('sft_fwd',1,2400,'第二步（前向传播）：把题目喂进大模型，穿过权重矩阵 {W}，让它现场做题预测答案'),
-  S('sft_loss',1,2400,'第三步（计算 Loss）：把模型吐出的答案和{标准答案}逐字比对，算出偏差有多大'),
-  S('sft_bwd',1,2600,'第四步（反向传播）：误差光束倒流回矩阵 {W}，直接修改里面的数字——反复刷题固化习惯'),
-  S('full_cost',2,2600,'全量微调之痛：单一个 {4096 × 4096} 权重矩阵就有 1,677 万个数字，全部解冻改写显存爆炸'),
-  S('full_forget',2,2500,'更致命的是「{灾难性遗忘}」：把原矩阵数字改乱，学会了专业口径，却忘了通用常识'),
-  S('lora_freeze',3,2600,'破局方案 {LoRA}：左侧原矩阵 {W} 彻底冰封冻结（❄），训练时一个数字都不改'),
-  S('lora_bypass',3,2600,'在旁边并联一条极细的{旁路补丁 (🔥)}：矩阵 A 把 4096 维压到 8 维，矩阵 B 再还原回 4096 维'),
-  S('lora_merge',3,2800,'底部 {⊕ 汇合}：y = Wx + B(Ax)——反向传播只改右侧 {6.5 万} 个数字（不到 0.4%！）'),
-  S('lora_swap',3,2500,'{零遗忘 + 热插拔}：拔掉旁路立刻恢复原厂模型；换一条旁路，瞬间切换不同专业领域'),
-  S('boundary',4,2600,'微调的定位：它擅长改{说话风格与肌肉记忆}；实时事实与工作流，仍交给前面讲过的 RAG/Grep 与 Skill'),
-  S('final',4,2600,''),
+ S('title',0,2600,''),
+ S('base',1,2600,'预训练好的模型像一位{通才}：懂很多，但不熟悉你团队的写法和口径'),
+ S('data',1,3000,'{微调（SFT）}第一步：准备大量「输入 → 理想输出」的示范对'),
+ S('fwd',1,3000,'让模型做题，把它的输出和理想输出比对，差距记为{损失（Loss）}'),
+ S('bwd',1,3000,'沿着差距{反向}微调 W 里的数字；成千上万次重复，习惯就改过来了'),
+ S('full',2,3000,'{全量微调}：所有权重都参与更新——一个 4096 × 4096 的矩阵就有 {1677 万}个数，模型里有成百上千个'),
+ S('forget',2,2800,'代价：算力、显存开销大；改得太猛，还可能削弱原有的通用能力（{灾难性遗忘}）'),
+ S('lora',3,3200,'{LoRA}：冻结原矩阵 W，旁边并一条细旁路——A 先压到 r 维，B 再还原：{y = Wx + BAx}'),
+ S('drag',4,1800,'{拖动}秩 r：旁路参数量 = 2 × 4096 × r，对比原矩阵的 1677 万',true),
+ S('swap',5,3000,'原权重不动：{换一条旁路}就换一种专长，拔掉就回到原模型'),
+ S('limit',6,3000,'微调擅长改{写法与习惯}；会变的事实（新规、本案材料）不适合靠它记'),
+ S('combo',7,3200,'组合用法：{Skill} 定流程，{检索} 把最新资料放上纸带，需要时再用 {LoRA} 调口径'),
+ S('order',7,3000,'选型顺序：先 {提示词 / Skill}，再 {检索（RAG / 搜索）}，最后才考虑{微调}'),
+ S('final',8,3200,''),
 ];
-const LAST=STEPS.length-1;
-const SCENE_FIRST=SCENES.map((_,i)=>STEPS.findIndex(s=>s.scene===i));
-
-const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
-const lerp=(a,b,t)=>a+(b-a)*t;
-const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-const seg=(G,a,b)=>ease(clamp((G-a)/(b-a)));
-function actAlpha(G,inS,inE,outS,outE){
-  const fi=inS===null?1:seg(G,inS,inE);
-  const fo=outS===null?1:(1-seg(G,outS,outE));
-  return fi*fo;
-}
-function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
-
-/* ==================== 画布与原版光学贴图 ==================== */
-const cv=document.getElementById('c'), ctx=cv.getContext('2d');
-const W=1920, H=1080; let view={s:1,ox:0,oy:0,dpr:1};
-function resize(){
-  const w=innerWidth,h=innerHeight,dpr=Math.min(window.devicePixelRatio||1,2);
-  cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.width=w+'px';cv.style.height=h+'px';
-  const s=Math.min(w/W,h/H);view={s,ox:(w-W*s)/2,oy:(h-H*s)/2,dpr};
-}
-addEventListener('resize',resize); resize();
-
-const mcache=new Map();
-function font(sz,wt=400){return `${wt} ${sz}px ${FONT}`;}
-function measure(t,sz,wt=400){const k=t+'|'+wt;let v=mcache.get(k);if(v===undefined){ctx.font=font(100,wt);v=ctx.measureText(t).width/100;mcache.set(k,v);}return v*sz;}
-function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
-
-function text(str,x,y,sz,col,a=1,wt=400,al='center'){
-  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
-  const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.font=font(sz,wt);ctx.fillStyle=col;ctx.textAlign=al;ctx.textBaseline='middle';ctx.fillText(str,x,y);ctx.globalAlpha=prev;
-}
-function glowText(str,x,y,sz,col,a=1,wt=700,blur=0.45,al='center'){
-  const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||!str)return;
-  ctx.save();ctx.shadowColor=col===ICE?'rgba(124,232,255,0.65)':(col===FIRE?'rgba(255,140,66,0.65)':'rgba(255,186,60,0.6)');ctx.shadowBlur=sz*blur;text(str,x,y,sz,col,a,wt,al);ctx.restore();
-}
-function rich(str,x,y,sz,a=1,col=IVORY){
-  if(ctx.globalAlpha*clamp(a)<=0.004||!str)return;
-  const parts=[];str.split(/(\{[^}]*\})/).forEach(s=>{if(!s)return;if(s[0]==='{')parts.push([s.slice(1,-1),1]);else parts.push([s,0]);});
-  let tw=0;parts.forEach(p=>{p[2]=measure(p[0],sz,p[1]?700:400);tw+=p[2];});let x0=x-tw/2;
-  parts.forEach(p=>{if(p[1])glowText(p[0],x0,y,sz,GOLD_HI,a,700,0.45,'left');else text(p[0],x0,y,sz,col,a,400,'left');x0+=p[2];});
-}
-function brandMark(x,y,sz,a=1){
-  if(ctx.globalAlpha*clamp(a)<=0.004)return;
-  const s1='陈石律师',s2='  ·  ',s3='chenshi.ai';
-  const w1=measure(s1,sz*0.8),w2=measure(s2,sz*0.8),w3=measure(s3,sz,700),tw=w1+w2+w3;let x0=x-tw/2;
-  text(s1,x0,y,sz*0.8,IVORY,a*0.78,400,'left');x0+=w1;text(s2,x0,y,sz*0.8,GOLD,a*0.8,400,'left');x0+=w2;glowText(s3,x0,y,sz,GOLD_HI,a,700,0.3,'left');
-}
-function drawBox(x,y,w,h,r=12,stroke=GOLD,topC='rgba(28,22,11,0.92)',botC='rgba(12,10,6,0.95)',lw=1.8){
-  ctx.save();
-  const g=ctx.createLinearGradient(0,y,0,y+h);g.addColorStop(0,topC);g.addColorStop(1,botC);
-  rr(x,y,w,h,r);ctx.fillStyle=g;ctx.fill();ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();
-  ctx.strokeStyle='rgba(255,235,185,0.2)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x+r,y+1);ctx.lineTo(x+w-r,y+1);ctx.stroke();
-  ctx.restore();
-}
-function arrow(x1,y1,x2,y2,col=GOLD,lw=2.2,dash=false,amb=0){
-  ctx.save();ctx.strokeStyle=col;ctx.lineWidth=lw;
-  if(dash){ctx.setLineDash([8,6]);ctx.lineDashOffset=-amb*40;}
-  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.setLineDash([]);
-  const ang=Math.atan2(y2-y1,x2-x1);ctx.fillStyle=col;
-  ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-13*Math.cos(ang-0.42),y2-13*Math.sin(ang-0.42));ctx.lineTo(x2-13*Math.cos(ang+0.42),y2-13*Math.sin(ang+0.42));ctx.closePath();ctx.fill();
-  ctx.restore();
-}
-
-function mkSprite(stops){const c=document.createElement('canvas');c.width=c.height=128;const g=c.getContext('2d'),gr=g.createRadialGradient(64,64,0,64,64,64);stops.forEach(s=>gr.addColorStop(s[0],s[1]));g.fillStyle=gr;g.fillRect(0,0,128,128);return c;}
-const SPR_HALO=mkSprite([[0,'rgba(255,228,170,0.9)'],[0.14,'rgba(255,196,96,0.52)'],[1,'rgba(200,120,30,0)']]);
-const SPR_ICE =mkSprite([[0,'rgba(210,248,255,0.95)'],[0.2,'rgba(124,232,255,0.52)'],[1,'rgba(40,140,200,0)']]);
-const SPR_FIRE=mkSprite([[0,'rgba(255,220,180,0.95)'],[0.2,'rgba(255,140,66,0.55)'],[1,'rgba(200,60,15,0)']]);
-const SPR_RED =mkSprite([[0,'rgba(255,195,185,0.92)'],[0.2,'rgba(232,106,88,0.5)'],[1,'rgba(180,40,30,0)']]);
-const SPR_GRN =mkSprite([[0,'rgba(180,255,220,0.92)'],[0.2,'rgba(79,209,152,0.5)'],[1,'rgba(20,120,80,0)']]);
-function glow(x,y,r,a=1,spr=SPR_HALO){const eff=ctx.globalAlpha*clamp(a);if(eff<=0.004||r<=0.5)return;const prev=ctx.globalAlpha;ctx.globalAlpha=eff;ctx.drawImage(spr,x-r,y-r,2*r,2*r);ctx.globalAlpha=prev;}
-
-const DUST=(()=>{const r=mulberry(2042);return Array.from({length:56},()=>({x:r(),y:r(),vx:(r()-0.5)*0.004,vy:-0.003-r()*0.006,r:1.2+r()*2.5,a:0.1+r()*0.22,ph:r()*6.28}));})();
-
-// 矩阵内部数字网格（4x4 示意）
-const W_BASE=[
-  [ 0.14,-0.52, 0.81, 0.09],
-  [-0.33, 0.74,-0.18, 0.45],
-  [ 0.62, 0.11,-0.67, 0.28],
-  [-0.21,-0.49, 0.35, 0.91],
-];
-
-/* ============================== 主渲染 ============================== */
-function render(G,amb){
-  const {s,ox,oy,dpr}=view;
-  ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,cv.width,cv.height);
-  ctx.setTransform(s*dpr,0,0,s*dpr,ox*dpr,oy*dpr);
-  ctx.save();ctx.beginPath();ctx.rect(0,0,W,H);ctx.clip();
-  ctx.fillStyle='#030304';ctx.fillRect(0,0,W,H);
-
-  // 背景精密网格 + 暖光 + 金尘
-  ctx.strokeStyle='rgba(226,170,66,0.022)';ctx.lineWidth=1;
-  for(let x=0;x<=W;x+=64){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-  for(let y=0;y<=H;y+=64){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-  const bg=ctx.createRadialGradient(W/2,H*0.5,0,W/2,H*0.5,960);
-  bg.addColorStop(0,'rgba(128,84,22,0.15)');bg.addColorStop(0.55,'rgba(60,38,10,0.05)');bg.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  ctx.save();ctx.globalCompositeOperation='lighter';
-  DUST.forEach(d=>{const dx=((d.x+amb*d.vx)%1+1)%1*W,dy=((d.y+amb*d.vy)%1+1)%1*H;glow(dx,dy,d.r*3,d.a*(0.55+0.45*Math.sin(amb*1.4+d.ph)));});
-  ctx.restore();
-
-  /* ---------- 幕 0：开场 (0 -> 0.48) ---------- */
-  const a0=actAlpha(G,null,null,0.02,0.48);
-  if(a0>0.005){
-    const intro=clamp(amb/2.2), out=1-a0;
-    const title='微调与 LoRA 到底是怎么做的', fs=86, tw=measure(title,fs,700);
-    let x=W/2-tw/2; const rnd=mulberry(71); let ci=0;
-    ctx.save();
-    for(const ch of title){
-      const cw=measure(ch,fs,700), ca=seg(intro,0.05+ci*0.022,0.3+ci*0.022);
-      const dx=(rnd()-0.5)*200*out, dy=-(30+rnd()*120)*out;
-      glowText(ch,x+cw/2+dx,445+(1-ca)*24+dy,fs,PALE,ca*a0,700,0.35);
-      x+=cw; ci++;
-    }
-    const lw=840*seg(intro,0.28,0.82)*a0;
-    ctx.globalCompositeOperation='lighter';
-    const lg=ctx.createLinearGradient(W/2-lw/2,0,W/2+lw/2,0);lg.addColorStop(0,'rgba(255,200,90,0)');lg.addColorStop(0.5,`rgba(255,214,120,${0.95*a0})`);lg.addColorStop(1,'rgba(255,200,90,0)');
-    ctx.fillStyle=lg;ctx.fillRect(W/2-lw/2,540,lw,2);glow(W/2,541,60,0.7*a0);ctx.globalCompositeOperation='source-over';
-    rich('{做题改参数四步循环} · {冻结主干道 W} · {并联旁路补丁 B×A}',W/2,605,31,seg(intro,0.5,0.95)*a0,DIM);
-    brandMark(W/2,870,28,seg(intro,0.65,1)*a0);
-    ctx.restore();
-  }
-
-  /* ---------- 幕 1：微调（SFT）四步机械循环 (0.52 -> 4.42) ---------- */
-  const a1=actAlpha(G,0.52,1.0,4.05,4.45);
-  if(a1>0.005){
-    const pFwd=seg(G,1.2,2.0), pLoss=seg(G,2.2,3.0), pBwd=seg(G,3.2,4.0);
-    ctx.save();ctx.globalAlpha=a1;ctx.translate(0,(1-a1)*18);
-
-    // 1. 左侧：专属题库 (Dataset)
-    drawBox(110,360,360,330,14,GOLD_HI);
-    glowText('① 专属题库 (Dataset)',290,415,22,GOLD_HI,1,700,0.3);
-    text('成千上万组「输入 → 标准输出」',290,455,15,DIM,1);
-    drawBox(140,492,300,76,8,GOLD,'rgba(36,28,12,0.85)','rgba(18,14,7,0.92)',1.4);
-    text('题目：建工合同违约金条款',290,530,16,IVORY,1,700);
-    drawBox(140,584,300,76,8,GREEN,'rgba(14,48,34,0.72)','rgba(8,22,16,0.9)',1.4);
-    text('标准答案：资深律师审查意见',290,622,16,GREEN,1,700);
-
-    // 2. 中央：权重矩阵 W（前向做题）
-    if(pFwd>0.02){
-      ctx.save();ctx.globalAlpha*=pFwd;
-      arrow(475,530,665,530,GOLD_HI,2.6,true,amb);
-      drawBox(675,330,450,390,14,pBwd>0.3?FIRE:GOLD_HI,'rgba(26,20,10,0.92)','rgba(12,9,5,0.96)',2.2);
-      glowText('② 权重矩阵 W',900,378,24,pBwd>0.3?FIRE:GOLD_HI,1,700,0.35);
-      // 4x4 数字网格：Step 4 反向传播时数字实时跳动更新！
-      const cw=92, ch=62, gx0=900-2*cw, gy0=415;
-      for(let r=0;r<4;r++){
-        for(let c=0;c<4;c++){
-          const delta = pBwd>0.2 ? Math.sin(amb*5+r*2+c)*0.08*pBwd : 0;
-          const val = W_BASE[r][c] + delta;
-          rr(gx0+c*cw+3,gy0+r*ch+3,cw-6,ch-6,5);
-          ctx.fillStyle=pBwd>0.3?'rgba(255,140,66,0.18)':'rgba(226,170,66,0.1)';ctx.fill();
-          ctx.strokeStyle=pBwd>0.3?'rgba(255,140,66,0.55)':'rgba(226,170,66,0.35)';ctx.lineWidth=1;ctx.stroke();
-          text(val.toFixed(2),gx0+c*cw+cw/2,gy0+r*ch+ch/2,17,pBwd>0.3?PALE:IVORY,1,pBwd>0.3?700:400);
-        }
-      }
-      text(pBwd>0.3?'🔥 参数数字正在被实时改写…':'前向传播：y = W · x',900,688,16,pBwd>0.3?FIRE:DIM,1,700);
-      ctx.restore();
-    }
-
-    // 3. 右侧：模型预测 vs 标准答案 -> 算出误差 Loss（Step 3）
-    if(pLoss>0.02){
-      ctx.save();ctx.globalAlpha*=pLoss;
-      arrow(1130,530,1320,530,GOLD_HI,2.6,true,amb);
-      drawBox(1330,360,460,330,14,RED,'rgba(55,18,14,0.68)','rgba(20,8,6,0.92)',2);
-      glowText('③ 对答案算误差 (Loss)',1560,415,22,RED,1,700,0.35);
-      text('模型预测：“该条款可能存在一定风险”',1560,485,17,IVORY,0.92);
-      text('标准答案：“违反《民法典》585条，建议调减”',1560,535,17,GREEN,1,700);
-      rr(1410,582,300,66,8);ctx.fillStyle='rgba(232,106,88,0.22)';ctx.fill();ctx.strokeStyle=RED;ctx.lineWidth=1.8;ctx.stroke();
-      text('偏差 Loss = 2.48（需纠偏）',1560,615,19,RED,1,700);
-      ctx.restore();
-    }
-
-    // 4. 底部回流：反向传播改写 W（Step 4）
-    if(pBwd>0.02){
-      ctx.save();ctx.globalAlpha*=pBwd;
-      ctx.strokeStyle=FIRE;ctx.lineWidth=3.2;ctx.setLineDash([10,6]);ctx.lineDashOffset=-amb*48;
-      ctx.beginPath();ctx.moveTo(1560,695);ctx.lineTo(1560,795);ctx.lineTo(900,795);ctx.lineTo(900,728);ctx.stroke();ctx.setLineDash([]);
-      glow(900,728,36,0.85,SPR_FIRE);
-      text('↺ ④ 反向传播 (Backprop)：把误差倒推回矩阵 W，答对调大、答错调小',1230,835,20,FIRE,1,700);
-      ctx.restore();
-    }
-    ctx.restore();
-  }
-
-  /* ---------- 幕 2：全量微调的物理代价 (4.52 -> 6.42) ---------- */
-  const a2=actAlpha(G,4.52,5.0,6.05,6.45);
-  if(a2>0.005){
-    const pForget=seg(G,5.2,6.0);
-    ctx.save();ctx.globalAlpha=a2;ctx.translate(0,(1-a2)*18);
-
-    // 巨型矩阵 W (4096 x 4096) 全部亮红燃烧
-    const mx=lerp(960,620,pForget), my=540;
-    drawBox(mx-250,my-250,500,500,16,FIRE,'rgba(85,26,14,0.65)','rgba(26,10,6,0.94)',2.6);
-    ctx.globalCompositeOperation='lighter';glow(mx,my,240,0.4,SPR_FIRE);ctx.globalCompositeOperation='source-over';
-    glowText('全量微调 (Full Fine-tuning)',mx,my-195,24,FIRE,1,700,0.35);
-    text('单个权重矩阵 W：4,096 × 4,096',mx,my-145,19,PALE,1,700);
-    glowText('16,777,216 个参数全部解冻！',mx,my-20,30,RED,1,700,0.35);
-    text('（整座模型几百层 × 数百亿参数一起重算）',mx,my+45,18,IVORY,0.9);
-    text('🔥 显存爆炸 · 动辄需要多台 A100 / H100 集群',mx,my+125,18,GOLD_HI,1,700);
-
-    // 右侧：灾难性遗忘对比（Step 6）
-    if(pForget>0.02){
-      ctx.save();ctx.globalAlpha*=pForget;ctx.translate((1-pForget)*24,0);
-      drawBox(1020,310,740,460,16,RED,'rgba(55,16,14,0.72)','rgba(18,7,6,0.94)',2.2);
-      glowText('⚠ 灾难性遗忘 (Catastrophic Forgetting)',1390,385,25,RED,1,700,0.35);
-      const rows=[
-        ['合同审查口径','↑ 变专业了',GREEN],
-        ['通用逻辑推理','↓ 明显退化！',RED],
-        ['基础常识问答','↓ 出现幻觉！',RED],
-        ['版本回滚成本','整套百亿权重难以撤回',DIM],
-      ];
-      rows.forEach(([k,v,c],i)=>{
-        text(k,1120,475+i*66,21,IVORY,1,700,'left');
-        text(v,1660,475+i*66,21,c,1,700,'right');
-      });
-      ctx.restore();
-    }
-    ctx.restore();
-  }
-
-  /* ---------- 幕 3：LoRA 冻结主干道 + 并联旁路补丁 (6.52 -> 10.42) ---------- */
-  const a3=actAlpha(G,6.52,7.0,10.05,10.45);
-  if(a3>0.005){
-    const pByp=seg(G,7.2,8.0), pMerge=seg(G,8.2,9.0), pSwap=seg(G,9.2,10.0);
-    ctx.save();ctx.globalAlpha=a3;ctx.translate(0,(1-a3)*18);
-
-    const cx=960, topY=215, botY=835;
-    const leftX=640, rightX=1280;
-
-    // 顶部输入 x
-    drawBox(cx-150,topY-34,300,68,10,GOLD_HI);
-    text('输入向量 x (4,096 维)',cx,topY,20,PALE,1,700);
-
-    // 左侧：冰蓝冻结主干道 W（❄ 0 参数修改）
-    arrow(cx-70,topY+36,leftX,365,ICE,2.6,true,amb);
-    drawBox(leftX-195,375,390,310,16,ICE,'rgba(16,44,68,0.72)','rgba(8,20,34,0.94)',2.6);
-    ctx.globalCompositeOperation='lighter';glow(leftX,530,180,0.38,SPR_ICE);ctx.globalCompositeOperation='source-over';
-    glowText('❄ 预训练权重 W',leftX,455,28,ICE,1,700,0.4);
-    text('4,096 × 4,096（1,677 万参数）',leftX,515,19,IVORY,0.95);
-    rr(leftX-135,565,270,56,8);ctx.fillStyle='rgba(124,232,255,0.14)';ctx.fill();ctx.strokeStyle=ICE;ctx.lineWidth=1.6;ctx.stroke();
-    text('彻底冻结 · 一个数字都不改',leftX,593,17,ICE,1,700);
-
-    // 右侧：并联极细旁路补丁 A & B（🔥 仅 0.4% 参数！）
-    if(pByp>0.02){
-      const swapIdx = pSwap>0.1 ? (Math.floor(amb*0.95)%3) : 0;
-      const swapMeta = [
-        {tag:'法律文书旁路', col:FIRE, spr:SPR_FIRE},
-        {tag:'代码架构旁路', col:GREEN, spr:SPR_GRN},
-        {tag:'金融风控旁路', col:GOLD_HI, spr:SPR_HALO},
-      ][swapIdx];
-
-      ctx.save();ctx.globalAlpha*=pByp;
-      arrow(cx+70,topY+36,rightX,350,swapMeta.col,2.6,true,amb);
-
-      // 外围虚线框标明「LoRA 并联旁路」
-      rr(rightX-230,335,460,385,16);ctx.fillStyle='rgba(45,22,10,0.32)';ctx.fill();
-      ctx.strokeStyle=swapMeta.col;ctx.setLineDash([8,6]);ctx.lineWidth=2;ctx.stroke();ctx.setLineDash([]);
-      text(pSwap>0.1?`🔌 热插拔切换：${swapMeta.tag}`:'🔥 LoRA 并联旁路补丁（仅训练此处）',rightX,362,18,swapMeta.col,1,700);
-
-      // 矩阵 A（上宽下窄漏斗形：4096 -> 8 维）
-      ctx.beginPath();ctx.moveTo(rightX-150,395);ctx.lineTo(rightX+150,395);ctx.lineTo(rightX+42,485);ctx.lineTo(rightX-42,485);ctx.closePath();
-      ctx.fillStyle='rgba(255,140,66,0.22)';ctx.fill();ctx.strokeStyle=swapMeta.col;ctx.lineWidth=2.2;ctx.stroke();
-      text('矩阵 A (4096 → 8)',rightX,440,18,PALE,1,700);
-
-      // 中间极细瓶颈：秩 r = 8
-      ctx.globalCompositeOperation='lighter';glow(rightX,525,48,0.65,swapMeta.spr);ctx.globalCompositeOperation='source-over';
-      text('极细瓶颈：秩 r = 8 维',rightX,525,17,swapMeta.col,1,700);
-
-      // 矩阵 B（上窄下宽展开形：8 -> 4096 维）
-      ctx.beginPath();ctx.moveTo(rightX-42,565);ctx.lineTo(rightX+42,565);ctx.lineTo(rightX+150,655);ctx.lineTo(rightX-150,655);ctx.closePath();
-      ctx.fillStyle='rgba(255,140,66,0.22)';ctx.fill();ctx.strokeStyle=swapMeta.col;ctx.lineWidth=2.2;ctx.stroke();
-      text('矩阵 B (8 → 4096)',rightX,610,18,PALE,1,700);
-
-      text('A + B 总参数仅 6.5 万（不到原矩阵的 0.4%！）',rightX,692,16,GOLD_HI,1,700);
-      ctx.restore();
-    }
-
-    // 底部 ⊕ 汇合（Step 9）
-    if(pMerge>0.02){
-      ctx.save();ctx.globalAlpha*=pMerge;
-      arrow(leftX,690,cx-34,botY-18,ICE,2.6,true,amb);
-      arrow(rightX,724,cx+34,botY-18,FIRE,2.6,true,amb);
-      text('Wx（原厂通用能力）',leftX-10,765,17,ICE,1,700);
-      text('B(Ax)（专业纠偏增量）',rightX+10,765,17,FIRE,1,700);
-
-      // 汇合节点 ⊕
-      ctx.fillStyle='#0c0905';ctx.beginPath();ctx.arc(cx,botY,32,0,Math.PI*2);ctx.fill();
-      ctx.strokeStyle=GOLD_HI;ctx.lineWidth=3;ctx.stroke();
-      ctx.globalCompositeOperation='lighter';glow(cx,botY,75,0.55);ctx.globalCompositeOperation='source-over';
-      glowText('+',cx,botY+1,38,GOLD_HI,1,700,0.4);
-      glowText('输出 y = Wx + B(Ax)',cx,botY+66,26,PALE,1,700,0.35);
-      ctx.restore();
-    }
-    ctx.restore();
-  }
-
-  /* ---------- 幕 4：边界轻提与终局落版 (10.52 -> 12) ---------- */
-  const a4=actAlpha(G,10.52,11.0,null,null);
-  if(a4>0.005){
-    const pFin=seg(G,11.35,12.0);
-    ctx.save();ctx.globalAlpha=a4;ctx.translate(0,(1-a4)*18);
-
-    // 极简双栏定位（主角仍是微调/LoRA，RAG与Skill轻轻带过）
-    drawBox(240,320,680,360,16,FIRE,'rgba(48,22,12,0.82)','rgba(16,9,6,0.94)',2.4);
-    glowText('微调 / LoRA（改大脑习惯）',580,400,28,FIRE,1,700,0.35);
-    text('• 固化特定语气、排版格式与专业口径',580,485,20,IVORY,0.95);
-    text('• 注入高密度领域“肌肉记忆”',580,540,20,IVORY,0.95);
-    text('• 适合长期稳定不变的能力内化',580,595,20,PALE,0.95);
-
-    drawBox(1000,320,680,360,16,GREEN,'rgba(14,48,34,0.72)','rgba(8,20,14,0.94)',2);
-    glowText('RAG / Grep 与 Skill（前作已讲）',1340,400,28,GREEN,1,700,0.35);
-    text('• 查最新法条、最新合同 → 交给 RAG / Grep',1340,485,20,IVORY,0.95);
-    text('• 定审批步骤、工具流程 → 交给 Skill 与 Hooks',1340,540,20,IVORY,0.95);
-    text('• 无需重训大脑，随时更新、即改即生效',1340,595,20,PALE,0.95);
-
-    if(pFin>0.02){
-      ctx.save();ctx.globalAlpha*=pFin;
-      rich('微调是{刷题改参数}，LoRA 是{冻结原厂 + 并联极细补丁}——省 99% 显存且零遗忘',W/2,795,29,1,IVORY);
-      brandMark(W/2,905,28,1);
-      ctx.restore();
-    }
-    ctx.restore();
-  }
-
-  // 电影暗角
-  const vig=ctx.createRadialGradient(W/2,H/2,H*0.38,W/2,H/2,W*0.66);
-  vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,0,0.55)');
-  ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);
-
-  /* ---------- 顶部引导语（先退后进，零叠字） & 进度 ---------- */
-  const lo=Math.floor(G), hi=Math.min(LAST,Math.ceil(G)), f=G-lo;
-  const ha=STEPS[lo].hint, hb=STEPS[hi].hint;
-  if(ha===hb) rich(ha,W/2,92,33,0.95);
-  else {
-    const aOut=1-ease(clamp(f/0.38)), aIn=ease(clamp((f-0.5)/0.42));
-    if(aOut>0.01) rich(ha,W/2,92-(1-aOut)*10,33,0.95*aOut);
-    if(aIn>0.01) rich(hb,W/2,92+(1-aIn)*10,33,0.95*aIn);
-  }
-  const st=STEPS[Math.round(G)];
-  text(`${String(st.scene).padStart(2,'0')} · ${SCENES[st.scene]}    ${Math.round(G)+1} / ${STEPS.length}`,1860,1025,18,'rgba(244,237,223,0.52)',1,400,'right');
-  ctx.fillStyle='rgba(244,237,223,0.16)';ctx.fillRect(1620,1044,240,2);
-  ctx.fillStyle=GOLD;ctx.fillRect(1620,1044,240*G/LAST,2);
-  ctx.restore();
-}
-
-/* ==================== 交互与播控 ==================== */
-let G=0, target=0, anim=null, auto=false; const t0=performance.now();
-const dock=document.getElementById('dock');
-SCENES.forEach((name,idx)=>{
-  const b=document.createElement('button');b.className='sbtn';b.textContent=`${String(idx).padStart(2,'0')} ${name}`;
-  b.addEventListener('pointerdown',e=>e.stopPropagation());
-  b.addEventListener('pointerup',e=>{e.stopPropagation();go(SCENE_FIRST[idx]);});
-  dock.appendChild(b);
-});
-function syncDock(){const sc=STEPS[Math.round(target)].scene;dock.querySelectorAll('.sbtn').forEach((b,i)=>b.classList.toggle('active',i===sc));}
-function go(i){
-  i=clamp(Math.round(i),0,LAST);if(i===target&&!anim)return;
-  const from=G, fwd=i===Math.round(target)+1&&i>from;
-  target=i;anim={from,to:i,start:performance.now(),dur:fwd?STEPS[i].dur:Math.min(850,350+Math.abs(i-from)*60),linear:fwd};syncDock();
-}
-function next(){go(target+1);} function prev(){go(target-1);}
-function tick(now){
-  if(anim){
-    const p=clamp((now-anim.start)/anim.dur);
-    G=anim.linear?lerp(anim.from,anim.to,p):lerp(anim.from,anim.to,ease(p));
-    if(p>=1){G=anim.to;anim=null;if(auto&&G<LAST)setTimeout(()=>auto&&go(target+1),700);}
-  }
-  render(G,(now-t0)/1000);requestAnimationFrame(tick);
-}
-let idleTimer=null;
-function wake(){document.body.classList.remove('idle');clearTimeout(idleTimer);idleTimer=setTimeout(()=>document.body.classList.add('idle'),3200);}
-['mousemove','pointerdown','keydown'].forEach(ev=>addEventListener(ev,wake)); wake();
-
-const autoBtn=document.getElementById('autoBtn'), cleanBtn=document.getElementById('cleanBtn'), fsBtn=document.getElementById('fsBtn');
-function toggleAuto(){auto=!auto;autoBtn.classList.toggle('on',auto);autoBtn.textContent=auto?'自动中':'自动 A';if(auto)next();}
-function toggleClean(){document.body.classList.toggle('clean');}
-function toggleFS(){const d=document,el=d.documentElement;if(!d.fullscreenElement)el.requestFullscreen?.();else d.exitFullscreen?.();}
-[autoBtn,cleanBtn,fsBtn].forEach(b=>b.addEventListener('pointerdown',e=>e.stopPropagation()));
-autoBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleAuto();});
-cleanBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleClean();});
-fsBtn.addEventListener('pointerup',e=>{e.stopPropagation();toggleFS();});
-
-addEventListener('keydown',e=>{
-  if(e.target.id==='lesson-back')return;
-
-  const k=e.key;
-  if(['ArrowRight',' ','PageDown','Enter','ArrowDown'].includes(k)){e.preventDefault();next();}
-  else if(['ArrowLeft','PageUp','Backspace','ArrowUp'].includes(k)){e.preventDefault();prev();}
-  else if(k==='Home')go(0); else if(k==='End')go(LAST);
-  else if(k==='f'||k==='F')toggleFS();
-  else if(k==='a'||k==='A')toggleAuto();
-  else if(k==='h'||k==='H')toggleClean();
-});
-let pd=null;
-cv.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY,b:e.button};});
-cv.addEventListener('pointerup',e=>{if(!pd)return;const dx=e.clientX-pd.x,dy=e.clientY-pd.y,b=pd.b;pd=null;
-  if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.2){dx<0?next():prev();return;}
-  if(Math.abs(dx)<14&&Math.abs(dy)<14){if(b===2)prev();else e.shiftKey?prev():next();}});
-cv.addEventListener('contextmenu',e=>{e.preventDefault();prev();});
-
-syncDock(); requestAnimationFrame(tick);
+const SI={};STEPS.forEach((s,i)=>SI[s.id]=i);const LAST=STEPS.length-1;
+const rnd=LE.mulberry(33);const WV=[],DV=[];for(let i=0;i<64;i++){WV.push(rnd());DV.push((rnd()-0.5)*0.5);}
+const ADAPT=[['律所口径',GOLD_HI,'hot'],['合规审查',GREEN,'green'],['英文合同',ICE,'ice']];
+let rUser=null,rDisp=8;
+const fmt=n=>n.toLocaleString('en-US');
+function geo(){const P=LY.port,H=LY.H;
+  if(!P)return{P,cs:46,W:{x:520,y:330},x:{x:330,y:330},plus:{x:1030,y:514},y:{x:1180,y:330},byp:{y:870},data:{x:1300,y:220,w:520},tapeY:940};
+  return{P,cs:46,W:{x:356,y:640},x:{x:356,y:540},plus:{x:540,y:1120},y:{x:356,y:1230},byp:{x:900},data:{x:90,y:1380,w:900},tapeY:H-380};}
+function wcell(g,i){const r=Math.floor(i/8),c=i%8;return{x:g.W.x+c*g.cs,y:g.W.y+r*g.cs};}
+function vecCells(g,o,horiz,a,st,lab){if(a<=0.01)return;for(let k=0;k<8;k++){const x=horiz?o.x+k*g.cs:o.x,y=horiz?o.y:o.y+k*g.cs;block(x+3,y+3,g.cs-6,g.cs-6,{style:st,a,r:5});}
+  if(lab)text(lab,horiz?o.x-24:o.x+g.cs/2,horiz?o.y+g.cs/2:o.y-26,g.P?28:22,IVORY,a,700,horiz?'right':'center');}
+function trap(x0,y0,w0,x1,y1,w1,horiz,col,a,fill){if(a<=0.01)return;ctx.globalAlpha=a;ctx.beginPath();if(horiz){ctx.moveTo(x0,y0-w0/2);ctx.lineTo(x1,y1-w1/2);ctx.lineTo(x1,y1+w1/2);ctx.lineTo(x0,y0+w0/2);}else{ctx.moveTo(x0-w0/2,y0);ctx.lineTo(x1-w1/2,y1);ctx.lineTo(x1+w1/2,y1);ctx.lineTo(x0+w0/2,y0);}
+  ctx.closePath();ctx.fillStyle=fill;ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=2;ctx.stroke();ctx.globalAlpha=1;}
+function render(G,amb,dt){const W=LY.W,H=LY.H,P=LY.port;const g=geo();
+  LE.bg(amb,0,0);
+  LE.title('微调、LoRA 与 RAG / Skill','什么时候该{改模型}，什么时候该{给资料}',LE.easeOut(clamp(amb/1.8)),seg(G,0.05,0.6),{portLines:['微调、LoRA','与 RAG / Skill'],portSize:100});
+  if(G<0.3)return;const fin=1-seg(G,LAST-0.7,LAST);const inA=seg(G,0.3,1)*fin;
+  const ord=seg(G,SI.order-0.8,SI.order-0.3);const mA=inA*(1-ord);
+  const fz=seg(G,SI.lora-0.8,SI.lora-0.3);const bw=seg(G,SI.bwd-0.8,SI.bwd-0.1);const full=seg(G,SI.full-0.8,SI.full-0.2)*(1-fz);const fg=seg(G,SI.forget-0.7,SI.forget-0.1)*(1-fz);
+  // 权重矩阵 W
+  if(mA>0.01){const pulse=bump(G,SI.bwd-0.3,0.5);
+    for(let i=0;i<64;i++){const p=wcell(g,i);const v=clamp(WV[i]+DV[i]*bw*(1-fz));const hole=fg>0.01&&(i*7)%11===0;const st=fz>0.5?'ice':(full>0.3?'hot':'gold');
+      block(p.x+3,p.y+3,g.cs-6,g.cs-6,{style:st,a:mA*(0.35+0.65*v)*(hole?1-0.7*fg:1),r:5});
+      if(full>0.01){const f=0.5+0.5*Math.sin(amb*4+i);glowAdd(p.x+g.cs/2,p.y+g.cs/2,18,0.25*full*f*mA);}}
+    if(pulse>0.01)glowAdd(g.W.x+4*g.cs,g.W.y+4*g.cs,260,0.5*pulse*mA);
+    const wl=fz>0.5?'W（冻结 ❄）':'权重矩阵 W';text(wl,g.W.x+4*g.cs,g.W.y-(P?30:26),P?28:22,fz>0.5?ICE:PALE,mA,700);
+    if(full>0.01){rich(P?'4096 × 4096 = {16,777,216} 个数（图中只画 8 × 8）':'4096 × 4096 = {16,777,216} 个数，全部可训练（图中只画 8 × 8）',P?540:g.W.x+4*g.cs,P?g.W.y+8*g.cs+40:g.W.y+8*g.cs+40,P?28:24,full*mA,{maxW:P?960:0});}
+    if(fg>0.01){rich('通用能力可能被削弱（示意）',P?540:g.W.x+4*g.cs,P?g.W.y+8*g.cs+90:g.W.y+8*g.cs+84,P?28:24,fg*mA,{maxW:P?960:0,hl:RED,color:RED});}
+    // 输入 x、输出 y
+    const ioA=seg(G,SI.fwd-0.8,SI.fwd-0.3)*mA;
+    if(!P){vecCells(g,{x:g.x.x,y:g.x.y},false,ioA,'ice','x');vecCells(g,{x:g.y.x,y:g.y.y},false,ioA,'gold','y');
+      const fl=(amb*0.6)%1;LE.line(g.x.x+g.cs+10,g.W.y+4*g.cs,g.W.x-10,g.W.y+4*g.cs,ICE,2,ioA);LE.arrowHead(g.W.x-10,g.W.y+4*g.cs,0,14,ICE,ioA);
+      LE.line(g.W.x+8*g.cs+10,g.W.y+4*g.cs,g.plus.x-22,g.plus.y,GOLD,2,ioA);LE.line(g.plus.x+22,g.plus.y,g.y.x-10,g.W.y+4*g.cs,GOLD,2,ioA);LE.arrowHead(g.y.x-10,g.W.y+4*g.cs,0,14,GOLD,ioA);}
+    else{vecCells(g,{x:g.x.x,y:g.x.y},true,ioA,'ice','x');vecCells(g,{x:g.y.x,y:g.y.y},true,ioA,'gold','y');
+      LE.line(540,g.x.y+g.cs+6,540,g.W.y-50,ICE,2,ioA);LE.line(540,g.W.y+8*g.cs+6,540,g.plus.y-24,GOLD,2,ioA);LE.line(540,g.plus.y+24,540,g.y.y-6,GOLD,2,ioA);LE.arrowHead(540,g.y.y-6,Math.PI/2,14,GOLD,ioA);}
+    const pA=ioA;ctx.globalAlpha=pA;ctx.beginPath();ctx.arc(g.plus.x,g.plus.y,22,0,7);ctx.fillStyle='rgba(20,14,6,0.95)';ctx.fill();ctx.strokeStyle=GOLD_HI;ctx.lineWidth=2;ctx.stroke();ctx.globalAlpha=1;text('+',g.plus.x,g.plus.y,28,GOLD_HI,pA,700);
+    // 前向光点、反向光点
+    const fw=bump(G,SI.fwd-0.15,0.6),bk=bump(G,SI.bwd-0.2,0.7);for(let k=0;k<5;k++){const t=((amb*0.5+k/5)%1);
+      if(fw>0.01){const p=P?{x:540,y:lerp(g.x.y,g.y.y,t)}:{x:lerp(g.x.x,g.y.x,t),y:g.W.y+4*g.cs};glowAdd(p.x,p.y,22,0.8*fw*mA);}
+      if(bk>0.01){const p=P?{x:540,y:lerp(g.y.y,g.W.y,t)}:{x:lerp(g.y.x,g.W.x,t),y:g.W.y+4*g.cs-30};glowAdd(p.x,p.y,24,0.9*bk*mA,LE.SPR.RED);}}}
+  // 示范数据 / 损失
+  const dA=seg(G,SI.data-0.7,SI.data-0.1)*(1-seg(G,SI.full-0.8,SI.full-0.4))*inA;
+  if(dA>0.01){const D=g.data;const pairs=[['起草律师函','按本所口径：事实 → 依据 → 要求 → 期限'],['审查付款条款','按清单逐条：节点、比例、逾期责任'],['回复客户咨询','先结论，再依据，最后风险提示']];
+    pairs.forEach((p,k)=>{const y=D.y+k*(P?150:130);const e=seg(dA,k*0.15,0.5+k*0.15);card(D.x,y,D.w,P?130:112,{a:e});text('输入：'+p[0],D.x+24,y+(P?36:32),P?24:19,ICE,e,700,'left');rich('理想输出：'+p[1],D.x+24,y+(P?78:68),P?24:19,e,{align:'left',maxW:D.w-48,valign:'top',lh:28});});
+    const ls=seg(G,SI.fwd-0.5,SI.fwd)*(1-seg(G,SI.full-0.8,SI.full-0.4));if(ls>0.01){const y=D.y+3*(P?150:130)+10;card(D.x,y,D.w,P?120:110,{a:ls*inA,stroke:'rgba(240,122,98,0.8)'});text('模型输出：先写要求，再写事实……',D.x+24,y+(P?36:32),P?24:19,IVORY,ls*inA,400,'left');
+      const lv=lerp(0.62,0.21,seg(G,SI.bwd-0.6,SI.bwd));rich(`和理想输出的差距（损失）：{${lv.toFixed(2)}}`+(G>SI.bwd-0.4?' ↓':''),D.x+24,y+(P?80:74),P?26:21,ls*inA,{align:'left',hl:RED});}}
+  // LoRA 旁路
+  const lo=seg(G,SI.lora-0.6,SI.lora-0.1)*mA;
+  const atD=LE.isAt('drag');if(atD&&rUser!=null)rDisp=damp(rDisp,rUser,dt,12);else if(!atD)rDisp=8;
+  const r=Math.max(1,Math.round(rDisp));
+  if(lo>0.01){const wr=lerp(10,150,Math.log2(rDisp)/6),wd=8*g.cs;
+    if(!P){const y=g.byp.y,x0=g.W.x-20,xm=g.W.x+4*g.cs,x1=g.W.x+8*g.cs+20;
+      LE.line(g.x.x+g.cs/2,g.x.y+8*g.cs+6,g.x.x+g.cs/2,y,ICE,2,lo);LE.line(g.x.x+g.cs/2,y,x0,y,ICE,2,lo);
+      trap(x0,y,wd*0.5,xm,y,wr*0.5,true,GOLD_HI,lo,'rgba(255,190,80,0.22)');trap(xm,y,wr*0.5,x1,y,wd*0.5,true,GOLD_HI,lo,'rgba(255,190,80,0.22)');
+      text('A（4096 → r）',(x0+xm)/2,y-wd*0.25-24,22,GOLD_HI,lo,700);text('B（r → 4096）',(xm+x1)/2,y-wd*0.25-24,22,GOLD_HI,lo,700);text(`r = ${r}`,xm,y+wd*0.25+30,26,GOLD_HI,lo,700);
+      LE.line(x1,y,g.plus.x,y,GOLD_HI,2,lo);LE.line(g.plus.x,y,g.plus.x,g.plus.y+22,GOLD_HI,2,lo);LE.arrowHead(g.plus.x,g.plus.y+22,-Math.PI/2,14,GOLD_HI,lo);
+      for(let k=0;k<4;k++){const t=((amb*0.5+k/4)%1);glowAdd(lerp(x0,x1,t),y,20,0.8*lo);}
+      glowText('y = Wx + BAx',g.y.x+g.cs+30,g.plus.y,30,GOLD_HI,lo*seg(G,SI.lora-0.3,SI.lora),700,0.4,'left');}
+    else{const x=g.byp.x,y0=g.W.y-20,ym=g.W.y+4*g.cs,y1=g.W.y+8*g.cs+20;LE.line(540,g.x.y+g.cs+20,x,g.x.y+g.cs+20,ICE,2,lo);LE.line(x,g.x.y+g.cs+20,x,y0,ICE,2,lo);
+      trap(x,y0,wd*0.5,x,ym,wr*0.5,false,GOLD_HI,lo,'rgba(255,190,80,0.22)');trap(x,ym,wr*0.5,x,y1,wd*0.5,false,GOLD_HI,lo,'rgba(255,190,80,0.22)');
+      text('A',x+wd*0.25+30,(y0+ym)/2,28,GOLD_HI,lo,700,'left');text('B',x+wd*0.25+30,(ym+y1)/2,28,GOLD_HI,lo,700,'left');text(`r=${r}`,x-wr*0.25-16,ym,26,GOLD_HI,lo,700,'right');
+      LE.line(x,y1,x,g.plus.y,GOLD_HI,2,lo);LE.line(x,g.plus.y,g.plus.x+22,g.plus.y,GOLD_HI,2,lo);
+      for(let k=0;k<4;k++){const t=((amb*0.5+k/4)%1);glowAdd(x,lerp(y0,y1,t),20,0.8*lo);}
+      glowText('y = Wx + BAx',540,g.y.y+g.cs+50,32,GOLD_HI,lo*seg(G,SI.lora-0.3,SI.lora),700);}
+    // 参数量读数
+    const nA=seg(G,SI.lora-0.2,SI.lora)*(1-seg(G,SI.swap-0.8,SI.swap-0.4));if(nA>0.01){const n=2*4096*r,pct=n/16777216*100;const bx=P?90:1300,by=P?g.data.y:600;
+      card(bx,by,P?900:520,P?250:230,{a:nA*mA});text('这一层要训练的参数',bx+28,by+40,P?24:19,DIM,nA*mA,400,'left');
+      text('全量：16,777,216',bx+28,by+(P?90:84),P?28:22,IVORY,nA*mA,700,'left');glowText(`LoRA：2 × 4096 × ${r} = ${fmt(n)}`,bx+28,by+(P?140:128),P?30:24,GOLD_HI,nA*mA,700,0.3,'left');
+      text(`约为全量的 ${pct<1?pct.toFixed(2):pct.toFixed(1)}%`,bx+28,by+(P?190:174),P?28:22,GREEN,nA*mA,700,'left');}
+    if(atD){const t=dragTrack();ctx.globalAlpha=mA;LE.line(t.x0,t.y,t.x1,t.y,'rgba(244,237,223,0.3)',4,1);[1,2,4,8,16,32,64].forEach(v=>{const x=lerp(t.x0,t.x1,Math.log2(v)/6);text(String(v),x,t.y+(P?40:32),P?24:18,v===r?GOLD_HI:DIM,mA,700);});
+      const kx=lerp(t.x0,t.x1,Math.log2(rDisp)/6);ctx.beginPath();ctx.arc(kx,t.y,14,0,7);ctx.fillStyle=GOLD_HI;ctx.fill();ctx.globalAlpha=1;glowAdd(kx,t.y,34,0.8);if(rUser==null)LE.dragHint(kx,t.y,'拖动 r',amb,1,{dy:-44});}}
+  // 热插拔
+  const sw=seg(G,SI.swap-0.7,SI.swap-0.1)*(1-seg(G,SI.limit-0.8,SI.limit-0.4))*mA;
+  if(sw>0.01){const cyc=(amb*0.35)%3;const cur=Math.floor(cyc),f=cyc-cur;ADAPT.forEach((a,k)=>{const slot=P?{x:90+k*310,y:g.data.y+30}:{x:1300,y:560+k*120};const isCur=k===cur;const pin=isCur?bump(f,0.5,0.5):0;
+      const w=P?280:480,h=P?90:96;block(slot.x+(P?0:-pin*60),slot.y-(P?pin*40:0),w,h,{style:a[2],a:sw*(isCur?1:0.55),lw:2});text(a[0]+' 旁路',slot.x+(P?0:-pin*60)+w/2,slot.y-(P?pin*40:0)+h/2,P?28:24,a[1],sw,700);});
+    rich('同一个基座，挂上哪条旁路，就是哪种专长（示意）',P?540:1540,P?g.data.y+200:960,P?26:22,sw,{maxW:P?960:0});}
+  // 边界：新规
+  const lm=seg(G,SI.limit-0.7,SI.limit-0.1)*(1-seg(G,SI.combo-0.8,SI.combo-0.4))*mA;
+  if(lm>0.01){const bx=P?90:1300,by=P?g.data.y:560;card(bx,by,P?900:520,P?300:330,{a:lm});text('适合微调',bx+28,by+44,P?28:22,GREEN,lm,700,'left');text('固定的写法、格式、语气、术语习惯',bx+28,by+(P?90:84),P?24:20,IVORY,lm,400,'left');
+    text('不适合靠微调记',bx+28,by+(P?160:154),P?28:22,RED,lm,700,'left');text('新出的法规、本案的合同与证据',bx+28,by+(P?206:194),P?24:20,IVORY,lm,400,'left');text('（会变、要能溯源 → 放上纸带）',bx+28,by+(P?250:234),P?22:18,DIM,lm,400,'left');}
+  // 组合：纸带
+  const cb=seg(G,SI.combo-0.7,SI.combo-0.1)*(1-ord)*fin;
+  if(cb>0.01){const y=g.tapeY;tape(P?60:200,P?1020:1720,y,P?120:110,{a:cb});const bl=P?[['Skill 流程','gold'],['检索资料','hot'],['提问','ice']]:[['System','gold'],['Skill：审查流程','gold'],['检索：最新规定 + 本案合同','hot'],['用户提问','ice']];
+    const x0=P?70:210,L=(P?940:1500);let x=x0;const ws=P?[300,360,260]:[220,340,560,360];bl.forEach(([t,st],k)=>{const w=ws[k]*L/ws.reduce((a,b)=>a+b,0)-12;block(x,y-(P?44:40),w,P?88:80,{style:st,a:cb*seg(cb,k*0.12,0.5+k*0.12)});text(t,x+w/2,y,P?26:22,IVORY,cb,700);x+=w+12;});
+    text('上下文（纸带）',P?540:960,y+(P?90:84),P?24:20,DIM,cb);text('模型（基座 + 可选 LoRA 旁路）',P?540:g.W.x+4*g.cs,P?g.W.y-90:g.W.y-64,P?26:20,GOLD_HI,cb,700);}
+  // 选型顺序
+  if(ord>0.01){const st=[['① 提示词 / Skill','先把要求、流程、模板写清楚','gold'],['② 检索（RAG / 搜索 / Grep）','把最新资料、本案材料放上纸带','hot'],['③ 微调 / LoRA','仍不够，且有大量高质量示范数据时再做','ice']];
+    st.forEach((s,k)=>{const e=seg(ord,k*0.15,0.5+k*0.15)*fin;const x=P?90:300+k*200,y=P?H*0.3+k*300:300+k*170,w=P?900:1000;card(x,y,w,P?220:140,{a:e,stroke:k===0?GOLD_HI:undefined});
+      glowText(s[0],x+30,y+(P?60:48),P?34:30,k===2?ICE:GOLD_HI,e,700,0.3,'left');rich(s[1],x+30,y+(P?130:98),P?26:22,e,{align:'left',maxW:w-60,valign:'top'});});}
+  LE.finale(['{微调}：用示范数据算损失、反向改权重，改的是{写法与习惯}','{LoRA}：冻结 W，只训练细旁路 BA，参数量小、可{热插拔}','会变的事实交给{检索}放上纸带，流程交给 {Skill}；最后才考虑微调'],seg(G,LAST-0.8,LAST),'4096 × 4096 与 r = 8 时 65,536（约 0.39%）为算术示例；实际 LoRA 还有缩放系数等细节。示范数据、损失值为示意。');}
+function dragTrack(){const g=geo();return g.P?{x0:150,x1:930,y:g.data.y+330}:{x0:1320,x1:1800,y:900};}
+const drags=[{step:'drag',cursor:'ew-resize',hit:pt=>{const t=dragTrack();return pt.x>t.x0-50&&pt.x<t.x1+50&&Math.abs(pt.y-t.y)<60;},move:pt=>{const t=dragTrack();rUser=Math.pow(2,clamp((pt.x-t.x0)/(t.x1-t.x0))*6);}}];
+LE.run({steps:STEPS,scenes:SCENES,render,drags,onGo:()=>{rUser=null;},onSeek:(g,st)=>{rUser=st.r??null;if(rUser!=null)rDisp=rUser;}});
 })();
+
 </script></body></html>
