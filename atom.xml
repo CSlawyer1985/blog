@@ -4,9 +4,117 @@
   <link rel="alternate" type="text/html" hreflang="zh" href="https://chenshi.ai/"/>
   <link rel="self" type="application/atom+xml" href="https://chenshi.ai/atom.xml"/>
   <id>https://chenshi.ai/</id>
-  <updated>2026-11-06T07:23:52+08:00</updated>
+  <updated>2026-11-25T22:42:38+08:00</updated>
   <author><name>陈石</name></author>
   <subtitle>商事律师 × AI Builder — 个人博客</subtitle>
+  <entry>
+    <title>大模型是电力，Harness 是配电网：如何给 AI 装上“海马体”与“丘脑”？</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-11-24-大模型是电力-Harness-是配电网-如何给-AI-装上-海马体-与-丘脑/"/>
+    <id>https://chenshi.ai/articles/2026-11-24-大模型是电力-Harness-是配电网-如何给-AI-装上-海马体-与-丘脑/</id>
+    <published>2026-11-24T00:00:00+08:00</published>
+    <updated>2026-11-24T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>文陈石在上一篇文章中，我们聊到了OpenAI联合创始人AndrejKarpathy泼的那盆“十年冷水”：为什么99%的AIAgent都在翻车？因为大家把“水面上的前端Demo”，误当成了“生产级系统”。</summary>
+  </entry>
+  <entry>
+    <title>你以为在跟 AI 聊天，其实你在指挥一条流水线——深度拆解“你和 AI 是如何互动的”</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-11-24-你以为在跟-AI-聊天-其实你在指挥一条流水线-深度拆解-你和-AI-是如何互动的/"/>
+    <id>https://chenshi.ai/articles/2026-11-24-你以为在跟-AI-聊天-其实你在指挥一条流水线-深度拆解-你和-AI-是如何互动的/</id>
+    <published>2026-11-24T00:00:00+08:00</published>
+    <updated>2026-11-24T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>文陈石在前面的两篇文章里，我们探讨了AndrejKarpathy泼出的那盆“十年冷水”，也拆解了大模型与配电网（Harness）的底层架构。很多同行看完后，跑来问我一个最直接、也最现实的问题：“陈律师，道理我都听懂了。但我明天一早坐在办公室电脑前，面对真实的合同和案卷，到底该怎么敲键盘？</summary>
+  </entry>
+  <entry>
+    <title>为什么 99% 的 AI Agent 都在翻车？——从 Karpathy 的“十年冷水”，聊聊法律人为何需要成为“双语者”</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-11-24-为什么-99-的-AI-Agent-都在翻车-从-Karpathy-的-十年冷水-聊聊法律人为何需要成为-双语者/"/>
+    <id>https://chenshi.ai/articles/2026-11-24-为什么-99-的-AI-Agent-都在翻车-从-Karpathy-的-十年冷水-聊聊法律人为何需要成为-双语者/</id>
+    <published>2026-11-24T00:00:00+08:00</published>
+    <updated>2026-11-24T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>文陈石几天前，OpenAI联合创始人AndrejKarpathy在一场黑客松上的5分钟演讲视频，在海外技术圈掀起了不小的震动。他在台上毫无保留地复盘了OpenAI当年走过的弯路：在早期的WorldofBits项目中，团队试图用强化学习（RL）训练智能体去点击鼠标、敲击键盘，在网页上完成订机票和点外卖</summary>
+  </entry>
+  <entry>
+    <title>Claude 都要攻克黎曼猜想了，法律圈还在争“用 AI 写论文算不算玷污”？</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-11-23-Claude-都要攻克黎曼猜想了-法律圈还在争-用-AI-写论文算不算玷污/"/>
+    <id>https://chenshi.ai/articles/2026-11-23-Claude-都要攻克黎曼猜想了-法律圈还在争-用-AI-写论文算不算玷污/</id>
+    <published>2026-11-23T00:00:00+08:00</published>
+    <updated>2026-11-23T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>法律圈的“手搓洁癖”：你捍卫的不是专业尊严，而是正在贬值的旧护城河最近法律圈里，有个话题吵得挺凶：法律人写论文、写文书，到底能不能用AI？一派人的态度非常坚决，甚至带着某种“原教旨主义”的洁癖：论文必须自己一字一句“手搓”，文书必须亲力亲为。</summary>
+  </entry>
+  <entry>
+    <title>在法律的“诗云”里，说出那个“我不要”</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-11-22-在法律的-诗云-里-说出那个-我不要/"/>
+    <id>https://chenshi.ai/articles/2026-11-22-在法律的-诗云-里-说出那个-我不要/</id>
+    <published>2026-11-22T00:00:00+08:00</published>
+    <updated>2026-11-22T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>一个商事律师这一年多的人机协同体感我前几天看到知名博主卡兹克聊他做内容的一段分享，非常有意思。他说他自己的工作流分三趴：找事件、找落点、搞执行。第一趴找事件，他搭了个开源引擎叫AIHOT，每天抓几千条行业动态打分筛选，几乎全交给AI；第三趴执行，他也用模型一次性生成多个版本。</summary>
+  </entry>
+  <entry>
+    <title>纸带接龙隐喻：法律人理解智能体与上下文管理的底层逻辑</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-11-20-纸带接龙隐喻-法律人理解智能体与上下文管理的底层逻辑/"/>
+    <id>https://chenshi.ai/articles/2026-11-20-纸带接龙隐喻-法律人理解智能体与上下文管理的底层逻辑/</id>
+    <published>2026-11-20T00:00:00+08:00</published>
+    <updated>2026-11-20T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>很多同行在接触AI智能体（Agent）的时候，容易陷入两个极端的认知：一种是把AI神化，觉得它是一个无所不能的“数字实习生”，只要你给一个大致的方向，它就能在后台心领神会、自动把复杂的法律案卷和商业诉求消化干净；</summary>
+  </entry>
+  <entry>
+    <title>律所AI培训最大的误区：为什么该先训合伙人，而不是青年律师？</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-11-20-律所AI培训最大的误区-为什么该先训合伙人-而不是青年律师/"/>
+    <id>https://chenshi.ai/articles/2026-11-20-律所AI培训最大的误区-为什么该先训合伙人-而不是青年律师/</id>
+    <published>2026-11-20T00:00:00+08:00</published>
+    <updated>2026-11-20T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>这大半年里，几乎每个城市的律协和律所都在密集组织各类AI技能培训。但如果你去过现场，大概率会看到一个高度一致的景象：台上讲师演示得热火朝天，台下坐着的清一色是入职一两年的青年律师、助理或实习生；后排偶尔坐着几位律所主任或高级合伙人，要么全程低头回微信，要么双手抱胸，神情淡定地看着台前的一切。</summary>
+  </entry>
+  <entry>
+    <title>一个开庭悬浮球的“生死录”：一位极客律师的自动化工具进化史</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-11-20-一个开庭悬浮球的-生死录-一位极客律师的自动化工具进化史/"/>
+    <id>https://chenshi.ai/articles/2026-11-20-一个开庭悬浮球的-生死录-一位极客律师的自动化工具进化史/</id>
+    <published>2026-11-20T00:00:00+08:00</published>
+    <updated>2026-11-20T00:00:00+08:00</updated>
+    <category term="法律实务"/>
+    <summary>在我的电脑桌面上，曾经长期常驻着一个半透明的小悬浮球。如果你平时做商事诉讼，你一定懂这种折磨：法院送达传票、应诉通知书、举证期限通知的时间点总是猝不及防。微信里收一份、邮箱里躺一份、电子送达平台发来一条短信附带一个提取码。</summary>
+  </entry>
+  <entry>
+    <title>把文科律师“骗”下场：四明山AI夜校的逆向教学实验</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-11-20-把文科律师-骗-下场-四明山AI夜校的逆向教学实验/"/>
+    <id>https://chenshi.ai/articles/2026-11-20-把文科律师-骗-下场-四明山AI夜校的逆向教学实验/</id>
+    <published>2026-11-20T00:00:00+08:00</published>
+    <updated>2026-11-20T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>在过去这一年多里，我受邀在很多地方做过关于法律AI的主题分享。通常的现场氛围都非常热烈：台上的讲师投屏演示，三秒钟自动搭出一个带动画效果的个人网站，五秒钟一键生成一份格式漂亮的答辩状；台下的同行掌声雷动，纷纷举起手机拍照，眼里闪烁着对技术革命的光芒。但我心里很清楚，这种热烈大概率是虚幻的。</summary>
+  </entry>
+  <entry>
+    <title>别被“周延”骗了：法律AI最致命的暗坑，在你看不到的事实层</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-11-20-别被-周延-骗了-法律AI最致命的暗坑-在你看不到的事实层/"/>
+    <id>https://chenshi.ai/articles/2026-11-20-别被-周延-骗了-法律AI最致命的暗坑-在你看不到的事实层/</id>
+    <published>2026-11-20T00:00:00+08:00</published>
+    <updated>2026-11-20T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>如果你经常让大模型或者智能体辅助你处理诉讼案件，你大概率经历过这种兴奋时刻：把几十页甚至上百页的案卷材料一股脑拖进对话框，敲下一句“请全面梳理本案事实并出具代理方案”。几分钟后，屏幕上刷出一份结构工整、条理清晰、法言法语极为标准的分析报告。</summary>
+  </entry>
+  <entry>
+    <title>为什么 AI 写的起诉状动辄 30 页？谈法律 Agent 的“论证权重困境”</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-11-16-为什么-AI-写的起诉状动辄-30-页-谈法律-Agent-的-论证权重困境/"/>
+    <id>https://chenshi.ai/articles/2026-11-16-为什么-AI-写的起诉状动辄-30-页-谈法律-Agent-的-论证权重困境/</id>
+    <published>2026-11-16T00:00:00+08:00</published>
+    <updated>2026-11-16T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>核心观点：大模型越来越擅长把法律问题论证完整，却天然不懂取舍。当生成论证的边际成本趋于零，真正稀缺的能力不再是写得更多，而是克制与权重分配。不久前我参加了一次青年律师的AI训练营。现场设置了一个文书竞赛题目：让参训律师借助AI工具，起草一份股东知情权纠纷的民事起诉状。</summary>
+  </entry>
+  <entry>
+    <title>用 AI 的四个阶段：为什么最后卡住你的，从来不是技术？</title>
+    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-11-14-用-AI-的四个阶段-为什么最后卡住你的-从来不是技术/"/>
+    <id>https://chenshi.ai/articles/2026-11-14-用-AI-的四个阶段-为什么最后卡住你的-从来不是技术/</id>
+    <published>2026-11-14T00:00:00+08:00</published>
+    <updated>2026-11-14T00:00:00+08:00</updated>
+    <category term="AI+法律"/>
+    <summary>核心观点：当大模型的使用门槛被彻底抹平，决定交付上限的，从来不是你囤了多少提示词，而是你自身的专业阅历与判断力。最近博主薛中南七分享过一个观点，他把人用AI的过程分成了四个阶段：赋魅期、幻觉期、筛选期、看山期。</summary>
+  </entry>
   <entry>
     <title>为什么“等 AI 成熟了再抄后路”，是律师最大的认知陷阱？</title>
     <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-11-05-为什么-等-AI-成熟了再抄后路-是律师最大的认知陷阱/"/>
@@ -78,113 +186,5 @@
     <updated>2026-11-02T00:00:00+08:00</updated>
     <category term="AI+法律"/>
     <summary>最近跟几位同行交流，或者在群里看大家讨论大模型，聊来聊去，大家最纠结的痛点其实都差不多。最集中的吐槽往往就一句话：这玩意儿给的结论太不可靠了。这种担忧绝不是凭空臆想。法律数据学者DamienCharlotin专门建立了一个追踪全球司法裁判中AI幻觉案例的数据库（AIHallucinationCase</summary>
-  </entry>
-  <entry>
-    <title>我把个人主页做成了 Mac 桌面，设计 Skill 也开源了</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-31-我把个人主页做成了-Mac-桌面-设计-Skill-也开源了/"/>
-    <id>https://chenshi.ai/articles/2026-10-31-我把个人主页做成了-Mac-桌面-设计-Skill-也开源了/</id>
-    <published>2026-10-31T00:00:00+08:00</published>
-    <updated>2026-10-31T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>我的个人网站，多了一个桌面版。文章在备忘录里读，作品收进文件夹，图片可以放进相簿。窗口能拖动、缩放、最小化，收进Dock以后，再点一下就能回来。陈石个人主页的桌面版：Sonoma壁纸、备忘录、作品文件夹和Dock可以直接打开体验：httpschenshi.aidesktop这次我把制作它用到的方法也</summary>
-  </entry>
-  <entry>
-    <title>拆开元典脱敏：从一份1.69GB安装包，看本地脱敏系统怎样工作</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-30-拆开元典脱敏-从一份1-69GB安装包-看本地脱敏系统怎样工作/"/>
-    <id>https://chenshi.ai/articles/2026-10-30-拆开元典脱敏-从一份1-69GB安装包-看本地脱敏系统怎样工作/</id>
-    <published>2026-10-30T00:00:00+08:00</published>
-    <updated>2026-10-30T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>第三期四明山法师AI夜校讲到资料脱敏时，我把常见办法拆成了四类：正则规则、词典匹配、专用识别模型，以及大语言模型。课上还留了一个设想：能不能让本地模型先提炼词典，再让脚本处理整包材料？最近，我让AI协助拆解了元典脱敏的安装包，又在本机跑了一组虚构文本。这个具体产品，刚好可以把课上那些概念接起来。</summary>
-  </entry>
-  <entry>
-    <title>AI 的本事，是怎么记到你自己账上的</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-26-AI-的本事-是怎么记到你自己账上的/"/>
-    <id>https://chenshi.ai/articles/2026-10-26-AI-的本事-是怎么记到你自己账上的/</id>
-    <published>2026-10-26T00:00:00+08:00</published>
-    <updated>2026-10-26T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>先问一个不太好回答的问题：过去半年，你有没有觉得“我越来越强了”？产出快了，文书漂亮了，什么领域的活都敢接了。这种变强的感觉是真实的。但我想请你把一件事和它分开：强的到底是你，还是你工具箱里那个东西？心理学里有个很稳定的发现，叫自利性归因：人天然把成功记在自己的能力账上。</summary>
-  </entry>
-  <entry>
-    <title>律师行业迟早要办一场“手搓文书大赛”</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-26-律师行业迟早要办一场-手搓文书大赛/"/>
-    <id>https://chenshi.ai/articles/2026-10-26-律师行业迟早要办一场-手搓文书大赛/</id>
-    <published>2026-10-26T00:00:00+08:00</published>
-    <updated>2026-10-26T00:00:00+08:00</updated>
-    <category term="行业观察"/>
-    <summary>2009年2月25日，土耳其航空1951号航班在阿姆斯特丹进近时坠地，9人遇难。事故链条的起点小得离谱：左侧无线电高度表显示了一个错误的高度，零下8英尺，自动油门据此把收油门当成降落动作，收到了慢车。从失速警告响起，到机组把推力杆推到底，过了9秒。</summary>
-  </entry>
-  <entry>
-    <title>AI 为什么宁肯编，也不说“不知道”</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-26-AI-为什么宁肯编-也不说-不知道/"/>
-    <id>https://chenshi.ai/articles/2026-10-26-AI-为什么宁肯编-也不说-不知道/</id>
-    <published>2026-10-26T00:00:00+08:00</published>
-    <updated>2026-10-26T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>我之前写过一篇谈AI幻觉的文章，核心是机制那一层：大模型生成一条正确的法条，和生成一条编造的法条，用的是同一套概率计算，模型内部没有一个“这句是真的”开关。所以幻觉消不掉，只能靠流程管住。今天想往深走一层。就算承认一切都是概率，还有一个问题没回答：为什么它总是猜，而不肯说“我不知道”？</summary>
-  </entry>
-  <entry>
-    <title>审批按钮，不等于可审查的推理</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-26-审批按钮-不等于可审查的推理/"/>
-    <id>https://chenshi.ai/articles/2026-10-26-审批按钮-不等于可审查的推理/</id>
-    <published>2026-10-26T00:00:00+08:00</published>
-    <updated>2026-10-26T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>过去两个多月，三家厂商接连发布了同一类产品。八月中旬，xAI的GrokBot；九月初，Meta的Muse；九月二十九日，OpenAI的dots。官方话术几乎一个模子：“把活交给它，它给你成果。”更早的Manus连口号都省了：LeaveittoManus，把它交给Manus。</summary>
-  </entry>
-  <entry>
-    <title>AI 把复核变成了最贵的环节</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-26-AI-把复核变成了最贵的环节/"/>
-    <id>https://chenshi.ai/articles/2026-10-26-AI-把复核变成了最贵的环节/</id>
-    <published>2026-10-26T00:00:00+08:00</published>
-    <updated>2026-10-26T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>“AI时代的组织变革”系列之十六先算一笔账，很简单。AI让一份文书初稿的边际成本趋近于零。成本趋零，产出就涨。这条不用论证，看看你自己今年的办案量结构就知道。但另一头，人的复核带宽没有变：一天还是那些小时，能逐字读掉的文书还是那么多。一个在涨，一个没涨，差距只能用一种方式消化：复核从逐件退化为抽检。</summary>
-  </entry>
-  <entry>
-    <title>复核是怎么悄悄消失的</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-26-复核是怎么悄悄消失的/"/>
-    <id>https://chenshi.ai/articles/2026-10-26-复核是怎么悄悄消失的/</id>
-    <published>2026-10-26T00:00:00+08:00</published>
-    <updated>2026-10-26T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>刚开始用AI的那阵子，你战战兢兢，每份产出逐字核。用了一个月，没出过错，开始抽着核。三个月，觉得它挺靠谱，扫一眼。半年之后，你不核了。我自己用AI一年多，这个过程完整走过一遍。没有哪一天我郑重决定“从今天起不检查了”。它就是慢慢发生的，等你察觉，复核已经没了。如果你的经历也差不多，先别急着自责。</summary>
-  </entry>
-  <entry>
-    <title>AI 编的判例进了法庭，中国的第一张罚单还没开出</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-26-AI-编的判例进了法庭-中国的第一张罚单还没开出/"/>
-    <id>https://chenshi.ai/articles/2026-10-26-AI-编的判例进了法庭-中国的第一张罚单还没开出/</id>
-    <published>2026-10-26T00:00:00+08:00</published>
-    <updated>2026-10-26T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>先说结论。律师把AI编造的判例、法条提交给法庭，保证其真实、合法的义务一分不会少。这个义务写在现行的《律师执业管理办法》里，跟用什么工具没有关系。过去两年多，全球已经有一串律师因为AI编造的引注被罚款，甚至被赶出法庭。</summary>
-  </entry>
-  <entry>
-    <title>AI 拿走的是练习题，不是判断力</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-26-AI-拿走的是练习题-不是判断力/"/>
-    <id>https://chenshi.ai/articles/2026-10-26-AI-拿走的是练习题-不是判断力/</id>
-    <published>2026-10-26T00:00:00+08:00</published>
-    <updated>2026-10-26T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>去年八月，《柳叶刀·胃肠病学》刊了一项研究，主角不是律师，是肠镜医生。波兰四个中心，一千四百四十三例肠镜检查，做前后对照：引入AI辅助之前，医生在没有AI的状态下自己操作，腺瘤检出率百分之二十八点四；引入AI之后，再让他们自己操作，掉到百分之二十二点四。掉了六个百分点。</summary>
-  </entry>
-  <entry>
-    <title>Skill 竞赛比的不是技术，是业务能力</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-22-Skill-竞赛比的不是技术-是业务能力/"/>
-    <id>https://chenshi.ai/articles/2026-10-22-Skill-竞赛比的不是技术-是业务能力/</id>
-    <published>2026-10-22T00:00:00+08:00</published>
-    <updated>2026-10-22T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>先看三组数字。2026年5月，iCourt第二届全国法律人AI应用大赛总决赛在北京开赛，410支队伍、超过1500名法律人报名。决赛现场，15家律所、10家企业、10家高校同台，直播间累计50万人观看。</summary>
-  </entry>
-  <entry>
-    <title>红旗法案：当新技术的监管比技术本身跑得更慢</title>
-    <link rel="alternate" type="text/html" href="https://chenshi.ai/articles/2026-10-21-红旗法案-当新技术的监管比技术本身跑得更慢/"/>
-    <id>https://chenshi.ai/articles/2026-10-21-红旗法案-当新技术的监管比技术本身跑得更慢/</id>
-    <published>2026-10-21T00:00:00+08:00</published>
-    <updated>2026-10-21T00:00:00+08:00</updated>
-    <category term="AI+法律"/>
-    <summary>我讲AI讲了这些年，有一个话题每次都会被问到：会不会管得太严，把产业压垮了。十月十六日我在宁波东方理工大学讲课时，把英国一百六十年前的一部法律搬了出来，作为这个问题的参照。演讲结束有位企业家问我：现在AI出的东西，条款会越写越多，会不会有一天也变成这样一部法律。那天我讲完就走了，没有答好。</summary>
   </entry>
 </feed>
