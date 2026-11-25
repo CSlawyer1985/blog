@@ -1,250 +1,400 @@
 <!doctype html>
-<!--
-视觉表达方案
-内容类型 A（概念解释），面向希望理解 AI 原理与 Agent 的学习者。
-以分层目录卡片进入独立推演。L3，原生 HTML、CSS 和 JavaScript 提供分类筛选。
-composition:
-  pattern_family: modular-grid
-  primitive: stack + auto-grid
-  reading_path: 总纲、四组主题、终章
-  dominant_axis: vertical
-  focal_point: 系列总纲
-  semantic_reason: 每组课件共享主题，单份课件可独立打开。
-  responsive_strategy: column-drop
-  source_refs: [用户原有教学目录]
-沿用黑金配色与分组卡片。颜色辅助识别，层级由标题和分组表达。
-不引入框架或持续动画。键盘可操作链接与筛选按钮，手机版降至单栏。
--->
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#100e0b">
-  <meta name="description" content="18 个交互课件，从 AI 的数学基础和模型工作原理，到上下文管理与 Agent 工程。">
-  <link rel="canonical" href="https://chenshi.ai/learn/">
-  <link rel="stylesheet" href="catalog.css">
-  <title>AI 底层原理与 Agent 工程图谱 · 陈石</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#070605">
+<meta name="description" content="18 个交互课件，从 AI 的数学基础和模型工作原理，到上下文管理与 Agent 工程。">
+<link rel="canonical" href="https://chenshi.ai/learn/">
+<link rel="preload" href="assets/fonts/hcat-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/hcat-400.woff2" as="font" type="font/woff2" crossorigin>
+<title>AI 底层原理与 Agent 工程图谱 · 陈石</title>
+<script>document.documentElement.classList.add('js')</script>
+<style>
+@font-face{font-family:'HCat';font-weight:400;font-display:swap;src:url(assets/fonts/hcat-400.woff2) format('woff2')}
+@font-face{font-family:'HCat';font-weight:700;font-display:swap;src:url(assets/fonts/hcat-700.woff2) format('woff2')}
+:root{--bg:#070605;--ink:#F4EDDF;--dim:rgba(244,237,223,.62);--dim2:rgba(244,237,223,.4);--gold:#E2AA42;--hi:#FFD062;--ice:#8CC8FF;--grn:#5BD6A0;--pur:#C3A0FF;--red:#F07A62;--line:rgba(226,170,66,.22);
+  --serif:'HCat','Songti SC','Noto Serif SC','Source Han Serif SC',serif;--w:1240px;--pad:clamp(20px,4vw,56px)}
+*{box-sizing:border-box}
+html{background:var(--bg);color:var(--ink);scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--serif);line-height:1.6;overflow-x:hidden}
+a{color:inherit}
+::selection{background:rgba(255,208,98,.3)}
+:focus-visible{outline:2px solid var(--hi);outline-offset:3px;border-radius:6px}
+.skip{position:absolute;left:-999px;top:8px;background:#17130e;color:var(--hi);padding:8px 12px;z-index:50}.skip:focus{left:12px}
+/* ---------- 顶栏 ---------- */
+.top{position:fixed;inset:0 0 auto 0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px var(--pad);padding-top:max(12px,env(safe-area-inset-top));transition:background .35s,border-color .35s,backdrop-filter .35s;border-bottom:1px solid transparent}
+.top.solid{background:rgba(7,6,5,.78);-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);border-bottom-color:rgba(226,170,66,.14)}
+.brand{display:flex;align-items:baseline;gap:10px;text-decoration:none;white-space:nowrap}
+.brand b{font-size:19px;letter-spacing:.02em;background:linear-gradient(180deg,#FFE7A8,#E2AA42);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand span{font-size:13px;color:var(--dim)}
+.top nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}.top nav::-webkit-scrollbar{display:none}
+.top nav a{flex:none;text-decoration:none;font-size:13px;color:var(--dim);padding:6px 11px;border-radius:999px;border:1px solid transparent;transition:color .2s,border-color .2s,background .2s}
+.top nav a b{font-weight:400;color:var(--dim2);margin-right:5px}
+.top nav a:hover{color:var(--ink);border-color:var(--line)}
+.top nav a.on{color:var(--hi);border-color:rgba(255,208,98,.45);background:rgba(255,208,98,.07)}
+.top nav a.on b{color:var(--gold)}
+.blog{flex:none;font-size:13px;color:var(--dim);text-decoration:none;padding:6px 12px;border:1px solid var(--line);border-radius:999px}.blog:hover{color:var(--hi);border-color:var(--gold)}
+/* ---------- Hero ---------- */
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;isolation:isolate;
+  background:radial-gradient(1200px 700px at 72% 62%,rgba(226,150,40,.13),transparent 60%),radial-gradient(900px 600px at 15% 20%,rgba(255,208,98,.05),transparent 60%),var(--bg)}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:180px;background:linear-gradient(transparent,var(--bg));z-index:-1;pointer-events:none}
+.hin{width:min(var(--w),100%);margin:0 auto;padding:100px var(--pad) 270px}
+.eyebrow{display:inline-flex;align-items:center;gap:12px;font-size:15px;color:var(--dim);letter-spacing:.06em}
+.eyebrow i{width:36px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+.eyebrow b{font-size:18px;letter-spacing:.03em;background:linear-gradient(180deg,#FFE7A8,#E2AA42);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1{margin:18px 0 0;font-weight:700;font-size:clamp(40px,6.4vw,92px);line-height:1.12;letter-spacing:.01em;max-width:11.5em}
+h1 .g{background:linear-gradient(180deg,#FFF1C9 0%,#FFD062 45%,#C98A26 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 28px rgba(255,190,80,.25))}
+.lead{margin:22px 0 0;font-size:clamp(16px,1.5vw,20px);color:var(--dim);max-width:36em;text-wrap:pretty}
+.stats{display:flex;flex-wrap:wrap;gap:10px 28px;margin:26px 0 0;padding:0;list-style:none}
+.stats li{font-size:14px;color:var(--dim2)}.stats b{font-size:26px;color:var(--ink);margin-right:6px;font-weight:700}
+.cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px}
+.btn{position:relative;display:inline-flex;align-items:center;gap:12px;min-height:52px;padding:0 26px;border-radius:999px;text-decoration:none;font-size:17px;transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s,background .25s,border-color .25s}
+.btn.pri{color:#1b1206;font-weight:700;background:linear-gradient(180deg,#FFE19A,#E2AA42);box-shadow:0 10px 40px -10px rgba(255,190,80,.6),inset 0 1px 0 rgba(255,255,255,.5)}
+.btn.pri:hover{transform:translateY(-2px);box-shadow:0 16px 50px -10px rgba(255,190,80,.75),inset 0 1px 0 rgba(255,255,255,.5)}
+.btn.pri small{font-weight:400;font-size:13px;opacity:.75}
+.btn.sec{color:var(--ink);border:1px solid rgba(244,237,223,.22);background:rgba(244,237,223,.03)}.btn.sec:hover{border-color:var(--gold);color:var(--hi)}
+.btn b{transition:transform .25s}.btn:hover b{transform:translateX(4px)}
+.scrollcue{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);font-size:12px;color:var(--dim2);letter-spacing:.2em;display:flex;flex-direction:column;align-items:center;gap:8px}
+.scrollcue i{width:1px;height:34px;background:linear-gradient(var(--gold),transparent);animation:cue 2.2s ease-in-out infinite}
+@keyframes cue{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+/* ---------- 学习路径 ---------- */
+main{position:relative;width:min(var(--w),100%);margin:0 auto;padding:40px var(--pad) 40px}
+.rail{position:absolute;left:calc(var(--pad) + 9px);top:40px;bottom:120px;width:2px;background:linear-gradient(var(--line),var(--line));border-radius:2px}
+.rail i{position:absolute;inset:0 0 auto 0;height:var(--p,0%);background:linear-gradient(180deg,rgba(255,208,98,.2),var(--hi));box-shadow:0 0 12px rgba(255,208,98,.6);border-radius:2px}
+.stage{position:relative;padding:56px 0 40px 56px;scroll-margin-top:70px}
+.node{position:absolute;left:0;top:64px;width:20px;height:20px;border-radius:50%;border:2px solid rgba(226,170,66,.5);background:var(--bg);display:grid;place-items:center;transition:border-color .4s,box-shadow .4s}
+.node span{width:8px;height:8px;border-radius:50%;background:rgba(226,170,66,.5);transition:background .4s,transform .4s}
+.stage.on .node{border-color:var(--hi);box-shadow:0 0 0 6px rgba(255,208,98,.08),0 0 22px rgba(255,208,98,.5)}.stage.on .node span{background:var(--hi);transform:scale(1.15)}
+.sh .tag{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--gold);letter-spacing:.12em}
+.sh .tag span{color:var(--dim2);letter-spacing:.04em;font-size:13px}
+.sh h2{margin:8px 0 0;font-size:clamp(28px,3.2vw,44px);line-height:1.2;font-weight:700}
+.sh p{margin:8px 0 0;color:var(--dim);font-size:16px}
+.grid{display:grid;gap:18px;margin-top:28px;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
+@media (min-width:1000px){.grid.g4,.grid.g2{grid-template-columns:repeat(2,1fr)}}
+.grid.g1{grid-template-columns:1fr}
+/* ---------- 课件卡片 ---------- */
+.card{--mx:50%;--my:0%;position:relative;display:flex;flex-direction:column;text-decoration:none;border-radius:16px;overflow:hidden;
+  background:linear-gradient(180deg,rgba(40,31,16,.72),rgba(15,12,8,.9));border:1px solid rgba(226,170,66,.16);
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 18px 40px -24px rgba(0,0,0,.9);
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s,box-shadow .35s}
+.card::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .35s;background:radial-gradient(420px 260px at var(--mx) var(--my),rgba(255,200,90,.14),transparent 65%)}
+.card:hover,.card:focus-visible{transform:translateY(-5px);border-color:rgba(255,208,98,.55);box-shadow:0 1px 0 rgba(255,255,255,.06) inset,0 30px 60px -28px rgba(255,170,60,.35)}
+.card:hover::before,.card:focus-visible::before{opacity:1}
+.viz{position:relative;height:132px;display:grid;place-items:center;border-bottom:1px solid rgba(226,170,66,.1);
+  background:radial-gradient(260px 120px at 50% 60%,rgba(226,150,40,.1),transparent 70%),repeating-linear-gradient(90deg,rgba(244,237,223,.025) 0 1px,transparent 1px 22px)}
+.viz svg{width:min(78%,230px);height:auto;overflow:visible}
+.cb{display:flex;flex-direction:column;flex:1;padding:18px 22px 20px}
+.num{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--gold);letter-spacing:.1em}
+.num em{font-style:normal;font-size:12px;letter-spacing:.04em;color:#1b1206;background:linear-gradient(180deg,#FFE19A,#E2AA42);padding:2px 9px;border-radius:999px}
+.card h3{margin:6px 0 0;font-size:21px;line-height:1.35;font-weight:700;transition:color .3s}
+.card:hover h3{color:var(--hi)}
+.card p{margin:8px 0 0;font-size:14.5px;line-height:1.75;color:var(--dim)}
+.meta{margin-top:auto;padding-top:16px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--dim2)}
+.steps{display:inline-flex;align-items:center;gap:8px}.steps i{width:22px;height:6px;border-radius:2px;background:repeating-linear-gradient(90deg,var(--gold) 0 4px,transparent 4px 6px);opacity:.7}
+.go{color:var(--gold);display:inline-flex;gap:6px;transition:color .3s}.go b{transition:transform .3s}.card:hover .go{color:var(--hi)}.card:hover .go b{transform:translateX(4px)}
+/* 第 1 课 · 主卡 */
+.card.feat,.card.wide{flex-direction:row;min-height:300px;border-color:rgba(255,208,98,.4);background:linear-gradient(120deg,rgba(64,46,18,.85),rgba(18,14,8,.92) 60%);box-shadow:0 40px 90px -40px rgba(255,170,60,.45)}
+.card.wide{min-height:240px;border-color:rgba(255,208,98,.3)}
+.card.feat .viz,.card.wide .viz{flex:0 0 46%;height:auto;border-bottom:0;border-right:1px solid rgba(226,170,66,.16)}
+.card.feat .viz svg,.card.wide .viz svg{width:82%;max-width:420px}
+.card.feat .cb,.card.wide .cb{padding:34px 38px;justify-content:center}
+.card.feat h3,.card.wide h3{font-size:clamp(26px,2.6vw,36px)}
+.card.wide h3{font-size:clamp(24px,2.2vw,30px)}
+.card.feat p{font-size:16px;max-width:34em}
+/* ---------- SVG 小示意 ---------- */
+.viz .b{fill:rgba(226,170,66,.2);stroke:var(--gold);stroke-width:1.2}
+.viz .hi{fill:rgba(255,208,98,.45);stroke:var(--hi)}
+.viz .ice{fill:rgba(140,200,255,.16);stroke:var(--ice);stroke-width:1.2}
+.viz .grn{fill:rgba(91,214,160,.2);stroke:var(--grn);stroke-width:1.2}
+.viz .red2{fill:rgba(240,122,98,.22);stroke:var(--red);stroke-width:1.2}
+.viz .think{fill:rgba(195,160,255,.12);stroke:var(--pur);stroke-width:1.2;stroke-dasharray:4 3}
+.viz .cell{fill:rgba(244,237,223,.08);stroke:rgba(244,237,223,.18);stroke-width:.8}
+.viz .wall{fill:rgba(244,237,223,.14)}
+.viz .bar{fill:var(--gold)}
+.viz .ln{stroke:rgba(244,237,223,.28);stroke-width:1.1;fill:none}.viz .dsh{stroke-dasharray:3 3}
+.viz .g{stroke:var(--gold);stroke-width:1.8;fill:none;stroke-linecap:round}
+.viz .ar{stroke:var(--hi);stroke-width:1.6;fill:none;stroke-linecap:round}
+.viz .arc{stroke:var(--hi);stroke-width:1.3;fill:none}
+.viz .path{stroke:var(--hi);stroke-width:2.4;fill:none;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:180;stroke-dashoffset:0}
+.viz .dot{fill:var(--hi)}.viz .star{fill:var(--grn)}.viz .red{fill:var(--red)}
+.viz .orb{fill:#FFE6A0}.viz .halo{fill:rgba(255,208,98,.18)}
+.viz .doc{fill:rgba(244,237,223,.06);stroke:rgba(244,237,223,.35)}
+.viz .hl{fill:rgba(255,208,98,.3)}
+.viz .ok{stroke:var(--grn);stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.viz .file{fill:rgba(140,200,255,.14);stroke:var(--ice);stroke-width:1.1}
+.viz .box{fill:rgba(140,200,255,.06);stroke:var(--ice);stroke-width:1.8}
+.viz .gate{stroke:var(--red);stroke-width:4;stroke-linecap:round}.viz .gate2{stroke:var(--grn);stroke-width:3;stroke-linecap:round}
+.viz .tx{fill:var(--ink);font-size:20px;font-family:var(--serif)}.viz .tx.s{font-size:9px;fill:var(--dim)}.viz .tx.p{fill:var(--pur)}.viz .tx.i{fill:var(--ice)}
+/* 动画：默认暂停，悬停或在视口中央时播放 */
+.viz *{animation-play-state:paused!important}
+.card:hover .viz *,.card:focus-visible .viz *,.card.live .viz *{animation-play-state:running!important}
+.a-pulse{animation:pulse 2.4s ease-in-out infinite;animation-delay:calc(var(--i,0)*.15s)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+.a-flow{animation:flow 2.6s linear infinite}@keyframes flow{from{transform:translateX(0)}to{transform:translateX(17px)}}
+.a-pop{animation:pop 2.6s ease-in-out infinite;animation-delay:-1.4s;transform-box:fill-box;transform-origin:center}@keyframes pop{0%,20%{opacity:0;transform:translateY(14px) scale(.6)}45%,80%{opacity:1;transform:none}100%{opacity:0}}
+.a-dash{stroke-dasharray:180;animation:dash 2.8s ease-in-out infinite;animation-delay:-1.9s}@keyframes dash{0%{stroke-dashoffset:180}60%,100%{stroke-dashoffset:0}}
+.a-bar{transform-box:fill-box;transform-origin:bottom;animation:bar 2.4s ease-in-out infinite;animation-delay:calc(var(--i)*.1s)}@keyframes bar{0%,100%{transform:scaleY(1)}50%{transform:scaleY(calc(.35 + var(--i)*.25))}}
+.a-rise{animation:rise 2.4s ease-in infinite;animation-delay:-.9s}@keyframes rise{0%{transform:translateY(0);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateY(-70px);opacity:0}}
+.a-fan{transform-box:fill-box;animation:fan 2.4s ease-out infinite;animation-delay:calc(var(--i)*.25s - 1.4s)}@keyframes fan{0%{transform:translateX(-24px);opacity:0}35%,85%{transform:none;opacity:1}100%{opacity:.3}}
+.a-bus{animation:bus 2.4s ease-in-out infinite}@keyframes bus{0%,100%{transform:translateY(0)}50%{transform:translateY(52px)}}
+.a-orbit{offset-path:path('M80 14 A52 32 0 1 1 79.9 14');animation:orbit 3.2s linear infinite}@keyframes orbit{to{offset-distance:100%}}
+.a-gate{transform-box:fill-box;transform-origin:center;animation:gate 3.2s ease-in-out infinite}@keyframes gate{0%,40%{stroke:var(--red)}55%,100%{stroke:var(--grn)}}
+.a-bounce{animation:bnc 1.8s ease-in-out infinite}@keyframes bnc{0%,100%{transform:translate(0,0)}25%{transform:translate(30px,10px)}50%{transform:translate(-30px,40px)}75%{transform:translate(28px,30px)}}
+.a-ret{animation:ret 2.2s ease-in-out infinite;animation-delay:-1s}@keyframes ret{0%{transform:translate(0,0);opacity:0}15%{opacity:1}80%{transform:translate(32px,16px);opacity:1}100%{transform:translate(34px,17px);opacity:0}}
+/* 出场 */
+.js .rv{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--d,0)*70ms)}
+.js .rv.in{opacity:1;transform:none}
+.js .card.rv.in:hover{transform:translateY(-5px);transition-delay:0s}
+/* ---------- 页脚 ---------- */
+footer{position:relative;margin-top:40px;padding:90px var(--pad) calc(60px + env(safe-area-inset-bottom));text-align:center;overflow:hidden;border-top:1px solid rgba(226,170,66,.12);
+  background:radial-gradient(800px 300px at 50% 0%,rgba(226,150,40,.12),transparent 70%)}
+.fbig{display:inline-block;text-decoration:none;font-weight:700;font-size:clamp(46px,9vw,128px);line-height:1;letter-spacing:.01em;background:linear-gradient(180deg,#FFF1C9,#FFD062 45%,#9C6A1C);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 40px rgba(255,190,80,.2));transition:filter .4s}
+.fbig:hover{filter:drop-shadow(0 0 50px rgba(255,190,80,.45))}
+.fsub{margin:16px 0 0;color:var(--dim);font-size:16px;letter-spacing:.1em}
+.ftip{margin:34px auto 0;max-width:40em;color:var(--dim2);font-size:14px}
+.flinks{margin-top:22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+/* ---------- 响应式 ---------- */
+@media (max-width:1080px){.top nav a b{display:none}}
+@media (max-width:900px){
+  .card.feat,.card.wide{flex-direction:column}.card.feat .viz,.card.wide .viz{flex:none;height:200px;border-right:0;border-bottom:1px solid rgba(226,170,66,.16)}.card.feat .cb,.card.wide .cb{padding:24px 24px 24px}
+  .top nav{display:none}
+}
+@media (max-width:640px){
+  .hin{padding:92px var(--pad) 200px}
+  .brand span{display:none}
+  .stage{padding:44px 0 24px 34px}.rail{left:calc(var(--pad) + 6px)}.node{width:14px;height:14px;top:50px}.node span{width:6px;height:6px}
+  .stats b{font-size:22px}
+  .btn{width:100%;justify-content:center}
+  .viz{height:118px}.card h3{font-size:20px}.cb{padding:16px 18px 18px}
+  .scrollcue{display:none}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.js .rv{opacity:1;transform:none}}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <header class="masthead">
-      <nav aria-label="网站导航">
-        <a class="blog-link" href="https://chenshi.ai/">← 返回 Blog</a>
-      </nav>
-      <h1>AI 底层原理与 Agent 工程图谱</h1>
-      <p>18 个交互课件，从分词、注意力和模型训练，讲到上下文管理与多智能体协作。</p>
-    </header>
-
-    <main>
-      <nav class="filters" aria-label="按主题筛选课件" id="filters" hidden>
-        <button type="button" data-filter="all" aria-pressed="true">全部 18 个</button>
-        <button type="button" data-filter="core" aria-pressed="false">总纲与终章</button>
-        <button type="button" data-filter="foundations" aria-pressed="false">数学与训练</button>
-        <button type="button" data-filter="models" aria-pressed="false">模型原理</button>
-        <button type="button" data-filter="context" aria-pressed="false">上下文管理</button>
-        <button type="button" data-filter="engineering" aria-pressed="false">Agent 工程</button>
-      </nav>
-
-      <section class="chapter" aria-labelledby="intro" data-chapter="core">
-        <h2 id="intro">总纲</h2>
-        <div class="lessons">
-          <a class="lesson lesson-featured" href="pages/how-you-interact-with-ai.html">
-            <div>
-              <div class="lesson-number">第 01 课</div>
-              <h3>你和 AI 是如何互动的</h3>
-              <p>从《民法典》第 585 条出发，一镜到底走完分词、向量、概率自回归、上下文纸带、Agent Loop，最终落脚于「Harness（驾驭层）」的核心心法。</p>
-            </div>
-            <div class="lesson-meta"><span>36 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
-          </a>
-        </div>
-      </section>
-      <section class="chapter" aria-labelledby="foundations" data-chapter="foundations">
-        <h2 id="foundations">数学基础与模型训练</h2>
-        <div class="lessons">
-          <a class="lesson" href="pages/scalars-vectors-matrices-tensors.html">
-            <div>
-              <div class="lesson-number">第 02 课</div>
-              <h3>标量、向量、矩阵与张量</h3>
-              <p>从一个数到一摞表：词怎样变成向量、方向怎样代表语义，矩阵乘法怎样一次算一整批，张量形状 (4, 5, 8) 又是什么意思。可亲手旋转向量看相似度。</p>
-            </div>
-            <div class="lesson-meta"><span>12 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
-          </a>
-          <a class="lesson" href="pages/tokenization-and-temperature.html">
-            <div>
-              <div class="lesson-number">第 03 课</div>
-              <h3>分词与温度</h3>
-              <p>用实测分词看 strawberry、数字与中文如何被切成 token；再亲手拖动温度与 Top-P，看下一个词的概率分布如何变化、采样结果如何分散。</p>
-            </div>
-            <div class="lesson-meta"><span>15 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
-          </a>
-          <a class="lesson" href="pages/fine-tuning-and-lora.html">
-            <div>
-              <div class="lesson-number">第 04 课</div>
-              <h3>微调、LoRA 与 RAG／Skill</h3>
-              <p>训练循环怎样改权重、全量微调为什么贵又容易遗忘、LoRA 旁路小矩阵怎样省参数（可拖动秩 r）；以及什么时候该改模型、什么时候只需给资料或 Skill。</p>
-            </div>
-            <div class="lesson-meta"><span>14 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
-          </a>
-          <a class="lesson" href="pages/reinforcement-learning.html">
-            <div>
-              <div class="lesson-number">第 05 课</div>
-              <h3>强化学习：RL、RLHF 与 GRPO</h3>
-              <p>不给答案、只给打分：迷宫里的试错与奖励，RLHF 用人类偏好训练奖励模型，GRPO 用同组答案互相比较算优势（可拖动打分看优势变化）。</p>
-            </div>
-            <div class="lesson-meta"><span>13 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
-          </a>
-        </div>
-      </section>
-      <section class="chapter" aria-labelledby="models" data-chapter="models">
-        <h2 id="models">大模型工作原理</h2>
-        <div class="lessons">
-          <a class="lesson" href="pages/transformer.html">
-            <div>
-              <div class="lesson-number">第 06 课</div>
-              <h3>Transformer 结构</h3>
-              <p>沿着残差流，从纸带上的词一路走到下一个词：位置信息、注意力、MLP 层层叠加，最后输出概率。</p>
-            </div>
-            <div class="lesson-meta"><span>14 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
-          </a>
-          <a class="lesson" href="pages/attention.html">
-            <div>
-              <div class="lesson-number">第 07 课</div>
-              <h3>Attention 注意力</h3>
-              <p>每个新词怎样回看整条纸带、给不同位置分配权重；以及长上下文里「迷失在中间」的现象和应对的排布原则。</p>
-            </div>
-            <div class="lesson-meta"><span>12 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
-          </a>
-          <a class="lesson" href="pages/reasoning.html">
-            <div>
-              <div class="lesson-number">第 08 课</div>
-              <h3>Reasoning 深度思考</h3>
-              <p>同一条纸带上先写「草稿」再作答：思考 token 如何换来更好的答案，代价是更多时间和 Token。</p>
-            </div>
-            <div class="lesson-meta"><span>12 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
-          </a>
-          <a class="lesson" href="pages/kv-cache-and-prompt-caching.html">
-            <div>
-              <div class="lesson-number">第 09 课</div>
-              <h3>KV Cache 与 Prompt Caching</h3>
-              <p>为什么前缀不变才能命中缓存：纸带开头改一个字，后面的缓存全部作废；怎样排布提示词更省钱、更快。</p>
-            </div>
-            <div class="lesson-meta"><span>13 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
-          </a>
-          <a class="lesson" href="pages/hallucination-and-grounding.html">
-            <div>
-              <div class="lesson-number">第 10 课</div>
-              <h3>幻觉与溯源</h3>
-              <p>模型为什么会一本正经地编：把检索到的原文放上纸带、要求逐条引用、材料没有就说没有，并保留人工核验。可亲手把原文拖上纸带。</p>
-            </div>
-            <div class="lesson-meta"><span>12 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
-          </a>
-        </div>
-      </section>
-      <section class="chapter" aria-labelledby="context" data-chapter="context">
-        <h2 id="context">上下文与知识管理</h2>
-        <div class="lessons">
-          <a class="lesson" href="pages/skill.html">
-            <div>
-              <div class="lesson-number">第 11 课</div>
-              <h3>Skill 到底是什么</h3>
-              <p>把越写越长的提示词拆成按需加载的文件包：目录、说明、参考资料与脚本分层加载（可拖动 Skill 数量看纸带占用）。</p>
-            </div>
-            <div class="lesson-meta"><span>12 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
-          </a>
-          <a class="lesson" href="pages/memory-and-context-compaction.html">
-            <div>
-              <div class="lesson-number">第 12 课</div>
-              <h3>Memory 与上下文压缩</h3>
-              <p>纸带满了怎么办：压缩成摘要腾出空间（以及会丢什么）；长期记忆文件如何在新会话开始时写回纸带。</p>
-            </div>
-            <div class="lesson-meta"><span>13 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
-          </a>
-        </div>
-      </section>
-      <section class="chapter" aria-labelledby="engineering" data-chapter="engineering">
-        <h2 id="engineering">Agent 工程</h2>
-        <div class="lessons">
-          <a class="lesson" href="pages/mcp.html">
-            <div>
-              <div class="lesson-number">第 13 课</div>
-              <h3>MCP 到底是什么</h3>
-              <p>AI 应用接工具的统一插口：M×N 的对接变成 M+N（可拖动工具数量），Tools / Resources / Prompts 三种能力与一次 JSON-RPC 调用。</p>
-            </div>
-            <div class="lesson-meta"><span>12 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
-          </a>
-          <a class="lesson" href="pages/hooks.html">
-            <div>
-              <div class="lesson-number">第 14 课</div>
-              <h3>Hooks 到底是什么</h3>
-              <p>提示词是告示牌，Hook 是门锁：在 Agent 循环的固定节点由程序必然执行的检查，拦截危险操作、校验结果。</p>
-            </div>
-            <div class="lesson-meta"><span>13 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
-          </a>
-          <a class="lesson" href="pages/sandbox-and-permissions.html">
-            <div>
-              <div class="lesson-number">第 15 课</div>
-              <h3>Sandbox 与权限</h3>
-              <p>让 Agent 能干活也闯不了大祸：沙盒隔离、最小权限、网络出口白名单、高风险动作人工审批（可拖动权限档位）。</p>
-            </div>
-            <div class="lesson-meta"><span>12 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
-          </a>
-          <a class="lesson" href="pages/evals-and-regression.html">
-            <div>
-              <div class="lesson-number">第 16 课</div>
-              <h3>Evals 评测与防退化</h3>
-              <p>改一行提示词，怎么知道没改坏别处：固定题集、代码与模型裁判、版本对比与上线闸门（可拖动版本看通过与退化）。</p>
-            </div>
-            <div class="lesson-meta"><span>13 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
-          </a>
-          <a class="lesson" href="pages/sub-agent-and-agent-team.html">
-            <div>
-              <div class="lesson-number">第 17 课</div>
-              <h3>Sub-Agent、Agent Team 与多 Agent</h3>
-              <p>Sub-Agent 用独立纸带干脏活、只交回摘要；Agent Team 共享任务清单、互相发消息；多轨并行加质检闸门，以及时间与 Token 的取舍。</p>
-            </div>
-            <div class="lesson-meta"><span>13 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
-          </a>
-        </div>
-      </section>
-      <section class="chapter" aria-labelledby="finale" data-chapter="core">
-        <h2 id="finale">终章</h2>
-        <div class="lessons">
-          <a class="lesson lesson-featured" href="pages/agent-landscape.html">
-            <div>
-              <div class="lesson-number">第 18 课</div>
-              <h3>Agent 形态全景</h3>
-              <p>一张连续全景走过八种主流形态：Coding、GUI / Computer-Use、Deep Research、Personal、Enterprise、Ambient、Super、Embodied，最后看到它们共用的同一套底座。</p>
-            </div>
-            <div class="lesson-meta"><span>12 步推演</span><span class="lesson-arrow" aria-hidden="true">→</span></div>
-          </a>
-        </div>
-      </section>
-    </main>
-
-    <footer>
-      <p>课件可用方向键、点击画面或左右滑动翻页。全屏演示时，退出全屏即可返回目录。</p>
-    </footer>
+<a class="skip" href="#path">跳到课程列表</a>
+<header class="top" id="top">
+  <a class="brand" href="https://chenshi.ai/"><b>chenshi.ai</b><span>陈石律师</span></a>
+  <nav aria-label="学习路径"><a href="#intro" data-t="intro"><b>起点</b>总纲</a><a href="#foundations" data-t="foundations"><b>第一站</b>数学基础与模型训练</a><a href="#models" data-t="models"><b>第二站</b>大模型工作原理</a><a href="#context" data-t="context"><b>第三站</b>上下文与知识管理</a><a href="#engineering" data-t="engineering"><b>第四站</b>Agent 工程</a><a href="#finale" data-t="finale"><b>终点</b>全景</a></nav>
+  <a class="blog" href="https://chenshi.ai/">← 返回 Blog</a>
+</header>
+<section class="hero" aria-labelledby="ttl">
+  <canvas id="tape" aria-hidden="true"></canvas>
+  <div class="hin">
+    <div class="eyebrow"><i></i>陈石律师 · <b>chenshi.ai</b></div>
+    <h1 id="ttl">AI 底层原理<br><span class="g">与 Agent 工程图谱</span></h1>
+    <p class="lead">18 个交互课件，从分词、注意力和模型训练，讲到上下文管理与多智能体协作。</p>
+    <ul class="stats"><li><b>18</b>个课件</li><li><b>4</b>站学习路径</li><li><b>253</b>步动画推演</li></ul>
+    <div class="cta">
+      <a class="btn pri" href="pages/how-you-interact-with-ai.html">从第 1 课开始<small>你和 AI 是如何互动的</small><b>→</b></a>
+      <a class="btn sec" href="#path">浏览全部课程<b>↓</b></a>
+    </div>
   </div>
-
-  <script>
-    const filters = document.getElementById('filters');
-    const chapters = document.querySelectorAll('[data-chapter]');
-    const buttons = filters.querySelectorAll('button');
-
-    filters.addEventListener('click', (event) => {
-      const selected = event.target.closest('button');
-      if (!selected) return;
-
-      buttons.forEach((button) => {
-        button.setAttribute('aria-pressed', String(button === selected));
-      });
-      chapters.forEach((chapter) => {
-        const filter = selected.dataset.filter;
-        chapter.hidden = filter !== 'all' && filter !== chapter.dataset.chapter;
-      });
-    });
-
-    filters.hidden = false;
-  </script>
+  <div class="scrollcue" aria-hidden="true">学习路径<i></i></div>
+</section>
+<main id="path">
+  <div class="rail" aria-hidden="true"><i></i></div>
+<section class="stage" id="intro" aria-labelledby="h-intro" data-n="0">
+  <div class="node" aria-hidden="true"><span></span></div>
+  <header class="sh rv"><div class="tag">起点<span>第 01 课 · 1 课</span></div><h2 id="h-intro">总纲</h2><p>先走完一条完整的主线：你和 AI 之间到底发生了什么</p></header>
+  <div class="grid g1"><a class="card feat rv" style="--d:0" href="pages/how-you-interact-with-ai.html">
+  <div class="viz"><svg viewBox="0 0 160 90" aria-hidden="true" focusable="false"><line class="ln" x1="6" y1="54" x2="128" y2="54"/><g class="a-flow"><rect class="b" x="8" y="39" width="14" height="14" rx="2.5" style="--i:0" /><rect class="b" x="25" y="39" width="14" height="14" rx="2.5" style="--i:1" /><rect class="b" x="42" y="39" width="14" height="14" rx="2.5" style="--i:2" /><rect class="b" x="59" y="39" width="14" height="14" rx="2.5" style="--i:3" /><rect class="b" x="76" y="39" width="14" height="14" rx="2.5" style="--i:4" /><rect class="b" x="93" y="39" width="14" height="14" rx="2.5" style="--i:5" /><rect class="b" x="110" y="39" width="14" height="14" rx="2.5" style="--i:6" /></g>
+<circle class="orb a-pulse" cx="144" cy="46" r="9"/><circle class="halo a-pulse" cx="144" cy="46" r="16"/>
+<path class="ar" d="M128 46 H132"/><rect class="b hi a-pop" x="138" y="18" width="14" height="10" rx="2"/></svg></div>
+  <div class="cb"><div class="num"><span>第 01 课</span><em>从这里开始</em></div>
+  <h3>你和 AI 是如何互动的</h3><p>从《民法典》第 585 条出发，一镜到底走完分词、向量、概率自回归、上下文纸带、Agent Loop，最终落脚于「Harness（驾驭层）」的核心心法。</p>
+  <div class="meta"><span class="steps"><i></i>36 步推演</span><span class="go">进入课件<b>→</b></span></div></div>
+</a></div>
+</section>
+<section class="stage" id="foundations" aria-labelledby="h-foundations" data-n="1">
+  <div class="node" aria-hidden="true"><span></span></div>
+  <header class="sh rv"><div class="tag">第一站<span>第 02 – 05 课 · 4 课</span></div><h2 id="h-foundations">数学基础与模型训练</h2><p>数据怎样表示，模型怎样被训练出来</p></header>
+  <div class="grid g4"><a class="card rv" style="--d:0" href="pages/scalars-vectors-matrices-tensors.html">
+  <div class="viz"><svg viewBox="0 0 160 90" aria-hidden="true" focusable="false"><circle class="dot a-pulse" cx="18" cy="48" r="4"/>
+<line class="g a-dash" x1="34" y1="62" x2="58" y2="30"/><path class="ar" d="M58 30 l-7 2 m7 -2 l-1 7"/>
+<rect class="cell a-pulse" style="--i:0" x="72" y="30" width="8" height="8" rx="1.5"/><rect class="cell a-pulse" style="--i:1" x="82" y="30" width="8" height="8" rx="1.5"/><rect class="cell a-pulse" style="--i:2" x="92" y="30" width="8" height="8" rx="1.5"/><rect class="cell a-pulse" style="--i:3" x="72" y="40" width="8" height="8" rx="1.5"/><rect class="cell a-pulse" style="--i:4" x="82" y="40" width="8" height="8" rx="1.5"/><rect class="cell a-pulse" style="--i:5" x="92" y="40" width="8" height="8" rx="1.5"/><rect class="cell a-pulse" style="--i:6" x="72" y="50" width="8" height="8" rx="1.5"/><rect class="cell a-pulse" style="--i:7" x="82" y="50" width="8" height="8" rx="1.5"/><rect class="cell a-pulse" style="--i:8" x="92" y="50" width="8" height="8" rx="1.5"/><rect class="b" x="116" y="26" width="26" height="26" rx="2.5" style="--i:0"/><rect class="b" x="121" y="31" width="26" height="26" rx="2.5" style="--i:1"/><rect class="b" x="126" y="36" width="26" height="26" rx="2.5" style="--i:2"/></svg></div>
+  <div class="cb"><div class="num"><span>第 02 课</span></div>
+  <h3>标量、向量、矩阵与张量</h3><p>从一个数到一摞表：词怎样变成向量、方向怎样代表语义，矩阵乘法怎样一次算一整批，张量形状 (4, 5, 8) 又是什么意思。可亲手旋转向量看相似度。</p>
+  <div class="meta"><span class="steps"><i></i>12 步推演</span><span class="go">进入课件<b>→</b></span></div></div>
+</a><a class="card rv" style="--d:1" href="pages/tokenization-and-temperature.html">
+  <div class="viz"><svg viewBox="0 0 160 90" aria-hidden="true" focusable="false"><g><rect class="b" x="10" y="22" width="22" height="12" rx="2.5" style="--i:0" /><rect class="b" x="36" y="22" width="22" height="12" rx="2.5" style="--i:1" /><rect class="b" x="62" y="22" width="22" height="12" rx="2.5" style="--i:2" /><rect class="b" x="88" y="22" width="22" height="12" rx="2.5" style="--i:3" /></g>
+<rect class="bar a-bar" style="--i:0;--h:34" x="18" y="48" width="12" height="34" rx="2"/><rect class="bar a-bar" style="--i:1;--h:22" x="38" y="60" width="12" height="22" rx="2"/><rect class="bar a-bar" style="--i:2;--h:12" x="58" y="70" width="12" height="12" rx="2"/><rect class="bar a-bar" style="--i:3;--h:6" x="78" y="76" width="12" height="6" rx="2"/><rect class="bar a-bar" style="--i:4;--h:4" x="98" y="78" width="12" height="4" rx="2"/><line class="ln" x1="12" y1="82" x2="120" y2="82"/></svg></div>
+  <div class="cb"><div class="num"><span>第 03 课</span></div>
+  <h3>分词与温度</h3><p>用实测分词看 strawberry、数字与中文如何被切成 token；再亲手拖动温度与 Top-P，看下一个词的概率分布如何变化、采样结果如何分散。</p>
+  <div class="meta"><span class="steps"><i></i>15 步推演</span><span class="go">进入课件<b>→</b></span></div></div>
+</a><a class="card rv" style="--d:2" href="pages/fine-tuning-and-lora.html">
+  <div class="viz"><svg viewBox="0 0 160 90" aria-hidden="true" focusable="false"><rect class="cell" x="14" y="14" width="6.5" height="6.5" rx="1" style="--i:0"/><rect class="cell" x="22" y="14" width="6.5" height="6.5" rx="1" style="--i:1"/><rect class="cell" x="30" y="14" width="6.5" height="6.5" rx="1" style="--i:2"/><rect class="cell" x="38" y="14" width="6.5" height="6.5" rx="1" style="--i:3"/><rect class="cell" x="46" y="14" width="6.5" height="6.5" rx="1" style="--i:4"/><rect class="cell" x="54" y="14" width="6.5" height="6.5" rx="1" style="--i:5"/><rect class="cell" x="62" y="14" width="6.5" height="6.5" rx="1" style="--i:6"/><rect class="cell" x="70" y="14" width="6.5" height="6.5" rx="1" style="--i:0"/><rect class="cell" x="14" y="22" width="6.5" height="6.5" rx="1" style="--i:1"/><rect class="cell" x="22" y="22" width="6.5" height="6.5" rx="1" style="--i:2"/><rect class="cell" x="30" y="22" width="6.5" height="6.5" rx="1" style="--i:3"/><rect class="cell" x="38" y="22" width="6.5" height="6.5" rx="1" style="--i:4"/><rect class="cell" x="46" y="22" width="6.5" height="6.5" rx="1" style="--i:5"/><rect class="cell" x="54" y="22" width="6.5" height="6.5" rx="1" style="--i:6"/><rect class="cell" x="62" y="22" width="6.5" height="6.5" rx="1" style="--i:0"/><rect class="cell" x="70" y="22" width="6.5" height="6.5" rx="1" style="--i:1"/><rect class="cell" x="14" y="30" width="6.5" height="6.5" rx="1" style="--i:2"/><rect class="cell" x="22" y="30" width="6.5" height="6.5" rx="1" style="--i:3"/><rect class="cell" x="30" y="30" width="6.5" height="6.5" rx="1" style="--i:4"/><rect class="cell" x="38" y="30" width="6.5" height="6.5" rx="1" style="--i:5"/><rect class="cell" x="46" y="30" width="6.5" height="6.5" rx="1" style="--i:6"/><rect class="cell" x="54" y="30" width="6.5" height="6.5" rx="1" style="--i:0"/><rect class="cell" x="62" y="30" width="6.5" height="6.5" rx="1" style="--i:1"/><rect class="cell" x="70" y="30" width="6.5" height="6.5" rx="1" style="--i:2"/><rect class="cell" x="14" y="38" width="6.5" height="6.5" rx="1" style="--i:3"/><rect class="cell" x="22" y="38" width="6.5" height="6.5" rx="1" style="--i:4"/><rect class="cell" x="30" y="38" width="6.5" height="6.5" rx="1" style="--i:5"/><rect class="cell" x="38" y="38" width="6.5" height="6.5" rx="1" style="--i:6"/><rect class="cell" x="46" y="38" width="6.5" height="6.5" rx="1" style="--i:0"/><rect class="cell" x="54" y="38" width="6.5" height="6.5" rx="1" style="--i:1"/><rect class="cell" x="62" y="38" width="6.5" height="6.5" rx="1" style="--i:2"/><rect class="cell" x="70" y="38" width="6.5" height="6.5" rx="1" style="--i:3"/><rect class="cell" x="14" y="46" width="6.5" height="6.5" rx="1" style="--i:4"/><rect class="cell" x="22" y="46" width="6.5" height="6.5" rx="1" style="--i:5"/><rect class="cell" x="30" y="46" width="6.5" height="6.5" rx="1" style="--i:6"/><rect class="cell" x="38" y="46" width="6.5" height="6.5" rx="1" style="--i:0"/><rect class="cell" x="46" y="46" width="6.5" height="6.5" rx="1" style="--i:1"/><rect class="cell" x="54" y="46" width="6.5" height="6.5" rx="1" style="--i:2"/><rect class="cell" x="62" y="46" width="6.5" height="6.5" rx="1" style="--i:3"/><rect class="cell" x="70" y="46" width="6.5" height="6.5" rx="1" style="--i:4"/><rect class="cell" x="14" y="54" width="6.5" height="6.5" rx="1" style="--i:5"/><rect class="cell" x="22" y="54" width="6.5" height="6.5" rx="1" style="--i:6"/><rect class="cell" x="30" y="54" width="6.5" height="6.5" rx="1" style="--i:0"/><rect class="cell" x="38" y="54" width="6.5" height="6.5" rx="1" style="--i:1"/><rect class="cell" x="46" y="54" width="6.5" height="6.5" rx="1" style="--i:2"/><rect class="cell" x="54" y="54" width="6.5" height="6.5" rx="1" style="--i:3"/><rect class="cell" x="62" y="54" width="6.5" height="6.5" rx="1" style="--i:4"/><rect class="cell" x="70" y="54" width="6.5" height="6.5" rx="1" style="--i:5"/><rect class="cell" x="14" y="62" width="6.5" height="6.5" rx="1" style="--i:6"/><rect class="cell" x="22" y="62" width="6.5" height="6.5" rx="1" style="--i:0"/><rect class="cell" x="30" y="62" width="6.5" height="6.5" rx="1" style="--i:1"/><rect class="cell" x="38" y="62" width="6.5" height="6.5" rx="1" style="--i:2"/><rect class="cell" x="46" y="62" width="6.5" height="6.5" rx="1" style="--i:3"/><rect class="cell" x="54" y="62" width="6.5" height="6.5" rx="1" style="--i:4"/><rect class="cell" x="62" y="62" width="6.5" height="6.5" rx="1" style="--i:5"/><rect class="cell" x="70" y="62" width="6.5" height="6.5" rx="1" style="--i:6"/><rect class="cell" x="14" y="70" width="6.5" height="6.5" rx="1" style="--i:0"/><rect class="cell" x="22" y="70" width="6.5" height="6.5" rx="1" style="--i:1"/><rect class="cell" x="30" y="70" width="6.5" height="6.5" rx="1" style="--i:2"/><rect class="cell" x="38" y="70" width="6.5" height="6.5" rx="1" style="--i:3"/><rect class="cell" x="46" y="70" width="6.5" height="6.5" rx="1" style="--i:4"/><rect class="cell" x="54" y="70" width="6.5" height="6.5" rx="1" style="--i:5"/><rect class="cell" x="62" y="70" width="6.5" height="6.5" rx="1" style="--i:6"/><rect class="cell" x="70" y="70" width="6.5" height="6.5" rx="1" style="--i:0"/>
+<text class="tx" x="96" y="50">+</text><rect class="b hi a-pulse" x="110" y="14" width="8" height="62" rx="2"/><rect class="b hi a-pulse" x="124" y="40" width="28" height="8" rx="2" style="--i:2"/></svg></div>
+  <div class="cb"><div class="num"><span>第 04 课</span></div>
+  <h3>微调、LoRA 与 RAG／Skill</h3><p>训练循环怎样改权重、全量微调为什么贵又容易遗忘、LoRA 旁路小矩阵怎样省参数（可拖动秩 r）；以及什么时候该改模型、什么时候只需给资料或 Skill。</p>
+  <div class="meta"><span class="steps"><i></i>14 步推演</span><span class="go">进入课件<b>→</b></span></div></div>
+</a><a class="card rv" style="--d:3" href="pages/reinforcement-learning.html">
+  <div class="viz"><svg viewBox="0 0 160 90" aria-hidden="true" focusable="false"><rect class="wall" x="16" y="6" width="14" height="14" rx="2"/><rect class="wall" x="32" y="6" width="14" height="14" rx="2"/><rect class="wall" x="48" y="6" width="14" height="14" rx="2"/><rect class="wall" x="64" y="6" width="14" height="14" rx="2"/><rect class="wall" x="80" y="6" width="14" height="14" rx="2"/><rect class="wall" x="96" y="6" width="14" height="14" rx="2"/><rect class="wall" x="112" y="6" width="14" height="14" rx="2"/><rect class="wall" x="128" y="6" width="14" height="14" rx="2"/><rect class="wall" x="16" y="22" width="14" height="14" rx="2"/><rect class="cell" x="32" y="22" width="14" height="14" rx="2"/><rect class="cell" x="48" y="22" width="14" height="14" rx="2"/><rect class="cell" x="64" y="22" width="14" height="14" rx="2"/><rect class="wall" x="80" y="22" width="14" height="14" rx="2"/><rect class="cell" x="96" y="22" width="14" height="14" rx="2"/><rect class="cell" x="112" y="22" width="14" height="14" rx="2"/><rect class="wall" x="128" y="22" width="14" height="14" rx="2"/><rect class="wall" x="16" y="38" width="14" height="14" rx="2"/><rect class="cell" x="32" y="38" width="14" height="14" rx="2"/><rect class="wall" x="48" y="38" width="14" height="14" rx="2"/><rect class="cell" x="64" y="38" width="14" height="14" rx="2"/><rect class="wall" x="80" y="38" width="14" height="14" rx="2"/><rect class="wall" x="96" y="38" width="14" height="14" rx="2"/><rect class="cell" x="112" y="38" width="14" height="14" rx="2"/><rect class="wall" x="128" y="38" width="14" height="14" rx="2"/><rect class="wall" x="16" y="54" width="14" height="14" rx="2"/><rect class="cell" x="32" y="54" width="14" height="14" rx="2"/><rect class="wall" x="48" y="54" width="14" height="14" rx="2"/><rect class="cell" x="64" y="54" width="14" height="14" rx="2"/><rect class="cell" x="80" y="54" width="14" height="14" rx="2"/><rect class="cell" x="96" y="54" width="14" height="14" rx="2"/><rect class="cell" x="112" y="54" width="14" height="14" rx="2"/><rect class="wall" x="128" y="54" width="14" height="14" rx="2"/><rect class="wall" x="16" y="70" width="14" height="14" rx="2"/><rect class="wall" x="32" y="70" width="14" height="14" rx="2"/><rect class="wall" x="48" y="70" width="14" height="14" rx="2"/><rect class="wall" x="64" y="70" width="14" height="14" rx="2"/><rect class="wall" x="80" y="70" width="14" height="14" rx="2"/><rect class="wall" x="96" y="70" width="14" height="14" rx="2"/><rect class="wall" x="112" y="70" width="14" height="14" rx="2"/><rect class="wall" x="128" y="70" width="14" height="14" rx="2"/>
+<polyline class="path a-dash" points="39,29 39,61 71,61 71,29 87,29 87,61 119,61 119,29"/><circle class="star a-pulse" cx="119" cy="29" r="4"/></svg></div>
+  <div class="cb"><div class="num"><span>第 05 课</span></div>
+  <h3>强化学习：RL、RLHF 与 GRPO</h3><p>不给答案、只给打分：迷宫里的试错与奖励，RLHF 用人类偏好训练奖励模型，GRPO 用同组答案互相比较算优势（可拖动打分看优势变化）。</p>
+  <div class="meta"><span class="steps"><i></i>13 步推演</span><span class="go">进入课件<b>→</b></span></div></div>
+</a></div>
+</section>
+<section class="stage" id="models" aria-labelledby="h-models" data-n="2">
+  <div class="node" aria-hidden="true"><span></span></div>
+  <header class="sh rv"><div class="tag">第二站<span>第 06 – 10 课 · 5 课</span></div><h2 id="h-models">大模型工作原理</h2><p>模型拿到纸带之后，内部发生了什么</p></header>
+  <div class="grid g5"><a class="card rv" style="--d:0" href="pages/transformer.html">
+  <div class="viz"><svg viewBox="0 0 160 90" aria-hidden="true" focusable="false"><rect class="b" x="40" y="8" width="80" height="14" rx="3" style="--i:0"/><rect class="b" x="40" y="27" width="80" height="14" rx="3" style="--i:1"/><rect class="b" x="40" y="46" width="80" height="14" rx="3" style="--i:2"/><rect class="b" x="40" y="65" width="80" height="14" rx="3" style="--i:3"/>
+<line class="g" x1="30" y1="84" x2="30" y2="6"/><circle class="dot a-rise" cx="30" cy="80" r="3.5"/><text class="tx s" x="128" y="15">下一个词</text></svg></div>
+  <div class="cb"><div class="num"><span>第 06 课</span></div>
+  <h3>Transformer 结构</h3><p>沿着残差流，从纸带上的词一路走到下一个词：位置信息、注意力、MLP 层层叠加，最后输出概率。</p>
+  <div class="meta"><span class="steps"><i></i>14 步推演</span><span class="go">进入课件<b>→</b></span></div></div>
+</a><a class="card rv" style="--d:1" href="pages/attention.html">
+  <div class="viz"><svg viewBox="0 0 160 90" aria-hidden="true" focusable="false"><rect class="b" x="14" y="62" width="14" height="12" rx="2.5" style="--i:0" /><rect class="b" x="34" y="62" width="14" height="12" rx="2.5" style="--i:1" /><rect class="b" x="54" y="62" width="14" height="12" rx="2.5" style="--i:2" /><rect class="b" x="74" y="62" width="14" height="12" rx="2.5" style="--i:3" /><rect class="b" x="94" y="62" width="14" height="12" rx="2.5" style="--i:4" /><rect class="b" x="114" y="62" width="14" height="12" rx="2.5" style="--i:5" /><rect class="b" x="134" y="62" width="14" height="12" rx="2.5" style="--i:6" /><path class="arc a-pulse" style="--i:0;opacity:0.25" d="M136 60 Q 78.5 48 21 60"/><path class="arc a-pulse" style="--i:1;opacity:0.37" d="M136 60 Q 88.5 43 41 60"/><path class="arc a-pulse" style="--i:2;opacity:0.49" d="M136 60 Q 98.5 38 61 60"/><path class="arc a-pulse" style="--i:3;opacity:0.61" d="M136 60 Q 108.5 33 81 60"/><path class="arc a-pulse" style="--i:4;opacity:0.73" d="M136 60 Q 118.5 28 101 60"/><path class="arc a-pulse" style="--i:5;opacity:0.85" d="M136 60 Q 128.5 23 121 60"/></svg></div>
+  <div class="cb"><div class="num"><span>第 07 课</span></div>
+  <h3>Attention 注意力</h3><p>每个新词怎样回看整条纸带、给不同位置分配权重；以及长上下文里「迷失在中间」的现象和应对的排布原则。</p>
+  <div class="meta"><span class="steps"><i></i>12 步推演</span><span class="go">进入课件<b>→</b></span></div></div>
+</a><a class="card rv" style="--d:2" href="pages/reasoning.html">
+  <div class="viz"><svg viewBox="0 0 160 90" aria-hidden="true" focusable="false"><line class="ln" x1="6" y1="48" x2="154" y2="48"/><rect class="b" x="8" y="40" width="14" height="14" rx="2.5" style="--i:0" /><rect class="b" x="25" y="40" width="14" height="14" rx="2.5" style="--i:1" /><rect class="think a-pulse" x="44" y="38" width="66" height="20" rx="3"/><text class="tx s p" x="77" y="52" text-anchor="middle">草稿</text><rect class="b hi a-pop" x="116" y="40" width="30" height="16" rx="3"/></svg></div>
+  <div class="cb"><div class="num"><span>第 08 课</span></div>
+  <h3>Reasoning 深度思考</h3><p>同一条纸带上先写「草稿」再作答：思考 token 如何换来更好的答案，代价是更多时间和 Token。</p>
+  <div class="meta"><span class="steps"><i></i>12 步推演</span><span class="go">进入课件<b>→</b></span></div></div>
+</a><a class="card rv" style="--d:3" href="pages/kv-cache-and-prompt-caching.html">
+  <div class="viz"><svg viewBox="0 0 160 90" aria-hidden="true" focusable="false"><rect class="ice" x="8" y="36" width="15" height="18" rx="2.5" style="--i:0" /><rect class="ice" x="26" y="36" width="15" height="18" rx="2.5" style="--i:1" /><rect class="ice" x="44" y="36" width="15" height="18" rx="2.5" style="--i:2" /><rect class="ice" x="62" y="36" width="15" height="18" rx="2.5" style="--i:3" /><rect class="ice" x="80" y="36" width="15" height="18" rx="2.5" style="--i:4" /><rect class="ice" x="98" y="36" width="15" height="18" rx="2.5" style="--i:5" /><rect class="ice" x="116" y="36" width="15" height="18" rx="2.5" style="--i:6" /><rect class="b hi a-pop" x="134" y="36" width="15" height="18" rx="2.5"/><text class="tx s i" x="8" y="74">前缀不变，缓存可复用</text></svg></div>
+  <div class="cb"><div class="num"><span>第 09 课</span></div>
+  <h3>KV Cache 与 Prompt Caching</h3><p>为什么前缀不变才能命中缓存：纸带开头改一个字，后面的缓存全部作废；怎样排布提示词更省钱、更快。</p>
+  <div class="meta"><span class="steps"><i></i>13 步推演</span><span class="go">进入课件<b>→</b></span></div></div>
+</a><a class="card rv" style="--d:4" href="pages/hallucination-and-grounding.html">
+  <div class="viz"><svg viewBox="0 0 160 90" aria-hidden="true" focusable="false"><rect class="doc" x="12" y="10" width="54" height="70" rx="4"/><line class="ln" x1="20" y1="24" x2="58" y2="24"/><line class="ln" x1="20" y1="34" x2="58" y2="34"/><line class="ln" x1="20" y1="44" x2="46" y2="44"/><line class="ln" x1="20" y1="54" x2="58" y2="54"/><line class="ln" x1="20" y1="64" x2="58" y2="64"/>
+<rect class="hl a-pulse" x="18" y="39" width="42" height="9" rx="2"/><path class="g a-dash" d="M66 44 C 90 44, 90 40, 104 40"/><rect class="b hi" x="104" y="30" width="44" height="20" rx="3"/><text class="tx s" x="126" y="44" text-anchor="middle">[1]</text><path class="ok" d="M114 64 l6 6 l12 -14"/></svg></div>
+  <div class="cb"><div class="num"><span>第 10 课</span></div>
+  <h3>幻觉与溯源</h3><p>模型为什么会一本正经地编：把检索到的原文放上纸带、要求逐条引用、材料没有就说没有，并保留人工核验。可亲手把原文拖上纸带。</p>
+  <div class="meta"><span class="steps"><i></i>12 步推演</span><span class="go">进入课件<b>→</b></span></div></div>
+</a></div>
+</section>
+<section class="stage" id="context" aria-labelledby="h-context" data-n="3">
+  <div class="node" aria-hidden="true"><span></span></div>
+  <header class="sh rv"><div class="tag">第三站<span>第 11 – 12 课 · 2 课</span></div><h2 id="h-context">上下文与知识管理</h2><p>纸带有限：放什么、什么时候放、满了怎么办</p></header>
+  <div class="grid g2"><a class="card rv" style="--d:0" href="pages/skill.html">
+  <div class="viz"><svg viewBox="0 0 160 90" aria-hidden="true" focusable="false"><path class="b" d="M14 24 h28 l6 6 h44 v48 h-78 z"/><rect class="file a-fan" style="--i:0" x="104" y="14" width="40" height="15" rx="2.5"/><rect class="file a-fan" style="--i:1" x="108" y="34" width="40" height="15" rx="2.5"/><rect class="file a-fan" style="--i:2" x="112" y="54" width="40" height="15" rx="2.5"/><path class="ln" d="M92 50 C 98 50, 98 22, 104 22"/><path class="ln" d="M92 50 C 98 50, 98 42, 108 42"/><path class="ln" d="M92 50 C 98 50, 98 62, 112 62"/></svg></div>
+  <div class="cb"><div class="num"><span>第 11 课</span></div>
+  <h3>Skill 到底是什么</h3><p>把越写越长的提示词拆成按需加载的文件包：目录、说明、参考资料与脚本分层加载（可拖动 Skill 数量看纸带占用）。</p>
+  <div class="meta"><span class="steps"><i></i>12 步推演</span><span class="go">进入课件<b>→</b></span></div></div>
+</a><a class="card rv" style="--d:1" href="pages/memory-and-context-compaction.html">
+  <div class="viz"><svg viewBox="0 0 160 90" aria-hidden="true" focusable="false"><rect class="b" x="6" y="22" width="12" height="14" rx="2.5" style="--i:0" /><rect class="b" x="21" y="22" width="12" height="14" rx="2.5" style="--i:1" /><rect class="b" x="36" y="22" width="12" height="14" rx="2.5" style="--i:2" /><rect class="b" x="51" y="22" width="12" height="14" rx="2.5" style="--i:3" /><rect class="b" x="66" y="22" width="12" height="14" rx="2.5" style="--i:4" /><rect class="b" x="81" y="22" width="12" height="14" rx="2.5" style="--i:5" /><rect class="b" x="96" y="22" width="12" height="14" rx="2.5" style="--i:6" /><rect class="b" x="111" y="22" width="12" height="14" rx="2.5" style="--i:7" /><path class="ar" d="M70 46 v10 m-5 -5 l5 5 l5 -5"/><rect class="grn" x="52" y="62" width="12" height="14" rx="2.5" style="--i:0" /><rect class="grn" x="67" y="62" width="12" height="14" rx="2.5" style="--i:1" /><rect class="grn" x="82" y="62" width="12" height="14" rx="2.5" style="--i:2" /><rect class="think a-pulse" x="104" y="60" width="44" height="18" rx="3"/><text class="tx s p" x="126" y="73" text-anchor="middle">记忆</text></svg></div>
+  <div class="cb"><div class="num"><span>第 12 课</span></div>
+  <h3>Memory 与上下文压缩</h3><p>纸带满了怎么办：压缩成摘要腾出空间（以及会丢什么）；长期记忆文件如何在新会话开始时写回纸带。</p>
+  <div class="meta"><span class="steps"><i></i>13 步推演</span><span class="go">进入课件<b>→</b></span></div></div>
+</a></div>
+</section>
+<section class="stage" id="engineering" aria-labelledby="h-engineering" data-n="4">
+  <div class="node" aria-hidden="true"><span></span></div>
+  <header class="sh rv"><div class="tag">第四站<span>第 13 – 17 课 · 5 课</span></div><h2 id="h-engineering">Agent 工程</h2><p>给模型配上工具、规则与边界，让它真正去干活</p></header>
+  <div class="grid g5"><a class="card rv" style="--d:0" href="pages/mcp.html">
+  <div class="viz"><svg viewBox="0 0 160 90" aria-hidden="true" focusable="false"><rect class="b" x="10" y="10" width="34" height="16" rx="3"/><rect class="b" x="10" y="36" width="34" height="16" rx="3"/><rect class="b" x="10" y="62" width="34" height="16" rx="3"/><line class="g a-pulse" x1="80" y1="8" x2="80" y2="84"/><rect class="ice" x="116" y="10" width="34" height="16" rx="3"/><rect class="ice" x="116" y="36" width="34" height="16" rx="3"/><rect class="ice" x="116" y="62" width="34" height="16" rx="3"/><line class="ln" x1="44" y1="18" x2="80" y2="18"/><line class="ln" x1="80" y1="18" x2="116" y2="18"/><line class="ln" x1="44" y1="44" x2="80" y2="44"/><line class="ln" x1="80" y1="44" x2="116" y2="44"/><line class="ln" x1="44" y1="70" x2="80" y2="70"/><line class="ln" x1="80" y1="70" x2="116" y2="70"/><circle class="dot a-bus" cx="80" cy="18" r="3"/></svg></div>
+  <div class="cb"><div class="num"><span>第 13 课</span></div>
+  <h3>MCP 到底是什么</h3><p>AI 应用接工具的统一插口：M×N 的对接变成 M+N（可拖动工具数量），Tools / Resources / Prompts 三种能力与一次 JSON-RPC 调用。</p>
+  <div class="meta"><span class="steps"><i></i>12 步推演</span><span class="go">进入课件<b>→</b></span></div></div>
+</a><a class="card rv" style="--d:1" href="pages/hooks.html">
+  <div class="viz"><svg viewBox="0 0 160 90" aria-hidden="true" focusable="false"><ellipse class="ln" cx="80" cy="46" rx="52" ry="32"/><rect class="b" x="68" y="7" width="24" height="14" rx="3"/><rect class="b" x="120" y="39" width="24" height="14" rx="3"/><rect class="b" x="68" y="71" width="24" height="14" rx="3"/><rect class="b" x="16" y="39" width="24" height="14" rx="3"/><line class="gate a-gate" x1="112" y1="16" x2="124" y2="30"/><circle class="dot a-orbit" cx="80" cy="14" r="3"/></svg></div>
+  <div class="cb"><div class="num"><span>第 14 课</span></div>
+  <h3>Hooks 到底是什么</h3><p>提示词是告示牌，Hook 是门锁：在 Agent 循环的固定节点由程序必然执行的检查，拦截危险操作、校验结果。</p>
+  <div class="meta"><span class="steps"><i></i>13 步推演</span><span class="go">进入课件<b>→</b></span></div></div>
+</a><a class="card rv" style="--d:2" href="pages/sandbox-and-permissions.html">
+  <div class="viz"><svg viewBox="0 0 160 90" aria-hidden="true" focusable="false"><rect class="box" x="22" y="14" width="74" height="62" rx="6"/><rect class="b hi" x="46" y="38" width="26" height="16" rx="3"/><circle class="red a-bounce" cx="60" cy="24" r="3.5"/>
+<rect class="grn" x="116" y="20" width="30" height="12" rx="2"/><rect class="red2" x="116" y="58" width="30" height="12" rx="2"/><line class="ln" x1="96" y1="26" x2="116" y2="26"/><line class="ln dsh" x1="96" y1="64" x2="116" y2="64"/></svg></div>
+  <div class="cb"><div class="num"><span>第 15 课</span></div>
+  <h3>Sandbox 与权限</h3><p>让 Agent 能干活也闯不了大祸：沙盒隔离、最小权限、网络出口白名单、高风险动作人工审批（可拖动权限档位）。</p>
+  <div class="meta"><span class="steps"><i></i>12 步推演</span><span class="go">进入课件<b>→</b></span></div></div>
+</a><a class="card rv" style="--d:3" href="pages/evals-and-regression.html">
+  <div class="viz"><svg viewBox="0 0 160 90" aria-hidden="true" focusable="false"><rect class="grn a-pulse" style="--i:0" x="22" y="10" width="12" height="12" rx="2"/><rect class="grn a-pulse" style="--i:1" x="38" y="10" width="12" height="12" rx="2"/><rect class="grn a-pulse" style="--i:2" x="54" y="10" width="12" height="12" rx="2"/><rect class="grn a-pulse" style="--i:3" x="70" y="10" width="12" height="12" rx="2"/><rect class="grn a-pulse" style="--i:4" x="86" y="10" width="12" height="12" rx="2"/><rect class="grn a-pulse" style="--i:5" x="22" y="28" width="12" height="12" rx="2"/><rect class="grn a-pulse" style="--i:6" x="38" y="28" width="12" height="12" rx="2"/><rect class="grn a-pulse" style="--i:7" x="54" y="28" width="12" height="12" rx="2"/><rect class="red2 a-pulse" style="--i:8" x="70" y="28" width="12" height="12" rx="2"/><rect class="grn a-pulse" style="--i:9" x="86" y="28" width="12" height="12" rx="2"/><rect class="grn a-pulse" style="--i:10" x="22" y="46" width="12" height="12" rx="2"/><rect class="grn a-pulse" style="--i:11" x="38" y="46" width="12" height="12" rx="2"/><rect class="grn a-pulse" style="--i:12" x="54" y="46" width="12" height="12" rx="2"/><rect class="grn a-pulse" style="--i:13" x="70" y="46" width="12" height="12" rx="2"/><rect class="grn a-pulse" style="--i:14" x="86" y="46" width="12" height="12" rx="2"/><rect class="grn a-pulse" style="--i:15" x="22" y="64" width="12" height="12" rx="2"/><rect class="red2 a-pulse" style="--i:16" x="38" y="64" width="12" height="12" rx="2"/><rect class="grn a-pulse" style="--i:17" x="54" y="64" width="12" height="12" rx="2"/><rect class="grn a-pulse" style="--i:18" x="70" y="64" width="12" height="12" rx="2"/><rect class="grn a-pulse" style="--i:19" x="86" y="64" width="12" height="12" rx="2"/><line class="gate2" x1="118" y1="8" x2="118" y2="82"/><text class="tx s" x="126" y="50">闸门</text></svg></div>
+  <div class="cb"><div class="num"><span>第 16 课</span></div>
+  <h3>Evals 评测与防退化</h3><p>改一行提示词，怎么知道没改坏别处：固定题集、代码与模型裁判、版本对比与上线闸门（可拖动版本看通过与退化）。</p>
+  <div class="meta"><span class="steps"><i></i>13 步推演</span><span class="go">进入课件<b>→</b></span></div></div>
+</a><a class="card rv" style="--d:4" href="pages/sub-agent-and-agent-team.html">
+  <div class="viz"><svg viewBox="0 0 160 90" aria-hidden="true" focusable="false"><rect class="b hi" x="64" y="36" width="32" height="18" rx="3"/><line class="ln dsh" x1="80" y1="45" x2="24" y2="16"/><rect class="ice" x="10" y="8" width="28" height="16" rx="3"/><line class="ln dsh" x1="80" y1="45" x2="136" y2="16"/><rect class="ice" x="122" y="8" width="28" height="16" rx="3"/><line class="ln dsh" x1="80" y1="45" x2="24" y2="74"/><rect class="ice" x="10" y="66" width="28" height="16" rx="3"/><line class="ln dsh" x1="80" y1="45" x2="136" y2="74"/><rect class="ice" x="122" y="66" width="28" height="16" rx="3"/><rect class="grn a-ret" x="34" y="22" width="8" height="6" rx="1.5"/></svg></div>
+  <div class="cb"><div class="num"><span>第 17 课</span></div>
+  <h3>Sub-Agent、Agent Team 与多 Agent</h3><p>Sub-Agent 用独立纸带干脏活、只交回摘要；Agent Team 共享任务清单、互相发消息；多轨并行加质检闸门，以及时间与 Token 的取舍。</p>
+  <div class="meta"><span class="steps"><i></i>13 步推演</span><span class="go">进入课件<b>→</b></span></div></div>
+</a></div>
+</section>
+<section class="stage" id="finale" aria-labelledby="h-finale" data-n="5">
+  <div class="node" aria-hidden="true"><span></span></div>
+  <header class="sh rv"><div class="tag">终点<span>第 18 课 · 1 课</span></div><h2 id="h-finale">全景</h2><p>把前面的零件拼成完整的产品形态</p></header>
+  <div class="grid g1"><a class="card wide rv" style="--d:0" href="pages/agent-landscape.html">
+  <div class="viz"><svg viewBox="0 0 160 90" aria-hidden="true" focusable="false"><polyline class="g" points="14,20 146,20 146,70 14,70"/><circle class="dot a-pulse" style="--i:0" cx="14" cy="20" r="4"/><line class="ln" x1="14" y1="20" x2="80" y2="45"/><circle class="dot a-pulse" style="--i:1" cx="58" cy="20" r="4"/><line class="ln" x1="58" y1="20" x2="80" y2="45"/><circle class="dot a-pulse" style="--i:2" cx="102" cy="20" r="4"/><line class="ln" x1="102" y1="20" x2="80" y2="45"/><circle class="dot a-pulse" style="--i:3" cx="146" cy="20" r="4"/><line class="ln" x1="146" y1="20" x2="80" y2="45"/><circle class="dot a-pulse" style="--i:4" cx="146" cy="70" r="4"/><line class="ln" x1="146" y1="70" x2="80" y2="45"/><circle class="dot a-pulse" style="--i:5" cx="102" cy="70" r="4"/><line class="ln" x1="102" y1="70" x2="80" y2="45"/><circle class="dot a-pulse" style="--i:6" cx="58" cy="70" r="4"/><line class="ln" x1="58" y1="70" x2="80" y2="45"/><circle class="dot a-pulse" style="--i:7" cx="14" cy="70" r="4"/><line class="ln" x1="14" y1="70" x2="80" y2="45"/><circle class="orb a-pulse" cx="80" cy="45" r="8"/></svg></div>
+  <div class="cb"><div class="num"><span>第 18 课</span></div>
+  <h3>Agent 形态全景</h3><p>一张连续全景走过八种主流形态：Coding、GUI / Computer-Use、Deep Research、Personal、Enterprise、Ambient、Super、Embodied，最后看到它们共用的同一套底座。</p>
+  <div class="meta"><span class="steps"><i></i>12 步推演</span><span class="go">进入课件<b>→</b></span></div></div>
+</a></div>
+</section>
+</main>
+<footer>
+  <a class="fbig" href="https://chenshi.ai/">chenshi.ai</a>
+  <p class="fsub">陈石律师 · AI 底层原理与 Agent 工程图谱</p>
+  <p class="ftip">课件可用方向键、点击画面或左右滑动翻页。全屏演示时，退出全屏即可返回目录。</p>
+  <div class="flinks"><a class="btn sec" href="pages/how-you-interact-with-ai.html">从第 1 课开始<b>→</b></a><a class="btn sec" href="https://chenshi.ai/">返回 Blog</a></div>
+</footer>
+<script>
+(()=>{'use strict';
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* ---------- 顶栏 + 路径进度 + 当前站 ---------- */
+const top=document.getElementById('top'),rail=document.querySelector('.rail'),railI=rail.querySelector('i'),stages=[...document.querySelectorAll('.stage')],navA=[...document.querySelectorAll('.top nav a')];
+let ticking=false;
+function onScroll(){ticking=false;const y=scrollY,vh=innerHeight;top.classList.toggle('solid',y>40);
+  const r=rail.getBoundingClientRect();const p=Math.max(0,Math.min(1,(vh*0.55-r.top)/r.height));railI.style.height=(p*100).toFixed(2)+'%';
+  let cur=-1;stages.forEach((s,i)=>{if(s.getBoundingClientRect().top<vh*0.55)cur=i;});
+  stages.forEach((s,i)=>s.classList.toggle('on',i<=cur));navA.forEach((a,i)=>a.classList.toggle('on',i===cur));}
+addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(onScroll);}},{passive:true});addEventListener('resize',onScroll);onScroll();
+/* ---------- 出场 ---------- */
+const rv=document.querySelectorAll('.rv');
+if('IntersectionObserver' in window&&!RM){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{rootMargin:'0px 0px -8% 0px',threshold:0.08});rv.forEach(el=>io.observe(el));}
+else rv.forEach(el=>el.classList.add('in'));
+/* ---------- 卡片：鼠标光斑；触屏时在视口中央自动播放示意动画 ---------- */
+const cards=document.querySelectorAll('.card');
+cards.forEach(c=>c.addEventListener('pointermove',e=>{const r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px');}));
+if(matchMedia('(hover: none)').matches&&'IntersectionObserver' in window&&!RM){const lv=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle('live',e.isIntersecting)),{rootMargin:'-30% 0px -30% 0px'});cards.forEach(c=>lv.observe(c));}
+/* ---------- Hero：流动的纸带 ---------- */
+const cv=document.getElementById('tape'),ctx=cv.getContext('2d');
+const WORDS=['系统提示词','工具定义','MCP 工具','规则文件','记忆','Skill 简介','提问','《民法典》','第 585 条','违约金','过分高于','损失','的','可以','请求','适当减少','思考草稿','工具调用','工具结果','回答'];
+let W=0,H=0,dpr=1,spr=[],glow=null,items=[],raf=0,visible=true,last=0,t0=performance.now(),port=false;
+function mkGlow(){const s=256,c=document.createElement('canvas');c.width=c.height=s;const g=c.getContext('2d');const gr=g.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);gr.addColorStop(0,'rgba(255,226,150,1)');gr.addColorStop(.25,'rgba(255,190,80,.45)');gr.addColorStop(1,'rgba(255,170,60,0)');g.fillStyle=gr;g.fillRect(0,0,s,s);return c;}
+function mkSprite(word,i){const fs=port?15:18,ph=port?34:42,padx=port?12:16;const m=document.createElement('canvas').getContext('2d');m.font=`700 ${fs}px HCat, "Songti SC", serif`;const tw=Math.ceil(m.measureText(word).width);const w=tw+padx*2,h=ph;
+  const c=document.createElement('canvas');c.width=Math.ceil(w*dpr);c.height=Math.ceil(h*dpr);const g=c.getContext('2d');g.scale(dpr,dpr);
+  const kind=i%7===6?'ice':(i%5===4?'hot':'gold');const r=6;g.beginPath();g.roundRect?g.roundRect(1,1,w-2,h-2,r):g.rect(1,1,w-2,h-2);
+  const gr=g.createLinearGradient(0,0,0,h);if(kind==='hot'){gr.addColorStop(0,'rgba(255,208,98,.55)');gr.addColorStop(1,'rgba(200,130,30,.35)');}else if(kind==='ice'){gr.addColorStop(0,'rgba(140,200,255,.22)');gr.addColorStop(1,'rgba(60,110,160,.14)');}else{gr.addColorStop(0,'rgba(226,170,66,.26)');gr.addColorStop(1,'rgba(120,80,20,.16)');}
+  g.fillStyle=gr;g.fill();g.lineWidth=1.2;g.strokeStyle=kind==='ice'?'rgba(140,200,255,.7)':(kind==='hot'?'rgba(255,220,140,.95)':'rgba(226,170,66,.7)');g.stroke();
+  g.font=`700 ${fs}px HCat, "Songti SC", serif`;g.textAlign='center';g.textBaseline='middle';g.fillStyle=kind==='ice'?'#CFE6FF':(kind==='hot'?'#FFF3D0':'#F4EDDF');g.fillText(word,w/2,h/2+1);
+  return {c,w,h};}
+function layout(){const r=cv.getBoundingClientRect();W=r.width;H=r.height;port=W<760;dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
+  spr=WORDS.map(mkSprite);if(!glow)glow=mkGlow();items=[];let x=-40;const gap=port?8:10;for(let k=0;k<60&&x<W*2.2;k++){const i=k%spr.length;items.push({i,x});x+=spr[i].w+gap;}draw(performance.now());}
+function geo(){const ty=port?H-150:H-200;const ox=port?W-46:W-Math.max(120,W*0.12);return{ty,ox};}
+function draw(now){const t=(now-t0)/1000;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);const {ty,ox}=geo();const sp=port?34:46;
+  // 纸带底
+  const gl=ctx.createLinearGradient(0,0,ox,0);gl.addColorStop(0,'rgba(226,170,66,0)');gl.addColorStop(.25,'rgba(226,170,66,.18)');gl.addColorStop(1,'rgba(255,208,98,.5)');
+  ctx.fillStyle=gl;ctx.fillRect(0,ty+(port?20:25),ox-24,2);ctx.fillRect(0,ty-(port?20:25),ox-24,1);
+  // token 流
+  const total=items.reduce((s,it)=>s+spr[it.i].w+(port?8:10),0);const shift=(t*sp)%total;
+  for(const it of items){const s=spr[it.i];let x=it.x+shift;if(x>total-60)x-=total;if(x>ox-30||x+s.w<-60)continue;
+    const fadeL=Math.min(1,Math.max(0,(x-20)/(W*0.22)));const fadeR=Math.min(1,Math.max(0,(ox-30-x-s.w)/80));const a=fadeL*Math.max(fadeR,0);
+    if(a<=0.01)continue;ctx.globalAlpha=a;ctx.drawImage(s.c,x,ty-s.h/2,s.w,s.h);}
+  ctx.globalAlpha=1;
+  // 被吸入模型的光点
+  ctx.globalCompositeOperation='lighter';
+  for(let k=0;k<5;k++){const f=((t*0.6+k/5)%1);const x=ox-90+f*90,y=ty+Math.sin(f*Math.PI)*-6;const r=(port?22:30)*(1-f*0.6);ctx.globalAlpha=0.55*(1-f);ctx.drawImage(glow,x-r,y-r,r*2,r*2);}
+  const pul=0.85+0.15*Math.sin(t*2.2);const R=(port?70:120)*pul;ctx.globalAlpha=0.9;ctx.drawImage(glow,ox-R,ty-R,R*2,R*2);ctx.globalAlpha=0.5;const R2=R*2.4;ctx.drawImage(glow,ox-R2,ty-R2,R2*2,R2*2);
+  // 输出的下一个词
+  const ph=(t*0.35)%1;const ny=ty-(port?40:60)-ph*(port?120:220);ctx.globalAlpha=Math.sin(ph*Math.PI)*0.9;const r3=port?10:14;ctx.drawImage(glow,ox-r3,ny-r3,r3*2,r3*2);
+  ctx.globalCompositeOperation='source-over';ctx.globalAlpha=1;
+  ctx.font=`700 ${port?13:15}px HCat, "Songti SC", serif`;ctx.textAlign='center';ctx.fillStyle='rgba(244,237,223,.85)';ctx.fillText('模型',ox,ty+(port?54:76));
+  ctx.fillStyle='rgba(255,214,120,'+(0.75+0.25*Math.sin(t*2.2))+')';ctx.fillText('下一个 token',ox,ty+(port?72:98));
+  ctx.textAlign='left';ctx.fillStyle='rgba(244,237,223,.38)';ctx.font=`400 ${port?12:13}px HCat, "Songti SC", serif`;ctx.fillText('上下文纸带（示意）',port?16:Math.max(24,W*0.06),ty+(port?44:56));}
+function loop(now){raf=0;if(!visible||document.hidden)return;if(now-last>=15){last=now;draw(now);}raf=requestAnimationFrame(loop);}
+function start(){if(RM||raf)return;raf=requestAnimationFrame(loop);}
+const ready=document.fonts&&document.fonts.load?Promise.all([document.fonts.load('700 18px HCat'),document.fonts.load('400 13px HCat')]).catch(()=>{}):Promise.resolve();
+ready.then(()=>{layout();start();});
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(layout,150);});
+new IntersectionObserver(es=>{visible=es[0].isIntersecting;if(visible)start();}).observe(cv);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)start();});
+})();
+</script>
 </body>
 </html>
