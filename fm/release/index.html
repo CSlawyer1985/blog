@@ -155,7 +155,7 @@
     .topic-brick { min-height: 48px; padding-inline: 10px 14px; font-size: 13px; }
     .wall-footing { width: 100%; margin: 0; }
 }
-</style></head>
+</style><link rel="stylesheet" href="assets/fm-share.css"><script src="assets/fm-share.js" defer></script></head>
 <body><header class="wrap head"><a href="#top" class="logo"><span class="sig"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h2l2-5 2 10 3-14 3 17 2-10 2 4h2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>陈石 · 法与AI</a><nav class="nav" aria-label="页面导航"><a href="archive/index.html">往期</a><a href="#topic">专题索引</a><a href="coverage/index.html">源覆盖</a><a href="https://chenshi.ai/articles/">↖ Blog</a></nav></header>
 <main class="wrap" id="top">
 <section class="paperhead" aria-labelledby="mast"><div><div class="eyebrow">GLOBAL AI PODCAST REVIEW &nbsp; / &nbsp; CS EDITIONS</div><h1 id="mast">回声<i>FM.</i></h1><p>听见判断是怎样形成的。全球 AI 播客中文精选。</p></div><div class="edition mono"><span>ISSUE 001</span><b>25 NOV 2026</b><span>11 月盘点 · 截至 11/25</span></div></section>
@@ -312,7 +312,11 @@ if(!found.length)grid.append(el('p','没有匹配的内容。可试试「全部�
 found.forEach(d=>{
 const article=el('article','','card');article.id='card-'+d.id;
 if(['origin','physical','context'].includes(d.id))article.append(el('div',({origin:'The origin story.',physical:'The physical world.',context:'Context, not just models.'})[d.id],'band '+({origin:'alt',physical:'blue',context:''})[d.id]));
-const inner=el('div','','inner');article.append(inner);const meta=el('div','','meta');meta.append(el('span',d.cat+' / '+d.tag),el('time',d.date));inner.append(meta,el('h3',d.title),el('p','原段轻整理｜非逐字引文','reading-label'),el('p',d.summary));
+const inner=el('div','','inner');article.append(inner);const meta=el('div','','meta');meta.append(el('span',d.cat+' / '+d.tag),el('time',d.date));const shareButton=el('button','','fm-share-trigger');
+shareButton.type='button';shareButton.title='分享';shareButton.setAttribute('aria-label','分享 '+d.title);
+shareButton.dataset.fmShare="s/2026-11/"+d.id+'/';shareButton.dataset.fmTitle=d.title;
+meta.append(shareButton);
+inner.append(meta,el('h3',d.title),el('p','原段轻整理｜非逐字引文','reading-label'),el('p',d.summary));
 const use=el('p','','use');use.append(el('b','应用启示 · '),document.createTextNode(d.use));inner.append(use);
 const source=el('div','','sourceline'), names=el('div');names.append(el('div',d.show),el('div',d.proof,'credit'));source.append(names);inner.append(source);
 const trace=el('details','','trace-toggle'), label=el('summary','溯源'), panel=el('div','','trace-panel'), links=el('div','','trace-links');
@@ -415,4 +419,25 @@ draw();if(location.hash.startsWith('#card-'))requestAnimationFrame(()=>document.
   if(still.addEventListener)still.addEventListener('change',motion);else if(still.addListener)still.addListener(motion);
   host.classList.add('echo-ready');trigger.hidden=false;resize();
 })();
-</script></body></html>
+</script><dialog class="fm-share-dialog" id="fm-share-dialog" aria-labelledby="fm-share-heading">
+  <div class="fm-share-panel">
+    <header class="fm-share-panel-head">
+      <h2 id="fm-share-heading">分享这条简报</h2>
+      <form method="dialog"><button type="submit" class="fm-share-close" aria-label="关闭分享" autofocus>×</button></form>
+    </header>
+    <p class="fm-share-item" data-share-title></p>
+    <img class="fm-share-preview" data-share-image alt="" width="1080" height="1440">
+    <div class="fm-share-actions">
+      <button type="button" data-share-native hidden>系统分享</button>
+      <button type="button" data-share-copy>复制链接</button>
+      <a class="fm-share-primary" data-share-download download>保存图片</a>
+    </div>
+    <div class="fm-share-links">
+      <a data-share-entry>打开单条简报</a>
+      <a data-share-full target="_blank" rel="noopener">打开大图</a>
+    </div>
+    <p data-share-wechat hidden>微信内可长按图片保存。</p>
+    <input type="url" data-share-address aria-label="永久分享链接" readonly hidden>
+    <p class="fm-share-feedback" data-share-feedback role="status"></p>
+  </div>
+</dialog></body></html>
