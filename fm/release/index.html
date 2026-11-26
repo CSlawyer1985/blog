@@ -1,10 +1,10 @@
 <!doctype html>
 <!--
-视觉表达方案：E（层级索引）／A（专题阅读）。HTML + CSS（L1）。
-构图 modular-grid，使用 auto-grid / cluster，column-drop 响应式重排。
-阅读路径：栏目 → 主题砖 → 专题页 → 期刊中的原条目。首要焦点是可读可点的主题砖。
-分类以标题明示，砖宽随词长及材料量变化。手机保留分类跳转，所有砖均可换行。
-参考既有回声 FM 刊头的纸面色板。交互使用原生链接，含可见焦点，无新增动画或依赖。
+视觉表达方案：E（层级索引）／A（专题阅读）。HTML、CSS 与原生 SVG（L2）。
+构图 modular-grid，纵向 stack 分类、横向 cluster 错缝，窄屏改为分类标题在上。
+阅读路径：本期简报 → 跨期分类 → 主题砖 → 专题页。砖面轮廓与排线参考铅笔砌体示意图。
+分类标题标识每段墙，砖宽随词长和条目量变化。手机保留分类跳转与可换行砖。
+交互使用原生链接和可见焦点。SVG 只绘制砖面，无新增动画、外部资源或脚本。
 -->
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="canonical" href="https://fm.chenshi.ai/"><meta name="description" content="全球 AI 播客中文精选与持续更新的行业故事专题。"><title>回声 FM · 全球 AI 播客简报</title><style>
 :root{--paper:#f3f0e6;--ink:#151813;--muted:#555a50;--line:#cbc9bb;--green:#d7f57a;--forest:#1e3526;--cream:#fbf9f1;--serif:"Songti SC","Noto Serif CJK SC","STSong",Georgia,serif;--sans:system-ui,"PingFang SC","Microsoft YaHei",sans-serif;--mono:ui-monospace,Menlo,monospace}
@@ -35,131 +35,259 @@
 .trace-panel .trace-status{margin:0;font-size:11px;color:#4c5948}.trace-status:empty{display:none}
 
 
-.topic-home .paperhead { padding-block: 28px 20px; }
 .topic-wall {
-    --brick-paper: #f7f3e7;
-    --brick-ink: #273b2b;
-    --brick-edge: #a29b83;
-    --brick-seam: #d2c8b2;
-    margin: 0 0 24px;
-    padding: 16px 16px 20px;
-    border-block: 1px solid var(--brick-ink);
-    background: var(--brick-paper);
-    color: var(--brick-ink);
+    --mortar: #f9f2e1;
+    --pencil: #544231;
+    --clay: #e9b994;
+    --clay-light: #f5d7ad;
+    --clay-deep: #d8a27f;
+    --limewash: #dce0c0;
+    margin: 48px 0 32px;
+    padding: clamp(16px, 3vw, 40px);
+    background: var(--mortar);
+    border-block: 1px solid var(--pencil);
+    color: var(--pencil);
+    scroll-margin-top: 12px;
 }
-.topic-wall-head, .topic-group h3 {
+.topic-wall-head {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
     justify-content: space-between;
-    gap: 4px 12px;
+    gap: 4px 16px;
+    margin-bottom: 20px;
 }
-.topic-wall-head { margin-bottom: 12px; }
-.topic-wall h2 { margin: 0; font: 900 clamp(28px, 4vw, 45px)/1.18 var(--serif); }
-.topic-count { margin: 0; color: var(--muted); font: 700 12px/1.5 var(--sans); }
-.topic-groups { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.28fr) minmax(0, 1fr); gap: 16px; }
-.topic-group { min-width: 0; scroll-margin-top: 16px; }
+.topic-wall h2 { margin: 0; font: 900 clamp(34px, 5vw, 58px)/1.12 var(--serif); color: var(--forest); }
+.topic-count { margin: 0; font: 700 12px/1.5 var(--sans); }
+.wall-shapes { position: absolute; }
+.topic-group {
+    display: grid;
+    grid-template-columns: 104px minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
+    scroll-margin-top: 16px;
+}
 .topic-group h3 {
-    margin: 0 0 8px;
-    padding-top: 4px;
-    border-top: 1px solid var(--brick-seam);
-    font-size: 14px;
-    line-height: 1.5;
-    color: var(--forest);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 16px 0 0;
+    font: 750 14px/1.5 var(--sans);
 }
-.topic-group:target h3 { border-color: var(--forest); }
+.topic-group h3::after { content: ''; flex: 1; border-block-start: 1px dashed var(--pencil); opacity: .48; }
+.topic-group:target h3 { text-decoration: underline; text-underline-offset: 4px; }
 .topic-group ul {
     display: flex;
     flex-wrap: wrap;
-    align-content: flex-start;
-    gap: 4px;
-    margin: 0;
+    gap: 0;
+    margin: 0 44px 0 0;
     padding: 0;
     list-style: none;
 }
-.topic-group li { min-width: 0; max-width: 100%; }
+.topic-group:nth-child(even) ul { margin: 0 0 0 40px; }
+.topic-group:first-child ul { margin-inline-end: clamp(44px, 11vw, 156px); }
+.topic-group li { flex: 1 1 auto; min-width: 0; max-width: min(100%, 280px); }
+.topic-group li:nth-child(4n + 1) { flex-grow: 1.7; }
+.topic-group li:nth-child(4n + 3) { flex-grow: .7; }
+.topic-group .topic-long { flex-grow: 2.4; }
 .topic-brick {
+    --brick-face: var(--clay);
+    --brick-side: #b98262;
     position: relative;
     display: flex;
     align-items: center;
-    min-height: 44px;
-    padding: 4px 12px;
-    border: 1px solid var(--brick-edge);
-    border-radius: 5px 2px 6px 3px / 3px 5px 2px 4px;
-    background: var(--cream);
-    box-shadow: 1px 1px 0 var(--brick-seam);
-    font-size: 13px;
-    font-weight: 650;
+    justify-content: center;
+    min-height: 56px;
+    height: 100%;
+    padding: 8px 18px 12px 12px;
+    color: #30251c;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 720;
     line-height: 1.3;
     overflow-wrap: anywhere;
 }
-.topic-brick::after {
-    content: '';
+.topic-group li:nth-child(5n + 2) .topic-brick { --brick-face: var(--clay-light); }
+.topic-group li:nth-child(5n + 3) .topic-brick { --brick-face: var(--clay-deep); }
+.topic-group li:nth-child(5n + 4) .topic-brick { --brick-face: #ebc9a0; }
+.topic-group li.topic-long .topic-brick { --brick-face: var(--limewash); --brick-side: #9da584; font-weight: 830; }
+.brick-drawing {
     position: absolute;
-    inset-inline: 5px 7px;
-    bottom: 2px;
-    border-bottom: 1px solid var(--brick-seam);
-    border-radius: 0 0 58% 37%;
-    transform: rotate(-.6deg);
+    inset: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
 }
-.topic-group li:nth-child(even) .topic-brick { border-radius: 2px 6px 3px 5px / 6px 3px 5px 2px; }
-.topic-group li:nth-child(even) .topic-brick::after { transform: rotate(.6deg); }
-.topic-group li:nth-child(3n + 2) .topic-brick { background: #eee8d8; }
-.topic-group li .topic-brick--wide { padding-inline: 16px; background: #e5ebd7; font-weight: 800; }
-.topic-group li .topic-brick:hover, .topic-group li .topic-brick:active {
-    background: var(--forest);
-    border-color: var(--forest);
-    color: var(--cream);
-    text-decoration: none;
+.brick-face, .brick-side, .brick-pencil, .wall-footing path {
+    stroke: var(--pencil);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
 }
-.topic-brick:focus-visible { outline-offset: 1px; }
+.brick-face { fill: var(--brick-face); stroke-width: 1.15; }
+.brick-side { fill: var(--brick-side); stroke-width: .9; }
+.brick-pencil { fill: none; stroke-width: .7; opacity: .62; }
+.topic-brick span { position: relative; }
+.topic-group li .topic-brick:hover, .topic-group li .topic-brick:focus-visible {
+    --brick-face: #fba978;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.topic-brick:active { --brick-side: #95614a; }
+.topic-brick:focus-visible { outline: 2px solid var(--forest); outline-offset: 1px; z-index: 1; }
+.wall-footing { display: block; width: calc(100% - 116px); height: 24px; margin-inline-start: 116px; }
+.wall-footing path { fill: none; stroke-width: .9; }
 .topic-jumps { display: none; }
-@media (max-width: 1000px) {
-    .topic-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 1024px) {
+    .topic-group ul:has(li:nth-child(10)) li { flex-basis: 12%; }
+    .topic-group ul:has(li:nth-child(10)) .topic-long { flex-basis: 16%; }
 }
-@media (max-width: 650px) {
-    .topic-home .paperhead { padding-block: 20px 16px; }
-    .topic-wall { margin-bottom: 20px; padding: 12px 8px 16px; }
-    .topic-groups { grid-template-columns: minmax(0, 1fr); gap: 16px; }
-    .topic-jumps { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-bottom: 12px; }
+@media (max-width: 760px) {
+    .topic-wall { margin-block: 32px 24px; padding: 16px 12px; }
+    .topic-wall-head { margin-bottom: 0; }
+    .topic-jumps { display: flex; flex-wrap: wrap; gap: 0 12px; margin-bottom: 4px; }
     .topic-jumps a { display: inline-flex; align-items: center; min-height: 44px; font-size: 13px; text-decoration: underline; text-underline-offset: 4px; }
-}
-@media (max-width: 370px) {
-    .topic-jumps { column-gap: 8px; }
-    .topic-jumps a { font-size: 12px; }
+    .topic-group { display: block; margin-bottom: 4px; }
+    .topic-group h3 { margin: 8px 0 4px; }
+    .topic-group ul, .topic-group:first-child ul { margin: 0 12px 0 0; }
+    .topic-group:nth-child(even) ul { margin: 0 0 0 12px; }
+    .topic-group li { max-width: min(100%, 168px); }
+    .topic-brick { min-height: 48px; padding-inline: 10px 14px; font-size: 13px; }
+    .wall-footing { width: 100%; margin: 0; }
 }
 </style></head>
 <body><header class="wrap head"><a href="#top" class="logo"><span class="sig"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h2l2-5 2 10 3-14 3 17 2-10 2 4h2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>陈石 · 法与AI</a><nav class="nav" aria-label="页面导航"><a href="archive/index.html">往期</a><a href="#topic">专题索引</a><a href="coverage/index.html">源覆盖</a><a href="https://chenshi.ai/articles/">↖ Blog</a></nav></header>
-<main class="wrap topic-home" id="top">
+<main class="wrap" id="top">
 <section class="paperhead" aria-labelledby="mast"><div><div class="eyebrow">GLOBAL AI PODCAST REVIEW &nbsp; / &nbsp; CS EDITIONS</div><h1 id="mast">回声<i>FM.</i></h1><p>听见判断是怎样形成的。全球 AI 播客中文精选。</p></div><div class="edition mono"><span>ISSUE 001</span><b>25 NOV 2026</b><span>11 月盘点 · 截至 11/25</span></div></section>
-<section class="topic-wall" id="topic" aria-labelledby="topic-wall-title">
-  <header class="topic-wall-head"><h2 id="topic-wall-title">专题索引</h2><p class="topic-count">40 个专题</p></header>
-  <nav class="topic-jumps" aria-label="跳转到专题分类"><a href="#topic-category-people">人物</a><a href="#topic-category-technology">技术</a><a href="#topic-category-ideas">观点</a><a href="#topic-category-products">产品与机构</a><a href="#topic-category-practice">法律实务</a><a href="#topic-category-methods">工作方法</a></nav>
-  <div class="topic-groups"><section class="topic-group" id="topic-category-people" aria-labelledby="topic-category-people-label">
-  <h3 id="topic-category-people-label">人物</h3>
-  <ul><li><a class="topic-brick" href="topics/michael-guan/">Michael Guan</a></li><li><a class="topic-brick" href="topics/nathan-labenz/">Nathan Labenz</a></li><li><a class="topic-brick" href="topics/noam-brown/">Noam Brown</a></li><li><a class="topic-brick" href="topics/li-zhen/">李桢</a></li><li><a class="topic-brick" href="topics/jiang-guanjun/">蒋冠军</a></li><li><a class="topic-brick" href="topics/he-jiachen/">贺嘉琛</a></li><li><a class="topic-brick" href="topics/ya-ge/">鸭哥</a></li></ul>
-</section><section class="topic-group" id="topic-category-technology" aria-labelledby="topic-category-technology-label">
-  <h3 id="topic-category-technology-label">技术</h3>
-  <ul><li><a class="topic-brick topic-brick--wide" href="topics/agent-handoffs/">Agent 接力</a></li><li><a class="topic-brick topic-brick--wide" href="topics/personal-agent/">Personal Agent</a></li><li><a class="topic-brick topic-brick--wide" href="topics/skill/">Skill</a></li><li><a class="topic-brick" href="topics/agent-evaluation/">Agent 评估</a></li><li><a class="topic-brick" href="topics/ai-infrastructure/">AI 基础设施</a></li><li><a class="topic-brick" href="topics/gpu/">GPU</a></li><li><a class="topic-brick" href="topics/personal-memory/">个人记忆</a></li><li><a class="topic-brick" href="topics/shared-context/">共享上下文</a></li><li><a class="topic-brick" href="topics/continual-learning/">持续学习</a></li><li><a class="topic-brick" href="topics/model-migration/">模型迁移</a></li><li><a class="topic-brick" href="topics/knowledge-bases/">知识库</a></li><li><a class="topic-brick" href="topics/mobile-agent/">移动 Agent</a></li><li><a class="topic-brick" href="topics/behavior-models/">行为模型</a></li></ul>
-</section><section class="topic-group" id="topic-category-ideas" aria-labelledby="topic-category-ideas-label">
-  <h3 id="topic-category-ideas-label">观点</h3>
-  <ul><li><a class="topic-brick" href="topics/expert-judgment/">专家经验</a></li><li><a class="topic-brick" href="topics/product-tradeoffs/">产品取舍</a></li><li><a class="topic-brick" href="topics/open-source/">开源</a></li><li><a class="topic-brick" href="topics/permission-boundaries/">权限边界</a></li><li><a class="topic-brick" href="topics/progressive-disclosure/">渐进式披露</a></li></ul>
-</section><section class="topic-group" id="topic-category-products" aria-labelledby="topic-category-products-label">
-  <h3 id="topic-category-products-label">产品与机构</h3>
-  <ul><li><a class="topic-brick topic-brick--wide" href="topics/cisco/">Cisco</a></li><li><a class="topic-brick" href="topics/antigravity/">Antigravity</a></li><li><a class="topic-brick" href="topics/goodfire/">Goodfire</a></li><li><a class="topic-brick" href="topics/harvey/">Harvey</a></li><li><a class="topic-brick" href="topics/opendesign/">OpenDesign</a></li></ul>
-</section><section class="topic-group" id="topic-category-practice" aria-labelledby="topic-category-practice-label">
-  <h3 id="topic-category-practice-label">法律实务</h3>
-  <ul><li><a class="topic-brick" href="topics/issue-prioritization/">争点优先级</a></li><li><a class="topic-brick" href="topics/dispute-resolution/">争议解决</a></li><li><a class="topic-brick" href="topics/construction/">建工</a></li><li><a class="topic-brick" href="topics/legal-sop/">法律 SOP</a></li><li><a class="topic-brick" href="topics/evidence-chain/">证据链</a></li><li><a class="topic-brick" href="topics/acceptance-and-payment/">验收付款</a></li></ul>
-</section><section class="topic-group" id="topic-category-methods" aria-labelledby="topic-category-methods-label">
-  <h3 id="topic-category-methods-label">工作方法</h3>
-  <ul><li><a class="topic-brick" href="topics/session-handoffs/">会话接力</a></li><li><a class="topic-brick" href="topics/workflow-training/">工作流培训</a></li><li><a class="topic-brick" href="topics/independent-review/">独立复核</a></li><li><a class="topic-brick" href="topics/organizational-coordination/">组织协同</a></li></ul>
-</section></div>
-</section>
 <section class="feature" aria-labelledby="featureTitle"><div class="heroCopy"><div class="eyebrow">FIELD NOTES &nbsp; 01 / 行业专题</div><h2 id="featureTitle">做过一遍，<br>怎样才算学会？</h2><p>从律师的判断怎样被复核，到算力采购、跨设备协作、创业者的产品取舍。逐段保留上下文；另列 16 档节目的逐集覆盖及已知缺口。</p><a class="cta" href="#issue-topic">打开本期专题 <span aria-hidden="true">↘</span></a></div><div class="art"><svg viewBox="0 0 600 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><pattern id="dots" width="17" height="17" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="#a3c891" opacity=".3"/></pattern><linearGradient id="wave" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#d4f68a"/><stop offset="1" stop-color="#82ac69"/></linearGradient></defs><rect width="600" height="420" fill="url(#dots)"/><g transform="translate(300 204)" fill="none"><ellipse rx="68" ry="55.76" transform="rotate(-17)" stroke="#b9e887" stroke-width=".75" opacity="0.22"/><ellipse rx="92" ry="75.44" transform="rotate(-17)" stroke="#b9e887" stroke-width=".75" opacity="0.26"/><ellipse rx="116" ry="95.11999999999999" transform="rotate(-17)" stroke="#b9e887" stroke-width=".75" opacity="0.3"/><ellipse rx="140" ry="114.8" transform="rotate(-17)" stroke="#b9e887" stroke-width=".75" opacity="0.33999999999999997"/><ellipse rx="164" ry="134.48" transform="rotate(-17)" stroke="#b9e887" stroke-width=".75" opacity="0.38"/><ellipse rx="188" ry="154.16" transform="rotate(-17)" stroke="#b9e887" stroke-width=".75" opacity="0.42000000000000004"/><ellipse rx="212" ry="173.84" transform="rotate(-17)" stroke="#b9e887" stroke-width=".75" opacity="0.45999999999999996"/><path d="M-228 6H228M0-178V178" stroke="#b9e887" stroke-dasharray="3 7" opacity=".38"/><path d="M-198.0 -4.0v8.0" stroke="url(#wave)" stroke-linecap="round" stroke-width="2.2" opacity="0.96"/><path d="M-191.4 -15.8v31.6" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-184.8 -4.7v9.5" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-178.2 -17.8v35.6" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-171.6 -6.7v13.4" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-165.0 -20.5v41.1" stroke="url(#wave)" stroke-linecap="round" stroke-width="2.2" opacity="0.96"/><path d="M-158.4 -9.3v18.6" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-151.8 -24.2v48.4" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-145.2 -12.9v25.9" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-138.6 -28.8v57.6" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-132.0 -17.8v35.6" stroke="url(#wave)" stroke-linecap="round" stroke-width="2.2" opacity="0.96"/><path d="M-125.4 -34.3v68.7" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-118.8 -24.2v48.3" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-112.2 -40.6v81.3" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-105.6 -32.2v64.4" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-99.0 -47.4v94.7" stroke="url(#wave)" stroke-linecap="round" stroke-width="2.2" opacity="0.96"/><path d="M-92.4 -41.9v83.8" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-85.8 -54.0v108.0" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-79.2 -53.1v106.1" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-72.6 -59.9v119.8" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-66.0 -65.2v130.4" stroke="url(#wave)" stroke-linecap="round" stroke-width="2.2" opacity="0.96"/><path d="M-59.4 -64.5v129.0" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-52.8 -77.6v155.2" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-46.2 -67.1v134.2" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-39.6 -89.4v178.8" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-33.0 -67.3v134.6" stroke="url(#wave)" stroke-linecap="round" stroke-width="2.2" opacity="0.96"/><path d="M-26.4 -99.6v199.2" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-19.8 -64.9v129.8" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-13.2 -107.2v214.4" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M-6.6 -60.0v120.1" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M0.0 -111.6v223.1" stroke="url(#wave)" stroke-linecap="round" stroke-width="2.2" opacity="0.96"/><path d="M6.6 -53.1v106.1" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M13.2 -112.2v224.4" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M19.8 -44.6v89.2" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M26.4 -109.1v218.2" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M33.0 -35.5v70.9" stroke="url(#wave)" stroke-linecap="round" stroke-width="2.2" opacity="0.96"/><path d="M39.6 -102.7v205.3" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M46.2 -26.4v52.8" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M52.8 -93.5v187.0" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M59.4 -20.8v41.6" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M66.0 -82.6v165.2" stroke="url(#wave)" stroke-linecap="round" stroke-width="2.2" opacity="0.96"/><path d="M72.6 -23.1v46.2" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M79.2 -70.9v141.8" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M85.8 -23.9v47.7" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M92.4 -59.2v118.4" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M99.0 -23.4v46.8" stroke="url(#wave)" stroke-linecap="round" stroke-width="2.2" opacity="0.96"/><path d="M105.6 -48.4v96.7" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M112.2 -22.1v44.2" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M118.8 -38.8v77.6" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M125.4 -20.2v40.5" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M132.0 -30.8v61.6" stroke="url(#wave)" stroke-linecap="round" stroke-width="2.2" opacity="0.96"/><path d="M138.6 -18.3v36.5" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M145.2 -24.3v48.7" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M151.8 -16.4v32.7" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M158.4 -19.4v38.7" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M165.0 -14.8v29.5" stroke="url(#wave)" stroke-linecap="round" stroke-width="2.2" opacity="0.96"/><path d="M171.6 -15.6v31.2" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M178.2 -13.5v27.0" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M184.8 -12.8v25.6" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M191.4 -12.6v25.2" stroke="url(#wave)" stroke-linecap="round" stroke-width="1.45" opacity="0.64"/><path d="M198.0 -10.8v21.6" stroke="url(#wave)" stroke-linecap="round" stroke-width="2.2" opacity="0.96"/><circle cx="0" cy="0" r="4" fill="#e3ffa3" stroke="#1d3624" stroke-width="1.5"/><circle cx="124" cy="-99" r="4.4" fill="#d7f57a"/><circle cx="-153" cy="88" r="3.5" fill="#a9d47c"/></g></svg><span class="artNo">01.</span><canvas class="echo-canvas" aria-hidden="true"></canvas><span class="echo-pos" aria-hidden="true">ECHO LAB / SIGNAL 01</span><span class="mono artTxt" aria-hidden="true">SPECTRAL ATLAS</span><button type="button" class="echo-trigger" hidden>触发回声</button></div></section>
 <div class="picks" aria-label="从这三段开始"><a href="#card-harvey-replay" data-pick><span class="index">01</span>Harvey 的评估题从哪里来？先把专家判断做成能复跑的任务</a><a href="#card-permission-split" data-pick><span class="index">02</span>一台高权限但少自主，一台低权限却能跑更久</a><a href="#card-shared-context" data-pick><span class="index">03</span>多 Agent 各聊各的，哪些东西要存进共同的地方？</a></div>
 <section id="brief"><div class="sectionhead"><h2>本期简报</h2><p><span id="count" aria-live="polite"></span><br><span>只刊已核对的节目内容</span></p></div><div class="controls" id="controls" aria-label="筛选简报"><input id="search" class="search" placeholder="搜人物、产品或节目" type="search" aria-label="搜人物、产品或节目"></div><div id="grid" class="grid fallback"></div><noscript><p>打开 JavaScript 可使用筛选；专题与节目源无需 JavaScript。</p></noscript></section>
-<section class="dossier" id="issue-topic" aria-labelledby="topicTitle"><div><div class="eyebrow">DOSSIERS / 专题索引</div><h2 id="topicTitle">Agent 接力、评估与授权</h2><p>怎样把律师判断、任务状态和权限边界留在系统里？Harvey 的案例谈可重跑的流程，Labenz 谈权限与自主的拆分，使用者的中断经历则让交接变成可测试的问题。三者相互启发，不是同一项证明。</p><div class="chips"><button class="tag" data-topic="Agent 评估">Agent 评估</button><button class="tag" data-topic="Agent 接力">Agent 接力</button><button class="tag" data-topic="权限边界">权限边界</button></div></div><div><p><b>跨期累积</b></p><p>公开证据改变原有理解时才修订专题。不同讲述保留来源，不把转载或同一人的多次回忆算成独立证据。</p><a href="topics/index.html">查看历期专题 ↗</a></div></section>
+<section class="dossier" id="issue-topic" aria-labelledby="topicTitle"><div><div class="eyebrow">DOSSIERS / 本期专题</div><h2 id="topicTitle">Agent 接力、评估与授权</h2><p>怎样把律师判断、任务状态和权限边界留在系统里？Harvey 的案例谈可重跑的流程，Labenz 谈权限与自主的拆分，使用者的中断经历则让交接变成可测试的问题。三者相互启发，不是同一项证明。</p><div class="chips"><button class="tag" data-topic="Agent 评估">Agent 评估</button><button class="tag" data-topic="Agent 接力">Agent 接力</button><button class="tag" data-topic="权限边界">权限边界</button></div></div><div><p><b>跨期累积</b></p><p>公开证据改变原有理解时才修订专题。不同讲述保留来源，不把转载或同一人的多次回忆算成独立证据。</p><a href="topics/index.html">查看历期专题 ↗</a></div></section>
+<section class="topic-wall" id="topic" aria-labelledby="topic-wall-title">
+  <header class="topic-wall-head"><h2 id="topic-wall-title">专题索引</h2><p class="topic-count">40 个专题</p></header>
+  <nav class="topic-jumps" aria-label="跳转到专题分类"><a href="#topic-category-people">人物</a><a href="#topic-category-technology">技术</a><a href="#topic-category-ideas">观点</a><a href="#topic-category-products">产品与机构</a><a href="#topic-category-practice">法律实务</a><a href="#topic-category-methods">工作方法</a></nav>
+  <svg class="wall-shapes" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <g id="fm-brick-a">
+      <path class="brick-side" d="M7 9 149 6l8 7 0 36-4 6-43 2-101-1-6-5z"/>
+      <path class="brick-face" d="M4 8 30 6 64 7 101 5 146 6q4 1 4 6l1 26-2 12-27 1-49-1-39 2-28-2-3-4 1-18z"/>
+      <path class="brick-pencil" d="m8 13 29-2 16 1m48 35 36-1m-3-33 7 2m-3 3 5 2m9 26 4 3m-5 1 3 4M9 40l6 4m-5 0 5 3"/>
+    </g>
+    <g id="fm-brick-b">
+      <path class="brick-side" d="M5 8 146 6l10 5 2 15-1 25-6 5-54-1-40 2-51-2-3-5z"/>
+      <path class="brick-face" d="M4 7 42 6l23 2 31-2 31 1 18-2 5 5-1 20 2 14-4 6-29-1-31 3-15-2-47 1-19-2-3-5 1-14z"/>
+      <path class="brick-pencil" d="m11 12 15-1m90 35 21-2m-3-32 7 3m-7 1 6 3m10 25 6 2m-7 4 4 3M9 41l7 3"/>
+    </g>
+    <g id="fm-brick-c">
+      <path class="brick-side" d="M7 8 151 7l5 7 1 30-3 10-21 2-55-1-38 2-33-1-4-6z"/>
+      <path class="brick-face" d="m4 10 5-3 20 1 47-2 33 1 38-1 4 7-2 10 1 25-5 2-43 2-15-2-44 1-17-1-22 1-2-9 2-16z"/>
+      <path class="brick-pencil" d="m10 13 12-1m-8 4 11-1m94 31 21-2m-4-31 6 2m8 30 4 2m-6 4 5 2M7 40l6 3m0 2 7 2"/>
+    </g>
+  </defs>
+</svg>
+  <div class="topic-groups"><section class="topic-group" id="topic-category-people" aria-labelledby="topic-category-people-label">
+  <h3 id="topic-category-people-label">人物</h3>
+  <ul><li><a class="topic-brick" href="topics/michael-guan/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-a"/></svg>
+    <span>Michael Guan</span></a></li><li><a class="topic-brick" href="topics/nathan-labenz/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-b"/></svg>
+    <span>Nathan Labenz</span></a></li><li><a class="topic-brick" href="topics/noam-brown/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-c"/></svg>
+    <span>Noam Brown</span></a></li><li><a class="topic-brick" href="topics/li-zhen/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-a"/></svg>
+    <span>李桢</span></a></li><li><a class="topic-brick" href="topics/jiang-guanjun/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-b"/></svg>
+    <span>蒋冠军</span></a></li><li><a class="topic-brick" href="topics/he-jiachen/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-c"/></svg>
+    <span>贺嘉琛</span></a></li><li><a class="topic-brick" href="topics/ya-ge/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-a"/></svg>
+    <span>鸭哥</span></a></li></ul>
+</section><section class="topic-group" id="topic-category-technology" aria-labelledby="topic-category-technology-label">
+  <h3 id="topic-category-technology-label">技术</h3>
+  <ul><li class="topic-long"><a class="topic-brick" href="topics/agent-handoffs/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-b"/></svg>
+    <span>Agent 接力</span></a></li><li class="topic-long"><a class="topic-brick" href="topics/personal-agent/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-c"/></svg>
+    <span>Personal Agent</span></a></li><li class="topic-long"><a class="topic-brick" href="topics/skill/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-a"/></svg>
+    <span>Skill</span></a></li><li><a class="topic-brick" href="topics/agent-evaluation/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-b"/></svg>
+    <span>Agent 评估</span></a></li><li><a class="topic-brick" href="topics/ai-infrastructure/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-c"/></svg>
+    <span>AI 基础设施</span></a></li><li><a class="topic-brick" href="topics/gpu/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-a"/></svg>
+    <span>GPU</span></a></li><li><a class="topic-brick" href="topics/personal-memory/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-b"/></svg>
+    <span>个人记忆</span></a></li><li><a class="topic-brick" href="topics/shared-context/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-c"/></svg>
+    <span>共享上下文</span></a></li><li><a class="topic-brick" href="topics/continual-learning/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-a"/></svg>
+    <span>持续学习</span></a></li><li><a class="topic-brick" href="topics/model-migration/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-b"/></svg>
+    <span>模型迁移</span></a></li><li><a class="topic-brick" href="topics/knowledge-bases/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-c"/></svg>
+    <span>知识库</span></a></li><li><a class="topic-brick" href="topics/mobile-agent/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-a"/></svg>
+    <span>移动 Agent</span></a></li><li><a class="topic-brick" href="topics/behavior-models/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-b"/></svg>
+    <span>行为模型</span></a></li></ul>
+</section><section class="topic-group" id="topic-category-ideas" aria-labelledby="topic-category-ideas-label">
+  <h3 id="topic-category-ideas-label">观点</h3>
+  <ul><li><a class="topic-brick" href="topics/expert-judgment/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-c"/></svg>
+    <span>专家经验</span></a></li><li><a class="topic-brick" href="topics/product-tradeoffs/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-a"/></svg>
+    <span>产品取舍</span></a></li><li><a class="topic-brick" href="topics/open-source/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-b"/></svg>
+    <span>开源</span></a></li><li><a class="topic-brick" href="topics/permission-boundaries/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-c"/></svg>
+    <span>权限边界</span></a></li><li><a class="topic-brick" href="topics/progressive-disclosure/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-a"/></svg>
+    <span>渐进式披露</span></a></li></ul>
+</section><section class="topic-group" id="topic-category-products" aria-labelledby="topic-category-products-label">
+  <h3 id="topic-category-products-label">产品与机构</h3>
+  <ul><li class="topic-long"><a class="topic-brick" href="topics/cisco/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-a"/></svg>
+    <span>Cisco</span></a></li><li><a class="topic-brick" href="topics/antigravity/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-b"/></svg>
+    <span>Antigravity</span></a></li><li><a class="topic-brick" href="topics/goodfire/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-c"/></svg>
+    <span>Goodfire</span></a></li><li><a class="topic-brick" href="topics/harvey/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-a"/></svg>
+    <span>Harvey</span></a></li><li><a class="topic-brick" href="topics/opendesign/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-b"/></svg>
+    <span>OpenDesign</span></a></li></ul>
+</section><section class="topic-group" id="topic-category-practice" aria-labelledby="topic-category-practice-label">
+  <h3 id="topic-category-practice-label">法律实务</h3>
+  <ul><li><a class="topic-brick" href="topics/issue-prioritization/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-b"/></svg>
+    <span>争点优先级</span></a></li><li><a class="topic-brick" href="topics/dispute-resolution/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-c"/></svg>
+    <span>争议解决</span></a></li><li><a class="topic-brick" href="topics/construction/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-a"/></svg>
+    <span>建工</span></a></li><li><a class="topic-brick" href="topics/legal-sop/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-b"/></svg>
+    <span>法律 SOP</span></a></li><li><a class="topic-brick" href="topics/evidence-chain/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-c"/></svg>
+    <span>证据链</span></a></li><li><a class="topic-brick" href="topics/acceptance-and-payment/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-a"/></svg>
+    <span>验收付款</span></a></li></ul>
+</section><section class="topic-group" id="topic-category-methods" aria-labelledby="topic-category-methods-label">
+  <h3 id="topic-category-methods-label">工作方法</h3>
+  <ul><li><a class="topic-brick" href="topics/session-handoffs/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-c"/></svg>
+    <span>会话接力</span></a></li><li><a class="topic-brick" href="topics/workflow-training/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-a"/></svg>
+    <span>工作流培训</span></a></li><li><a class="topic-brick" href="topics/independent-review/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-b"/></svg>
+    <span>独立复核</span></a></li><li><a class="topic-brick" href="topics/organizational-coordination/">
+    <svg class="brick-drawing" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fm-brick-c"/></svg>
+    <span>组织协同</span></a></li></ul>
+</section></div>
+  <svg class="wall-footing" viewBox="0 0 640 24" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+  <path d="M2 5q106 3 202 1t204 0q126-3 222-1M10 9l76 1 131-2 61 1 131 1 81-2 140 1M27 14l25 1 26-2m348 1 96-1 32 1m21-1 32 2m-492-1 49-1m136 1 40 1M81 11l10 3m9-4 10 4m133-4 10 4m10-5 10 5m59-2 9 5m41-7 8 4m162-5 9 3m59-4 7 4"/>
+</svg>
+</section>
 <details class="roster" id="sources"><summary>16 档节目源 <small>· 访问受限不等于未更新</small></summary><ul><li><a href="https://nexttoken.tv/" target="_blank" rel="noopener">Next Token｜词元之外 ↗</a></li><li><a href="https://waytoagi.feishu.cn/wiki/VQmCwiXEGiNNIokmjO8ciaqfn6d" target="_blank" rel="noopener">未来硅世界 ↗</a> · 往期归档受限</li><li><a href="https://www.xiaoyuzhoufm.com/podcast/626b46ea9cbbf0451cf5a962" target="_blank" rel="noopener">张小珺商业访谈录 ↗</a></li><li><a href="https://www.xiaoyuzhoufm.com/podcast/648b0b641c48983391a63f98" target="_blank" rel="noopener">42章经 ↗</a></li><li><a href="https://www.xiaoyuzhoufm.com/podcast/61933ace1b4320461e91fd55" target="_blank" rel="noopener">晚点聊 LateTalk ↗</a></li><li><a href="https://www.xiaoyuzhoufm.com/podcast/60502e253c92d4f62c2a9577" target="_blank" rel="noopener">十字路口 Crossing ↗</a></li><li><a href="https://www.xiaoyuzhoufm.com/podcast/63e9ef4de99bdef7d39944c8" target="_blank" rel="noopener">AI 炼金术 ↗</a></li><li><a href="https://podcasts.apple.com/us/podcast/%E9%9D%A2%E5%9F%BA/id1686741064" target="_blank" rel="noopener">面基 ↗</a></li><li><a href="https://www.xiaoyuzhoufm.com/podcast/5e280fab418a84a0461faa3c" target="_blank" rel="noopener">三五环 ↗</a></li><li><a href="https://www.xiaoyuzhoufm.com/podcast/6013f9f58e2f7ee375cf4216" target="_blank" rel="noopener">知行小酒馆 ↗</a></li><li><a href="https://lexfridman.com/podcast/" target="_blank" rel="noopener">Lex Fridman Podcast ↗</a></li><li><a href="https://allin.com/" target="_blank" rel="noopener">All-In ↗</a></li><li><a href="https://www.cognitiverevolution.ai/" target="_blank" rel="noopener">The Cognitive Revolution ↗</a></li><li><a href="https://podcasts.apple.com/us/podcast/no-priors-artificial-intelligence-technology-startups/id1668002688" target="_blank" rel="noopener">No Priors ↗</a></li><li><a href="https://sequoiacap.com/series/training-data" target="_blank" rel="noopener">Training Data ↗</a></li><li><a href="https://unsupervised-learning.simplecast.com/" target="_blank" rel="noopener">Unsupervised Learning with Jacob Effron ↗</a></li></ul><p>选题页面只用于收集节目名单；所有卡片回链节目方原内容。每周盘点全部节目源；未能确认的覆盖缺口另列。</p></details>
 <footer class="foot"><span>回声 FM · 陈石的 AI 播客笔记</span><span>反馈仅保存在当前浏览器</span></footer>
 </main>
