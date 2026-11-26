@@ -1,33 +1,308 @@
 <!doctype html>
 <!--
-视觉表达方案：A／E，list-detail，HTML + CSS（L1）。
-主题词 → 综述（如有）→ 收录条目 → 期刊原段。使用纵向 stack，窄屏自然换行。
-沿用回声 FM 的纸面色板和导航。使用原生链接，无新增动画或依赖。
+视觉表达方案：E（层级索引），HTML/CSS 与原生 JS。沿用回声 FM 的纸色、墨绿与衬线标题。
+以 grid 划分分类标题和词块，以 cluster 排列链接，窄屏改为单列分类和自然换行。
+阅读路径：分类导航或搜索 → 专题名称与收录量 → 专题页。搜索时展开简介，辅助辨认同类条目。
+分类使用原生锚点，列表由站点构建，搜索只筛页面中的公开内容。无动画或外部依赖。
 -->
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>专题库 · 回声 FM</title><link rel="canonical" href="https://fm.chenshi.ai/topics/"><style>
-    :root{--paper:#f3f0e6;--ink:#19251b;--pale:#fbf9f1;--green:#345638;--line:#cbc9bb}*{box-sizing:border-box}body{margin:0;font:15px/1.75 system-ui,"PingFang SC",sans-serif;background:var(--paper);color:var(--ink)}main{width:min(1040px,calc(100% - 40px));margin:auto}nav{display:flex;gap:20px;flex-wrap:wrap;padding:20px 0;border-bottom:1px solid var(--line);font-size:13px}a{color:var(--green);text-underline-offset:4px}header{padding:28px 0 18px}h1,h2{font-family:"Songti SC","Noto Serif CJK SC",serif;margin:.22em 0;letter-spacing:-.045em}h1{font-size:clamp(42px,8vw,82px);line-height:1.13}h2{font-size:clamp(24px,4vw,40px)}small,summary span{color:#526052}.k{font:700 11px ui-monospace,monospace;letter-spacing:.16em;color:#4c6548}.block,details{border:1px solid var(--line);padding:16px 18px;background:var(--pale);margin:10px 0}summary{cursor:pointer;font-weight:750}ul{padding-left:22px}.block p{margin:4px 0 0}footer{border-top:1px solid var(--line);padding:20px 0;margin-top:38px;color:#526052;font-size:12px}input{font:inherit;padding:7px 10px;border:1px solid var(--line);width:min(100%,350px);background:var(--pale)}[hidden]{display:none!important}.group{margin:22px 0}.sub{display:block;font-weight:400;font-size:13px}.warn{border-left:3px solid #ad7038}
-    </style></head><body><main><nav><a href="../index.html">← 回声 FM</a><a href="../archive/index.html">往期</a><a href="../topics/index.html">专题库</a><a href="../coverage/index.html">源覆盖</a><a href="https://chenshi.ai/articles/">Blog ↗</a></nav><header><div class="k">CROSS-ISSUE DOSSIERS</div><h1>专题库</h1></header><p>按人物、公司、产品或技术浏览。专题内可读跨集摘要，也可沿时间点回听原节目。</p><input id="q" type="search" aria-label="搜索专题" placeholder="搜名称、别名或关键词"><p id="no-topics" hidden role="status">没有匹配的专题。</p><section class="group"><h2>人物</h2><article class="topic block" data-aliases="Jensen Huang · Jen-Hsun Huang"><h3><a href="jensen-huang/">黄仁勋 ↗</a></h3><small>4 集 · 2 集核对官方文字稿 · 2 集附节目方提纲</small><p>三条线可一起看：黄仁勋本人如何回顾押注 CUDA，使用英伟达工具的人如何描述亲身经历，以及节目在领导层变动前后如何分析公司的选择。本人自述、参与者回忆和外部推演各有来源。</p></article><article class="topic block" data-aliases="达里奥·阿莫迪 · 达里奥"><h3><a href="dario-amodei/">Dario Amodei ↗</a></h3><small>2 集 · 1 集核对官方文字稿 · 1 集附节目方提纲</small><p>沿着百度语音识别的早年经历和 Anthropic 的模型研究读 Dario。前者看到扩大数据与网络的机会，后者讨论这类经验能在多大程度上外推。</p></article><article class="topic block" data-aliases="诺姆·布朗"><h3><a href="noam-brown/">Noam Brown ↗</a></h3><small>2 集 · 2 集核对官方文字稿</small><p>两次访谈可以串起 Brown 从扑克、谈判游戏 Diplomacy 转向语言模型推理的过程。2024 年回顾 o1 的技术取舍，2026 年现场访谈补上了研究方向改变的原因。</p></article><article class="topic block" data-aliases="Cai Wei"><h3><a href="cai-wei/">蔡伟 ↗</a></h3><small>2 集 · 2 集附节目方提纲</small><p>目前可从两场同一嘉宾的访谈入手，一场沿着个人 AI 产品史讨论市场和入口，一场回到灵光 2.0 的产品选择与服务供给。</p></article><article class="topic block" data-aliases=""><h3><a href="boris-cherny/">Boris Cherny ↗</a></h3><small>1 集 · 1 集附节目方提纲</small><p>可从 Claude Code 的开发过程入手。节目方提纲涵盖这个产品怎样形成，以及团队怎样使用它开发软件。</p></article><article class="topic block" data-aliases=""><h3><a href="chris-olah/">Chris Olah ↗</a></h3><small>1 集 · 1 集核对官方文字稿</small><p>这场访谈可以作为理解 Olah 的可解释性研究方法的入口。可连同同集对模型行为的另一段访谈阅读。</p></article><article class="topic block" data-aliases=""><h3><a href="gabe-pereyra/">Gabe Pereyra ↗</a></h3><small>1 集 · 1 集核对官方文字稿</small><p>Harvey 的联合创始人。他在这场访谈里解释了团队如何为法律应用建立自己的评测和训练能力。</p></article><article class="topic block" data-aliases=""><h3><a href="ronak-malde/">Ronak Malde ↗</a></h3><small>1 集 · 1 集核对官方文字稿</small><p>从他在 Windsurf 对编辑、重试等用户行为的观察，读到后来在 Trajectory 对任务环境和持续学习信号的设计。</p></article><article class="topic block" data-aliases=""><h3><a href="michael-guan/">Michael Guan ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="nathan-labenz/">Nathan Labenz ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="li-zhen/">李桢 ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="jiang-guanjun/">蒋冠军 ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="he-jiachen/">贺嘉琛 ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="ya-ge/">鸭哥 ↗</a></h3><small>1 条简报</small></article></section><section class="group"><h2>技术</h2><article class="topic block" data-aliases="Agent evals · 智能体评估"><h3><a href="agent-evaluation/">Agent 评估 ↗</a></h3><small>4 集 · 3 集核对官方文字稿 · 1 集附节目方提纲</small><p>把衡量对象、复现环境和判分规则拆开读。法律场景适合逐项检查任务要求，生产场景要比较线上轨迹与离线题；成绩只对应各自的测量口径。</p></article><article class="topic block" data-aliases="图形处理器 · GPU 算力"><h3><a href="gpu/">GPU ↗</a></h3><small>3 集 · 1 集核对官方文字稿 · 2 集附节目方提纲</small><p>从单卡规格看到实际算力交付：软件可否适配、集群和冷却怎样协调、实际任务成本落在哪些环节。供给或价格的讨论保留节目时间。</p></article><article class="topic block" data-aliases="个人 Agent · 个人 AI 助理 · PA"><h3><a href="personal-agent/">Personal Agent ↗</a></h3><small>3 集 · 3 集附节目方提纲</small><p>把个人 Agent 当一类产品来读：用户要持续交给它什么任务、上下文怎样保留，外部服务能否把事项接完。单个产品的热度只反映其中一部分。</p></article><article class="topic block" data-aliases="Mechanistic Interpretability · 机理可解释性"><h3><a href="mechanistic-interpretability/">机制可解释性 ↗</a></h3><small>3 集 · 3 集核对官方文字稿</small><p>把对内部信号的描述和干预结果放到一处看。模型激活出现规律、研究者能预测这类规律、干预后行为确实变化，是三种不同强度的证据。</p></article><article class="topic block" data-aliases="Continual Learning"><h3><a href="continual-learning/">持续学习 ↗</a></h3><small>2 集 · 2 集核对官方文字稿</small><p>顺着任务记录、有效反馈和更新目标三步读。时效性强的事实与只属于单个用户的偏好，适合由外部状态提供；多次出现的共性失误才值得研究训练能否修正。</p></article><article class="topic block" data-aliases="Test-Time Scaling · Inference-Time Scaling · 推理时算力"><h3><a href="test-time-scaling/">推理时扩展 ↗</a></h3><small>2 集 · 2 集核对官方文字稿</small><p>用任务是否可验证、得分是否随额外推理预算变化这两条线理解推理扩展。现有材料收录实验者和算力供应商各自的说法。</p></article><article class="topic block" data-aliases="Compute Unified Device Architecture"><h3><a href="cuda/">CUDA ↗</a></h3><small>1 集 · 1 集核对官方文字稿</small><p>目前的核心材料是黄仁勋回顾 CUDA 从消费端发行到建立开发者安装基础的过程。可从产品分发和技术兼容两条线理解，CUDA 与 GPU 是不同层次。</p></article><article class="topic block" data-aliases="RSI · Recursive Self-Improvement"><h3><a href="recursive-self-improvement/">递归自我改进 ↗</a></h3><small>1 集 · 1 集附节目方提纲</small><p>先区分有明确可测目标的局部反复优化，以及更强意义上的通用自我改进。现有节目提纲可以定位前一种实践，结论仍随实际任务及评估核验。</p></article><article class="topic block" data-aliases=""><h3><a href="agent-handoffs/">Agent 接力 ↗</a></h3><small>5 条简报</small><p>真实回顾指出旧会话未必自然继承，主持人另举隔开权限与自主的经验。尚不能推断普遍工具兼容性。下一步补充重启、回滚、避免重复动作的实测。</p><small>版本 01 · 2026-11-25</small></article><article class="topic block" data-aliases=""><h3><a href="skill/">Skill ↗</a></h3><small>2 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="ai-infrastructure/">AI 基础设施 ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="personal-memory/">个人记忆 ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="shared-context/">共享上下文 ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="model-migration/">模型迁移 ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="knowledge-bases/">知识库 ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="mobile-agent/">移动 Agent ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="behavior-models/">行为模型 ↗</a></h3><small>1 条简报</small></article></section><section class="group"><h2>观点</h2><article class="topic block" data-aliases=""><h3><a href="expert-judgment/">专家经验 ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="product-tradeoffs/">产品取舍 ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="open-source/">开源 ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="permission-boundaries/">权限边界 ↗</a></h3><small>1 条简报</small><p>主动性和权限是两个独立变量。身份延续与凭据、账户权限跨设备共享也不是一回事；优先检验最小权限下能否不中断。</p><small>版本 01 · 2026-11-25</small></article><article class="topic block" data-aliases=""><h3><a href="progressive-disclosure/">渐进式披露 ↗</a></h3><small>1 条简报</small></article></section><section class="group"><h2>产品</h2><article class="topic block" data-aliases="Claude 的编程 Agent"><h3><a href="claude-code/">Claude Code ↗</a></h3><small>2 集 · 1 集核对官方文字稿 · 1 集附节目方提纲</small><p>这里汇集工具构建者的工作方式，以及其他节目在比较编程 Agent 时对实际使用成本的观察。转载或产品宣传中的速度、配额与产出都不作为通用结论。</p></article><article class="topic block" data-aliases="Harvey AI"><h3><a href="harvey/">Harvey ↗</a></h3><small>2 集 · 2 集核对官方文字稿</small><p>两个相邻视角：Harvey 团队讲如何把律师工作变成可以评估的任务，合作方 Trajectory 则讲怎样把任务轨迹变成可重跑的训练环境。现有表现说法来自当事方和特定任务。</p></article><article class="topic block" data-aliases="Kimi K3"><h3><a href="kimi/">Kimi ↗</a></h3><small>2 集 · 2 集附节目方提纲</small><p>这批材料一边讨论 Kimi K3 的架构与部署成本，一边回顾用模型辅助优化推理环节的做法。任务速度需要按实际配置和整个工作流理解。</p></article><article class="topic block" data-aliases="灵光 · 灵光 2.0 · LingGuang"><h3><a href="lingguang/">蚂蚁灵光 ↗</a></h3><small>2 集 · 2 集附节目方提纲</small><p>这两期材料能看到灵光从早期形态走向个人 Agent 的产品理由。尤其值得比较的是把事项当作服务单位、跨服务供给，以及留存反馈能验证到哪一步。</p></article><article class="topic block" data-aliases=""><h3><a href="antigravity/">Antigravity ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="opendesign/">OpenDesign ↗</a></h3><small>1 条简报</small></article></section><section class="group"><h2>公司与机构</h2><article class="topic block" data-aliases="Anthropic PBC"><h3><a href="anthropic/">Anthropic ↗</a></h3><small>4 集 · 1 集核对官方文字稿 · 3 集附节目方提纲</small><p>把技术方向、开发工具和企业需求放到同一专题。Dario 的访谈解释研究取舍，两期《晚点聊》则分别从公开材料和企业顾客视角提出可回听的问题。</p></article><article class="topic block" data-aliases="NVIDIA · Nvidia"><h3><a href="nvidia/">英伟达 ↗</a></h3><small>4 集 · 2 集核对官方文字稿 · 2 集附节目方提纲</small><p>这些节目从三个层次讲英伟达：有装机量的软件平台、从芯片扩展到机房的系统能力，以及云厂商和其他算力路线的竞争。节目中的商业判断按当期语境阅读。</p></article><article class="topic block" data-aliases="Goodfire AI"><h3><a href="goodfire/">Goodfire ↗</a></h3><small>2 集 · 2 集核对官方文字稿</small><p>早期访谈解释为什么要找可读的内部特征；较新的访谈提出从 MLP 单个神经元出发，并用干预或预测来检验解释。两期展示问题和方法如何变化。</p></article><article class="topic block" data-aliases="Trajectory AI"><h3><a href="trajectory/">Trajectory ↗</a></h3><small>2 集 · 2 集核对官方文字稿</small><p>联合创始人 Ronak Malde 和 Arjun Karanam 在不同场合讲述的共同点：真实任务里留下的轨迹和反馈是潜在的改进信号，再决定该改模型、工具还是上下文。两期属于同一团队的解释。</p></article><article class="topic block" data-aliases="Moonshot AI"><h3><a href="moonshot-ai/">月之暗面 ↗</a></h3><small>2 集 · 2 集附节目方提纲</small><p>从 Kimi K3 的系统选型与团队如何组织模型辅助优化两条线读。这批节目分别提供外部技术解读和参与者访谈的回听线索。</p></article><article class="topic block" data-aliases="Cerebras Systems"><h3><a href="cerebras/">Cerebras ↗</a></h3><small>1 集 · 1 集附节目方提纲</small><p>从早期投资人周楠的访谈了解 Cerebras 的晶圆级架构和商业落地。先听它在哪些负载上提供另一种选择，再理解为什么交付与工程风险决定了上限。</p></article><article class="topic block" data-aliases=""><h3><a href="cisco/">Cisco ↗</a></h3><small>2 条简报</small></article></section><section class="group"><h2>法律实务</h2><article class="topic block" data-aliases=""><h3><a href="issue-prioritization/">争点优先级 ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="dispute-resolution/">争议解决 ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="construction/">建工 ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="legal-sop/">法律 SOP ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="evidence-chain/">证据链 ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="acceptance-and-payment/">验收付款 ↗</a></h3><small>1 条简报</small></article></section><section class="group"><h2>工作方法</h2><article class="topic block" data-aliases="可复现任务环境 · Replayable Task Environments"><h3><a href="replayable-task-environments/">任务复现环境 ↗</a></h3><small>3 集 · 3 集核对官方文字稿</small><p>把一次实际工作中的起始状态、可用工具、步骤和判分规则保存下来，便于复跑同一个任务并比较改动。可读 Trajectory 的环境设计与 Harvey 的领域评估例子。</p></article><article class="topic block" data-aliases=""><h3><a href="session-handoffs/">会话接力 ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="workflow-training/">工作流培训 ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="independent-review/">独立复核 ↗</a></h3><small>1 条简报</small></article><article class="topic block" data-aliases=""><h3><a href="organizational-coordination/">组织协同 ↗</a></h3><small>1 条简报</small></article></section><footer>回声 FM · 全球 AI 播客中文精选</footer></main><script>
-const query = document.getElementById('q');
-const groups = Array.from(document.querySelectorAll('.group'), group => ({
-    element: group,
-    topics: Array.from(group.querySelectorAll('.topic'), topic => ({
-        element: topic,
-        text: (topic.dataset.aliases + ' ' + topic.textContent).normalize('NFKC').toLowerCase()
-    }))
-}));
-query.addEventListener('input', () => {
-    const term = query.value.trim().normalize('NFKC').toLowerCase();
-    let matches = 0;
-    for (const group of groups) {
-        let count = 0;
-        for (const topic of group.topics) {
-            const matched = topic.text.includes(term);
-            topic.element.hidden = !matched;
-            count += Number(matched);
-        }
-        group.element.hidden = count === 0;
-        matches += count;
-    }
-    document.getElementById('no-topics').hidden = matches > 0;
-});
-</script></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>专题库 · 回声 FM</title>
+  <link rel="canonical" href="https://fm.chenshi.ai/topics/">
+  <link rel="stylesheet" href="../assets/fm-topic.css">
+  <link rel="stylesheet" href="../assets/fm-topic-index.css">
+  <script src="../assets/fm-topic-index.js" defer></script>
+</head>
+<body class="library">
+  <a class="skip-to-content" href="#directory">跳到专题索引</a>
+  <header class="topic-masthead wrap">
+    <a class="station" href="../">回声 <i>FM</i></a>
+    <nav aria-label="站内导航"><a href="../#topic">首页专题墙</a><a href="../archive/">往期</a></nav>
+  </header>
+  <main class="wrap">
+    <header class="library-cover">
+      <div>
+        <p class="library-count">60 个专题 <span aria-hidden="true">/</span> 7 个分类</p>
+        <h1>专题库</h1>
+        <p class="library-dek">沿人物、产品和技术，查找历期播客讨论。</p>
+      </div>
+      <form class="library-search" role="search" id="library-search" hidden>
+        <label for="q">搜索专题</label>
+        <div class="library-field"><input id="q" type="search" placeholder="名称、别名或关键词" autocomplete="off">
+          <button type="button" id="library-clear" hidden>清空</button></div>
+        <p id="library-status" role="status"></p>
+      </form>
+    </header>
+    <nav class="library-jumps" aria-label="专题分类"><a href="#category-people">人物 <span data-count>14</span></a><a href="#category-technology">技术 <span data-count>17</span></a><a href="#category-ideas">观点 <span data-count>5</span></a><a href="#category-products">产品 <span data-count>6</span></a><a href="#category-organizations">公司与机构 <span data-count>7</span></a><a href="#category-practice">法律实务 <span data-count>6</span></a><a href="#category-methods">工作方法 <span data-count>5</span></a></nav>
+    <div id="directory" tabindex="-1"><section class="index-group" id="category-people" aria-labelledby="category-people-label">
+  <header><h2 id="category-people-label">人物</h2><p><span data-count>14</span> 个专题</p></header>
+  <ul class="index-tokens"><li class="index-token index-token--profile">
+  <a href="jensen-huang/"><span class="index-name">黄仁勋</span>
+    <span class="index-count">4 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 Jensen Huang · Jen-Hsun Huang</p><p>三条线可一起看：黄仁勋本人如何回顾押注 CUDA，使用英伟达工具的人如何描述亲身经历，以及节目在领导层变动前后如何分析公司的选择。本人自述、参与者回忆和外部推演各有来源。</p><p class="index-preview-meta">2 集核对官方文字稿 · 2 集附节目方提纲</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="dario-amodei/"><span class="index-name">Dario Amodei</span>
+    <span class="index-count">2 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 达里奥·阿莫迪 · 达里奥</p><p>沿着百度语音识别的早年经历和 Anthropic 的模型研究读 Dario。前者看到扩大数据与网络的机会，后者讨论这类经验能在多大程度上外推。</p><p class="index-preview-meta">1 集核对官方文字稿 · 1 集附节目方提纲</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="noam-brown/"><span class="index-name">Noam Brown</span>
+    <span class="index-count">2 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 诺姆·布朗</p><p>两次访谈可以串起 Brown 从扑克、谈判游戏 Diplomacy 转向语言模型推理的过程。2024 年回顾 o1 的技术取舍，2026 年现场访谈补上了研究方向改变的原因。</p><p class="index-preview-meta">2 集核对官方文字稿</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="cai-wei/"><span class="index-name">蔡伟</span>
+    <span class="index-count">2 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 Cai Wei</p><p>目前可从两场同一嘉宾的访谈入手，一场沿着个人 AI 产品史讨论市场和入口，一场回到灵光 2.0 的产品选择与服务供给。</p><p class="index-preview-meta">2 集附节目方提纲</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="boris-cherny/"><span class="index-name">Boris Cherny</span>
+    <span class="index-count">1 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p>可从 Claude Code 的开发过程入手。节目方提纲涵盖这个产品怎样形成，以及团队怎样使用它开发软件。</p><p class="index-preview-meta">1 集附节目方提纲</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="chris-olah/"><span class="index-name">Chris Olah</span>
+    <span class="index-count">1 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p>这场访谈可以作为理解 Olah 的可解释性研究方法的入口。可连同同集对模型行为的另一段访谈阅读。</p><p class="index-preview-meta">1 集核对官方文字稿</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="gabe-pereyra/"><span class="index-name">Gabe Pereyra</span>
+    <span class="index-count">1 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p>Harvey 的联合创始人。他在这场访谈里解释了团队如何为法律应用建立自己的评测和训练能力。</p><p class="index-preview-meta">1 集核对官方文字稿</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="ronak-malde/"><span class="index-name">Ronak Malde</span>
+    <span class="index-count">1 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p>从他在 Windsurf 对编辑、重试等用户行为的观察，读到后来在 Trajectory 对任务环境和持续学习信号的设计。</p><p class="index-preview-meta">1 集核对官方文字稿</p></div>
+</li><li class="index-token">
+  <a href="michael-guan/"><span class="index-name">Michael Guan</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="nathan-labenz/"><span class="index-name">Nathan Labenz</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="li-zhen/"><span class="index-name">李桢</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="jiang-guanjun/"><span class="index-name">蒋冠军</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="he-jiachen/"><span class="index-name">贺嘉琛</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="ya-ge/"><span class="index-name">鸭哥</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li></ul>
+</section><section class="index-group" id="category-technology" aria-labelledby="category-technology-label">
+  <header><h2 id="category-technology-label">技术</h2><p><span data-count>17</span> 个专题</p></header>
+  <ul class="index-tokens"><li class="index-token index-token--profile">
+  <a href="agent-evaluation/"><span class="index-name">Agent 评估</span>
+    <span class="index-count">4 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 Agent evals · 智能体评估</p><p>把衡量对象、复现环境和判分规则拆开读。法律场景适合逐项检查任务要求，生产场景要比较线上轨迹与离线题；成绩只对应各自的测量口径。</p><p class="index-preview-meta">3 集核对官方文字稿 · 1 集附节目方提纲</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="gpu/"><span class="index-name">GPU</span>
+    <span class="index-count">3 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 图形处理器 · GPU 算力</p><p>从单卡规格看到实际算力交付：软件可否适配、集群和冷却怎样协调、实际任务成本落在哪些环节。供给或价格的讨论保留节目时间。</p><p class="index-preview-meta">1 集核对官方文字稿 · 2 集附节目方提纲</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="personal-agent/"><span class="index-name">Personal Agent</span>
+    <span class="index-count">3 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 个人 Agent · 个人 AI 助理 · PA</p><p>把个人 Agent 当一类产品来读：用户要持续交给它什么任务、上下文怎样保留，外部服务能否把事项接完。单个产品的热度只反映其中一部分。</p><p class="index-preview-meta">3 集附节目方提纲</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="mechanistic-interpretability/"><span class="index-name">机制可解释性</span>
+    <span class="index-count">3 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 Mechanistic Interpretability · 机理可解释性</p><p>把对内部信号的描述和干预结果放到一处看。模型激活出现规律、研究者能预测这类规律、干预后行为确实变化，是三种不同强度的证据。</p><p class="index-preview-meta">3 集核对官方文字稿</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="continual-learning/"><span class="index-name">持续学习</span>
+    <span class="index-count">2 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 Continual Learning</p><p>顺着任务记录、有效反馈和更新目标三步读。时效性强的事实与只属于单个用户的偏好，适合由外部状态提供；多次出现的共性失误才值得研究训练能否修正。</p><p class="index-preview-meta">2 集核对官方文字稿</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="test-time-scaling/"><span class="index-name">推理时扩展</span>
+    <span class="index-count">2 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 Test-Time Scaling · Inference-Time Scaling · 推理时算力</p><p>用任务是否可验证、得分是否随额外推理预算变化这两条线理解推理扩展。现有材料收录实验者和算力供应商各自的说法。</p><p class="index-preview-meta">2 集核对官方文字稿</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="cuda/"><span class="index-name">CUDA</span>
+    <span class="index-count">1 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 Compute Unified Device Architecture</p><p>目前的核心材料是黄仁勋回顾 CUDA 从消费端发行到建立开发者安装基础的过程。可从产品分发和技术兼容两条线理解，CUDA 与 GPU 是不同层次。</p><p class="index-preview-meta">1 集核对官方文字稿</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="recursive-self-improvement/"><span class="index-name">递归自我改进</span>
+    <span class="index-count">1 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 RSI · Recursive Self-Improvement</p><p>先区分有明确可测目标的局部反复优化，以及更强意义上的通用自我改进。现有节目提纲可以定位前一种实践，结论仍随实际任务及评估核验。</p><p class="index-preview-meta">1 集附节目方提纲</p></div>
+</li><li class="index-token">
+  <a href="agent-handoffs/"><span class="index-name">Agent 接力</span>
+    <span class="index-count">5 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p>真实回顾指出旧会话未必自然继承，主持人另举隔开权限与自主的经验。尚不能推断普遍工具兼容性。下一步补充重启、回滚、避免重复动作的实测。</p><p class="index-preview-meta">版本 01 · 2026-11-25</p></div>
+</li><li class="index-token">
+  <a href="skill/"><span class="index-name">Skill</span>
+    <span class="index-count">2 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="ai-infrastructure/"><span class="index-name">AI 基础设施</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="personal-memory/"><span class="index-name">个人记忆</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="shared-context/"><span class="index-name">共享上下文</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="model-migration/"><span class="index-name">模型迁移</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="knowledge-bases/"><span class="index-name">知识库</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="mobile-agent/"><span class="index-name">移动 Agent</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="behavior-models/"><span class="index-name">行为模型</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li></ul>
+</section><section class="index-group" id="category-ideas" aria-labelledby="category-ideas-label">
+  <header><h2 id="category-ideas-label">观点</h2><p><span data-count>5</span> 个专题</p></header>
+  <ul class="index-tokens"><li class="index-token">
+  <a href="expert-judgment/"><span class="index-name">专家经验</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="product-tradeoffs/"><span class="index-name">产品取舍</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="open-source/"><span class="index-name">开源</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="permission-boundaries/"><span class="index-name">权限边界</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p>主动性和权限是两个独立变量。身份延续与凭据、账户权限跨设备共享也不是一回事；优先检验最小权限下能否不中断。</p><p class="index-preview-meta">版本 01 · 2026-11-25</p></div>
+</li><li class="index-token">
+  <a href="progressive-disclosure/"><span class="index-name">渐进式披露</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li></ul>
+</section><section class="index-group" id="category-products" aria-labelledby="category-products-label">
+  <header><h2 id="category-products-label">产品</h2><p><span data-count>6</span> 个专题</p></header>
+  <ul class="index-tokens"><li class="index-token index-token--profile">
+  <a href="claude-code/"><span class="index-name">Claude Code</span>
+    <span class="index-count">2 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 Claude 的编程 Agent</p><p>这里汇集工具构建者的工作方式，以及其他节目在比较编程 Agent 时对实际使用成本的观察。转载或产品宣传中的速度、配额与产出都不作为通用结论。</p><p class="index-preview-meta">1 集核对官方文字稿 · 1 集附节目方提纲</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="harvey/"><span class="index-name">Harvey</span>
+    <span class="index-count">2 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 Harvey AI</p><p>两个相邻视角：Harvey 团队讲如何把律师工作变成可以评估的任务，合作方 Trajectory 则讲怎样把任务轨迹变成可重跑的训练环境。现有表现说法来自当事方和特定任务。</p><p class="index-preview-meta">2 集核对官方文字稿</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="kimi/"><span class="index-name">Kimi</span>
+    <span class="index-count">2 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 Kimi K3</p><p>这批材料一边讨论 Kimi K3 的架构与部署成本，一边回顾用模型辅助优化推理环节的做法。任务速度需要按实际配置和整个工作流理解。</p><p class="index-preview-meta">2 集附节目方提纲</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="lingguang/"><span class="index-name">蚂蚁灵光</span>
+    <span class="index-count">2 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 灵光 · 灵光 2.0 · LingGuang</p><p>这两期材料能看到灵光从早期形态走向个人 Agent 的产品理由。尤其值得比较的是把事项当作服务单位、跨服务供给，以及留存反馈能验证到哪一步。</p><p class="index-preview-meta">2 集附节目方提纲</p></div>
+</li><li class="index-token">
+  <a href="antigravity/"><span class="index-name">Antigravity</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="opendesign/"><span class="index-name">OpenDesign</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li></ul>
+</section><section class="index-group" id="category-organizations" aria-labelledby="category-organizations-label">
+  <header><h2 id="category-organizations-label">公司与机构</h2><p><span data-count>7</span> 个专题</p></header>
+  <ul class="index-tokens"><li class="index-token index-token--profile">
+  <a href="anthropic/"><span class="index-name">Anthropic</span>
+    <span class="index-count">4 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 Anthropic PBC</p><p>把技术方向、开发工具和企业需求放到同一专题。Dario 的访谈解释研究取舍，两期《晚点聊》则分别从公开材料和企业顾客视角提出可回听的问题。</p><p class="index-preview-meta">1 集核对官方文字稿 · 3 集附节目方提纲</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="nvidia/"><span class="index-name">英伟达</span>
+    <span class="index-count">4 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 NVIDIA · Nvidia</p><p>这些节目从三个层次讲英伟达：有装机量的软件平台、从芯片扩展到机房的系统能力，以及云厂商和其他算力路线的竞争。节目中的商业判断按当期语境阅读。</p><p class="index-preview-meta">2 集核对官方文字稿 · 2 集附节目方提纲</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="goodfire/"><span class="index-name">Goodfire</span>
+    <span class="index-count">2 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 Goodfire AI</p><p>早期访谈解释为什么要找可读的内部特征；较新的访谈提出从 MLP 单个神经元出发，并用干预或预测来检验解释。两期展示问题和方法如何变化。</p><p class="index-preview-meta">2 集核对官方文字稿</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="trajectory/"><span class="index-name">Trajectory</span>
+    <span class="index-count">2 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 Trajectory AI</p><p>联合创始人 Ronak Malde 和 Arjun Karanam 在不同场合讲述的共同点：真实任务里留下的轨迹和反馈是潜在的改进信号，再决定该改模型、工具还是上下文。两期属于同一团队的解释。</p><p class="index-preview-meta">2 集核对官方文字稿</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="moonshot-ai/"><span class="index-name">月之暗面</span>
+    <span class="index-count">2 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 Moonshot AI</p><p>从 Kimi K3 的系统选型与团队如何组织模型辅助优化两条线读。这批节目分别提供外部技术解读和参与者访谈的回听线索。</p><p class="index-preview-meta">2 集附节目方提纲</p></div>
+</li><li class="index-token index-token--profile">
+  <a href="cerebras/"><span class="index-name">Cerebras</span>
+    <span class="index-count">1 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 Cerebras Systems</p><p>从早期投资人周楠的访谈了解 Cerebras 的晶圆级架构和商业落地。先听它在哪些负载上提供另一种选择，再理解为什么交付与工程风险决定了上限。</p><p class="index-preview-meta">1 集附节目方提纲</p></div>
+</li><li class="index-token">
+  <a href="cisco/"><span class="index-name">Cisco</span>
+    <span class="index-count">2 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li></ul>
+</section><section class="index-group" id="category-practice" aria-labelledby="category-practice-label">
+  <header><h2 id="category-practice-label">法律实务</h2><p><span data-count>6</span> 个专题</p></header>
+  <ul class="index-tokens"><li class="index-token">
+  <a href="issue-prioritization/"><span class="index-name">争点优先级</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="dispute-resolution/"><span class="index-name">争议解决</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="construction/"><span class="index-name">建工</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="legal-sop/"><span class="index-name">法律 SOP</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="evidence-chain/"><span class="index-name">证据链</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="acceptance-and-payment/"><span class="index-name">验收付款</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li></ul>
+</section><section class="index-group" id="category-methods" aria-labelledby="category-methods-label">
+  <header><h2 id="category-methods-label">工作方法</h2><p><span data-count>5</span> 个专题</p></header>
+  <ul class="index-tokens"><li class="index-token index-token--profile">
+  <a href="replayable-task-environments/"><span class="index-name">任务复现环境</span>
+    <span class="index-count">3 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  <div class="index-preview"><p class="index-preview-meta">又名 可复现任务环境 · Replayable Task Environments</p><p>把一次实际工作中的起始状态、可用工具、步骤和判分规则保存下来，便于复跑同一个任务并比较改动。可读 Trajectory 的环境设计与 Harvey 的领域评估例子。</p><p class="index-preview-meta">3 集核对官方文字稿</p></div>
+</li><li class="index-token">
+  <a href="session-handoffs/"><span class="index-name">会话接力</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="workflow-training/"><span class="index-name">工作流培训</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="independent-review/"><span class="index-name">独立复核</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="organizational-coordination/"><span class="index-name">组织协同</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li></ul>
+</section></div>
+  </main>
+  <footer class="topic-footer wrap">
+    <a class="station" href="../">回声 <i>FM</i></a>
+    <nav aria-label="页尾导航"><a href="../archive/">往期</a><a href="../coverage/">源覆盖</a>
+      <a href="https://chenshi.ai/articles/">Blog ↗</a></nav>
+  </footer>
+</body>
+</html>
