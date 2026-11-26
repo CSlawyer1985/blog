@@ -1,10 +1,50 @@
 <!doctype html>
 <!--
-视觉表达方案：A／E，list-detail，HTML + CSS（L1）。
-主题词 → 综述（如有）→ 收录条目 → 期刊原段。使用纵向 stack，窄屏自然换行。
-沿用回声 FM 的纸面色板和导航。使用原生链接，无新增动画或依赖。
+视觉表达方案：A／L，专题阅读与分层出处。HTML/CSS（L1），原生链接、无动画。
+参考回声 FM 的现有刊头、纸色和墨绿。构图为 editorial-spread，以 grid 并排正文和索引，
+以 stack 排列节目，以 cluster 排列导航。窄屏先读摘要和节目，再读侧栏。
+阅读路径：主题与概要 → 节目或已刊简报 → 讨论点和原始出处 → 相关专题。
+视觉焦点是主题词与正文标题。来源分层、键盘焦点和直接链接支持快速查阅。
 -->
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>行为模型 · 回声 FM</title><link rel="canonical" href="https://fm.chenshi.ai/topics/behavior-models/"><style>
-    :root{--paper:#f3f0e6;--ink:#19251b;--pale:#fbf9f1;--green:#345638;--line:#cbc9bb}*{box-sizing:border-box}body{margin:0;font:15px/1.75 system-ui,"PingFang SC",sans-serif;background:var(--paper);color:var(--ink)}main{width:min(1040px,calc(100% - 40px));margin:auto}nav{display:flex;gap:20px;flex-wrap:wrap;padding:20px 0;border-bottom:1px solid var(--line);font-size:13px}a{color:var(--green);text-underline-offset:4px}header{padding:28px 0 18px}h1,h2{font-family:"Songti SC","Noto Serif CJK SC",serif;margin:.22em 0;letter-spacing:-.045em}h1{font-size:clamp(42px,8vw,82px);line-height:1.13}h2{font-size:clamp(24px,4vw,40px)}small,summary span{color:#526052}.k{font:700 11px ui-monospace,monospace;letter-spacing:.16em;color:#4c6548}.block,details{border:1px solid var(--line);padding:16px 18px;background:var(--pale);margin:10px 0}summary{cursor:pointer;font-weight:750}ul{padding-left:22px}.block p{margin:4px 0 0}footer{border-top:1px solid var(--line);padding:20px 0;margin-top:38px;color:#526052;font-size:12px}input{font:inherit;padding:7px 10px;border:1px solid var(--line);width:min(100%,350px);background:var(--pale)}[hidden]{display:none!important}.group{margin:22px 0}.sub{display:block;font-weight:400;font-size:13px}.warn{border-left:3px solid #ad7038}
-    </style></head><body><main><nav><a href="../../index.html">← 回声 FM</a><a href="../../archive/index.html">往期</a><a href="../../topics/index.html">专题库</a><a href="../../coverage/index.html">源覆盖</a><a href="https://chenshi.ai/articles/">Blog ↗</a></nav><header><div class="k">技术</div><h1>行为模型</h1></header><section aria-labelledby="topic-materials">
-<h2 id="topic-materials">收录条目</h2><p>1 条</p><ul><li><a href="../../issues/2026-11/index.html#card-negotiate-real">博弈论机器人忽略了什么？人在谈判里并不总按最优策略走</a> <small>11 月创刊号：如何留下能复用的判断 · Training Data · Noam Brown</small></li></ul></section><footer>回声 FM · 全球 AI 播客中文精选</footer></main></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>行为模型 · 回声 FM</title>
+  <link rel="canonical" href="https://fm.chenshi.ai/topics/behavior-models/">
+  <link rel="stylesheet" href="../../assets/fm-topic.css">
+</head>
+<body>
+  <a class="skip-to-content" href="#main">跳到正文</a>
+  <header class="topic-masthead wrap">
+    <a class="station" href="../../">回声 <i>FM</i></a>
+    <nav aria-label="站内导航"><a class="library-link" href="../">← 专题库</a><a href="../../archive/">往期</a></nav>
+  </header>
+  <main class="wrap" id="main" tabindex="-1">
+    <header class="topic-cover">
+      <div>
+        <p class="topic-category">技术</p>
+        <h1>行为模型</h1>
+        
+      </div>
+      <dl class="topic-metrics"><div><dt>已刊简报</dt><dd>1<span>条</span></dd></div></dl>
+    </header>
+    <nav class="topic-jumps" aria-label="跳到本页章节"><a href="#topic-materials">已刊简报 <span aria-hidden="true">↓</span></a><a href="#related">简报里的其他专题 <span aria-hidden="true">↓</span></a></nav>
+    <div class="topic-content has-rail">
+      <div class="topic-reading"><section class="topic-section" aria-labelledby="topic-materials"><div class="section-heading"><h2 id="topic-materials">已刊简报</h2><span>1 条</span></div><article class="topic-entry topic-brief">
+  <div class="entry-meta"><span class="entry-series">Training Data · Noam Brown</span>
+    <span>11 月创刊号：如何留下能复用的判断</span></div>
+  <h3><a href="../../issues/2026-11/index.html#card-negotiate-real">博弈论机器人忽略了什么？人在谈判里并不总按最优策略走 <span aria-hidden="true">↗</span></a></h3>
+  <p class="entry-summary">Noam Brown 从扑克研究谈到 Diplomacy：它不仅要决定怎么走，还要用语言谈判、结盟。团队最初沿用博弈论思路，但对真实玩家决定的假设和实际反应对不上。后来他们转向用人类行为数据建模，再在这个基础上判断下一步。Brown 由此区分理性模型和真实行为；这是游戏研究的历史回顾，不是给真实调解的结果背书。</p>
+  <p class="entry-proof">红杉官方逐字稿 · 研究者回顾</p>
+</article></section></div>
+      <aside class="topic-rail"><section class="rail-related"><h2 id="related">简报里的其他专题</h2><ul class="rail-links"><li><a href="../noam-brown/">Noam Brown<span aria-hidden="true">→</span></a></li><li><a href="../dispute-resolution/">争议解决<span aria-hidden="true">→</span></a></li></ul></section></aside>
+    </div>
+  </main>
+  <footer class="topic-footer wrap">
+    <a class="station" href="../../">回声 <i>FM</i></a>
+    <nav aria-label="页尾导航"><a href="../">专题库</a><a href="../../coverage/">源覆盖</a>
+      <a href="https://chenshi.ai/articles/">Blog ↗</a></nav>
+  </footer>
+</body>
+</html>

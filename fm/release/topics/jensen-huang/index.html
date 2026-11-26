@@ -1,9 +1,68 @@
 <!doctype html>
 <!--
-视觉表达方案：A／E，list-detail，HTML + CSS（L1）。
-主题词 → 综述（如有）→ 收录条目 → 期刊原段。使用纵向 stack，窄屏自然换行。
-沿用回声 FM 的纸面色板和导航。使用原生链接，无新增动画或依赖。
+视觉表达方案：A／L，专题阅读与分层出处。HTML/CSS（L1），原生链接、无动画。
+参考回声 FM 的现有刊头、纸色和墨绿。构图为 editorial-spread，以 grid 并排正文和索引，
+以 stack 排列节目，以 cluster 排列导航。窄屏先读摘要和节目，再读侧栏。
+阅读路径：主题与概要 → 节目或已刊简报 → 讨论点和原始出处 → 相关专题。
+视觉焦点是主题词与正文标题。来源分层、键盘焦点和直接链接支持快速查阅。
 -->
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>黄仁勋 · 回声 FM</title><link rel="canonical" href="https://fm.chenshi.ai/topics/jensen-huang/"><style>
-    :root{--paper:#f3f0e6;--ink:#19251b;--pale:#fbf9f1;--green:#345638;--line:#cbc9bb}*{box-sizing:border-box}body{margin:0;font:15px/1.75 system-ui,"PingFang SC",sans-serif;background:var(--paper);color:var(--ink)}main{width:min(1040px,calc(100% - 40px));margin:auto}nav{display:flex;gap:20px;flex-wrap:wrap;padding:20px 0;border-bottom:1px solid var(--line);font-size:13px}a{color:var(--green);text-underline-offset:4px}header{padding:28px 0 18px}h1,h2{font-family:"Songti SC","Noto Serif CJK SC",serif;margin:.22em 0;letter-spacing:-.045em}h1{font-size:clamp(42px,8vw,82px);line-height:1.13}h2{font-size:clamp(24px,4vw,40px)}small,summary span{color:#526052}.k{font:700 11px ui-monospace,monospace;letter-spacing:.16em;color:#4c6548}.block,details{border:1px solid var(--line);padding:16px 18px;background:var(--pale);margin:10px 0}summary{cursor:pointer;font-weight:750}ul{padding-left:22px}.block p{margin:4px 0 0}footer{border-top:1px solid var(--line);padding:20px 0;margin-top:38px;color:#526052;font-size:12px}input{font:inherit;padding:7px 10px;border:1px solid var(--line);width:min(100%,350px);background:var(--pale)}[hidden]{display:none!important}.group{margin:22px 0}.sub{display:block;font-weight:400;font-size:13px}.warn{border-left:3px solid #ad7038}
-    </style></head><body><main><nav><a href="../../index.html">← 回声 FM</a><a href="../../archive/index.html">往期</a><a href="../../topics/index.html">专题库</a><a href="../../coverage/index.html">源覆盖</a><a href="https://chenshi.ai/articles/">Blog ↗</a></nav><header><div class="k">人物</div><h1>黄仁勋</h1></header><section class="block"><h2>概览</h2><p><small>又名 Jensen Huang · Jen-Hsun Huang</small></p><p>三条线可一起看：黄仁勋本人如何回顾押注 CUDA，使用英伟达工具的人如何描述亲身经历，以及节目在领导层变动前后如何分析公司的选择。本人自述、参与者回忆和外部推演各有来源。</p></section><p>相关专题　<a href="../nvidia/">英伟达</a>　<a href="../cuda/">CUDA</a>　<a href="../gpu/">GPU</a></p><p><strong>4 集已收录</strong> · 2 集核对官方文字稿 · 2 集附节目方提纲</p><section><h2>节目里怎么说</h2><article class="block"><small>Next Token｜词元之外 · 2026-11-16 · 官方文字稿</small><h3>#010 黄仁勋辞职，Fable 杀死比赛，语言即世界</h3><ul><li><b>一位中国创业者眼中的英伟达生态</b> <small>05:13 前后</small><p>主播橘子回忆团队参加过英伟达中国创业加速器，随后在线参加 GTC。这是当事人的经历叙述，可用来理解开发者生态怎样触达创业团队。</p></li></ul><p><a href="https://nexttoken.tv/weekly/010">原节目 ↗</a>　<a href="https://nexttoken.tv/weekly/010/transcript">官方文字稿 ↗</a></p></article><article class="block"><small>Lex Fridman Podcast · 2026-03-23 · 官方文字稿</small><h3>#494 黄仁勋谈英伟达和 AI 计算</h3><ul><li><b>为什么把 CUDA 放进 GeForce</b> <small>09:55–16:36</small><p>黄仁勋回忆，消费显卡已有大量用户，随卡分发可以先让开发者有机器可用。代价是提高硬件成本，而当时的游戏玩家未必愿意为通用计算额外付费。</p></li><li><b>计算的单位怎样越变越大</b> <small>01:19:16</small><p>他把公司的设计对象从单颗 GPU、服务器和集群一路讲到整座数据中心，强调网络、供电与冷却也成了系统问题。</p></li></ul><p><a href="https://lexfridman.com/jensen-huang/">原节目 ↗</a>　<a href="https://lexfridman.com/jensen-huang-transcript/">官方文字稿 ↗</a></p></article></section><section><h2>按节目提纲定位</h2><p>以下是节目方公开的导读或章节，可按时间回听。</p><article class="block"><small>Unsupervised Learning · 2026-11-24 · 节目方提纲</small><h3>Ep 98: China Expert on Jensen’s Return</h3><ul><li><b>回归之后有哪些行业问题</b><p>节目方提纲显示，Jordan Schneider 和 Jacob Effron 讨论黄仁勋回归之后，英伟达的竞争位置与美国 AI 基建是否会因其回归而改变。</p></li></ul><p><a href="https://unsupervised-learning.simplecast.com/episodes/ep-98-china-expert-on-jensens-return-hq9diKMj">原节目 ↗</a></p></article><article class="block"><small>晚点聊 LateTalk · 2026-11-15 · 节目方提纲</small><h3>#188 黄仁勋闪电离职之后</h3><ul><li><b>离职怎样影响长期投入</b> <small>02:19、06:27</small><p>节目提纲把创始人能否承担长期技术转型的压力，与领导层更替后算力投资会否转向保守放在一起讨论。</p></li></ul><p><a href="https://podcast.latepost.com/188">原节目 ↗</a></p></article></section><aside><p><small>收录范围见本页节目清单。标为官方文字稿的条目已核对相关段落；标为节目方提纲的条目提供回听线索。历史节目仍在补查。</small></p></aside><footer>回声 FM · 全球 AI 播客中文精选</footer></main></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>黄仁勋 · 回声 FM</title>
+  <link rel="canonical" href="https://fm.chenshi.ai/topics/jensen-huang/">
+  <link rel="stylesheet" href="../../assets/fm-topic.css">
+</head>
+<body>
+  <a class="skip-to-content" href="#main">跳到正文</a>
+  <header class="topic-masthead wrap">
+    <a class="station" href="../../">回声 <i>FM</i></a>
+    <nav aria-label="站内导航"><a class="library-link" href="../">← 专题库</a><a href="../../archive/">往期</a></nav>
+  </header>
+  <main class="wrap" id="main" tabindex="-1">
+    <header class="topic-cover">
+      <div>
+        <p class="topic-category">人物</p>
+        <h1>黄仁勋</h1>
+        <p class="topic-aliases"><span>又名</span> Jensen Huang · Jen-Hsun Huang</p><p class="topic-dek">三条线可一起看：黄仁勋本人如何回顾押注 CUDA，使用英伟达工具的人如何描述亲身经历，以及节目在领导层变动前后如何分析公司的选择。本人自述、参与者回忆和外部推演各有来源。</p>
+      </div>
+      <dl class="topic-metrics"><div><dt>节目收录</dt><dd>4<span>集</span></dd></div><div><dt>讨论点</dt><dd>5<span>条</span></dd></div></dl>
+    </header>
+    <nav class="topic-jumps" aria-label="跳到本页章节"><a href="#transcripts">核对过文字稿 <span aria-hidden="true">↓</span></a><a href="#outlines">节目方提纲 <span aria-hidden="true">↓</span></a><a href="#related">相关专题 <span aria-hidden="true">↓</span></a></nav>
+    <div class="topic-content has-rail">
+      <div class="topic-reading"><section class="topic-section" aria-labelledby="transcripts"><div class="section-heading"><h2 id="transcripts">核对过文字稿</h2><span>2 集</span></div><p class="section-intro">核对节目方文字稿后整理的相关段落。</p><article class="topic-entry" id="episode-next-010" aria-labelledby="title-next-010">
+  <div class="entry-meta"><span class="entry-series">Next Token｜词元之外</span><time datetime="2026-11-16">2026-11-16</time>
+    <span class="source-kind source-kind--transcript">官方文字稿</span></div>
+  <h3 id="title-next-010">#010 黄仁勋辞职，Fable 杀死比赛，语言即世界</h3>
+  <ul class="topic-notes"><li><div class="note-heading"><h4>一位中国创业者眼中的英伟达生态</h4><span class="timecode">05:13 前后</span></div><p>主播橘子回忆团队参加过英伟达中国创业加速器，随后在线参加 GTC。这是当事人的经历叙述，可用来理解开发者生态怎样触达创业团队。</p></li></ul>
+  <div class="entry-links"><a href="https://nexttoken.tv/weekly/010">原节目 <span aria-hidden="true">↗</span></a><a href="https://nexttoken.tv/weekly/010/transcript">官方文字稿 <span aria-hidden="true">↗</span></a></div>
+</article><article class="topic-entry" id="episode-lex-jensen" aria-labelledby="title-lex-jensen">
+  <div class="entry-meta"><span class="entry-series">Lex Fridman Podcast</span><time datetime="2026-03-23">2026-03-23</time>
+    <span class="source-kind source-kind--transcript">官方文字稿</span></div>
+  <h3 id="title-lex-jensen">#494 黄仁勋谈英伟达和 AI 计算</h3>
+  <ul class="topic-notes"><li><div class="note-heading"><h4>为什么把 CUDA 放进 GeForce</h4><span class="timecode">09:55–16:36</span></div><p>黄仁勋回忆，消费显卡已有大量用户，随卡分发可以先让开发者有机器可用。代价是提高硬件成本，而当时的游戏玩家未必愿意为通用计算额外付费。</p></li><li><div class="note-heading"><h4>计算的单位怎样越变越大</h4><span class="timecode">01:19:16</span></div><p>他把公司的设计对象从单颗 GPU、服务器和集群一路讲到整座数据中心，强调网络、供电与冷却也成了系统问题。</p></li></ul>
+  <div class="entry-links"><a href="https://lexfridman.com/jensen-huang/">原节目 <span aria-hidden="true">↗</span></a><a href="https://lexfridman.com/jensen-huang-transcript/">官方文字稿 <span aria-hidden="true">↗</span></a></div>
+</article></section><section class="topic-section" aria-labelledby="outlines"><div class="section-heading"><h2 id="outlines">节目方提纲</h2><span>2 集</span></div><p class="section-intro">依据节目方公开导读或章节整理，时间点可用于回听。</p><article class="topic-entry" id="episode-ul-98" aria-labelledby="title-ul-98">
+  <div class="entry-meta"><span class="entry-series">Unsupervised Learning</span><time datetime="2026-11-24">2026-11-24</time>
+    <span class="source-kind source-kind--outline">节目方提纲</span></div>
+  <h3 id="title-ul-98">Ep 98: China Expert on Jensen’s Return</h3>
+  <ul class="topic-notes"><li><div class="note-heading"><h4>回归之后有哪些行业问题</h4></div><p>节目方提纲显示，Jordan Schneider 和 Jacob Effron 讨论黄仁勋回归之后，英伟达的竞争位置与美国 AI 基建是否会因其回归而改变。</p></li></ul>
+  <div class="entry-links"><a href="https://unsupervised-learning.simplecast.com/episodes/ep-98-china-expert-on-jensens-return-hq9diKMj">原节目 <span aria-hidden="true">↗</span></a></div>
+</article><article class="topic-entry" id="episode-late-188" aria-labelledby="title-late-188">
+  <div class="entry-meta"><span class="entry-series">晚点聊 LateTalk</span><time datetime="2026-11-15">2026-11-15</time>
+    <span class="source-kind source-kind--outline">节目方提纲</span></div>
+  <h3 id="title-late-188">#188 黄仁勋闪电离职之后</h3>
+  <ul class="topic-notes"><li><div class="note-heading"><h4>离职怎样影响长期投入</h4><span class="timecode">02:19、06:27</span></div><p>节目提纲把创始人能否承担长期技术转型的压力，与领导层更替后算力投资会否转向保守放在一起讨论。</p></li></ul>
+  <div class="entry-links"><a href="https://podcast.latepost.com/188">原节目 <span aria-hidden="true">↗</span></a></div>
+</article></section></div>
+      <aside class="topic-rail"><section class="rail-related"><h2 id="related">相关专题</h2><ul class="rail-links"><li><a href="../nvidia/">英伟达<span aria-hidden="true">→</span></a></li><li><a href="../cuda/">CUDA<span aria-hidden="true">→</span></a></li><li><a href="../gpu/">GPU<span aria-hidden="true">→</span></a></li></ul></section><nav class="rail-episodes" aria-labelledby="episode-navigation"><h2 id="episode-navigation">本页节目</h2><ul class="rail-links"><li><a href="#episode-next-010">#010 黄仁勋辞职，Fable 杀死比赛，语言即世界</a></li><li><a href="#episode-lex-jensen">#494 黄仁勋谈英伟达和 AI 计算</a></li><li><a href="#episode-ul-98">Ep 98: China Expert on Jensen’s Return</a></li><li><a href="#episode-late-188">#188 黄仁勋闪电离职之后</a></li></ul></nav><section class="rail-scope"><h2>收录范围</h2><p>收录范围见本页节目清单。标为官方文字稿的条目已核对相关段落；标为节目方提纲的条目提供回听线索。历史节目仍在补查。</p></section></aside>
+    </div>
+  </main>
+  <footer class="topic-footer wrap">
+    <a class="station" href="../../">回声 <i>FM</i></a>
+    <nav aria-label="页尾导航"><a href="../">专题库</a><a href="../../coverage/">源覆盖</a>
+      <a href="https://chenshi.ai/articles/">Blog ↗</a></nav>
+  </footer>
+</body>
+</html>

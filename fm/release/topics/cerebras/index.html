@@ -1,9 +1,50 @@
 <!doctype html>
 <!--
-视觉表达方案：A／E，list-detail，HTML + CSS（L1）。
-主题词 → 综述（如有）→ 收录条目 → 期刊原段。使用纵向 stack，窄屏自然换行。
-沿用回声 FM 的纸面色板和导航。使用原生链接，无新增动画或依赖。
+视觉表达方案：A／L，专题阅读与分层出处。HTML/CSS（L1），原生链接、无动画。
+参考回声 FM 的现有刊头、纸色和墨绿。构图为 editorial-spread，以 grid 并排正文和索引，
+以 stack 排列节目，以 cluster 排列导航。窄屏先读摘要和节目，再读侧栏。
+阅读路径：主题与概要 → 节目或已刊简报 → 讨论点和原始出处 → 相关专题。
+视觉焦点是主题词与正文标题。来源分层、键盘焦点和直接链接支持快速查阅。
 -->
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cerebras · 回声 FM</title><link rel="canonical" href="https://fm.chenshi.ai/topics/cerebras/"><style>
-    :root{--paper:#f3f0e6;--ink:#19251b;--pale:#fbf9f1;--green:#345638;--line:#cbc9bb}*{box-sizing:border-box}body{margin:0;font:15px/1.75 system-ui,"PingFang SC",sans-serif;background:var(--paper);color:var(--ink)}main{width:min(1040px,calc(100% - 40px));margin:auto}nav{display:flex;gap:20px;flex-wrap:wrap;padding:20px 0;border-bottom:1px solid var(--line);font-size:13px}a{color:var(--green);text-underline-offset:4px}header{padding:28px 0 18px}h1,h2{font-family:"Songti SC","Noto Serif CJK SC",serif;margin:.22em 0;letter-spacing:-.045em}h1{font-size:clamp(42px,8vw,82px);line-height:1.13}h2{font-size:clamp(24px,4vw,40px)}small,summary span{color:#526052}.k{font:700 11px ui-monospace,monospace;letter-spacing:.16em;color:#4c6548}.block,details{border:1px solid var(--line);padding:16px 18px;background:var(--pale);margin:10px 0}summary{cursor:pointer;font-weight:750}ul{padding-left:22px}.block p{margin:4px 0 0}footer{border-top:1px solid var(--line);padding:20px 0;margin-top:38px;color:#526052;font-size:12px}input{font:inherit;padding:7px 10px;border:1px solid var(--line);width:min(100%,350px);background:var(--pale)}[hidden]{display:none!important}.group{margin:22px 0}.sub{display:block;font-weight:400;font-size:13px}.warn{border-left:3px solid #ad7038}
-    </style></head><body><main><nav><a href="../../index.html">← 回声 FM</a><a href="../../archive/index.html">往期</a><a href="../../topics/index.html">专题库</a><a href="../../coverage/index.html">源覆盖</a><a href="https://chenshi.ai/articles/">Blog ↗</a></nav><header><div class="k">公司与机构</div><h1>Cerebras</h1></header><section class="block"><h2>概览</h2><p><small>又名 Cerebras Systems</small></p><p>从早期投资人周楠的访谈了解 Cerebras 的晶圆级架构和商业落地。先听它在哪些负载上提供另一种选择，再理解为什么交付与工程风险决定了上限。</p></section><p>相关专题　<a href="../nvidia/">英伟达</a>　<a href="../gpu/">GPU</a>　<a href="../ai-infrastructure/">AI 基础设施</a></p><p><strong>1 集已收录</strong> · 1 集附节目方提纲</p><section><h2>按节目提纲定位</h2><p>以下是节目方公开的导读或章节，可按时间回听。</p><article class="block"><small>晚点聊 LateTalk · 2026-06-16 · 节目方提纲</small><h3>#169 从 Cerebras 早期投资聊算力与百度美研</h3><ul><li><b>英伟达之外的体系与边界</b> <small>03:26、18:27</small><p>节目导读从竞争问题转入 WSE 架构的优势和限制。</p></li><li><b>未流片时怎样做早期技术判断</b> <small>37:06、46:18、53:35</small><p>节目提纲依次列出与研究员做尽调、流片前投决，以及之后如何应对工程不顺。</p></li></ul><p><a href="https://podcast.latepost.com/169">原节目 ↗</a></p></article></section><aside><p><small>收录范围见本页节目清单。标为官方文字稿的条目已核对相关段落；标为节目方提纲的条目提供回听线索。历史节目仍在补查。</small></p></aside><footer>回声 FM · 全球 AI 播客中文精选</footer></main></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cerebras · 回声 FM</title>
+  <link rel="canonical" href="https://fm.chenshi.ai/topics/cerebras/">
+  <link rel="stylesheet" href="../../assets/fm-topic.css">
+</head>
+<body>
+  <a class="skip-to-content" href="#main">跳到正文</a>
+  <header class="topic-masthead wrap">
+    <a class="station" href="../../">回声 <i>FM</i></a>
+    <nav aria-label="站内导航"><a class="library-link" href="../">← 专题库</a><a href="../../archive/">往期</a></nav>
+  </header>
+  <main class="wrap" id="main" tabindex="-1">
+    <header class="topic-cover">
+      <div>
+        <p class="topic-category">公司与机构</p>
+        <h1>Cerebras</h1>
+        <p class="topic-aliases"><span>又名</span> Cerebras Systems</p><p class="topic-dek">从早期投资人周楠的访谈了解 Cerebras 的晶圆级架构和商业落地。先听它在哪些负载上提供另一种选择，再理解为什么交付与工程风险决定了上限。</p>
+      </div>
+      <dl class="topic-metrics"><div><dt>节目收录</dt><dd>1<span>集</span></dd></div><div><dt>讨论点</dt><dd>2<span>条</span></dd></div></dl>
+    </header>
+    <nav class="topic-jumps" aria-label="跳到本页章节"><a href="#outlines">节目方提纲 <span aria-hidden="true">↓</span></a><a href="#related">相关专题 <span aria-hidden="true">↓</span></a></nav>
+    <div class="topic-content has-rail">
+      <div class="topic-reading"><section class="topic-section" aria-labelledby="outlines"><div class="section-heading"><h2 id="outlines">节目方提纲</h2><span>1 集</span></div><p class="section-intro">依据节目方公开导读或章节整理，时间点可用于回听。</p><article class="topic-entry" id="episode-late-169" aria-labelledby="title-late-169">
+  <div class="entry-meta"><span class="entry-series">晚点聊 LateTalk</span><time datetime="2026-06-16">2026-06-16</time>
+    <span class="source-kind source-kind--outline">节目方提纲</span></div>
+  <h3 id="title-late-169">#169 从 Cerebras 早期投资聊算力与百度美研</h3>
+  <ul class="topic-notes"><li><div class="note-heading"><h4>英伟达之外的体系与边界</h4><span class="timecode">03:26、18:27</span></div><p>节目导读从竞争问题转入 WSE 架构的优势和限制。</p></li><li><div class="note-heading"><h4>未流片时怎样做早期技术判断</h4><span class="timecode">37:06、46:18、53:35</span></div><p>节目提纲依次列出与研究员做尽调、流片前投决，以及之后如何应对工程不顺。</p></li></ul>
+  <div class="entry-links"><a href="https://podcast.latepost.com/169">原节目 <span aria-hidden="true">↗</span></a></div>
+</article></section></div>
+      <aside class="topic-rail"><section class="rail-related"><h2 id="related">相关专题</h2><ul class="rail-links"><li><a href="../nvidia/">英伟达<span aria-hidden="true">→</span></a></li><li><a href="../gpu/">GPU<span aria-hidden="true">→</span></a></li><li><a href="../ai-infrastructure/">AI 基础设施<span aria-hidden="true">→</span></a></li></ul></section><section class="rail-scope"><h2>收录范围</h2><p>收录范围见本页节目清单。标为官方文字稿的条目已核对相关段落；标为节目方提纲的条目提供回听线索。历史节目仍在补查。</p></section></aside>
+    </div>
+  </main>
+  <footer class="topic-footer wrap">
+    <a class="station" href="../../">回声 <i>FM</i></a>
+    <nav aria-label="页尾导航"><a href="../">专题库</a><a href="../../coverage/">源覆盖</a>
+      <a href="https://chenshi.ai/articles/">Blog ↗</a></nav>
+  </footer>
+</body>
+</html>

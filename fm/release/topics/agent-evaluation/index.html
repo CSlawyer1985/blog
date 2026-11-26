@@ -1,9 +1,74 @@
 <!doctype html>
 <!--
-视觉表达方案：A／E，list-detail，HTML + CSS（L1）。
-主题词 → 综述（如有）→ 收录条目 → 期刊原段。使用纵向 stack，窄屏自然换行。
-沿用回声 FM 的纸面色板和导航。使用原生链接，无新增动画或依赖。
+视觉表达方案：A／L，专题阅读与分层出处。HTML/CSS（L1），原生链接、无动画。
+参考回声 FM 的现有刊头、纸色和墨绿。构图为 editorial-spread，以 grid 并排正文和索引，
+以 stack 排列节目，以 cluster 排列导航。窄屏先读摘要和节目，再读侧栏。
+阅读路径：主题与概要 → 节目或已刊简报 → 讨论点和原始出处 → 相关专题。
+视觉焦点是主题词与正文标题。来源分层、键盘焦点和直接链接支持快速查阅。
 -->
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Agent 评估 · 回声 FM</title><link rel="canonical" href="https://fm.chenshi.ai/topics/agent-evaluation/"><style>
-    :root{--paper:#f3f0e6;--ink:#19251b;--pale:#fbf9f1;--green:#345638;--line:#cbc9bb}*{box-sizing:border-box}body{margin:0;font:15px/1.75 system-ui,"PingFang SC",sans-serif;background:var(--paper);color:var(--ink)}main{width:min(1040px,calc(100% - 40px));margin:auto}nav{display:flex;gap:20px;flex-wrap:wrap;padding:20px 0;border-bottom:1px solid var(--line);font-size:13px}a{color:var(--green);text-underline-offset:4px}header{padding:28px 0 18px}h1,h2{font-family:"Songti SC","Noto Serif CJK SC",serif;margin:.22em 0;letter-spacing:-.045em}h1{font-size:clamp(42px,8vw,82px);line-height:1.13}h2{font-size:clamp(24px,4vw,40px)}small,summary span{color:#526052}.k{font:700 11px ui-monospace,monospace;letter-spacing:.16em;color:#4c6548}.block,details{border:1px solid var(--line);padding:16px 18px;background:var(--pale);margin:10px 0}summary{cursor:pointer;font-weight:750}ul{padding-left:22px}.block p{margin:4px 0 0}footer{border-top:1px solid var(--line);padding:20px 0;margin-top:38px;color:#526052;font-size:12px}input{font:inherit;padding:7px 10px;border:1px solid var(--line);width:min(100%,350px);background:var(--pale)}[hidden]{display:none!important}.group{margin:22px 0}.sub{display:block;font-weight:400;font-size:13px}.warn{border-left:3px solid #ad7038}
-    </style></head><body><main><nav><a href="../../index.html">← 回声 FM</a><a href="../../archive/index.html">往期</a><a href="../../topics/index.html">专题库</a><a href="../../coverage/index.html">源覆盖</a><a href="https://chenshi.ai/articles/">Blog ↗</a></nav><header><div class="k">技术</div><h1>Agent 评估</h1></header><section class="block"><h2>概览</h2><p><small>又名 Agent evals · 智能体评估</small></p><p>把衡量对象、复现环境和判分规则拆开读。法律场景适合逐项检查任务要求，生产场景要比较线上轨迹与离线题；成绩只对应各自的测量口径。</p></section><p>相关专题　<a href="../harvey/">Harvey</a>　<a href="../trajectory/">Trajectory</a>　<a href="../continual-learning/">持续学习</a>　<a href="../replayable-task-environments/">任务复现环境</a>　<a href="../independent-review/">独立复核</a></p><p><strong>4 集已收录</strong> · 3 集核对官方文字稿 · 1 集附节目方提纲</p><section><h2>节目里怎么说</h2><article class="block"><small>Training Data · 2026-11-05 · 官方文字稿</small><h3>Ronak Malde 谈 Trajectory 的持续学习实践</h3><ul><li><b>保留任务轨迹与反馈以复现评测</b><p>Malde 将专家反馈、任务状态和环境放在一起讨论，便于比较变化究竟来自结果、步骤还是工具调用。</p></li></ul><p><a href="https://sequoiacap.com/podcast/a-model-for-everyone-how-ronak-from-trajectory-is-building-products-for-continual-learning">原节目与文字稿 ↗</a></p></article><article class="block"><small>Sequoia Capital｜Own Your Intelligence · 官方文字稿</small><h3>Gabe Pereyra 谈 Harvey 如何构建自己的 AI 能力</h3><ul><li><b>从真实法律工作定义题目</b><p>节目中的三个任务集分别对准律所工作、合同谈判和尽调。规模扩大后，自动判分也要计算成本。</p></li></ul><p><a href="https://sequoiacap.com/podcast/building-frontier-ai-at-the-application-layer-harvey-s-playbook">原节目与文字稿 ↗</a></p></article><article class="block"><small>Sequoia Capital｜Own Your Intelligence · 官方文字稿</small><h3>Arjun Karanam 谈 Agent 如何从真实使用中学习</h3><ul><li><b>线上使用和线下评估怎样靠近</b><p>Karanam 主张从实际流量提炼评估任务，把用户怎么用、怎么测、怎么训练放到尽可能相近的环境。</p></li></ul><p><a href="https://sequoiacap.com/podcast/continual-learning-how-ai-agents-get-better-with-every-use">原节目与文字稿 ↗</a></p></article></section><section><h2>按节目提纲定位</h2><p>以下是节目方公开的导读或章节，可按时间回听。</p><article class="block"><small>十字路口 Crossing · 2026-11-16 · 节目方提纲</small><h3>年终复盘③ 用 Kimi 加速 Kimi｜对话赵晨阳</h3><ul><li><b>客观指标、自动化与试错成本</b> <small>06:36、09:09</small><p>提纲列出了评估标准、指标偏科和专家评价等段落，适合回听不同任务的判断成本如何影响优化。</p></li></ul><p><a href="https://www.xiaoyuzhoufm.com/episode/6af936ea14d01a26f8a9fd94">原节目 ↗</a></p></article></section><aside><p><small>收录范围见本页节目清单。标为官方文字稿的条目已核对相关段落；标为节目方提纲的条目提供回听线索。历史节目仍在补查。</small></p></aside><section><h2>已刊简报</h2><ul><li><a href="../../issues/2026-11/index.html#card-harvey-replay">Harvey 的评估题从哪里来？先把专家判断做成能复跑的任务</a> <small>11 月创刊号：如何留下能复用的判断 · Training Data · Ronak Malde</small></li></ul></section><footer>回声 FM · 全球 AI 播客中文精选</footer></main></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agent 评估 · 回声 FM</title>
+  <link rel="canonical" href="https://fm.chenshi.ai/topics/agent-evaluation/">
+  <link rel="stylesheet" href="../../assets/fm-topic.css">
+</head>
+<body>
+  <a class="skip-to-content" href="#main">跳到正文</a>
+  <header class="topic-masthead wrap">
+    <a class="station" href="../../">回声 <i>FM</i></a>
+    <nav aria-label="站内导航"><a class="library-link" href="../">← 专题库</a><a href="../../archive/">往期</a></nav>
+  </header>
+  <main class="wrap" id="main" tabindex="-1">
+    <header class="topic-cover">
+      <div>
+        <p class="topic-category">技术</p>
+        <h1>Agent 评估</h1>
+        <p class="topic-aliases"><span>又名</span> Agent evals · 智能体评估</p><p class="topic-dek">把衡量对象、复现环境和判分规则拆开读。法律场景适合逐项检查任务要求，生产场景要比较线上轨迹与离线题；成绩只对应各自的测量口径。</p>
+      </div>
+      <dl class="topic-metrics"><div><dt>节目收录</dt><dd>4<span>集</span></dd></div><div><dt>讨论点</dt><dd>4<span>条</span></dd></div><div><dt>已刊简报</dt><dd>1<span>条</span></dd></div></dl>
+    </header>
+    <nav class="topic-jumps" aria-label="跳到本页章节"><a href="#transcripts">核对过文字稿 <span aria-hidden="true">↓</span></a><a href="#outlines">节目方提纲 <span aria-hidden="true">↓</span></a><a href="#topic-materials">已刊简报 <span aria-hidden="true">↓</span></a><a href="#related">相关专题 <span aria-hidden="true">↓</span></a></nav>
+    <div class="topic-content has-rail">
+      <div class="topic-reading"><section class="topic-section" aria-labelledby="transcripts"><div class="section-heading"><h2 id="transcripts">核对过文字稿</h2><span>3 集</span></div><p class="section-intro">核对节目方文字稿后整理的相关段落。</p><article class="topic-entry" id="episode-ronak-training" aria-labelledby="title-ronak-training">
+  <div class="entry-meta"><span class="entry-series">Training Data</span><time datetime="2026-11-05">2026-11-05</time>
+    <span class="source-kind source-kind--transcript">官方文字稿</span></div>
+  <h3 id="title-ronak-training">Ronak Malde 谈 Trajectory 的持续学习实践</h3>
+  <ul class="topic-notes"><li><div class="note-heading"><h4>保留任务轨迹与反馈以复现评测</h4></div><p>Malde 将专家反馈、任务状态和环境放在一起讨论，便于比较变化究竟来自结果、步骤还是工具调用。</p></li></ul>
+  <div class="entry-links"><a href="https://sequoiacap.com/podcast/a-model-for-everyone-how-ronak-from-trajectory-is-building-products-for-continual-learning">原节目与文字稿 <span aria-hidden="true">↗</span></a></div>
+</article><article class="topic-entry" id="episode-harvey-playbook" aria-labelledby="title-harvey-playbook">
+  <div class="entry-meta"><span class="entry-series">Sequoia Capital｜Own Your Intelligence</span>
+    <span class="source-kind source-kind--transcript">官方文字稿</span></div>
+  <h3 id="title-harvey-playbook">Gabe Pereyra 谈 Harvey 如何构建自己的 AI 能力</h3>
+  <ul class="topic-notes"><li><div class="note-heading"><h4>从真实法律工作定义题目</h4></div><p>节目中的三个任务集分别对准律所工作、合同谈判和尽调。规模扩大后，自动判分也要计算成本。</p></li></ul>
+  <div class="entry-links"><a href="https://sequoiacap.com/podcast/building-frontier-ai-at-the-application-layer-harvey-s-playbook">原节目与文字稿 <span aria-hidden="true">↗</span></a></div>
+</article><article class="topic-entry" id="episode-arjun-workshop" aria-labelledby="title-arjun-workshop">
+  <div class="entry-meta"><span class="entry-series">Sequoia Capital｜Own Your Intelligence</span>
+    <span class="source-kind source-kind--transcript">官方文字稿</span></div>
+  <h3 id="title-arjun-workshop">Arjun Karanam 谈 Agent 如何从真实使用中学习</h3>
+  <ul class="topic-notes"><li><div class="note-heading"><h4>线上使用和线下评估怎样靠近</h4></div><p>Karanam 主张从实际流量提炼评估任务，把用户怎么用、怎么测、怎么训练放到尽可能相近的环境。</p></li></ul>
+  <div class="entry-links"><a href="https://sequoiacap.com/podcast/continual-learning-how-ai-agents-get-better-with-every-use">原节目与文字稿 <span aria-hidden="true">↗</span></a></div>
+</article></section><section class="topic-section" aria-labelledby="outlines"><div class="section-heading"><h2 id="outlines">节目方提纲</h2><span>1 集</span></div><p class="section-intro">依据节目方公开导读或章节整理，时间点可用于回听。</p><article class="topic-entry" id="episode-crossing-kimi" aria-labelledby="title-crossing-kimi">
+  <div class="entry-meta"><span class="entry-series">十字路口 Crossing</span><time datetime="2026-11-16">2026-11-16</time>
+    <span class="source-kind source-kind--outline">节目方提纲</span></div>
+  <h3 id="title-crossing-kimi">年终复盘③ 用 Kimi 加速 Kimi｜对话赵晨阳</h3>
+  <ul class="topic-notes"><li><div class="note-heading"><h4>客观指标、自动化与试错成本</h4><span class="timecode">06:36、09:09</span></div><p>提纲列出了评估标准、指标偏科和专家评价等段落，适合回听不同任务的判断成本如何影响优化。</p></li></ul>
+  <div class="entry-links"><a href="https://www.xiaoyuzhoufm.com/episode/6af936ea14d01a26f8a9fd94">原节目 <span aria-hidden="true">↗</span></a></div>
+</article></section><section class="topic-section" aria-labelledby="topic-materials"><div class="section-heading"><h2 id="topic-materials">已刊简报</h2><span>1 条</span></div><article class="topic-entry topic-brief">
+  <div class="entry-meta"><span class="entry-series">Training Data · Ronak Malde</span>
+    <span>11 月创刊号：如何留下能复用的判断</span></div>
+  <h3><a href="../../issues/2026-11/index.html#card-harvey-replay">Harvey 的评估题从哪里来？先把专家判断做成能复跑的任务 <span aria-hidden="true">↗</span></a></h3>
+  <p class="entry-summary">Trajectory 联创 Ronak Malde 先说团队在 Windsurf 时，会从产品中的编辑、重试等实际行为寻找反馈。讲到 Harvey，他举了一个更具体的例子：Harvey 把法律专家积累的判断做成自己的法律 Agent 基准；按 Malde 的说法，一个开源模型在该基准上约从 4% 提升到 18%，他还称成本约为前沿模型的六分之一。随后他把过程拆开：先记下代理、子代理和反馈的任务轨迹，再把它恢复成可重跑的环境，最后才谈怎么训练。数字是供应商陈述，且只针对该基准；绝不表示整个法律工作流已经胜过前沿模型。</p>
+  <p class="entry-proof">红杉官方逐字稿 · 合作方自述</p>
+</article></section></div>
+      <aside class="topic-rail"><section class="rail-related"><h2 id="related">相关专题</h2><ul class="rail-links"><li><a href="../harvey/">Harvey<span aria-hidden="true">→</span></a></li><li><a href="../trajectory/">Trajectory<span aria-hidden="true">→</span></a></li><li><a href="../continual-learning/">持续学习<span aria-hidden="true">→</span></a></li><li><a href="../replayable-task-environments/">任务复现环境<span aria-hidden="true">→</span></a></li><li><a href="../independent-review/">独立复核<span aria-hidden="true">→</span></a></li></ul></section><nav class="rail-episodes" aria-labelledby="episode-navigation"><h2 id="episode-navigation">本页节目</h2><ul class="rail-links"><li><a href="#episode-ronak-training">Ronak Malde 谈 Trajectory 的持续学习实践</a></li><li><a href="#episode-harvey-playbook">Gabe Pereyra 谈 Harvey 如何构建自己的 AI 能力</a></li><li><a href="#episode-arjun-workshop">Arjun Karanam 谈 Agent 如何从真实使用中学习</a></li><li><a href="#episode-crossing-kimi">年终复盘③ 用 Kimi 加速 Kimi｜对话赵晨阳</a></li></ul></nav><section class="rail-scope"><h2>收录范围</h2><p>收录范围见本页节目清单。标为官方文字稿的条目已核对相关段落；标为节目方提纲的条目提供回听线索。历史节目仍在补查。</p></section></aside>
+    </div>
+  </main>
+  <footer class="topic-footer wrap">
+    <a class="station" href="../../">回声 <i>FM</i></a>
+    <nav aria-label="页尾导航"><a href="../">专题库</a><a href="../../coverage/">源覆盖</a>
+      <a href="https://chenshi.ai/articles/">Blog ↗</a></nav>
+  </footer>
+</body>
+</html>

@@ -1,9 +1,74 @@
 <!doctype html>
 <!--
-视觉表达方案：A／E，list-detail，HTML + CSS（L1）。
-主题词 → 综述（如有）→ 收录条目 → 期刊原段。使用纵向 stack，窄屏自然换行。
-沿用回声 FM 的纸面色板和导航。使用原生链接，无新增动画或依赖。
+视觉表达方案：A／L，专题阅读与分层出处。HTML/CSS（L1），原生链接、无动画。
+参考回声 FM 的现有刊头、纸色和墨绿。构图为 editorial-spread，以 grid 并排正文和索引，
+以 stack 排列节目，以 cluster 排列导航。窄屏先读摘要和节目，再读侧栏。
+阅读路径：主题与概要 → 节目或已刊简报 → 讨论点和原始出处 → 相关专题。
+视觉焦点是主题词与正文标题。来源分层、键盘焦点和直接链接支持快速查阅。
 -->
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Personal Agent · 回声 FM</title><link rel="canonical" href="https://fm.chenshi.ai/topics/personal-agent/"><style>
-    :root{--paper:#f3f0e6;--ink:#19251b;--pale:#fbf9f1;--green:#345638;--line:#cbc9bb}*{box-sizing:border-box}body{margin:0;font:15px/1.75 system-ui,"PingFang SC",sans-serif;background:var(--paper);color:var(--ink)}main{width:min(1040px,calc(100% - 40px));margin:auto}nav{display:flex;gap:20px;flex-wrap:wrap;padding:20px 0;border-bottom:1px solid var(--line);font-size:13px}a{color:var(--green);text-underline-offset:4px}header{padding:28px 0 18px}h1,h2{font-family:"Songti SC","Noto Serif CJK SC",serif;margin:.22em 0;letter-spacing:-.045em}h1{font-size:clamp(42px,8vw,82px);line-height:1.13}h2{font-size:clamp(24px,4vw,40px)}small,summary span{color:#526052}.k{font:700 11px ui-monospace,monospace;letter-spacing:.16em;color:#4c6548}.block,details{border:1px solid var(--line);padding:16px 18px;background:var(--pale);margin:10px 0}summary{cursor:pointer;font-weight:750}ul{padding-left:22px}.block p{margin:4px 0 0}footer{border-top:1px solid var(--line);padding:20px 0;margin-top:38px;color:#526052;font-size:12px}input{font:inherit;padding:7px 10px;border:1px solid var(--line);width:min(100%,350px);background:var(--pale)}[hidden]{display:none!important}.group{margin:22px 0}.sub{display:block;font-weight:400;font-size:13px}.warn{border-left:3px solid #ad7038}
-    </style></head><body><main><nav><a href="../../index.html">← 回声 FM</a><a href="../../archive/index.html">往期</a><a href="../../topics/index.html">专题库</a><a href="../../coverage/index.html">源覆盖</a><a href="https://chenshi.ai/articles/">Blog ↗</a></nav><header><div class="k">技术</div><h1>Personal Agent</h1></header><section class="block"><h2>概览</h2><p><small>又名 个人 Agent · 个人 AI 助理 · PA</small></p><p>把个人 Agent 当一类产品来读：用户要持续交给它什么任务、上下文怎样保留，外部服务能否把事项接完。单个产品的热度只反映其中一部分。</p></section><p>相关专题　<a href="../cai-wei/">蔡伟</a>　<a href="../lingguang/">蚂蚁灵光</a>　<a href="../agent-handoffs/">Agent 接力</a></p><p><strong>3 集已收录</strong> · 3 集附节目方提纲</p><section><h2>按节目提纲定位</h2><p>以下是节目方公开的导读或章节，可按时间回听。</p><article class="block"><small>晚点聊 LateTalk · 2026-11-23 · 节目方提纲</small><h3>#190 对话蚂蚁灵光蔡伟：个人 Agent 验证了什么</h3><ul><li><b>从一轮对话到长期托管的事项</b> <small>48:39、01:43:07</small><p>提纲以事项而非对话作为设计线索，并把托管事项规模列为之后要验证的量。</p></li></ul><p><a href="https://podcast.latepost.com/190">原节目 ↗</a></p></article><article class="block"><small>张小珺商业访谈录 · 2026-11-18 · 节目方提纲</small><h3>#157 和蔡伟复盘 Personal Agent 的兴起</h3><ul><li><b>从同期产品涌现追问真实需求</b> <small>00:20:49、02:23:21</small><p>节目介绍并列多种同类产品，重点问题包括模型与产品形态发生了什么变化，以及用户需求能否成立。</p></li></ul><p><a href="https://www.xiaoyuzhoufm.com/episode/6afd12c6a4a79edf137afd61">原节目 ↗</a></p></article><article class="block"><small>The Cognitive Revolution · 2026-11-11 · 节目方提纲</small><h3>Cisco 的 Vijoy Pandey 谈多 Agent 语义对齐</h3><ul><li><b>个人代理的主动工作流</b> <small>01:02:24</small><p>章节索引在多 Agent 对齐之后单列个人自治代理工作流，可与国内节目强调的事项托管对照回听。</p></li></ul><p><a href="https://www.cognitiverevolution.ai/agents-that-think-together-cisco-s-vijoy-pandey-on-semantic-alignment-scope-accord-concord/">原节目 ↗</a></p></article></section><aside><p><small>收录范围见本页节目清单。标为官方文字稿的条目已核对相关段落；标为节目方提纲的条目提供回听线索。历史节目仍在补查。</small></p></aside><section><h2>已刊简报</h2><ul><li><a href="../../issues/2026-11/index.html#card-handoff">项目做到一半，旧会话里哪些东西不能丢？</a> <small>11 月创刊号：如何留下能复用的判断 · Next Token · #011</small></li><li><a href="../../issues/2026-11/index.html#card-scope">AI 让加功能变容易，谁来决定不加什么？</a> <small>11 月创刊号：如何留下能复用的判断 · Next Token · #010</small></li></ul></section><footer>回声 FM · 全球 AI 播客中文精选</footer></main></body></html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Personal Agent · 回声 FM</title>
+  <link rel="canonical" href="https://fm.chenshi.ai/topics/personal-agent/">
+  <link rel="stylesheet" href="../../assets/fm-topic.css">
+</head>
+<body>
+  <a class="skip-to-content" href="#main">跳到正文</a>
+  <header class="topic-masthead wrap">
+    <a class="station" href="../../">回声 <i>FM</i></a>
+    <nav aria-label="站内导航"><a class="library-link" href="../">← 专题库</a><a href="../../archive/">往期</a></nav>
+  </header>
+  <main class="wrap" id="main" tabindex="-1">
+    <header class="topic-cover">
+      <div>
+        <p class="topic-category">技术</p>
+        <h1>Personal Agent</h1>
+        <p class="topic-aliases"><span>又名</span> 个人 Agent · 个人 AI 助理 · PA</p><p class="topic-dek">把个人 Agent 当一类产品来读：用户要持续交给它什么任务、上下文怎样保留，外部服务能否把事项接完。单个产品的热度只反映其中一部分。</p>
+      </div>
+      <dl class="topic-metrics"><div><dt>节目收录</dt><dd>3<span>集</span></dd></div><div><dt>讨论点</dt><dd>3<span>条</span></dd></div><div><dt>已刊简报</dt><dd>2<span>条</span></dd></div></dl>
+    </header>
+    <nav class="topic-jumps" aria-label="跳到本页章节"><a href="#outlines">节目方提纲 <span aria-hidden="true">↓</span></a><a href="#topic-materials">已刊简报 <span aria-hidden="true">↓</span></a><a href="#related">相关专题 <span aria-hidden="true">↓</span></a></nav>
+    <div class="topic-content has-rail">
+      <div class="topic-reading"><section class="topic-section" aria-labelledby="outlines"><div class="section-heading"><h2 id="outlines">节目方提纲</h2><span>3 集</span></div><p class="section-intro">依据节目方公开导读或章节整理，时间点可用于回听。</p><article class="topic-entry" id="episode-late-190" aria-labelledby="title-late-190">
+  <div class="entry-meta"><span class="entry-series">晚点聊 LateTalk</span><time datetime="2026-11-23">2026-11-23</time>
+    <span class="source-kind source-kind--outline">节目方提纲</span></div>
+  <h3 id="title-late-190">#190 对话蚂蚁灵光蔡伟：个人 Agent 验证了什么</h3>
+  <ul class="topic-notes"><li><div class="note-heading"><h4>从一轮对话到长期托管的事项</h4><span class="timecode">48:39、01:43:07</span></div><p>提纲以事项而非对话作为设计线索，并把托管事项规模列为之后要验证的量。</p></li></ul>
+  <div class="entry-links"><a href="https://podcast.latepost.com/190">原节目 <span aria-hidden="true">↗</span></a></div>
+</article><article class="topic-entry" id="episode-zhang-157" aria-labelledby="title-zhang-157">
+  <div class="entry-meta"><span class="entry-series">张小珺商业访谈录</span><time datetime="2026-11-18">2026-11-18</time>
+    <span class="source-kind source-kind--outline">节目方提纲</span></div>
+  <h3 id="title-zhang-157">#157 和蔡伟复盘 Personal Agent 的兴起</h3>
+  <ul class="topic-notes"><li><div class="note-heading"><h4>从同期产品涌现追问真实需求</h4><span class="timecode">00:20:49、02:23:21</span></div><p>节目介绍并列多种同类产品，重点问题包括模型与产品形态发生了什么变化，以及用户需求能否成立。</p></li></ul>
+  <div class="entry-links"><a href="https://www.xiaoyuzhoufm.com/episode/6afd12c6a4a79edf137afd61">原节目 <span aria-hidden="true">↗</span></a></div>
+</article><article class="topic-entry" id="episode-cog-cisco" aria-labelledby="title-cog-cisco">
+  <div class="entry-meta"><span class="entry-series">The Cognitive Revolution</span><time datetime="2026-11-11">2026-11-11</time>
+    <span class="source-kind source-kind--outline">节目方提纲</span></div>
+  <h3 id="title-cog-cisco">Cisco 的 Vijoy Pandey 谈多 Agent 语义对齐</h3>
+  <ul class="topic-notes"><li><div class="note-heading"><h4>个人代理的主动工作流</h4><span class="timecode">01:02:24</span></div><p>章节索引在多 Agent 对齐之后单列个人自治代理工作流，可与国内节目强调的事项托管对照回听。</p></li></ul>
+  <div class="entry-links"><a href="https://www.cognitiverevolution.ai/agents-that-think-together-cisco-s-vijoy-pandey-on-semantic-alignment-scope-accord-concord/">原节目 <span aria-hidden="true">↗</span></a></div>
+</article></section><section class="topic-section" aria-labelledby="topic-materials"><div class="section-heading"><h2 id="topic-materials">已刊简报</h2><span>2 条</span></div><article class="topic-entry topic-brief">
+  <div class="entry-meta"><span class="entry-series">Next Token · #011</span>
+    <span>11 月创刊号：如何留下能复用的判断</span></div>
+  <h3><a href="../../issues/2026-11/index.html#card-handoff">项目做到一半，旧会话里哪些东西不能丢？ <span aria-hidden="true">↗</span></a></h3>
+  <p class="entry-summary">杨攀的 Antigravity 原会话中途报错。他想让它另开会话，没能做到；手动新开之后，新会话又没有按预期读到旧状态，最后他主动点名让工具引用旧会话才把它带进来。但在同一轮试用里，他让工具从整个项目里选出此时最该推进的问题，工具发现了一个他熟悉该领域却忽略的盲区。他讲的是两种能力在同一次使用里的落差，不是给产品整体下判断。</p>
+  <p class="entry-proof">官方逐字稿 · 杨攀自述</p>
+</article><article class="topic-entry topic-brief">
+  <div class="entry-meta"><span class="entry-series">Next Token · #010</span>
+    <span>11 月创刊号：如何留下能复用的判断</span></div>
+  <h3><a href="../../issues/2026-11/index.html#card-scope">AI 让加功能变容易，谁来决定不加什么？ <span aria-hidden="true">↗</span></a></h3>
+  <p class="entry-summary">橘子借《人月神话》谈自己看到的一种新陷阱：团队给核心业务添人，也可能顺手去开几条旁支，因为 AI 已经把加一个功能的成本降得很低；但用户识别产品时，可能只认那一件做得好的事。他建议团队先判断核心流程有没有做透，新增人手也可以继续解决同一个问题。歸藏拿 Instinct 的交互举例：它少做给用户看的按钮，把精力放在对话过程里的可靠感。这是两位嘉宾的产品判断，不是功能越少就一定越好的定律。</p>
+  <p class="entry-proof">官方逐字稿 · 嘉宾观点</p>
+</article></section></div>
+      <aside class="topic-rail"><section class="rail-related"><h2 id="related">相关专题</h2><ul class="rail-links"><li><a href="../cai-wei/">蔡伟<span aria-hidden="true">→</span></a></li><li><a href="../lingguang/">蚂蚁灵光<span aria-hidden="true">→</span></a></li><li><a href="../agent-handoffs/">Agent 接力<span aria-hidden="true">→</span></a></li></ul></section><nav class="rail-episodes" aria-labelledby="episode-navigation"><h2 id="episode-navigation">本页节目</h2><ul class="rail-links"><li><a href="#episode-late-190">#190 对话蚂蚁灵光蔡伟：个人 Agent 验证了什么</a></li><li><a href="#episode-zhang-157">#157 和蔡伟复盘 Personal Agent 的兴起</a></li><li><a href="#episode-cog-cisco">Cisco 的 Vijoy Pandey 谈多 Agent 语义对齐</a></li></ul></nav><section class="rail-scope"><h2>收录范围</h2><p>收录范围见本页节目清单。标为官方文字稿的条目已核对相关段落；标为节目方提纲的条目提供回听线索。历史节目仍在补查。</p></section></aside>
+    </div>
+  </main>
+  <footer class="topic-footer wrap">
+    <a class="station" href="../../">回声 <i>FM</i></a>
+    <nav aria-label="页尾导航"><a href="../">专题库</a><a href="../../coverage/">源覆盖</a>
+      <a href="https://chenshi.ai/articles/">Blog ↗</a></nav>
+  </footer>
+</body>
+</html>
