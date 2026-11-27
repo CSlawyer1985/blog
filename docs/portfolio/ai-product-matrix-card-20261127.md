@@ -1,6 +1,6 @@
 # AI 产品矩阵首页作品卡片验收 · 2026-11-27
 
-结论：本次局部修改完成源码、静态检查与浏览器实测；首页作品栏新增第 16 张卡片“AI 产品矩阵”，沿用既有卡片结构、纸质微缩视觉语言与 8 秒功能叙事。尚未提交、推送或部署。
+结论：本次局部修改完成源码、静态检查与浏览器实测；首页作品栏新增第 16 张卡片“AI 产品矩阵”，沿用既有卡片结构、纸质微缩视觉语言与 8 秒功能叙事。已于 2026-11-27 23:14 CST 推送至 `origin/main`，并由 Cloudflare Pages 部署到 chenshi.ai。
 
 ## 内容与变更
 
@@ -53,9 +53,12 @@
 
 修改前已逐文件备份并经 SHA-256 校验：`scratch/apm-card-20261127/backup/`（含 `SHA256SUMS.txt`）。按原相对路径恢复六个文件即可回退源码与提示词；新增配图、截图与本记录如需清理，按用户规则移入废纸篓，不永久删除。
 
-## 部署状态
+## 部署
 
-- 未提交、未推送、未部署。上线仍需用户明确授权；届时仅提交本卡片相关文件，工作区中无关改动（如 `desktop/presentations/views-and-quotes.html`、`scratch/retheme-turbo-tails.py`、`about.html` 既有 `dateModified` 改动）不得纳入。
+- 2026-11-27 23:14 CST 提交 `696dfeb`（Add AI Product Atlas to the project gallery），推送 `origin/main`；Cloudflare Pages 自动构建。仅提交本卡片相关 11 个文件；工作区中无关的改动未纳入。
+- 推送后 20 秒内，线上首页已出现 `project-apm`、`01—16` 与 `portfolio.css?v=20261127-apm`；关于页 `https://chenshi.ai/about` 已出现 `https://legalagi.cn/tools/ai-product-matrix/` 条目。
+- 线上 `assets/portfolio/ai-product-matrix.webp` 返回 200，`content-length` 7438，SHA-256 与本地一致（`1a4c3032…`）；`css/portfolio.css` 返回 200，26,159 字节，与本地一致并含 APM 关键帧。
+- 线上浏览器复核：16 张作品卡片，APM 卡片进入视口后播放，20 个 SVG 循环动效层存在；配图请求返回 200 并实际解码为 1200×800；样式表版本为 `20261127-apm`。
 
 ## 边界声明
 
