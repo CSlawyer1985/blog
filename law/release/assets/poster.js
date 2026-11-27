@@ -31,8 +31,11 @@
    font(750,20);centered('T H E   L E G A L   B R I E F',263,red);
    hr(309,ink,4);hr(318,ink);
    const qr=window.qrcode(0,'M');qr.addData(url.href,'Byte');qr.make();
-   const n=qr.getModuleCount(), px=Math.floor(400/(n+8)), size=px*(n+8), qrX=1008-size, qrY=H-size-68;
-   const top=qrY-65;hr(top,ink,3);
+   // Keep the C footer compact for ordinary links. Denser URLs need bigger
+   // modules to survive a 360px thumbnail; keep a four-module quiet zone.
+   const n=qr.getModuleCount(), modules=n+8, px=n>=33?Math.min(6,Math.floor(432/modules)):Math.max(5,Math.floor(225/modules));
+   const size=px*modules, qrX=1008-size, qrY=H-size-70;
+   const top=Math.min(1093,qrY-30);hr(top,rule,2);
    font(750,24);txt(p.kicker||'专题选刊',70,353,red);
    font(800,p.rows?58:66,serif);
    let y=paragraphs(p.title,70,413,935,p.rows?71:80,p.rows?2:3)+22;
@@ -50,12 +53,9 @@
      hr(y);y+=24;
      font(500,36,serif);paragraphs(p.summary,70,y,935,54,Math.max(1,Math.floor((top-y-15)/54)),ink);
    }
-   font(800,35,serif);txt('扫码读全文',70,top+38);
-   font(550,23);txt('进入法讯简报查看来源与更多内容',70,top+100,muted);
-   font(700,21);const manual=url.host+url.pathname+url.search+url.hash;
-   const w=qrX-98, fits=manual.length<=95&&split(c,manual,w).length<=3;
-   paragraphs(fits?manual:'网站入口：'+url.host,70,top+163,w,29,5,red);
-   if(!fits){font(500,20);paragraphs('完整筛选地址请扫码',70,top+208,w,28,2,muted)}
+   font(750,21);txt(p.rows?'法讯简报 · 法律动态选刊':'法讯简报 · 单条速递',70,1174,muted);
+   font(780,29);txt(url.host,70,1222,red);
+   font(500,20);txt('扫描右侧二维码查看完整内容',70,1275,muted);
    c.fillStyle='#fff';c.fillRect(qrX,qrY,size,size);
    c.fillStyle='#181511';
    for(let row=0;row<n;row++)for(let col=0;col<n;col++)if(qr.isDark(row,col))c.fillRect(qrX+(col+4)*px,qrY+(row+4)*px,px,px);
