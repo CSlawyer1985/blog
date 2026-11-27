@@ -37,3 +37,6 @@ h1,h2{font-family:var(--serif);line-height:1.16}.stream-head{display:flex;justif
 @media(max-width:520px){.poster-panel{padding:12px}.poster-panel img{height:53dvh}}
 
 .region-help{margin:.1rem 0 .4rem;color:var(--muted);font-size:.76rem;line-height:1.35}
+
+/* Related leading posts are attributed without competing with the person's name. */
+.app-content>small{display:block;color:var(--muted);font-size:11px;margin-bottom:2px}

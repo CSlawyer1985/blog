@@ -2,7 +2,8 @@
  'use strict';
  const base=new URL('../',document.currentScript.src), q=s=>document.querySelector(s);
  const ref=(s)=>new URL(s,base).href, esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- const typer=i=>i.kind==='司法任免'?'司法任免':/案例|裁判/.test(i.kind)?'重大案例':/解释|意见稿|法规|规章|法律/.test(i.kind)?'新法速递':/答问|权威|解读/.test(i.kind)?'权威观点':'监管与程序';
+ const personnel=i=>i.kind==='司法任免';
+ const typer=i=>personnel(i)?'司法任免':i.kind==='监管执法案例'?'监管与程序':/案例|裁判/.test(i.kind)?'重大案例':/解释|意见稿|法规|规章|法律/.test(i.kind)?'新法速递':/答问|权威|解读|学术观点/.test(i.kind)?'权威观点':'监管与程序';
  const day=i=>i.changed||i.published;
  async function copy(text){
    if(navigator.clipboard&&window.isSecureContext) await navigator.clipboard.writeText(text);
@@ -40,10 +41,10 @@
    }return false;
  }
  const arow=i=>`<article class="appointment" data-card-id="${esc(i.id)}">
- <div class="app-content">${i.person?`<strong class="person">${esc(i.person)}</strong>${(i.actions||[]).map(x=>`<p><span class="action">${esc(x.action)}</span> <span>${esc(x.agency)} · ${esc(x.roles.join('、'))}</span></p>`).join('')}`:`<p>${esc(i.summary)}</p>`}</div>
- <div class="app-meta"><time>${esc(i.published)}</time>${i.decision_date?`<small>决定 ${esc(i.decision_date)}</small>`:''}<a href="${esc(i.source)}">官方原文 ↗</a><a href="${esc(ref('news/'+i.id+'/'))}" aria-label="条目详情">详情</a><button class="one-share" data-share-id="${esc(i.id)}">分享海报</button></div></article>`;
+ <div class="app-content">${i.personnel_group?`<small>${esc(i.personnel_group)} · ${esc(i.state)}</small>`:''}${i.person?`<strong class="person">${esc(i.person)}</strong>${(i.actions||[]).map(x=>`<p><span class="action">${esc(x.action)}</span> <span>${esc(x.agency)} · ${esc(x.roles.join('、'))}</span></p>`).join('')}`:`<p>${esc(i.summary)}</p>`}</div>
+ <div class="app-meta"><time>${esc(i.published)}</time>${i.decision_date?`<small>决定 ${esc(i.decision_date)}</small>`:''}<a href="${esc(i.source)}">${esc(i.source_label||'官方原文')} ↗</a><a href="${esc(ref('news/'+i.id+'/'))}" aria-label="条目详情">详情</a><button class="one-share" data-share-id="${esc(i.id)}">分享海报</button></div></article>`;
  const tagsLinks=(i)=>Object.entries(i.tags).flatMap(([k,v])=>v.map(t=>`<a class="chip ${esc(k)}" href="${esc(ref('tags/'+k+'/'+encodeURIComponent(t)+'/'))}">${esc(t)}</a>`)).join('');
- const tile=i=>`<article class="tile" data-card-id="${esc(i.id)}"><div class="card-ey"><span>${esc(i.kind)}</span><strong>${esc(i.state)}</strong></div><h2><a href="${esc(ref('news/'+i.id+'/'))}">${esc(i.title)}</a></h2><p>${esc(i.summary)}</p><aside><strong>实务提示</strong><p>${esc(i.practice)}</p></aside><p class="scope">适用或参考范围：${esc(i.scope)}</p><div class="dates">${[['published','公布'],['changed','更新'],['effective','施行'],['deadline','截止']].filter(([k])=>i[k]).map(([k,v])=>`<span>${v} ${esc(i[k])}</span>`).join('')}</div><div class="source"><span>${esc(i.issuer)}</span><a href="${esc(i.source)}">官方原文 ↗</a></div><div class="chips">${tagsLinks(i)}</div><button class="one-share" data-share-id="${esc(i.id)}">分享海报</button></article>`;
+ const tile=i=>`<article class="tile" data-card-id="${esc(i.id)}"><div class="card-ey"><span>${esc(i.kind)}</span><strong>${esc(i.state)}</strong></div><h2><a href="${esc(ref('news/'+i.id+'/'))}">${esc(i.title)}</a></h2><p>${esc(i.summary)}</p><aside><strong>实务提示</strong><p>${esc(i.practice)}</p></aside><p class="scope">适用或参考范围：${esc(i.scope)}</p><div class="dates">${[['published','公布'],['changed','更新'],['effective','施行'],['deadline','截止']].filter(([k])=>i[k]).map(([k,v])=>`<span>${v} ${esc(i[k])}</span>`).join('')}</div><div class="source"><span>${esc(i.issuer)}</span><a href="${esc(i.source)}">${esc(i.source_label||'官方原文')} ↗</a></div><div class="chips">${tagsLinks(i)}</div><button class="one-share" data-share-id="${esc(i.id)}">分享海报</button></article>`;
  function wireRegion(form){
     const input=form.elements.regionSearch, selector=form.querySelector('[data-check-group=region]');
     if(!input || !selector)return;
@@ -61,10 +62,10 @@
       clear.hidden=!chosen.size;
       q('#tag-feedback').textContent=chosen.size?'已选 '+chosen.size+' 个标签（匹配任一）':'标签可多选，满足任一选中标签即可。';
       const hits=items.filter(i=>selected(i,p?.region||[],p?.up,p?.regionMode)&&(!p?.type?.length||p.type.includes(typer(i)))&&(!chosen.size||Object.values(i.tags).flat().some(t=>chosen.has(t))));
-      const posts=hits.filter(i=>typer(i)!=='司法任免').slice(0,Number(main.dataset.homeLimit));
-      const appointments=hits.filter(i=>typer(i)==='司法任免').slice(0,240);
+      const posts=hits.filter(i=>!personnel(i)).slice(0,Number(main.dataset.homeLimit));
+      const appointments=hits.filter(i=>personnel(i)).slice(0,240);
       main.innerHTML=posts.map(tile).join('')||'<p>暂无匹配资讯，可清空关注查看全部。</p>';
-      apps.innerHTML=appointments.map(arow).join('')||'<p>当前范围暂无已登记任免。</p>';
+      apps.innerHTML=appointments.map(arow).join('')||'<p>当前范围暂无已核实的人事变动。</p>';
       q('#count').textContent='显示 '+posts.length+' 条 · 按时间从新到旧';
       q('#feedback').textContent=(p?.region?.length||p?.type?.length)?'当前：我的关注':'当前：看全部';
       document.dispatchEvent(new Event('law-layout'));
@@ -93,7 +94,7 @@
       const hits=items.filter(i=>{
         const matchDate=[i.published,i.changed].some(x=>x && x>=from&&x<=to);
         const labels=Object.values(i.tags).flat(), group=typer(i);
-        return matchDate&&selected(i,r,f.has('up'),f.get('regionMode'),s.exact)&&!(f.has('noap')&&group==='司法任免')&&(!(g.length||t.length)||t.includes(group)||g.some(tag=>labels.includes(tag)));
+        return matchDate&&selected(i,r,f.has('up'),f.get('regionMode'),s.exact)&&!(f.has('noap')&&personnel(i))&&(!(g.length||t.length)||t.includes(group)||g.some(tag=>labels.includes(tag)));
       });
       const groups=[...new Set(hits.map(typer))];
       const query=new URLSearchParams(f);query.delete('regionSearch');if(query.get('regionMode')==='related')query.delete('regionMode');if(s.exact)query.set('exact','on');
@@ -103,7 +104,7 @@
       q('#share-results').innerHTML=groups.map(k=>{
         const xs=hits.filter(i=>typer(i)===k);
         text+='\n'+k+'（'+xs.length+'）\n'+xs.map(i=>i.published+' '+i.title+'\n'+i.summary+'\n原文：'+i.source).join('\n\n')+'\n';
-        return `<section class="source-group"><h2>${esc(k)}（${xs.length}）</h2>${xs.map(i=>typer(i)==='司法任免'?arow(i):tile(i)).join('')}</section>`;
+        return `<section class="source-group"><h2>${esc(k)}（${xs.length}）</h2>${xs.map(i=>personnel(i)?arow(i):tile(i)).join('')}</section>`;
       }).join('');
       const heads=groups.map(k=>hits.find(i=>typer(i)===k));
       const shortlist=[...heads,...hits.filter(i=>!heads.includes(i))].slice(0,5);
