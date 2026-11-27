@@ -12,3 +12,26 @@ h1,h2{font-family:var(--serif);line-height:1.16}.stream-head{display:flex;justif
 
 #appointment-home .appointment[hidden],.desk-end[hidden]{display:none}
 .desk-end{display:block;padding:.75rem 0;font-size:12px;color:var(--red);font-weight:650}
+
+/* Share desk and multi-select controls */
+[hidden]{display:none!important}
+.check-group{border:1px solid var(--rule);min-width:0;margin:0;padding:8px 10px 10px}
+.check-group legend{padding:0 .25em;font-weight:750}.check-group legend small{font-weight:500;color:var(--muted);margin-left:.35em}
+.check-group input[type=search]{width:100%;margin-bottom:5px}
+.check-list{max-height:10.5rem;overflow:auto;scrollbar-width:thin}
+.pref-fields label.check-option,.share-fields label.check-option,.facet-option{display:flex;gap:.5rem;align-items:baseline;padding:.27rem .23rem;cursor:pointer}
+.check-option:hover,.facet-option:hover{background:#e9dfce}
+.check-option input,.facet-option input{flex:none;accent-color:#932a20}
+.tag-feedback{color:var(--muted);font-size:.82rem;margin:.2rem 0 .6rem}
+.facet-option small{margin-left:auto}
+#share-poster{background:#86291f;color:#fff;border-color:#86291f;font-weight:750}
+#share-poster:disabled{opacity:.5}
+.poster-dialog{border:1px solid #998e81;border-top:4px double #2b241d;width:min(94vw,590px);max-height:92dvh;background:#f5f0e5;color:#211d19;padding:0}
+.poster-dialog::backdrop{background:#231f1bd0}
+.poster-panel{padding:14px 18px 16px}.poster-head{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.poster-head h2{margin:0;font-size:1.65rem}
+.poster-note{font-size:.85rem;color:#655749;margin:.35rem 0 .65rem}
+.poster-panel img{display:block;object-fit:contain;width:100%;height:min(62dvh,570px);background:#eee4d2}
+.poster-panel .controls{display:flex;flex-wrap:wrap;align-items:center;gap:.55rem;margin:.75rem 0 0}
+.poster-panel [data-download]{background:#86291f;color:white;padding:.35rem .65rem;font-weight:750}.poster-panel [data-target]{color:#86291f}
+@media(max-width:520px){.poster-panel{padding:12px}.poster-panel img{height:53dvh}}
