@@ -35,3 +35,5 @@ h1,h2{font-family:var(--serif);line-height:1.16}.stream-head{display:flex;justif
 .poster-panel .controls{display:flex;flex-wrap:wrap;align-items:center;gap:.55rem;margin:.75rem 0 0}
 .poster-panel [data-download]{background:#86291f;color:white;padding:.35rem .65rem;font-weight:750}.poster-panel [data-target]{color:#86291f}
 @media(max-width:520px){.poster-panel{padding:12px}.poster-panel img{height:53dvh}}
+
+.region-help{margin:.1rem 0 .4rem;color:var(--muted);font-size:.76rem;line-height:1.35}

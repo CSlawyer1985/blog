@@ -26,11 +26,11 @@
  const label=id=>{const p=[];for(let x=id;x&&x!=='CN';x=parent.get(x))p.unshift(names.get(x));return p.join(' / ')||'全国（所有地区）'};
  const checks=(name,data,on=[])=>data.map(([value,title])=>`<label class="check-option"><input type="checkbox" name="${name}" value="${esc(value)}"${on.includes(value)?' checked':''}> <span>${esc(title)}</span></label>`).join('');
  const group=(title,name,data,state,pre='')=>`<fieldset class="check-group"><legend>${title} <small>可多选</small></legend>${pre}<div class="check-list" data-check-group="${name}">${checks(name,data,state[name])}</div></fieldset>`;
- const fields=(state,more)=>`${group('地域','region',regions.map(r=>[r.id,label(r.id)]),state,'<input type="search" name="regionSearch" placeholder="搜地名／地区代码" aria-label="搜索区划">')}
+ const fields=(state,more)=>`${group('地域','region',regions.map(r=>[r.id,label(r.id)]),state,'<input type="search" name="regionSearch" placeholder="搜地名／地区代码" aria-label="搜索区划"><p class="region-help">选全国包含各地；选省或市自动包含所有下级地区。</p>')}
  ${group('资讯类型','type',types.map(x=>[x,x]),state)}
  ${more?group('其他标签','tag',tags.map(x=>[x,x]),state):''}
  <label class="small"><input type="checkbox" name="up" ${state.up?'checked':''}> 同看依法适用于本地的上级规则</label>
- <label>地域口径 <select name="regionMode"><option value="related">当地事项（含直接涉及）</option><option value="applicable" ${state.regionMode==='applicable'?'selected':''}>当地适用的现行规则</option></select></label><label class="small"><input type="checkbox" name="exact" ${state.exact?'checked':''}> 仅所选区划，不含下级</label>${more?`<label class="small"><input type="checkbox" name="noap" ${state.noap?'checked':''}> 不包含司法任免</label>`:''}`;
+ <label>地域口径 <select name="regionMode"><option value="related">当地事项（含直接涉及）</option><option value="applicable" ${state.regionMode==='applicable'?'selected':''}>当地适用的现行规则</option></select></label>${more?`<label class="small"><input type="checkbox" name="noap" ${state.noap?'checked':''}> 不包含司法任免</label>`:''}`;
  function selected(i,choices,up, mode='related',exact=false){
    if(!choices.length||choices.includes('CN'))return true;
    const direct=mode==='applicable'?(i.region_applicability||[]):(i.region_facts||i.region_ids||[]);
@@ -60,7 +60,7 @@
       const chosen=new Set(boxes.filter(b=>b.checked).map(b=>b.value));
       clear.hidden=!chosen.size;
       q('#tag-feedback').textContent=chosen.size?'已选 '+chosen.size+' 个标签（匹配任一）':'标签可多选，满足任一选中标签即可。';
-      const hits=items.filter(i=>selected(i,p?.region||[],p?.up,p?.regionMode,p?.exact)&&(!p?.type?.length||p.type.includes(typer(i)))&&(!chosen.size||Object.values(i.tags).flat().some(t=>chosen.has(t))));
+      const hits=items.filter(i=>selected(i,p?.region||[],p?.up,p?.regionMode)&&(!p?.type?.length||p.type.includes(typer(i)))&&(!chosen.size||Object.values(i.tags).flat().some(t=>chosen.has(t))));
       const posts=hits.filter(i=>typer(i)!=='司法任免').slice(0,Number(main.dataset.homeLimit));
       const appointments=hits.filter(i=>typer(i)==='司法任免').slice(0,240);
       main.innerHTML=posts.map(tile).join('')||'<p>暂无匹配资讯，可清空关注查看全部。</p>';
@@ -72,7 +72,7 @@
    const show=()=>{fs.innerHTML=fields(get()||{},false);wireRegion(form);dlg.showModal()};
    q('#prefs').onclick=show;
    const persist=p=>{try{localStorage.setItem(key,JSON.stringify(p))}catch{}prefs=p;update(p);dlg.close()};
-   form.onsubmit=e=>{e.preventDefault();const f=new FormData(form);persist({region:f.getAll('region'),type:f.getAll('type'),up:f.has('up'),regionMode:f.get('regionMode'),exact:f.has('exact')})};
+   form.onsubmit=e=>{e.preventDefault();const f=new FormData(form);persist({region:f.getAll('region'),type:f.getAll('type'),up:f.has('up'),regionMode:f.get('regionMode')})};
    q('button[data-clear]').onclick=()=>persist({region:[],type:[]});
    boxes.forEach(b=>b.addEventListener('change',()=>{boxes.filter(o=>o.value===b.value).forEach(o=>o.checked=b.checked);update(prefs)}));
    clear.onclick=()=>{boxes.forEach(b=>b.checked=false);update(prefs)};
@@ -93,13 +93,13 @@
       const hits=items.filter(i=>{
         const matchDate=[i.published,i.changed].some(x=>x && x>=from&&x<=to);
         const labels=Object.values(i.tags).flat(), group=typer(i);
-        return matchDate&&selected(i,r,f.has('up'),f.get('regionMode'),f.has('exact'))&&!(f.has('noap')&&group==='司法任免')&&(!(g.length||t.length)||t.includes(group)||g.some(tag=>labels.includes(tag)));
+        return matchDate&&selected(i,r,f.has('up'),f.get('regionMode'),s.exact)&&!(f.has('noap')&&group==='司法任免')&&(!(g.length||t.length)||t.includes(group)||g.some(tag=>labels.includes(tag)));
       });
       const groups=[...new Set(hits.map(typer))];
-      const query=new URLSearchParams(f);query.delete('regionSearch');if(query.get('regionMode')==='related')query.delete('regionMode');
+      const query=new URLSearchParams(f);query.delete('regionSearch');if(query.get('regionMode')==='related')query.delete('regionMode');if(s.exact)query.set('exact','on');
       shareUrl=canonical('share/?'+query.toString());
       text='法讯简报｜'+from+' ～ '+to+'｜'+hits.length+' 条\n地域：'+(r.map(label).join('、')||'全部')+'\n标签（并集）：'+([...t,...g].join('、')||'全部')+'\n';
-      q('#share-status').textContent=text.split('\n').filter(Boolean).join('；');
+      q('#share-status').textContent=text.split('\n').filter(Boolean).join('；')+(s.exact?'；旧分享保留仅所选地区，重新预览即包含下级。':'');
       q('#share-results').innerHTML=groups.map(k=>{
         const xs=hits.filter(i=>typer(i)===k);
         text+='\n'+k+'（'+xs.length+'）\n'+xs.map(i=>i.published+' '+i.title+'\n'+i.summary+'\n原文：'+i.source).join('\n\n')+'\n';
@@ -110,7 +110,7 @@
       poster={url:shareUrl,kicker:'精选法讯 · 自定义分享',title:'法律动态选刊',meta:from+' 至 '+to+'  /  '+hits.length+' 条'+(r.length?'  /  '+r.map(label).join('、'):''),rows:shortlist.map(i=>({kind:typer(i),title:i.title})),filename:'法讯简报-选刊-'+from+'-'+to+'.png'};
       q('#share-link').disabled=q('#share-text').disabled=pp.disabled=!hits.length;
     }
-    form.onsubmit=e=>{e.preventDefault();preview()};
+    form.onsubmit=e=>{e.preventDefault();s.exact=false;preview()};
     form.addEventListener('change',e=>{if(e.target.name==='regionSearch')return;pp.disabled=q('#share-link').disabled=q('#share-text').disabled=true;q('#share-status').textContent='筛选条件已改动，请重新预览。'});
     for(const [id,fn] of [['#share-link',()=>shareUrl],['#share-text',()=>text]])q(id).onclick=async()=>{try{await copy(fn());q('#share-status').textContent+=' · 已复制'}catch{window.prompt('复制分享内容',fn())}};
     if(params.has('from')&&params.has('to'))preview();
