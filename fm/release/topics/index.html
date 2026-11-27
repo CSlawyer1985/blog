@@ -1,6 +1,6 @@
 <!doctype html>
 <!--
-视觉表达方案：E（层级索引），HTML/CSS 与原生 JS。沿用回声 FM 的纸色、墨绿与衬线标题。
+视觉表达方案：E（层级索引），HTML/CSS 与原生 JS。沿用回声 FM 的纸面与森林绿，以活字砌块浏览专题。
 以 grid 划分分类标题和词块，以 cluster 排列链接，窄屏改为单列分类和自然换行。
 阅读路径：分类导航或搜索 → 专题名称与收录量 → 专题页。搜索时展开简介，辅助辨认同类条目。
 分类使用原生锚点，列表由站点构建，搜索只筛页面中的公开内容。无动画或外部依赖。
@@ -18,13 +18,13 @@
 <body class="library">
   <a class="skip-to-content" href="#directory">跳到专题索引</a>
   <header class="topic-masthead wrap">
-    <a class="station" href="../">回声 <i>FM</i></a>
-    <nav aria-label="站内导航"><a href="../#topic">首页专题墙</a><a href="../archive/">往期</a></nav>
+    <a class="station" href="../">chenshi.ai <i>回声 FM</i></a>
+    <nav aria-label="站内导航"><a href="../index.html">本期</a><a href="../archive/">往期</a><a href="../coverage/">源覆盖</a></nav>
   </header>
   <main class="wrap">
     <header class="library-cover">
       <div>
-        <p class="library-count">125 个专题 <span aria-hidden="true">/</span> 7 个分类</p>
+        <p class="library-count">153 个专题 <span aria-hidden="true">/</span> 8 个分类</p>
         <h1>专题库</h1>
         <p class="library-dek">沿人物、产品和技术，查找历期播客讨论。</p>
       </div>
@@ -35,10 +35,8 @@
         <p id="library-status" role="status"></p>
       </form>
     </header>
-    <nav class="library-jumps" aria-label="专题分类"><a href="#category-people">人物 <span data-count>24</span></a><a href="#category-technology">技术 <span data-count>29</span></a><a href="#category-ideas">观点 <span data-count>7</span></a><a href="#category-products">产品 <span data-count>23</span></a><a href="#category-organizations">公司与机构 <span data-count>25</span></a><a href="#category-practice">法律实务 <span data-count>6</span></a><a href="#category-methods">工作方法 <span data-count>11</span></a></nav>
-    <div id="directory" tabindex="-1"><section class="index-group" id="category-people" aria-labelledby="category-people-label">
-  <header><h2 id="category-people-label">人物</h2><p><span data-count>24</span> 个专题</p></header>
-  <ul class="index-tokens"><li class="index-token index-token--profile">
+    <nav class="cat-rail library-jumps" aria-label="专题分类"><a class="cat-tab" data-cat="people" href="#category-people"><svg class="cat-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.2" r="3.15"/><path d="M5.4 19.2c.7-3.6 3.2-5.4 6.6-5.4s5.9 1.8 6.6 5.4"/></svg><span class="cat-tab-label">人物</span><small class="cat-tab-count"><span data-count>24</span></small></a><a class="cat-tab" data-cat="technology" href="#category-technology"><svg class="cat-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.4" cy="12" r="2.15"/><circle cx="17.2" cy="6.8" r="2.15"/><circle cx="17.2" cy="17.2" r="2.15"/><path d="M8.5 11.1 15.1 8M8.5 12.9 15.1 16"/></svg><span class="cat-tab-label">技术</span><small class="cat-tab-count"><span data-count>29</span></small></a><a class="cat-tab" data-cat="ideas" href="#category-ideas"><svg class="cat-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5.2 6.6h13.6v9.4H9.2L5.2 19.4V6.6z"/><path d="M8.4 10.2h7.4M8.4 13.2h5.2"/></svg><span class="cat-tab-label">观点</span><small class="cat-tab-count"><span data-count>7</span></small></a><a class="cat-tab" data-cat="products" href="#category-products"><svg class="cat-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="14" rx="3"/><path d="M5 9.2h14"/><circle cx="8.2" cy="7.1" r=".7"/></svg><span class="cat-tab-label">产品</span><small class="cat-tab-count"><span data-count>23</span></small></a><a class="cat-tab" data-cat="organizations" href="#category-organizations"><svg class="cat-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V8.2L12 4.8 19 8.2V19"/><path d="M9 19v-5h6v5"/><path d="M9.2 10.2h1.4M13.4 10.2h1.4M9.2 13h1.4M13.4 13h1.4"/></svg><span class="cat-tab-label">公司与机构</span><small class="cat-tab-count"><span data-count>25</span></small></a><a class="cat-tab" data-cat="practice" href="#category-practice"><svg class="cat-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.6v12.2"/><path d="M8.2 19.4h7.6"/><path d="M12 6.2 6.4 9.6c1.5 2.4 3.2 3.4 5.6 3.4"/><path d="M12 6.2 17.6 9.6c-1.5 2.4-3.2 3.4-5.6 3.4"/></svg><span class="cat-tab-label">法律实务</span><small class="cat-tab-count"><span data-count>6</span></small></a><a class="cat-tab" data-cat="methods" href="#category-methods"><svg class="cat-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8.2h6.2L8.4 5.6M5 8.2l2.8 2.6"/><path d="M12.2 12.6h6.2L15.6 10M12.2 12.6l2.8 2.6"/><path d="M5 18h14"/></svg><span class="cat-tab-label">工作方法</span><small class="cat-tab-count"><span data-count>11</span></small></a><a class="cat-tab" data-cat="other" href="#category-other"><svg class="cat-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h4v4H7zM13 7h4v4h-4zM7 13h4v4H7zM13 13h4v4h-4z"/></svg><span class="cat-tab-label">其他专题</span><small class="cat-tab-count"><span data-count>28</span></small></a></nav>
+    <div id="directory" tabindex="-1"><section class="index-group" data-cat="people" id="category-people" aria-labelledby="category-people-label"><header class="cat-band"><h2 class="cat-head" id="category-people-label"><svg class="cat-ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.2" r="3.15"/><path d="M5.4 19.2c.7-3.6 3.2-5.4 6.6-5.4s5.9 1.8 6.6 5.4"/></svg><span>人物</span><small><span data-count>24</span> 个专题</small></h2></header><ul class="index-tokens"><li class="index-token index-token--profile index-token--hot">
   <a href="jensen-huang/"><span class="index-name">黄仁勋</span>
     <span class="index-count">5 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p class="index-preview-meta">又名 Jensen Huang · Jen-Hsun Huang</p><p>三条线可一起看：黄仁勋本人如何回顾押注 CUDA，使用英伟达工具的人如何描述亲身经历，以及节目在领导层变动前后如何分析公司的选择。本人自述、参与者回忆和外部推演各有来源。</p><p class="index-preview-meta">2 集核对官方文字稿 · 3 集附节目方提纲</p></div>
@@ -134,58 +132,55 @@
   <a href="ya-ge/"><span class="index-name">鸭哥</span>
     <span class="index-count">1 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p>从模拟验证、人工验收和多会话协调三处看他如何组织自己与代理的分工。</p><p class="index-preview-meta">1 集附节目方提纲</p></div>
-</li></ul>
-</section><section class="index-group" id="category-technology" aria-labelledby="category-technology-label">
-  <header><h2 id="category-technology-label">技术</h2><p><span data-count>29</span> 个专题</p></header>
-  <ul class="index-tokens"><li class="index-token index-token--profile">
+</li></ul></section><section class="index-group" data-cat="technology" id="category-technology" aria-labelledby="category-technology-label"><header class="cat-band"><h2 class="cat-head" id="category-technology-label"><svg class="cat-ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.4" cy="12" r="2.15"/><circle cx="17.2" cy="6.8" r="2.15"/><circle cx="17.2" cy="17.2" r="2.15"/><path d="M8.5 11.1 15.1 8M8.5 12.9 15.1 16"/></svg><span>技术</span><small><span data-count>29</span> 个专题</small></h2></header><ul class="index-tokens"><li class="index-token index-token--profile index-token--hot">
   <a href="agent-evaluation/"><span class="index-name">Agent 评估</span>
     <span class="index-count">10 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p class="index-preview-meta">又名 Agent evals · 智能体评估</p><p>把衡量对象、复现环境和判分规则拆开读。法律场景适合逐项检查任务要求，生产场景要比较线上轨迹与离线题；成绩只对应各自的测量口径。</p><p class="index-preview-meta">7 集核对官方文字稿 · 3 集附节目方提纲</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--hot">
   <a href="personal-agent/"><span class="index-name">Personal Agent</span>
     <span class="index-count">9 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p class="index-preview-meta">又名 个人 Agent · 个人 AI 助理 · PA</p><p>把个人 Agent 当一类产品来读：用户要持续交给它什么任务、上下文怎样保留，外部服务能否把事项接完。单个产品的热度只反映其中一部分。</p><p class="index-preview-meta">4 集核对官方文字稿 · 5 集附节目方提纲</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--hot">
   <a href="continual-learning/"><span class="index-name">持续学习</span>
     <span class="index-count">6 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p class="index-preview-meta">又名 Continual Learning</p><p>顺着任务记录、有效反馈和更新目标三步读。时效性强的事实与只属于单个用户的偏好，适合由外部状态提供；多次出现的共性失误才值得研究训练能否修正。</p><p class="index-preview-meta">2 集核对官方文字稿 · 4 集附节目方提纲</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--mid">
   <a href="ai-infrastructure/"><span class="index-name">AI 基础设施</span>
     <span class="index-count">4 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p>同一轮讨论涉及谁建设数据中心、怎样交付算力，以及专业云厂商和应用公司的经营分工。</p><p class="index-preview-meta">4 集附节目方提纲</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--mid">
   <a href="recursive-self-improvement/"><span class="index-name">递归自我改进</span>
     <span class="index-count">4 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p class="index-preview-meta">又名 RSI · Recursive Self-Improvement</p><p>先区分有明确可测目标的局部反复优化，以及更强意义上的通用自我改进。现有节目提纲可以定位前一种实践，结论仍随实际任务及评估核验。</p><p class="index-preview-meta">4 集附节目方提纲</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--mid">
   <a href="agent-handoffs/"><span class="index-name">Agent 接力</span>
     <span class="index-count">3 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p>从会话中断、多个代理协作和任务交付三个情形看，中间状态和原始目标怎样留下来。</p><p class="index-preview-meta">2 集核对官方文字稿 · 1 集附节目方提纲</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--mid">
   <a href="gpu/"><span class="index-name">GPU</span>
     <span class="index-count">3 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p class="index-preview-meta">又名 图形处理器 · GPU 算力</p><p>从单卡规格看到实际算力交付：软件可否适配、集群和冷却怎样协调、实际任务成本落在哪些环节。供给或价格的讨论保留节目时间。</p><p class="index-preview-meta">1 集核对官方文字稿 · 2 集附节目方提纲</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--mid">
   <a href="agent-harness/"><span class="index-name">Harness</span>
     <span class="index-count">3 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p class="index-preview-meta">又名 Agent Harness · 代理执行框架</p><p>这一组材料讨论模型外的执行框架如何处理插件、确认、任务状态与续接。几个产品的实测各自保留出处。</p><p class="index-preview-meta">2 集核对官方文字稿 · 1 集附节目方提纲</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--mid">
   <a href="personal-memory/"><span class="index-name">个人记忆</span>
     <span class="index-count">3 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p>结合个人代理的使用经验，回看记录、筛选和跨工具迁移是怎样衔接的。</p><p class="index-preview-meta">1 集核对官方文字稿 · 2 集附节目方提纲</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--mid">
   <a href="shared-context/"><span class="index-name">共享上下文</span>
     <span class="index-count">3 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p>从个人资料到企业文档，再到跨代理协调，追踪谁能看见哪些信息、怎样确认大家说的是同一个任务。</p><p class="index-preview-meta">2 集核对官方文字稿 · 1 集附节目方提纲</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--mid">
   <a href="test-time-scaling/"><span class="index-name">推理时扩展</span>
     <span class="index-count">3 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p class="index-preview-meta">又名 Test-Time Scaling · Inference-Time Scaling · 推理时算力</p><p>用任务是否可验证、得分是否随额外推理预算变化这两条线理解推理扩展。现有材料收录实验者和算力供应商各自的说法。</p><p class="index-preview-meta">3 集核对官方文字稿</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--mid">
   <a href="mechanistic-interpretability/"><span class="index-name">机制可解释性</span>
     <span class="index-count">3 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p class="index-preview-meta">又名 Mechanistic Interpretability · 机理可解释性</p><p>把对内部信号的描述和干预结果放到一处看。模型激活出现规律、研究者能预测这类规律、干预后行为确实变化，是三种不同强度的证据。</p><p class="index-preview-meta">3 集核对官方文字稿</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--mid">
   <a href="pretraining/"><span class="index-name">预训练</span>
     <span class="index-count">3 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p class="index-preview-meta">又名 Pre-training</p><p>围绕数据、训练中验证、组织共识三个实际环节，比对几位参与者的回顾。</p><p class="index-preview-meta">1 集核对官方文字稿 · 2 集附节目方提纲</p></div>
@@ -253,22 +248,19 @@
   <a href="behavior-models/"><span class="index-name">行为模型</span>
     <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
   
-</li></ul>
-</section><section class="index-group" id="category-ideas" aria-labelledby="category-ideas-label">
-  <header><h2 id="category-ideas-label">观点</h2><p><span data-count>7</span> 个专题</p></header>
-  <ul class="index-tokens"><li class="index-token index-token--profile">
+</li></ul></section><section class="index-group" data-cat="ideas" id="category-ideas" aria-labelledby="category-ideas-label"><header class="cat-band"><h2 class="cat-head" id="category-ideas-label"><svg class="cat-ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5.2 6.6h13.6v9.4H9.2L5.2 19.4V6.6z"/><path d="M8.4 10.2h7.4M8.4 13.2h5.2"/></svg><span>观点</span><small><span data-count>7</span> 个专题</small></h2></header><ul class="index-tokens"><li class="index-token index-token--profile index-token--hot">
   <a href="product-tradeoffs/"><span class="index-name">产品取舍</span>
     <span class="index-count">6 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p>从应用首次变得可做，到客户愿意长期使用和付费，追踪不同产品如何处理能力、成本与场景的冲突。</p><p class="index-preview-meta">1 集核对官方文字稿 · 5 集附节目方提纲</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--hot">
   <a href="permission-boundaries/"><span class="index-name">权限边界</span>
     <span class="index-count">5 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p>汇集任务委托、用户确认、设备隔离及企业数据授权的实例。各案例的权限约束随实际场景变化。</p><p class="index-preview-meta">2 集核对官方文字稿 · 3 集附节目方提纲</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--mid">
   <a href="product-entrypoints/"><span class="index-name">产品入口</span>
     <span class="index-count">4 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p>跟踪用户发起任务的地方变化后，原产品会怎样获得用户、展现价值或继续收费。</p><p class="index-preview-meta">2 集核对官方文字稿 · 2 集附节目方提纲</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--mid">
   <a href="ai-governance/"><span class="index-name">AI 治理</span>
     <span class="index-count">3 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p>收录如何评估治理是否有效、如何监督上线后的过程，以及前沿研发怎样设定安全门槛。</p><p class="index-preview-meta">3 集核对官方文字稿</p></div>
@@ -284,10 +276,7 @@
   <a href="progressive-disclosure/"><span class="index-name">渐进式披露</span>
     <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
   
-</li></ul>
-</section><section class="index-group" id="category-products" aria-labelledby="category-products-label">
-  <header><h2 id="category-products-label">产品</h2><p><span data-count>23</span> 个专题</p></header>
-  <ul class="index-tokens"><li class="index-token index-token--profile">
+</li></ul></section><section class="index-group" data-cat="products" id="category-products" aria-labelledby="category-products-label"><header class="cat-band"><h2 class="cat-head" id="category-products-label"><svg class="cat-ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="14" rx="3"/><path d="M5 9.2h14"/><circle cx="8.2" cy="7.1" r=".7"/></svg><span>产品</span><small><span data-count>23</span> 个专题</small></h2></header><ul class="index-tokens"><li class="index-token index-token--profile">
   <a href="claude-code/"><span class="index-name">Claude Code</span>
     <span class="index-count">2 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p class="index-preview-meta">又名 Claude 的编程 Agent</p><p>这里汇集工具构建者的工作方式，以及其他节目在比较编程 Agent 时对实际使用成本的观察。转载或产品宣传中的速度、配额与产出都不作为通用结论。</p><p class="index-preview-meta">1 集核对官方文字稿 · 1 集附节目方提纲</p></div>
@@ -379,14 +368,11 @@
   <a href="opendesign/"><span class="index-name">OpenDesign</span>
     <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
   
-</li></ul>
-</section><section class="index-group" id="category-organizations" aria-labelledby="category-organizations-label">
-  <header><h2 id="category-organizations-label">公司与机构</h2><p><span data-count>25</span> 个专题</p></header>
-  <ul class="index-tokens"><li class="index-token index-token--profile">
+</li></ul></section><section class="index-group" data-cat="organizations" id="category-organizations" aria-labelledby="category-organizations-label"><header class="cat-band"><h2 class="cat-head" id="category-organizations-label"><svg class="cat-ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V8.2L12 4.8 19 8.2V19"/><path d="M9 19v-5h6v5"/><path d="M9.2 10.2h1.4M13.4 10.2h1.4M9.2 13h1.4M13.4 13h1.4"/></svg><span>公司与机构</span><small><span data-count>25</span> 个专题</small></h2></header><ul class="index-tokens"><li class="index-token index-token--profile index-token--hot">
   <a href="nvidia/"><span class="index-name">英伟达</span>
     <span class="index-count">6 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p class="index-preview-meta">又名 NVIDIA · Nvidia</p><p>这些节目从三个层次讲英伟达：有装机量的软件平台、从芯片扩展到机房的系统能力，以及云厂商和其他算力路线的竞争。节目中的商业判断按当期语境阅读。</p><p class="index-preview-meta">2 集核对官方文字稿 · 4 集附节目方提纲</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--hot">
   <a href="anthropic/"><span class="index-name">Anthropic</span>
     <span class="index-count">5 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p class="index-preview-meta">又名 Anthropic PBC</p><p>把技术方向、开发工具和企业需求放到同一专题。Dario 的访谈解释研究取舍，两期《晚点聊》则分别从公开材料和企业顾客视角提出可回听的问题。</p><p class="index-preview-meta">1 集核对官方文字稿 · 4 集附节目方提纲</p></div>
@@ -482,10 +468,7 @@
   <a href="capital-group/"><span class="index-name">资本集团</span>
     <span class="index-count">1 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p class="index-preview-meta">又名 Capital Group</p><p>从节目对公司史的导读入手，看组织怎样安排独立决策、共享研究和过程归因。</p><p class="index-preview-meta">1 集附节目方提纲</p></div>
-</li></ul>
-</section><section class="index-group" id="category-practice" aria-labelledby="category-practice-label">
-  <header><h2 id="category-practice-label">法律实务</h2><p><span data-count>6</span> 个专题</p></header>
-  <ul class="index-tokens"><li class="index-token">
+</li></ul></section><section class="index-group" data-cat="practice" id="category-practice" aria-labelledby="category-practice-label"><header class="cat-band"><h2 class="cat-head" id="category-practice-label"><svg class="cat-ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.6v12.2"/><path d="M8.2 19.4h7.6"/><path d="M12 6.2 6.4 9.6c1.5 2.4 3.2 3.4 5.6 3.4"/><path d="M12 6.2 17.6 9.6c-1.5 2.4-3.2 3.4-5.6 3.4"/></svg><span>法律实务</span><small><span data-count>6</span> 个专题</small></h2></header><ul class="index-tokens"><li class="index-token">
   <a href="issue-prioritization/"><span class="index-name">争点优先级</span>
     <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
   
@@ -509,30 +492,27 @@
   <a href="acceptance-and-payment/"><span class="index-name">验收付款</span>
     <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
   
-</li></ul>
-</section><section class="index-group" id="category-methods" aria-labelledby="category-methods-label">
-  <header><h2 id="category-methods-label">工作方法</h2><p><span data-count>11</span> 个专题</p></header>
-  <ul class="index-tokens"><li class="index-token index-token--profile">
+</li></ul></section><section class="index-group" data-cat="methods" id="category-methods" aria-labelledby="category-methods-label"><header class="cat-band"><h2 class="cat-head" id="category-methods-label"><svg class="cat-ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8.2h6.2L8.4 5.6M5 8.2l2.8 2.6"/><path d="M12.2 12.6h6.2L15.6 10M12.2 12.6l2.8 2.6"/><path d="M5 18h14"/></svg><span>工作方法</span><small><span data-count>11</span> 个专题</small></h2></header><ul class="index-tokens"><li class="index-token index-token--profile index-token--hot">
   <a href="replayable-task-environments/"><span class="index-name">任务复现环境</span>
     <span class="index-count">6 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p class="index-preview-meta">又名 可复现任务环境 · Replayable Task Environments</p><p>把一次实际工作中的起始状态、可用工具、步骤和判分规则保存下来，便于复跑同一个任务并比较改动。可读 Trajectory 的环境设计与 Harvey 的领域评估例子。</p><p class="index-preview-meta">4 集核对官方文字稿 · 2 集附节目方提纲</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--mid">
   <a href="ai-content-production/"><span class="index-name">AI 内容创作</span>
     <span class="index-count">4 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p>从短剧、可交互游戏和视频工具的实际体验出发，关注制作门槛变化后怎样选择作品和交付渠道。</p><p class="index-preview-meta">3 集核对官方文字稿 · 1 集附节目方提纲</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--mid">
   <a href="independent-review/"><span class="index-name">独立复核</span>
     <span class="index-count">4 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p>比较专家判断、试验验收和项目复盘中的独立环节。关注谁出题、谁执行、谁判断结果。</p><p class="index-preview-meta">1 集核对官方文字稿 · 3 集附节目方提纲</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--mid">
   <a href="evaluation-scope/"><span class="index-name">评估口径</span>
     <span class="index-count">4 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p>比较前先明确测到了什么、运行条件是否一致、指标是否代表最终目标。材料来自模型评估、研究工具和投资访谈。</p><p class="index-preview-meta">1 集核对官方文字稿 · 3 集附节目方提纲</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--mid">
   <a href="enterprise-ai-adoption/"><span class="index-name">企业 AI 落地</span>
     <span class="index-count">3 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p>从业务材料发现阻塞、整理企业上下文、安排过程监督，追踪一个应用从演示到实际使用。</p><p class="index-preview-meta">1 集核对官方文字稿 · 2 集附节目方提纲</p></div>
-</li><li class="index-token index-token--profile">
+</li><li class="index-token index-token--profile index-token--mid">
   <a href="organizational-coordination/"><span class="index-name">组织协同</span>
     <span class="index-count">3 集</span><span class="index-arrow" aria-hidden="true">→</span></a>
   <div class="index-preview"><p>从共享信息和权限职责两条线看，组织如何让团队分头行动、共同看见结果。</p><p class="index-preview-meta">3 集附节目方提纲</p></div>
@@ -556,11 +536,122 @@
   <a href="session-handoffs/"><span class="index-name">会话接力</span>
     <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
   
-</li></ul>
-</section></div>
+</li></ul></section><section class="index-group" data-cat="other" id="category-other" aria-labelledby="category-other-label"><header class="cat-band"><h2 class="cat-head" id="category-other-label"><svg class="cat-ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h4v4H7zM13 7h4v4h-4zM7 13h4v4H7zM13 13h4v4h-4z"/></svg><span>其他专题</span><small><span data-count>28</span> 个专题</small></h2></header><ul class="index-tokens"><li class="index-token">
+  <a href="topic-ce770667e5f9b0d8/"><span class="index-name">Google</span>
+    <span class="index-count">2 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-9d5aa6af83fc7374/"><span class="index-name">律师复核</span>
+    <span class="index-count">2 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-6064c10a29cf30f4/"><span class="index-name">视频制作</span>
+    <span class="index-count">2 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-7acb62b7d92970b0/"><span class="index-name">验收</span>
+    <span class="index-count">2 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-b9949e0592779e2d/"><span class="index-name">Agent 工作流</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-e5b7075bcd62532c/"><span class="index-name">Agent 治理</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-ca78754843c865b5/"><span class="index-name">AlphaZero</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-c9396beb94111bee/"><span class="index-name">ColaOS</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-0648d2111ec0ca3d/"><span class="index-name">DeepSeek</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-6de335fa213a8df7/"><span class="index-name">Dots</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-edb1068f03be7b5b/"><span class="index-name">Grok Bot</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-7006eab836d84be6/"><span class="index-name">Ineffable Intelligence</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-0acebf4be29c549c/"><span class="index-name">Manus</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-aca4860aa7f6bd17/"><span class="index-name">Mecka</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-18093cad26441ad1/"><span class="index-name">Modal</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-4e8fb58eda1d1f82/"><span class="index-name">Serval</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-402f54c642af0f29/"><span class="index-name">TPU</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-1175ec13252066a8/"><span class="index-name">交互设计</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-b3403b0ab4628f6e/"><span class="index-name">判断闸门</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-077fa6371576b5b6/"><span class="index-name">工作流设计</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-bba764133ac15759/"><span class="index-name">强化学习</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-a07d408b9e0f7fa2/"><span class="index-name">推理成本</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-64bf41b075c9fdcb/"><span class="index-name">数据采集</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-b073c9795ece08e6/"><span class="index-name">服务设计</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-a99cda37ba9a59ce/"><span class="index-name">模型选型</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-05fdf30411d98d32/"><span class="index-name">沙箱</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-753158aad9f60a60/"><span class="index-name">流程自动化</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li><li class="index-token">
+  <a href="topic-b1c425e89277bc83/"><span class="index-name">算力验收</span>
+    <span class="index-count">1 条简报</span><span class="index-arrow" aria-hidden="true">→</span></a>
+  
+</li></ul></section></div>
   </main>
   <footer class="topic-footer wrap">
-    <a class="station" href="../">回声 <i>FM</i></a>
+    <a class="station" href="../">chenshi.ai <i>回声 FM</i></a>
     <nav aria-label="页尾导航"><a href="../archive/">往期</a><a href="../coverage/">源覆盖</a>
       <a href="https://chenshi.ai/articles/">Blog ↗</a></nav>
   </footer>

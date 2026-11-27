@@ -1,0 +1,1027 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="canonical" href="https://fm.chenshi.ai/issues/2026-10/">
+<meta name="description" content="听见判断形成的那一段。全球 AI 播客中文精选与持续更新的行业故事专题。">
+<title>回声 FM · 全球 AI 播客简报</title>
+<link rel="stylesheet" href="../../assets/fm-theme.css">
+<style></style><link rel="stylesheet" href="../../assets/fm-theme.css"><link rel="stylesheet" href="../../assets/fm-share.css"><script src="../../assets/fm-share.js" defer></script></head>
+<body>
+<a class="skip" href="#brief">跳到本期简报</a>
+<header class="wrap head" id="top">
+  <a href="#top" class="logo"><span class="sig" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M3 12h2l2-5 2 10 3-14 3 17 2-10 2 4h2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>回声 FM</b><em>chenshi.ai</em></a>
+  <nav class="nav" aria-label="页面导航"><a href="../../index.html">本期</a><a href="../../archive/index.html">往期</a><a href="../../topics/index.html">专题</a><a href="../../coverage/2026-10/index.html">源覆盖</a><a href="https://chenshi.ai/articles/">↖ Blog</a></nav>
+</header>
+<main id="mast-wrap">
+<section class="paperhead wrap" aria-labelledby="mast">
+  <div class="mast-copy">
+    <div class="eyebrow">全球 AI 播客中文精选</div>
+    <h1 id="mast">回声<i>FM.</i></h1>
+    <p class="slogan">听见判断形成的那一段。</p>
+  </div>
+  <div class="edition mono"><span>ISSUE 001</span><b>31 OCT 2026</b><span>10 月回溯 · 10/01–10/31</span></div>
+</section>
+<section class="hero art" id="echo-art" aria-label="从播客声波中取出判断形成的那一段">
+  <canvas class="echo-canvas" aria-hidden="true"></canvas>
+  </section>
+<div class="picks" hidden aria-hidden="true"><a href="#card-oct-goodput" data-pick><span class="index">01</span><span>Google 算力负责人看 goodput，不只看理论峰值</span></a><a href="#card-oct-tpu-contrarian" data-pick><span class="index">02</span><span>Google 做第一代 TPU 时，先赌一小类推理任务</span></a><a href="#card-oct-clip-handoff" data-pick><span class="index">03</span><span>一条口播交给三个 Bot，人的关口放在分镜上</span></a></div>
+<section class="issue-bar wrap" aria-labelledby="featureTitle">
+  <div>
+    <div class="eyebrow">FIELD NOTES · 本期专题</div>
+    <h2 id="featureTitle">交给 Agent 以后，<br>谁来验收？</h2><p class="issue-dek">回看 10 月：从把口播交给三个 Bot，到按故障下的有效算力衡量基建。共 17 条精选，目录缺口及证据层级另列。</p>
+  </div>
+  <a class="scroll-cue" href="#brief">阅读本期简报 <span aria-hidden="true">↓</span></a>
+</section>
+<div class="sec wrap" id="brief">
+  <div class="sectionhead"><h2>本期简报</h2><p id="count">17 条精选<br>8 条逐字稿锚定 · 9 条大纲 · 0 条增补</p></div>
+  <p class="trust-legend">实心印表示该条已对照<strong>官方逐字稿</strong>并保留原句；空心印表示仅见节目方大纲，<strong>不新加引文</strong>。</p>
+  <div class="filters" role="toolbar" aria-label="筛选本期简报">
+    <button type="button" class="pill" data-filter="" aria-pressed="true">全部</button>
+    <button type="button" class="pill" data-filter="逐字稿锚定">逐字稿锚定</button>
+    <button type="button" class="pill" data-filter="大纲无引文">大纲无引文</button>
+    <button type="button" class="pill" data-filter="本期增补">本期增补</button>
+    <button type="button" class="pill" data-filter="法律 AI 实务">法律 AI 实务</button>
+    <button type="button" class="pill" data-filter="讲课素材">讲课素材</button>
+    <button type="button" class="pill" data-filter="产品与技术">产品与技术</button>
+    <button type="button" class="pill" data-filter="思维与洞见">思维与洞见</button>
+    <button type="button" class="pill" data-filter="行业故事">行业故事</button>
+    <input id="q" class="search" type="search" placeholder="搜人物、产品或节目" aria-label="搜索本期简报">
+  </div>
+  <div class="grid" id="cards"><article class="card" id="card-oct-goodput" data-cat="产品与技术" data-added="" data-level="transcript" data-text="google 算力负责人看 goodput，不只看理论峰值 google 算力负责人看 goodput，不只看理论峰值 amin vahdat 用同步作业解释：许多加速器一起工作时，单个组件失效就可能拖住整项任务。定位故障、回到检查点、等待恢复、重做运算，都会占用时间，却没有把答案向前推进。他因此看特定工作负载在真实故障条件下交付了多少有效计算，而不是只看理论 flops。 training data 红杉官方逐字稿 · 未标时间码 ai 基础设施 算力验收 google [{&#x27;claim&#x27;: &#x27;amin vahdat 用同步作业解释：许多加速器一起工作时，单个组件失效就可能拖住整项任务。定位故障、回到检查点、等待恢复、重做运算，都会占用时间，却没有把答案向前推进。他因此看特定工作负载在真实故障条件下交付了多少有效计算，而不是只看理论 flops。&#x27;, &#x27;who&#x27;: &#x27;amin vahdat&#x27;, &#x27;caveat&#x27;: &#x27;发言人回顾或判断，不是独立评测结论。&#x27;, &#x27;quote&#x27;: &quot;it&#x27;s delivered goodput.&quot;}] []"><div class="inner"><div class="card-meta"><span>产品与技术 / AI 基础设施</span><time>10.06</time><button type="button" class="fm-share-trigger" title="分享" aria-label="分享 Google 算力负责人看 goodput，不只看理论峰值" data-fm-share="../../s/2026-10/oct-goodput/" data-fm-title="Google 算力负责人看 goodput，不只看理论峰值" data-fm-aspect="1080 / 1920"></button></div><h3>Google 算力负责人看 goodput，不只看理论峰值</h3><div class="card-marks"><span class="proof-mark proof-mark--transcript">逐字稿锚定</span></div><p class="hook">Google 算力负责人看 goodput，不只看理论峰值</p><ul class="punches"><li><span class="pl">观点</span><p class="pb">Amin Vahdat 用同步作业解释：许多加速器一起工作时，单个组件失效就可能拖住整项任务。定位故障、回到检查点、等待恢复、重做运算，都会占用时间，却没有把答案向前推进。他因此看特定工作负载在真实故障条件下交付了多少有效计算，而不是只看理论 FLOPS。</p></li></ul><details class="proof"><summary>查看依据</summary><p class="src">红杉官方逐字稿 · 未标时间码</p><div class="xfield"><h4>观点</h4><div class="xitem" data-who="Amin Vahdat" data-at=""><p class="xclaim">Amin Vahdat 用同步作业解释：许多加速器一起工作时，单个组件失效就可能拖住整项任务。定位故障、回到检查点、等待恢复、重做运算，都会占用时间，却没有把答案向前推进。他因此看特定工作负载在真实故障条件下交付了多少有效计算，而不是只看理论 FLOPS。</p><p class="xmeta">Amin Vahdat</p><blockquote><p>“It&#x27;s delivered goodput.”</p></blockquote><p class="xcaveat">发言人回顾或判断，不是独立评测结论。</p></div></div><div class="usebox"><b>应用启示</b>算力采购可以把额定能力与业务验收分开：同一代表性负载下约定有效吞吐、故障恢复后的重跑口径、日志留存和测量窗口。这是合同审查思路，不是行业统一指标。</div><p class="src">Training Data<small>红杉官方逐字稿 · 未标时间码 · <a href="https://sequoiacap.com/podcast/google-s-ai-infrastructure-chief-amin-vahdat-on-the-physics-economics-of-frontier-ai">原节目 ↗</a></small></p><div class="tags"><button class="tag" data-topic="AI 基础设施" type="button">AI 基础设施</button><button class="tag" data-topic="算力验收" type="button">算力验收</button><button class="tag" data-topic="Google" type="button">Google</button></div></details></div></article><article class="card" id="card-oct-tpu-contrarian" data-cat="行业故事" data-added="" data-level="transcript" data-text="google 做第一代 tpu 时，先赌一小类推理任务 google 做第一代 tpu 时，先赌一小类推理任务 vahdat 回忆，2013 年定制加速器并不是业内理所当然的选择。团队先看到少数推理应用对通用 cpu 的资源压力，才愿意为这样的负载牺牲部分通用性。第一代为推理而做，第二代扩展到训练，之后才逐步进入 transformer 等更广任务。 training data 红杉官方逐字稿 · 未标时间码 ai 基础设施 tpu google [] [{&#x27;claim&#x27;: &#x27;vahdat 回忆，2013 年定制加速器并不是业内理所当然的选择。团队先看到少数推理应用对通用 cpu 的资源压力，才愿意为这样的负载牺牲部分通用性。第一代为推理而做，第二代扩展到训练，之后才逐步进入 transformer 等更广任务。&#x27;, &#x27;who&#x27;: &#x27;amin vahdat&#x27;, &#x27;caveat&#x27;: &#x27;发言人回顾或判断，不是独立评测结论。&#x27;, &#x27;quote&#x27;: &#x27;the first chip was all about inference.&#x27;}]"><div class="inner"><div class="card-meta"><span>行业故事 / AI 基础设施</span><time>10.06</time><button type="button" class="fm-share-trigger" title="分享" aria-label="分享 Google 做第一代 TPU 时，先赌一小类推理任务" data-fm-share="../../s/2026-10/oct-tpu-contrarian/" data-fm-title="Google 做第一代 TPU 时，先赌一小类推理任务" data-fm-aspect="1080 / 1920"></button></div><h3>Google 做第一代 TPU 时，先赌一小类推理任务</h3><div class="card-marks"><span class="proof-mark proof-mark--transcript">逐字稿锚定</span></div><p class="hook">Google 做第一代 TPU 时，先赌一小类推理任务</p><ul class="punches"><li><span class="pl">故事</span><p class="pb">Vahdat 回忆，2013 年定制加速器并不是业内理所当然的选择。团队先看到少数推理应用对通用 CPU 的资源压力，才愿意为这样的负载牺牲部分通用性。第一代为推理而做，第二代扩展到训练，之后才逐步进入 Transformer 等更广任务。</p></li></ul><details class="proof"><summary>查看依据</summary><p class="src">红杉官方逐字稿 · 未标时间码</p><div class="xfield"><h4>故事</h4><div class="xitem" data-who="Amin Vahdat" data-at=""><p class="xclaim">Vahdat 回忆，2013 年定制加速器并不是业内理所当然的选择。团队先看到少数推理应用对通用 CPU 的资源压力，才愿意为这样的负载牺牲部分通用性。第一代为推理而做，第二代扩展到训练，之后才逐步进入 Transformer 等更广任务。</p><p class="xmeta">Amin Vahdat</p><blockquote><p>“The first chip was all about inference.”</p></blockquote><p class="xcaveat">发言人回顾或判断，不是独立评测结论。</p></div></div><div class="usebox"><b>应用启示</b>判断专用设备采购价值时，先问业务负载是否足够稳定、需求是不是反复出现，再问定制带来的能效优势能否覆盖被锁定的接口和迁移成本。</div><p class="src">Training Data<small>红杉官方逐字稿 · 未标时间码 · <a href="https://sequoiacap.com/podcast/google-s-ai-infrastructure-chief-amin-vahdat-on-the-physics-economics-of-frontier-ai">原节目 ↗</a></small></p><div class="tags"><button class="tag" data-topic="AI 基础设施" type="button">AI 基础设施</button><button class="tag" data-topic="TPU" type="button">TPU</button><button class="tag" data-topic="Google" type="button">Google</button></div></details></div></article><article class="card" id="card-oct-clip-handoff" data-cat="讲课素材" data-added="" data-level="transcript" data-text="一条口播交给三个 bot，人的关口放在分镜上 一条口播交给三个 bot，人的关口放在分镜上 歸藏说，他用手机录主画面，把配画面、剪辑、封面交给 grok bot。流程不只是发一句‘剪好’：主 bot 先交 markdown 分镜供他看，得到同意才交给剪辑 bot；剪完再叫封面 bot，最后把视频与封面汇总回手机。 next token｜词元之外 节目官方逐字稿 agent 接力 视频制作 grok bot [] [{&#x27;claim&#x27;: &#x27;歸藏说，他用手机录主画面，把配画面、剪辑、封面交给 grok bot。流程不只是发一句‘剪好’：主 bot 先交 markdown 分镜供他看，得到同意才交给剪辑 bot；剪完再叫封面 bot，最后把视频与封面汇总回手机。&#x27;, &#x27;who&#x27;: &#x27;歸藏&#x27;, &#x27;at&#x27;: &#x27;31:43&#x27;, &#x27;caveat&#x27;: &#x27;发言人回顾或判断，不是独立评测结论。&#x27;, &#x27;quote&#x27;: &#x27;一个分镜，一个 markdown 文档，我在里边看一眼&#x27;}]"><div class="inner"><div class="card-meta"><span>讲课素材 / Agent 接力</span><time>10.19</time><button type="button" class="fm-share-trigger" title="分享" aria-label="分享 一条口播交给三个 Bot，人的关口放在分镜上" data-fm-share="../../s/2026-10/oct-clip-handoff/" data-fm-title="一条口播交给三个 Bot，人的关口放在分镜上" data-fm-aspect="1080 / 1920"></button></div><h3>一条口播交给三个 Bot，人的关口放在分镜上</h3><div class="card-marks"><span class="proof-mark proof-mark--transcript">逐字稿锚定</span></div><p class="hook">一条口播交给三个 Bot，人的关口放在分镜上</p><ul class="punches"><li><span class="pl">故事</span><p class="pb">歸藏说，他用手机录主画面，把配画面、剪辑、封面交给 Grok Bot。流程不只是发一句‘剪好’：主 Bot 先交 Markdown 分镜供他看，得到同意才交给剪辑 Bot；剪完再叫封面 Bot，最后把视频与封面汇总回手机。</p></li></ul><details class="proof"><summary>查看依据</summary><p class="src">节目官方逐字稿</p><div class="xfield"><h4>故事</h4><div class="xitem" data-who="歸藏" data-at="31:43"><p class="xclaim">歸藏说，他用手机录主画面，把配画面、剪辑、封面交给 Grok Bot。流程不只是发一句‘剪好’：主 Bot 先交 Markdown 分镜供他看，得到同意才交给剪辑 Bot；剪完再叫封面 Bot，最后把视频与封面汇总回手机。</p><p class="xmeta">歸藏 · 31:43</p><blockquote><p>“一个分镜，一个 Markdown 文档，我在里边看一眼”</p></blockquote><p class="xcaveat">发言人回顾或判断，不是独立评测结论。</p></div></div><div class="usebox"><b>应用启示</b>对课程切片可沿用一次轻量人工确认：先看哪些段落和证据要保留，再放行剪辑与封面；交付时仍核对画幅、音轨和可播放性。</div><p class="src">Next Token｜词元之外<small>节目官方逐字稿 · <a href="https://nexttoken.tv/weekly/006">原节目 ↗</a> <a href="https://nexttoken.tv/weekly/006/transcript">官方逐字稿 ↗</a></small></p><div class="tags"><button class="tag" data-topic="Agent 接力" type="button">Agent 接力</button><button class="tag" data-topic="视频制作" type="button">视频制作</button><button class="tag" data-topic="Grok Bot" type="button">Grok Bot</button></div></details></div></article><article class="card" id="card-oct-clip-false-done" data-cat="讲课素材" data-added="" data-level="transcript" data-text="同一套剪辑流程，上次一天收工，这次反复做不出来 同一套剪辑流程，上次一天收工，这次反复做不出来 在展示手机剪辑流程之前，杨攀也讲了另一面：过去用 astra 剪一期一天能完成，后来一次反复两三天做不出来。橘子还提到一次多音轨混错，被听众误以为主播在吵架。几位主播的体验可以并存；这不是对模型版本退化的独立证据。 next token｜词元之外 节目官方逐字稿 agent 评估 视频制作 验收 [] [{&#x27;claim&#x27;: &#x27;在展示手机剪辑流程之前，杨攀也讲了另一面：过去用 astra 剪一期一天能完成，后来一次反复两三天做不出来。橘子还提到一次多音轨混错，被听众误以为主播在吵架。几位主播的体验可以并存；这不是对模型版本退化的独立证据。&#x27;, &#x27;who&#x27;: &#x27;杨攀&#x27;, &#x27;at&#x27;: &#x27;30:29&#x27;, &#x27;caveat&#x27;: &#x27;发言人回顾或判断，不是独立评测结论。&#x27;, &#x27;quote&#x27;: &#x27;吭哧吭哧干了两三天，感觉反复弄，就出不来&#x27;}]"><div class="inner"><div class="card-meta"><span>讲课素材 / Agent 评估</span><time>10.19</time><button type="button" class="fm-share-trigger" title="分享" aria-label="分享 同一套剪辑流程，上次一天收工，这次反复做不出来" data-fm-share="../../s/2026-10/oct-clip-false-done/" data-fm-title="同一套剪辑流程，上次一天收工，这次反复做不出来" data-fm-aspect="1080 / 1920"></button></div><h3>同一套剪辑流程，上次一天收工，这次反复做不出来</h3><div class="card-marks"><span class="proof-mark proof-mark--transcript">逐字稿锚定</span></div><p class="hook">同一套剪辑流程，上次一天收工，这次反复做不出来</p><ul class="punches"><li><span class="pl">故事</span><p class="pb">在展示手机剪辑流程之前，杨攀也讲了另一面：过去用 Astra 剪一期一天能完成，后来一次反复两三天做不出来。橘子还提到一次多音轨混错，被听众误以为主播在吵架。几位主播的体验可以并存；这不是对模型版本退化的独立证据。</p></li></ul><details class="proof"><summary>查看依据</summary><p class="src">节目官方逐字稿</p><div class="xfield"><h4>故事</h4><div class="xitem" data-who="杨攀" data-at="30:29"><p class="xclaim">在展示手机剪辑流程之前，杨攀也讲了另一面：过去用 Astra 剪一期一天能完成，后来一次反复两三天做不出来。橘子还提到一次多音轨混错，被听众误以为主播在吵架。几位主播的体验可以并存；这不是对模型版本退化的独立证据。</p><p class="xmeta">杨攀 · 30:29</p><blockquote><p>“吭哧吭哧干了两三天，感觉反复弄，就出不来”</p></blockquote><p class="xcaveat">发言人回顾或判断，不是独立评测结论。</p></div></div><div class="usebox"><b>应用启示</b>把产物验收做成自己的测试，而不是让模型报告‘已完成’：文件是否真的新生成、播放是否正常、多人音轨是否对齐、原片比例有没有被改。</div><p class="src">Next Token｜词元之外<small>节目官方逐字稿 · <a href="https://nexttoken.tv/weekly/006">原节目 ↗</a> <a href="https://nexttoken.tv/weekly/006/transcript">官方逐字稿 ↗</a></small></p><div class="tags"><button class="tag" data-topic="Agent 评估" type="button">Agent 评估</button><button class="tag" data-topic="视频制作" type="button">视频制作</button><button class="tag" data-topic="验收" type="button">验收</button></div></details></div></article><article class="card" id="card-oct-dots-entry" data-cat="产品与技术" data-added="" data-level="transcript" data-text="入口做回聊天，为什么新人还是分不清三个产品？ 入口做回聊天，为什么新人还是分不清三个产品？ 歸藏评价 dots 早期版本时说，个人 agent 的前台可以很简单，但如果它和多个入口叠在一起，第一次用的人未必知道该去哪儿。他和向阳乔木对历史线程能不能读有不同体验；歸藏随后补充，早期行为与后续修正不同。 next token｜词元之外 节目官方逐字稿 personal agent 交互设计 dots [{&#x27;claim&#x27;: &#x27;歸藏评价 dots 早期版本时说，个人 agent 的前台可以很简单，但如果它和多个入口叠在一起，第一次用的人未必知道该去哪儿。他和向阳乔木对历史线程能不能读有不同体验；歸藏随后补充，早期行为与后续修正不同。&#x27;, &#x27;who&#x27;: &#x27;歸藏&#x27;, &#x27;at&#x27;: &#x27;03:51&#x27;, &#x27;caveat&#x27;: &#x27;发言人回顾或判断，不是独立评测结论。&#x27;, &#x27;quote&#x27;: &#x27;很多人分不清 codex、chatgpt 和 dots 的区别&#x27;}] []"><div class="inner"><div class="card-meta"><span>产品与技术 / Personal Agent</span><time>10.08</time><button type="button" class="fm-share-trigger" title="分享" aria-label="分享 入口做回聊天，为什么新人还是分不清三个产品？" data-fm-share="../../s/2026-10/oct-dots-entry/" data-fm-title="入口做回聊天，为什么新人还是分不清三个产品？" data-fm-aspect="1080 / 1920"></button></div><h3>入口做回聊天，为什么新人还是分不清三个产品？</h3><div class="card-marks"><span class="proof-mark proof-mark--transcript">逐字稿锚定</span></div><p class="hook">入口做回聊天，为什么新人还是分不清三个产品？</p><ul class="punches"><li><span class="pl">观点</span><p class="pb">歸藏评价 Dots 早期版本时说，个人 Agent 的前台可以很简单，但如果它和多个入口叠在一起，第一次用的人未必知道该去哪儿。他和向阳乔木对历史线程能不能读有不同体验；歸藏随后补充，早期行为与后续修正不同。</p></li></ul><details class="proof"><summary>查看依据</summary><p class="src">节目官方逐字稿</p><div class="xfield"><h4>观点</h4><div class="xitem" data-who="歸藏" data-at="03:51"><p class="xclaim">歸藏评价 Dots 早期版本时说，个人 Agent 的前台可以很简单，但如果它和多个入口叠在一起，第一次用的人未必知道该去哪儿。他和向阳乔木对历史线程能不能读有不同体验；歸藏随后补充，早期行为与后续修正不同。</p><p class="xmeta">歸藏 · 03:51</p><blockquote><p>“很多人分不清 Codex、ChatGPT 和 Dots 的区别”</p></blockquote><p class="xcaveat">发言人回顾或判断，不是独立评测结论。</p></div></div><div class="usebox"><b>应用启示</b>做个人 Agent 的产品入口时，把聊天、项目工作区、计算环境三层分别验收。澄清用户能从哪儿进、能读到什么、授权何时触发；不要让新用户先学会产品架构。</div><p class="src">Next Token｜词元之外<small>节目官方逐字稿 · <a href="https://nexttoken.tv/weekly/005">原节目 ↗</a> <a href="https://nexttoken.tv/weekly/005/transcript">官方逐字稿 ↗</a></small></p><div class="tags"><button class="tag" data-topic="Personal Agent" type="button">Personal Agent</button><button class="tag" data-topic="交互设计" type="button">交互设计</button><button class="tag" data-topic="Dots" type="button">Dots</button></div></details></div></article><article class="card" id="card-oct-response-speed" data-cat="产品与技术" data-added="" data-level="transcript" data-text="同一模型，首字等待缩短和账单下降是两回事 同一模型，首字等待缩短和账单下降是两回事 谈 deepseek 时，橘子先把产品体感改善与价目下调区分开：某些任务用到的推理 token 更少。杨攀则说，他回到 app 的直接体验是，不开搜索时问题很快开始得到响应。两种观察谈的是不同指标，不宜合成统一的提速率或降价幅度。 next token｜词元之外 节目官方逐字稿 模型选型 deepseek 推理成本 [{&#x27;claim&#x27;: &#x27;谈 deepseek 时，橘子先把产品体感改善与价目下调区分开：某些任务用到的推理 token 更少。杨攀则说，他回到 app 的直接体验是，不开搜索时问题很快开始得到响应。两种观察谈的是不同指标，不宜合成统一的提速率或降价幅度。&#x27;, &#x27;who&#x27;: &#x27;橘子&#x27;, &#x27;at&#x27;: &#x27;03:22&#x27;, &#x27;caveat&#x27;: &#x27;发言人回顾或判断，不是独立评测结论。&#x27;, &#x27;quote&#x27;: &#x27;它是没降价，但它是效率提升了。&#x27;}] []"><div class="inner"><div class="card-meta"><span>产品与技术 / 模型选型</span><time>10.26</time><button type="button" class="fm-share-trigger" title="分享" aria-label="分享 同一模型，首字等待缩短和账单下降是两回事" data-fm-share="../../s/2026-10/oct-response-speed/" data-fm-title="同一模型，首字等待缩短和账单下降是两回事" data-fm-aspect="1080 / 1920"></button></div><h3>同一模型，首字等待缩短和账单下降是两回事</h3><div class="card-marks"><span class="proof-mark proof-mark--transcript">逐字稿锚定</span></div><p class="hook">同一模型，首字等待缩短和账单下降是两回事</p><ul class="punches"><li><span class="pl">观点</span><p class="pb">谈 DeepSeek 时，橘子先把产品体感改善与价目下调区分开：某些任务用到的推理 Token 更少。杨攀则说，他回到 App 的直接体验是，不开搜索时问题很快开始得到响应。两种观察谈的是不同指标，不宜合成统一的提速率或降价幅度。</p></li></ul><details class="proof"><summary>查看依据</summary><p class="src">节目官方逐字稿</p><div class="xfield"><h4>观点</h4><div class="xitem" data-who="橘子" data-at="03:22"><p class="xclaim">谈 DeepSeek 时，橘子先把产品体感改善与价目下调区分开：某些任务用到的推理 Token 更少。杨攀则说，他回到 App 的直接体验是，不开搜索时问题很快开始得到响应。两种观察谈的是不同指标，不宜合成统一的提速率或降价幅度。</p><p class="xmeta">橘子 · 03:22</p><blockquote><p>“它是没降价，但它是效率提升了。”</p></blockquote><p class="xcaveat">发言人回顾或判断，不是独立评测结论。</p></div></div><div class="usebox"><b>应用启示</b>在法律工作流里，把首字延迟、全链路耗时、用量和成品合格率分开记；只快了初稿或只少花 Token，不一定省去人工复核。</div><p class="src">Next Token｜词元之外<small>节目官方逐字稿 · <a href="https://nexttoken.tv/weekly/007">原节目 ↗</a> <a href="https://nexttoken.tv/weekly/007/transcript">官方逐字稿 ↗</a></small></p><div class="tags"><button class="tag" data-topic="模型选型" type="button">模型选型</button><button class="tag" data-topic="DeepSeek" type="button">DeepSeek</button><button class="tag" data-topic="推理成本" type="button">推理成本</button></div></details></div></article><article class="card" id="card-oct-mecka-capture" data-cat="行业故事" data-added="" data-level="transcript" data-text="mecka 的第一批机器人数据，不是机器人录出来的 mecka 的第一批机器人数据，不是机器人录出来的 创始人 josh gao 回忆，最早的原型是一款手机应用，让人记录自己做饭、清洁等动作，之后才逐步转向定制硬件和合作采集。谈到接触力度时，他说手腕相机能给出粗略替代信号，但与实验室磨合后，他们开始做能采集力信息的手套。 training data 红杉官方逐字稿 · 未标时间码 数据采集 mecka 机器人 [] [{&#x27;claim&#x27;: &#x27;创始人 josh gao 回忆，最早的原型是一款手机应用，让人记录自己做饭、清洁等动作，之后才逐步转向定制硬件和合作采集。谈到接触力度时，他说手腕相机能给出粗略替代信号，但与实验室磨合后，他们开始做能采集力信息的手套。&#x27;, &#x27;who&#x27;: &#x27;josh gao&#x27;, &#x27;caveat&#x27;: &#x27;发言人回顾或判断，不是独立评测结论。&#x27;, &#x27;quote&#x27;: &#x27;our very earliest pilot was a mobile app.&#x27;}]"><div class="inner"><div class="card-meta"><span>行业故事 / 数据采集</span><time>10.20</time><button type="button" class="fm-share-trigger" title="分享" aria-label="分享 Mecka 的第一批机器人数据，不是机器人录出来的" data-fm-share="../../s/2026-10/oct-mecka-capture/" data-fm-title="Mecka 的第一批机器人数据，不是机器人录出来的" data-fm-aspect="1080 / 1920"></button></div><h3>Mecka 的第一批机器人数据，不是机器人录出来的</h3><div class="card-marks"><span class="proof-mark proof-mark--transcript">逐字稿锚定</span></div><p class="hook">Mecka 的第一批机器人数据，不是机器人录出来的</p><ul class="punches"><li><span class="pl">故事</span><p class="pb">创始人 Josh Gao 回忆，最早的原型是一款手机应用，让人记录自己做饭、清洁等动作，之后才逐步转向定制硬件和合作采集。谈到接触力度时，他说手腕相机能给出粗略替代信号，但与实验室磨合后，他们开始做能采集力信息的手套。</p></li></ul><details class="proof"><summary>查看依据</summary><p class="src">红杉官方逐字稿 · 未标时间码</p><div class="xfield"><h4>故事</h4><div class="xitem" data-who="Josh Gao" data-at=""><p class="xclaim">创始人 Josh Gao 回忆，最早的原型是一款手机应用，让人记录自己做饭、清洁等动作，之后才逐步转向定制硬件和合作采集。谈到接触力度时，他说手腕相机能给出粗略替代信号，但与实验室磨合后，他们开始做能采集力信息的手套。</p><p class="xmeta">Josh Gao</p><blockquote><p>“our very earliest pilot was a mobile app.”</p></blockquote><p class="xcaveat">发言人回顾或判断，不是独立评测结论。</p></div></div><div class="usebox"><b>应用启示</b>做行业训练集时，区分廉价但覆盖广的代理信号，与难采但直接决定结果的证据。法律项目中，OCR 文本与原始签章、附件、页码就是两层不同的证据。</div><p class="src">Training Data<small>红杉官方逐字稿 · 未标时间码 · <a href="https://sequoiacap.com/podcast/inside-the-robot-data-factory-how-mecka-sensorizes-humans-to-train-robots">原节目 ↗</a></small></p><div class="tags"><button class="tag" data-topic="数据采集" type="button">数据采集</button><button class="tag" data-topic="Mecka" type="button">Mecka</button><button class="tag" data-topic="机器人" type="button">机器人</button></div></details></div></article><article class="card" id="card-oct-alpha-experience" data-cat="思维与洞见" data-added="" data-level="transcript" data-text="alphago 的一次成功，为什么让 david silver 愿意再赌一次？ alphago 的一次成功，为什么让 david silver 愿意再赌一次？ silver 回忆，早期 alphago 大量使用人类棋谱和人工迭代；转向 alphazero 时，他们把注意力转到系统怎样靠自己探索。回望那段经历，他说当时并没有把握一定会成。ineffable 现在想把类似思路拓展到更广领域，这是研发假设，不是已验证的通用能力。 training data 红杉官方逐字稿 · 未标时间码 强化学习 alphazero ineffable intelligence [{&#x27;claim&#x27;: &#x27;silver 回忆，早期 alphago 大量使用人类棋谱和人工迭代；转向 alphazero 时，他们把注意力转到系统怎样靠自己探索。回望那段经历，他说当时并没有把握一定会成。ineffable 现在想把类似思路拓展到更广领域，这是研发假设，不是已验证的通用能力。&#x27;, &#x27;who&#x27;: &#x27;david silver&#x27;, &#x27;caveat&#x27;: &#x27;发言人回顾或判断，不是独立评测结论。&#x27;, &#x27;quote&#x27;: &quot;i thought maybe there was a good chance it might work, but i wasn&#x27;t confident&quot;}] []"><div class="inner"><div class="card-meta"><span>思维与洞见 / 强化学习</span><time>10.13</time><button type="button" class="fm-share-trigger" title="分享" aria-label="分享 AlphaGo 的一次成功，为什么让 David Silver 愿意再赌一次？" data-fm-share="../../s/2026-10/oct-alpha-experience/" data-fm-title="AlphaGo 的一次成功，为什么让 David Silver 愿意再赌一次？" data-fm-aspect="1080 / 1920"></button></div><h3>AlphaGo 的一次成功，为什么让 David Silver 愿意再赌一次？</h3><div class="card-marks"><span class="proof-mark proof-mark--transcript">逐字稿锚定</span></div><p class="hook">AlphaGo 的一次成功，为什么让 David Silver 愿意再赌一次？</p><ul class="punches"><li><span class="pl">观点</span><p class="pb">Silver 回忆，早期 AlphaGo 大量使用人类棋谱和人工迭代；转向 AlphaZero 时，他们把注意力转到系统怎样靠自己探索。回望那段经历，他说当时并没有把握一定会成。Ineffable 现在想把类似思路拓展到更广领域，这是研发假设，不是已验证的通用能力。</p></li></ul><details class="proof"><summary>查看依据</summary><p class="src">红杉官方逐字稿 · 未标时间码</p><div class="xfield"><h4>观点</h4><div class="xitem" data-who="David Silver" data-at=""><p class="xclaim">Silver 回忆，早期 AlphaGo 大量使用人类棋谱和人工迭代；转向 AlphaZero 时，他们把注意力转到系统怎样靠自己探索。回望那段经历，他说当时并没有把握一定会成。Ineffable 现在想把类似思路拓展到更广领域，这是研发假设，不是已验证的通用能力。</p><p class="xmeta">David Silver</p><blockquote><p>“I thought maybe there was a good chance it might work, but I wasn&#x27;t confident”</p></blockquote><p class="xcaveat">发言人回顾或判断，不是独立评测结论。</p></div></div><div class="usebox"><b>应用启示</b>讲 Agent 自我改进时区分三个东西：可探索的环境、可判断的结果和对人类资料的依赖。围棋的反馈条件不能直接替代法律任务的证据与外部裁判。</div><p class="src">Training Data<small>红杉官方逐字稿 · 未标时间码 · <a href="https://sequoiacap.com/podcast/david-silver-and-lasse-espeholt-of-ineffable-intelligence-a-superlearner-for-the-age-of-experience">原节目 ↗</a></small></p><div class="tags"><button class="tag" data-topic="强化学习" type="button">强化学习</button><button class="tag" data-topic="AlphaZero" type="button">AlphaZero</button><button class="tag" data-topic="Ineffable Intelligence" type="button">Ineffable Intelligence</button></div></details></div></article><article class="card" id="card-oct-yuyi-delegation" data-cat="思维与洞见" data-added="" data-level="outline" data-text="余一把 90% 与 100% 的委托分开：最后谁验收？ 余一把 90% 与 100% 的委托分开：最后谁验收？ 节目方说明记录了余一入职 manus 后的实验：尽量只同一个 agent 对话，让它去分派给其他 bot；并计划移走攒了一年的 harness，从头观察哪些文件与规则值得回来。她用 90% 与 100% 区分的，不只是多做一个步骤，而是人是否还要持续在场收尾。 ai 炼金术 节目方公开节目说明 · 未将提纲当作逐字稿 personal agent manus harness agent 接力 [{&#x27;claim&#x27;: &#x27;节目方说明记录了余一入职 manus 后的实验：尽量只同一个 agent 对话，让它去分派给其他 bot；并计划移走攒了一年的 harness，从头观察哪些文件与规则值得回来。她用 90% 与 100% 区分的，不只是多做一个步骤，而是人是否还要持续在场收尾。&#x27;, &#x27;who&#x27;: &#x27;余一&#x27;, &#x27;caveat&#x27;: &#x27;据节目方说明整理，未核听这一段原音。&#x27;}] []"><div class="inner"><div class="card-meta"><span>思维与洞见 / Personal Agent</span><time>10.28</time><button type="button" class="fm-share-trigger" title="分享" aria-label="分享 余一把 90% 与 100% 的委托分开：最后谁验收？" data-fm-share="../../s/2026-10/oct-yuyi-delegation/" data-fm-title="余一把 90% 与 100% 的委托分开：最后谁验收？" data-fm-aspect="1080 / 1920"></button></div><h3>余一把 90% 与 100% 的委托分开：最后谁验收？</h3><div class="card-marks"><span class="proof-mark proof-mark--outline">大纲 · 无引文</span></div><p class="hook">余一把 90% 与 100% 的委托分开：最后谁验收？</p><ul class="punches"><li><span class="pl">观点</span><p class="pb">节目方说明记录了余一入职 Manus 后的实验：尽量只同一个 Agent 对话，让它去分派给其他 Bot；并计划移走攒了一年的 Harness，从头观察哪些文件与规则值得回来。她用 90% 与 100% 区分的，不只是多做一个步骤，而是人是否还要持续在场收尾。</p></li></ul><details class="proof"><summary>查看依据</summary><p class="src">节目方公开节目说明 · 未将提纲当作逐字稿</p><div class="xfield"><h4>观点</h4><div class="xitem" data-who="余一" data-at=""><p class="xclaim">节目方说明记录了余一入职 Manus 后的实验：尽量只同一个 Agent 对话，让它去分派给其他 Bot；并计划移走攒了一年的 Harness，从头观察哪些文件与规则值得回来。她用 90% 与 100% 区分的，不只是多做一个步骤，而是人是否还要持续在场收尾。</p><p class="xmeta">余一</p><p class="xcaveat">据节目方说明整理，未核听这一段原音。</p></div></div><div class="usebox"><b>应用启示</b>可拿合成案例试同一件事的两档委托：一档只产初稿，另一档交付并提供机器可查的验收记录。律师对事实、法源和结论的复核另留关口，不要求全委托。</div><p class="src">AI 炼金术<small>节目方公开节目说明 · 未将提纲当作逐字稿 · <a href="https://www.xiaoyuzhoufm.com/episode/6ae1d8b397726cd4675926fa">原节目 ↗</a></small></p><div class="tags"><button class="tag" data-topic="Personal Agent" type="button">Personal Agent</button><button class="tag" data-topic="Manus" type="button">Manus</button><button class="tag" data-topic="Harness" type="button">Harness</button><button class="tag" data-topic="Agent 接力" type="button">Agent 接力</button></div></details></div></article><article class="card" id="card-oct-verification-backlog" data-cat="法律 AI 实务" data-added="" data-level="outline" data-text="产出太快之后，验收会变成排队的那一环 产出太快之后，验收会变成排队的那一环 徐文浩用自己这一年的写代码体验说，ai 让生成量突然增加，但工作并没有同步变轻：能做出来的东西太多，自己来不及验收。节目把这种体验与人要不要把琐事交出去放在一起讨论，不是说所有人工验收都应取消。 ai 炼金术 节目方公开节目说明 · 未将提纲当作逐字稿 验收 律师复核 agent 评估 [{&#x27;claim&#x27;: &#x27;徐文浩用自己这一年的写代码体验说，ai 让生成量突然增加，但工作并没有同步变轻：能做出来的东西太多，自己来不及验收。节目把这种体验与人要不要把琐事交出去放在一起讨论，不是说所有人工验收都应取消。&#x27;, &#x27;who&#x27;: &#x27;徐文浩&#x27;, &#x27;caveat&#x27;: &#x27;据节目方说明整理，未核听这一段原音。&#x27;}] []"><div class="inner"><div class="card-meta"><span>法律 AI 实务 / 验收</span><time>10.14</time><button type="button" class="fm-share-trigger" title="分享" aria-label="分享 产出太快之后，验收会变成排队的那一环" data-fm-share="../../s/2026-10/oct-verification-backlog/" data-fm-title="产出太快之后，验收会变成排队的那一环" data-fm-aspect="1080 / 1920"></button></div><h3>产出太快之后，验收会变成排队的那一环</h3><div class="card-marks"><span class="proof-mark proof-mark--outline">大纲 · 无引文</span></div><p class="hook">产出太快之后，验收会变成排队的那一环</p><ul class="punches"><li><span class="pl">观点</span><p class="pb">徐文浩用自己这一年的写代码体验说，AI 让生成量突然增加，但工作并没有同步变轻：能做出来的东西太多，自己来不及验收。节目把这种体验与人要不要把琐事交出去放在一起讨论，不是说所有人工验收都应取消。</p></li></ul><details class="proof"><summary>查看依据</summary><p class="src">节目方公开节目说明 · 未将提纲当作逐字稿</p><div class="xfield"><h4>观点</h4><div class="xitem" data-who="徐文浩" data-at=""><p class="xclaim">徐文浩用自己这一年的写代码体验说，AI 让生成量突然增加，但工作并没有同步变轻：能做出来的东西太多，自己来不及验收。节目把这种体验与人要不要把琐事交出去放在一起讨论，不是说所有人工验收都应取消。</p><p class="xmeta">徐文浩</p><p class="xcaveat">据节目方说明整理，未核听这一段原音。</p></div></div><div class="usebox"><b>应用启示</b>律所试用时不要只报草稿产量，同时看每份合格文件消耗多少复核时间。争点轻重、事实锚点和条文现行性，仍应抽出来单独计。</div><p class="src">AI 炼金术<small>节目方公开节目说明 · 未将提纲当作逐字稿 · <a href="https://www.xiaoyuzhoufm.com/episode/6acf880ce742e36efcc2ffc8">原节目 ↗</a></small></p><div class="tags"><button class="tag" data-topic="验收" type="button">验收</button><button class="tag" data-topic="律师复核" type="button">律师复核</button><button class="tag" data-topic="Agent 评估" type="button">Agent 评估</button></div></details></div></article><article class="card" id="card-oct-real-demand" data-cat="思维与洞见" data-added="" data-level="outline" data-text="个人 agent 好做演示，为什么真实委托反而稀缺？ 个人 agent 好做演示，为什么真实委托反而稀缺？ 橘子复盘 colaos 时，节目说明把两个困难摆在一起：模型成本下降，让个人助理更可做；但不少普通使用者没有维护日历和持续委托的习惯。技术上能够接手一类任务，不代表用户已经知道该交出什么。 ai 炼金术 节目方公开节目说明 · 未将提纲当作逐字稿 personal agent colaos 服务设计 [{&#x27;claim&#x27;: &#x27;橘子复盘 colaos 时，节目说明把两个困难摆在一起：模型成本下降，让个人助理更可做；但不少普通使用者没有维护日历和持续委托的习惯。技术上能够接手一类任务，不代表用户已经知道该交出什么。&#x27;, &#x27;who&#x27;: &#x27;橘子&#x27;, &#x27;caveat&#x27;: &#x27;据节目方说明整理，未核听这一段原音。&#x27;}] []"><div class="inner"><div class="card-meta"><span>思维与洞见 / Personal Agent</span><time>10.09</time><button type="button" class="fm-share-trigger" title="分享" aria-label="分享 个人 Agent 好做演示，为什么真实委托反而稀缺？" data-fm-share="../../s/2026-10/oct-real-demand/" data-fm-title="个人 Agent 好做演示，为什么真实委托反而稀缺？" data-fm-aspect="1080 / 1920"></button></div><h3>个人 Agent 好做演示，为什么真实委托反而稀缺？</h3><div class="card-marks"><span class="proof-mark proof-mark--outline">大纲 · 无引文</span></div><p class="hook">个人 Agent 好做演示，为什么真实委托反而稀缺？</p><ul class="punches"><li><span class="pl">观点</span><p class="pb">橘子复盘 ColaOS 时，节目说明把两个困难摆在一起：模型成本下降，让个人助理更可做；但不少普通使用者没有维护日历和持续委托的习惯。技术上能够接手一类任务，不代表用户已经知道该交出什么。</p></li></ul><details class="proof"><summary>查看依据</summary><p class="src">节目方公开节目说明 · 未将提纲当作逐字稿</p><div class="xfield"><h4>观点</h4><div class="xitem" data-who="橘子" data-at=""><p class="xclaim">橘子复盘 ColaOS 时，节目说明把两个困难摆在一起：模型成本下降，让个人助理更可做；但不少普通使用者没有维护日历和持续委托的习惯。技术上能够接手一类任务，不代表用户已经知道该交出什么。</p><p class="xmeta">橘子</p><p class="xcaveat">据节目方说明整理，未核听这一段原音。</p></div></div><div class="usebox"><b>应用启示</b>验证数字律师服务时先选委托真实发生过、能说清输入和交付的一种事项；观察重复委托次数，比测试一句开放式‘有什么要我做’更接近需求。</div><p class="src">AI 炼金术<small>节目方公开节目说明 · 未将提纲当作逐字稿 · <a href="https://www.xiaoyuzhoufm.com/episode/6ac915e051b8eaeca6796eda">原节目 ↗</a></small></p><div class="tags"><button class="tag" data-topic="Personal Agent" type="button">Personal Agent</button><button class="tag" data-topic="ColaOS" type="button">ColaOS</button><button class="tag" data-topic="服务设计" type="button">服务设计</button></div></details></div></article><article class="card" id="card-oct-discipline-md" data-cat="讲课素材" data-added="" data-level="outline" data-text="把一份《纪律.md》交给 agent，规则本身先要说清楚 把一份《纪律.md》交给 agent，规则本身先要说清楚 《面基》把一个人的投资纪律写成 markdown 的做法作为讨论起点：与其每次在行情变化时临场判断，不如事前写明何时可做、何时不做并给出依据。节目问题值得借到其他专业工作，但不能把投资纪律当成交易授权。 面基 节目方公开节目说明 · 未将提纲当作逐字稿 工作流设计 skill 判断闸门 [{&#x27;claim&#x27;: &#x27;《面基》把一个人的投资纪律写成 markdown 的做法作为讨论起点：与其每次在行情变化时临场判断，不如事前写明何时可做、何时不做并给出依据。节目问题值得借到其他专业工作，但不能把投资纪律当成交易授权。&#x27;, &#x27;caveat&#x27;: &#x27;据节目方说明整理，未核听这一段原音。&#x27;}] []"><div class="inner"><div class="card-meta"><span>讲课素材 / 工作流设计</span><time>10.12</time><button type="button" class="fm-share-trigger" title="分享" aria-label="分享 把一份《纪律.md》交给 Agent，规则本身先要说清楚" data-fm-share="../../s/2026-10/oct-discipline-md/" data-fm-title="把一份《纪律.md》交给 Agent，规则本身先要说清楚" data-fm-aspect="1080 / 1920"></button></div><h3>把一份《纪律.md》交给 Agent，规则本身先要说清楚</h3><div class="card-marks"><span class="proof-mark proof-mark--outline">大纲 · 无引文</span></div><p class="hook">把一份《纪律.md》交给 Agent，规则本身先要说清楚</p><ul class="punches"><li><span class="pl">观点</span><p class="pb">《面基》把一个人的投资纪律写成 Markdown 的做法作为讨论起点：与其每次在行情变化时临场判断，不如事前写明何时可做、何时不做并给出依据。节目问题值得借到其他专业工作，但不能把投资纪律当成交易授权。</p></li></ul><details class="proof"><summary>查看依据</summary><p class="src">节目方公开节目说明 · 未将提纲当作逐字稿</p><div class="xfield"><h4>观点</h4><div class="xitem" data-who="" data-at=""><p class="xclaim">《面基》把一个人的投资纪律写成 Markdown 的做法作为讨论起点：与其每次在行情变化时临场判断，不如事前写明何时可做、何时不做并给出依据。节目问题值得借到其他专业工作，但不能把投资纪律当成交易授权。</p><p class="xcaveat">据节目方说明整理，未核听这一段原音。</p></div></div><div class="usebox"><b>应用启示</b>把这例子换成法律材料初审：写三条‘遇到就停止并请律师判断’的规则，检查 Agent 能不能指出究竟哪一项缺失，而不是帮律师编完。</div><p class="src">面基<small>节目方公开节目说明 · 未将提纲当作逐字稿 · <a href="https://www.xiaoyuzhoufm.com/episode/6acb9dd0e742e36efcc15a45">原节目 ↗</a></small></p><div class="tags"><button class="tag" data-topic="工作流设计" type="button">工作流设计</button><button class="tag" data-topic="Skill" type="button">Skill</button><button class="tag" data-topic="判断闸门" type="button">判断闸门</button></div></details></div></article><article class="card" id="card-oct-service-desk" data-cat="产品与技术" data-added="" data-level="outline" data-text="serval 的切入口：把积压的 it 请求变成可复用的流程 serval 的切入口：把积压的 it 请求变成可复用的流程 节目方介绍，serval 从 it 服务台切入，把能生成代码的 agent 放到原本反复处理内部请求的人手里。这里值得留意的是情境：请求有现成入口、具体处理对象和可回看的完成记录，不是让每个人自己发明一个自动化场景。 no priors 节目方公开节目说明 · 未将提纲当作逐字稿 agent 工作流 serval 流程自动化 [{&#x27;claim&#x27;: &#x27;节目方介绍，serval 从 it 服务台切入，把能生成代码的 agent 放到原本反复处理内部请求的人手里。这里值得留意的是情境：请求有现成入口、具体处理对象和可回看的完成记录，不是让每个人自己发明一个自动化场景。&#x27;, &#x27;who&#x27;: &#x27;jake stauch&#x27;, &#x27;caveat&#x27;: &#x27;据节目方说明整理，未核听这一段原音。&#x27;}] []"><div class="inner"><div class="card-meta"><span>产品与技术 / Agent 工作流</span><time>10.29</time><button type="button" class="fm-share-trigger" title="分享" aria-label="分享 Serval 的切入口：把积压的 IT 请求变成可复用的流程" data-fm-share="../../s/2026-10/oct-service-desk/" data-fm-title="Serval 的切入口：把积压的 IT 请求变成可复用的流程" data-fm-aspect="1080 / 1920"></button></div><h3>Serval 的切入口：把积压的 IT 请求变成可复用的流程</h3><div class="card-marks"><span class="proof-mark proof-mark--outline">大纲 · 无引文</span></div><p class="hook">Serval 的切入口：把积压的 IT 请求变成可复用的流程</p><ul class="punches"><li><span class="pl">观点</span><p class="pb">节目方介绍，Serval 从 IT 服务台切入，把能生成代码的 Agent 放到原本反复处理内部请求的人手里。这里值得留意的是情境：请求有现成入口、具体处理对象和可回看的完成记录，不是让每个人自己发明一个自动化场景。</p></li></ul><details class="proof"><summary>查看依据</summary><p class="src">节目方公开节目说明 · 未将提纲当作逐字稿</p><div class="xfield"><h4>观点</h4><div class="xitem" data-who="Jake Stauch" data-at=""><p class="xclaim">节目方介绍，Serval 从 IT 服务台切入，把能生成代码的 Agent 放到原本反复处理内部请求的人手里。这里值得留意的是情境：请求有现成入口、具体处理对象和可回看的完成记录，不是让每个人自己发明一个自动化场景。</p><p class="xmeta">Jake Stauch</p><p class="xcaveat">据节目方说明整理，未核听这一段原音。</p></div></div><div class="usebox"><b>应用启示</b>给律所做应用，不妨从已有的进件或检索需求入口开始，先连接同意执行、结果回写与人工复核，再谈自主范围。</div><p class="src">No Priors<small>节目方公开节目说明 · 未将提纲当作逐字稿 · <a href="https://podcasts.apple.com/ca/podcast/taking-on-servicenow-coding-agents-the-rest-of-us/id1668002688?i=1000798684005">原节目 ↗</a></small></p><div class="tags"><button class="tag" data-topic="Agent 工作流" type="button">Agent 工作流</button><button class="tag" data-topic="Serval" type="button">Serval</button><button class="tag" data-topic="流程自动化" type="button">流程自动化</button></div></details></div></article><article class="card" id="card-oct-modal-sandbox" data-cat="产品与技术" data-added="" data-level="outline" data-text="agent 的沙箱和模型推理不是一项资源 agent 的沙箱和模型推理不是一项资源 modal 创始人 erik bernhardsson 在节目中把推理和沙箱放在同一段基础设施演化里说：跑模型需要算力，为 agent 开可执行环境又是另一种需求。节目方概述将沙箱下注与业务演变相连；不把营收或增速当成已独立核验。 unsupervised learning with jacob effron 节目方公开节目说明 · 未将提纲当作逐字稿 沙箱 modal ai 基础设施 [{&#x27;claim&#x27;: &#x27;modal 创始人 erik bernhardsson 在节目中把推理和沙箱放在同一段基础设施演化里说：跑模型需要算力，为 agent 开可执行环境又是另一种需求。节目方概述将沙箱下注与业务演变相连；不把营收或增速当成已独立核验。&#x27;, &#x27;who&#x27;: &#x27;erik bernhardsson&#x27;, &#x27;caveat&#x27;: &#x27;据节目方说明整理，未核听这一段原音。&#x27;}] []"><div class="inner"><div class="card-meta"><span>产品与技术 / 沙箱</span><time>10.28</time><button type="button" class="fm-share-trigger" title="分享" aria-label="分享 Agent 的沙箱和模型推理不是一项资源" data-fm-share="../../s/2026-10/oct-modal-sandbox/" data-fm-title="Agent 的沙箱和模型推理不是一项资源" data-fm-aspect="1080 / 1920"></button></div><h3>Agent 的沙箱和模型推理不是一项资源</h3><div class="card-marks"><span class="proof-mark proof-mark--outline">大纲 · 无引文</span></div><p class="hook">Agent 的沙箱和模型推理不是一项资源</p><ul class="punches"><li><span class="pl">观点</span><p class="pb">Modal 创始人 Erik Bernhardsson 在节目中把推理和沙箱放在同一段基础设施演化里说：跑模型需要算力，为 Agent 开可执行环境又是另一种需求。节目方概述将沙箱下注与业务演变相连；不把营收或增速当成已独立核验。</p></li></ul><details class="proof"><summary>查看依据</summary><p class="src">节目方公开节目说明 · 未将提纲当作逐字稿</p><div class="xfield"><h4>观点</h4><div class="xitem" data-who="Erik Bernhardsson" data-at=""><p class="xclaim">Modal 创始人 Erik Bernhardsson 在节目中把推理和沙箱放在同一段基础设施演化里说：跑模型需要算力，为 Agent 开可执行环境又是另一种需求。节目方概述将沙箱下注与业务演变相连；不把营收或增速当成已独立核验。</p><p class="xmeta">Erik Bernhardsson</p><p class="xcaveat">据节目方说明整理，未核听这一段原音。</p></div></div><div class="usebox"><b>应用启示</b>采购或搭建长任务 Agent 时，分别问模型调用、临时执行环境、持久文件和隔离边界各归谁负责，避免按一个模型订阅价估整套服务。</div><p class="src">Unsupervised Learning with Jacob Effron<small>节目方公开节目说明 · 未将提纲当作逐字稿 · <a href="https://www.youtube.com/watch?v=HJDekXH-h5c">原节目 ↗</a></small></p><div class="tags"><button class="tag" data-topic="沙箱" type="button">沙箱</button><button class="tag" data-topic="Modal" type="button">Modal</button><button class="tag" data-topic="AI 基础设施" type="button">AI 基础设施</button></div></details></div></article><article class="card" id="card-oct-ai-escalation" data-cat="法律 AI 实务" data-added="" data-level="outline" data-text="不要把 ai 的长答案转给专家，让他重新找问题 不要把 ai 的长答案转给专家，让他重新找问题 徐文浩讲了一个组织内的摩擦：同事好意把中间结果拿给 chatgpt 讨论，最后转发长方案；收件专家反而要从最基础的前提重新辨别。他希望同事先说清具体哪里出了问题；真要让 ai 帮分析，也应让它对着已有代码库查。 ai 炼金术 节目方公开节目说明 · 未将提纲当作逐字稿 律师复核 [{&#x27;claim&#x27;: &#x27;徐文浩讲了一个组织内的摩擦：同事好意把中间结果拿给 chatgpt 讨论，最后转发长方案；收件专家反而要从最基础的前提重新辨别。他希望同事先说清具体哪里出了问题；真要让 ai 帮分析，也应让它对着已有代码库查。&#x27;, &#x27;who&#x27;: &#x27;徐文浩&#x27;, &#x27;caveat&#x27;: &#x27;据节目方说明整理，发言观点不等于独立核验。&#x27;}] []"><div class="inner"><div class="card-meta"><span>法律 AI 实务 / 律师复核</span><time>10.01</time><button type="button" class="fm-share-trigger" title="分享" aria-label="分享 不要把 AI 的长答案转给专家，让他重新找问题" data-fm-share="../../s/2026-10/oct-ai-escalation/" data-fm-title="不要把 AI 的长答案转给专家，让他重新找问题" data-fm-aspect="1080 / 1920"></button></div><h3>不要把 AI 的长答案转给专家，让他重新找问题</h3><div class="card-marks"><span class="proof-mark proof-mark--outline">大纲 · 无引文</span></div><p class="hook">不要把 AI 的长答案转给专家，让他重新找问题</p><ul class="punches"><li><span class="pl">观点</span><p class="pb">徐文浩讲了一个组织内的摩擦：同事好意把中间结果拿给 ChatGPT 讨论，最后转发长方案；收件专家反而要从最基础的前提重新辨别。他希望同事先说清具体哪里出了问题；真要让 AI 帮分析，也应让它对着已有代码库查。</p></li></ul><details class="proof"><summary>查看依据</summary><p class="src">节目方公开节目说明 · 未将提纲当作逐字稿</p><div class="xfield"><h4>观点</h4><div class="xitem" data-who="徐文浩" data-at=""><p class="xclaim">徐文浩讲了一个组织内的摩擦：同事好意把中间结果拿给 ChatGPT 讨论，最后转发长方案；收件专家反而要从最基础的前提重新辨别。他希望同事先说清具体哪里出了问题；真要让 AI 帮分析，也应让它对着已有代码库查。</p><p class="xmeta">徐文浩</p><p class="xcaveat">据节目方说明整理，发言观点不等于独立核验。</p></div></div><div class="usebox"><b>应用启示</b>法律团队可要求升级问题时附‘已确认的事实、冲突位置、缺失材料’，把模型解释作为附件，不让合伙人从一段生成文字倒推事实。</div><p class="src">AI 炼金术<small>节目方公开节目说明 · 未将提纲当作逐字稿 · <a href="https://www.xiaoyuzhoufm.com/episode/6abe624251b8eaeca6d7a1f0">原节目 ↗</a></small></p><div class="tags"><button class="tag" data-topic="律师复核" type="button">律师复核</button></div></details></div></article><article class="card" id="card-oct-agent-accountability" data-cat="法律 AI 实务" data-added="" data-level="outline" data-text="给 agent 留身份和日志，还要决定谁能当场停下来 给 agent 留身份和日志，还要决定谁能当场停下来 govai 的 alan chan 在访谈中讨论给 agent 可追踪的身份、记录活动，以及实时监测与事后发现之间的差别。能事后查清做了什么，不代表系统在后果发生前能停手。访谈中是制度与系统设计建议，不是现实法的强制要求。 the cognitive revolution 节目方公开节目说明 · 未将提纲当作逐字稿 agent 治理 [{&#x27;claim&#x27;: &#x27;govai 的 alan chan 在访谈中讨论给 agent 可追踪的身份、记录活动，以及实时监测与事后发现之间的差别。能事后查清做了什么，不代表系统在后果发生前能停手。访谈中是制度与系统设计建议，不是现实法的强制要求。&#x27;, &#x27;who&#x27;: &#x27;alan chan&#x27;, &#x27;caveat&#x27;: &#x27;据节目方说明整理，发言观点不等于独立核验。&#x27;}] []"><div class="inner"><div class="card-meta"><span>法律 AI 实务 / Agent 治理</span><time>10.14</time><button type="button" class="fm-share-trigger" title="分享" aria-label="分享 给 Agent 留身份和日志，还要决定谁能当场停下来" data-fm-share="../../s/2026-10/oct-agent-accountability/" data-fm-title="给 Agent 留身份和日志，还要决定谁能当场停下来" data-fm-aspect="1080 / 1920"></button></div><h3>给 Agent 留身份和日志，还要决定谁能当场停下来</h3><div class="card-marks"><span class="proof-mark proof-mark--outline">大纲 · 无引文</span></div><p class="hook">给 Agent 留身份和日志，还要决定谁能当场停下来</p><ul class="punches"><li><span class="pl">观点</span><p class="pb">GovAI 的 Alan Chan 在访谈中讨论给 Agent 可追踪的身份、记录活动，以及实时监测与事后发现之间的差别。能事后查清做了什么，不代表系统在后果发生前能停手。访谈中是制度与系统设计建议，不是现实法的强制要求。</p></li></ul><details class="proof"><summary>查看依据</summary><p class="src">节目方公开节目说明 · 未将提纲当作逐字稿</p><div class="xfield"><h4>观点</h4><div class="xitem" data-who="Alan Chan" data-at=""><p class="xclaim">GovAI 的 Alan Chan 在访谈中讨论给 Agent 可追踪的身份、记录活动，以及实时监测与事后发现之间的差别。能事后查清做了什么，不代表系统在后果发生前能停手。访谈中是制度与系统设计建议，不是现实法的强制要求。</p><p class="xmeta">Alan Chan</p><p class="xcaveat">据节目方说明整理，发言观点不等于独立核验。</p></div></div><div class="usebox"><b>应用启示</b>同一份 Agent 合同里分开约定操作记录、审计人、人工中止条件，以及下游工具调用如何归到同一任务。</div><p class="src">The Cognitive Revolution<small>节目方公开节目说明 · 未将提纲当作逐字稿 · <a href="https://www.cognitiverevolution.ai/governing-ai-agents-alan-chan-of-govai-on-monitoring-agent-ids-rogue-agents-preparing-for-rsi">原节目 ↗</a> <a href="https://www.cognitiverevolution.ai/governing-ai-agents-alan-chan-of-govai-on-monitoring-agent-ids-rogue-agents-preparing-for-rsi/">官方逐字稿 ↗</a></small></p><div class="tags"><button class="tag" data-topic="Agent 治理" type="button">Agent 治理</button></div></details></div></article><article class="card" id="card-oct-ambi-pm" data-cat="行业故事" data-added="" data-level="outline" data-text="ambi 要做软硬件一体，但创始人先算使用频率和成本 ambi 要做软硬件一体，但创始人先算使用频率和成本 《42章经》请 ambi 创始人子皓讲了几个月的软硬件产品探索。节目从个人 agent 的成本与用户实际使用聊起：硬件能让入口更自然，但真正决定产品能不能持续的，还包括用户会交什么任务，以及系统撑不撑得住这类使用。 42章经 节目方公开节目说明 · 未将提纲当作逐字稿 personal agent [] [{&#x27;claim&#x27;: &#x27;《42章经》请 ambi 创始人子皓讲了几个月的软硬件产品探索。节目从个人 agent 的成本与用户实际使用聊起：硬件能让入口更自然，但真正决定产品能不能持续的，还包括用户会交什么任务，以及系统撑不撑得住这类使用。&#x27;, &#x27;who&#x27;: &#x27;子皓&#x27;, &#x27;caveat&#x27;: &#x27;据节目方说明整理，发言观点不等于独立核验。&#x27;}]"><div class="inner"><div class="card-meta"><span>行业故事 / Personal Agent</span><time>10.12</time><button type="button" class="fm-share-trigger" title="分享" aria-label="分享 Ambi 要做软硬件一体，但创始人先算使用频率和成本" data-fm-share="../../s/2026-10/oct-ambi-pm/" data-fm-title="Ambi 要做软硬件一体，但创始人先算使用频率和成本" data-fm-aspect="1080 / 1920"></button></div><h3>Ambi 要做软硬件一体，但创始人先算使用频率和成本</h3><div class="card-marks"><span class="proof-mark proof-mark--outline">大纲 · 无引文</span></div><p class="hook">Ambi 要做软硬件一体，但创始人先算使用频率和成本</p><ul class="punches"><li><span class="pl">故事</span><p class="pb">《42章经》请 Ambi 创始人子皓讲了几个月的软硬件产品探索。节目从个人 Agent 的成本与用户实际使用聊起：硬件能让入口更自然，但真正决定产品能不能持续的，还包括用户会交什么任务，以及系统撑不撑得住这类使用。</p></li></ul><details class="proof"><summary>查看依据</summary><p class="src">节目方公开节目说明 · 未将提纲当作逐字稿</p><div class="xfield"><h4>故事</h4><div class="xitem" data-who="子皓" data-at=""><p class="xclaim">《42章经》请 Ambi 创始人子皓讲了几个月的软硬件产品探索。节目从个人 Agent 的成本与用户实际使用聊起：硬件能让入口更自然，但真正决定产品能不能持续的，还包括用户会交什么任务，以及系统撑不撑得住这类使用。</p><p class="xmeta">子皓</p><p class="xcaveat">据节目方说明整理，发言观点不等于独立核验。</p></div></div><div class="usebox"><b>应用启示</b>做手机到 Mac 的控制层，可以先测再买硬件：让用户用现有手机完成一项高频任务，看看是启动麻烦、跨设备接续，还是结果验收最卡。</div><p class="src">42章经<small>节目方公开节目说明 · 未将提纲当作逐字稿 · <a href="https://podcasts.apple.com/cn/podcast/%E4%B8%80%E4%B8%AA-personal-agent-%E5%88%9B%E4%B8%9A%E8%80%85%E7%9A%84%E6%80%9D%E8%80%83-%E5%AF%B9%E8%B0%88-ambi-%E5%88%9B%E5%A7%8B%E4%BA%BA%E5%AD%90%E7%9A%93/id1700299886?i=1000796018694">原节目 ↗</a></small></p><div class="tags"><button class="tag" data-topic="Personal Agent" type="button">Personal Agent</button></div></details></div></article></div>
+</div>
+<aside class="dossier wrap" id="issue-topic" aria-labelledby="topicTitle"><div><div class="ey">本期关注</div><h2 id="topicTitle">Agent 委托、验收与算力交付</h2><p>能开始做、能交出结果、结果经得起复核，是三件事。有人把分镜留给自己拍板，有人追问系统能不能接手最后一道验收；Google 基建的例子，则从故障恢复解释什么叫真正交付。</p><div class="chips"><button class="tag" data-topic="Agent 接力" type="button">Agent 接力</button><button class="tag" data-topic="Agent 评估" type="button">Agent 评估</button><button class="tag" data-topic="AI 基础设施" type="button">AI 基础设施</button></div></div><div class="aside"><h3>怎样修订专题</h3><p>公开证据改变原有理解时才修订。不同讲述保留来源，不把转载或同一人的多次回忆算成独立证据。</p><p><a href="../../topics/index.html">打开专题库 ↗</a></p></div></aside>
+</main>
+<details class="roster wrap" id="sources"><summary>节目源与覆盖说明</summary>
+  <p>每周盘点全部节目源；未能确认的覆盖缺口另列。详见<a href="coverage/index.html">源覆盖台账</a>。</p>
+</details>
+<footer class="wrap foot fm-foot">
+  <div>
+    <a class="fbig" href="https://chenshi.ai/">回声<i>FM.</i></a>
+    <p class="fsub">chenshi.ai · 陈石的 AI 播客笔记</p>
+    <p class="ftip">选题页面只用于收集节目名单；所有卡片回链节目方原内容。每周盘点全部节目源；未能确认的覆盖缺口另列。每周盘点全部节目源；未能确认的覆盖缺口另列。</p>
+  </div>
+  <nav aria-label="页尾"><a href="archive/index.html">往期</a><a href="topics/index.html">专题库</a><a href="coverage/index.html">源覆盖</a><a href="https://chenshi.ai/articles/">Blog</a></nav>
+</footer>
+<script id="program-data" type="application/json">[{"name":"词元之外","aliases":["Next Token｜词元之外","Next Token（词元之外）","Next Token"]},{"name":"The Cognitive Revolution","aliases":["Cognitive Revolution"]},{"name":"Training Data","aliases":[]},{"name":"AI 炼金术","aliases":[]},{"name":"42章经","aliases":[]},{"name":"未来硅世界","aliases":[]},{"name":"张小珺商业访谈录","aliases":["张小珺"]},{"name":"晚点聊 LateTalk","aliases":["晚点聊","LateTalk"]},{"name":"十字路口 Crossing","aliases":["十字路口","Crossing"]},{"name":"面基","aliases":[]},{"name":"三五环","aliases":[]},{"name":"知行小酒馆","aliases":[]},{"name":"Lex Fridman Podcast","aliases":["Lex Fridman"]},{"name":"All-In","aliases":["All-In Podcast"]},{"name":"No Priors","aliases":[]},{"name":"Unsupervised Learning with Jacob Effron","aliases":["Unsupervised Learning"]}]</script>
+<script id="issue-data" type="application/json">[{"id":"oct-goodput","cat":"产品与技术","tag":"AI 基础设施","title":"Google 算力负责人看 goodput，不只看理论峰值","summary":"Amin Vahdat 用同步作业解释：许多加速器一起工作时，单个组件失效就可能拖住整项任务。定位故障、回到检查点、等待恢复、重做运算，都会占用时间，却没有把答案向前推进。他因此看特定工作负载在真实故障条件下交付了多少有效计算，而不是只看理论 FLOPS。","use":"算力采购可以把额定能力与业务验收分开：同一代表性负载下约定有效吞吐、故障恢复后的重跑口径、日志留存和测量窗口。这是合同审查思路，不是行业统一指标。","show":"Training Data","date":"10.06","url":"https://sequoiacap.com/podcast/google-s-ai-infrastructure-chief-amin-vahdat-on-the-physics-economics-of-frontier-ai","proof":"红杉官方逐字稿 · 未标时间码","review_level":"transcript","transcript":"https://sequoiacap.com/podcast/google-s-ai-infrastructure-chief-amin-vahdat-on-the-physics-economics-of-frontier-ai","program":"Training Data","tags":["AI 基础设施","算力验收","Google"],"entities":[{"name":"Amin Vahdat","kind":"人物"}],"hook":"Google 算力负责人看 goodput，不只看理论峰值","viewpoints":[{"claim":"Amin Vahdat 用同步作业解释：许多加速器一起工作时，单个组件失效就可能拖住整项任务。定位故障、回到检查点、等待恢复、重做运算，都会占用时间，却没有把答案向前推进。他因此看特定工作负载在真实故障条件下交付了多少有效计算，而不是只看理论 FLOPS。","who":"Amin Vahdat","caveat":"发言人回顾或判断，不是独立评测结论。","quote":"It's delivered goodput."}]},{"id":"oct-tpu-contrarian","cat":"行业故事","tag":"AI 基础设施","title":"Google 做第一代 TPU 时，先赌一小类推理任务","summary":"Vahdat 回忆，2013 年定制加速器并不是业内理所当然的选择。团队先看到少数推理应用对通用 CPU 的资源压力，才愿意为这样的负载牺牲部分通用性。第一代为推理而做，第二代扩展到训练，之后才逐步进入 Transformer 等更广任务。","use":"判断专用设备采购价值时，先问业务负载是否足够稳定、需求是不是反复出现，再问定制带来的能效优势能否覆盖被锁定的接口和迁移成本。","show":"Training Data","date":"10.06","url":"https://sequoiacap.com/podcast/google-s-ai-infrastructure-chief-amin-vahdat-on-the-physics-economics-of-frontier-ai","proof":"红杉官方逐字稿 · 未标时间码","review_level":"transcript","transcript":"https://sequoiacap.com/podcast/google-s-ai-infrastructure-chief-amin-vahdat-on-the-physics-economics-of-frontier-ai","program":"Training Data","tags":["AI 基础设施","TPU","Google"],"entities":[{"name":"Amin Vahdat","kind":"人物"},{"name":"TPU","kind":"产品"}],"hook":"Google 做第一代 TPU 时，先赌一小类推理任务","hidden_stories":[{"claim":"Vahdat 回忆，2013 年定制加速器并不是业内理所当然的选择。团队先看到少数推理应用对通用 CPU 的资源压力，才愿意为这样的负载牺牲部分通用性。第一代为推理而做，第二代扩展到训练，之后才逐步进入 Transformer 等更广任务。","who":"Amin Vahdat","caveat":"发言人回顾或判断，不是独立评测结论。","quote":"The first chip was all about inference."}]},{"id":"oct-clip-handoff","cat":"讲课素材","tag":"Agent 接力","title":"一条口播交给三个 Bot，人的关口放在分镜上","summary":"歸藏说，他用手机录主画面，把配画面、剪辑、封面交给 Grok Bot。流程不只是发一句‘剪好’：主 Bot 先交 Markdown 分镜供他看，得到同意才交给剪辑 Bot；剪完再叫封面 Bot，最后把视频与封面汇总回手机。","use":"对课程切片可沿用一次轻量人工确认：先看哪些段落和证据要保留，再放行剪辑与封面；交付时仍核对画幅、音轨和可播放性。","show":"Next Token｜词元之外","date":"10.19","url":"https://nexttoken.tv/weekly/006","proof":"节目官方逐字稿","review_level":"transcript","transcript":"https://nexttoken.tv/weekly/006/transcript","program":"词元之外","tags":["Agent 接力","视频制作","Grok Bot"],"entities":[{"name":"歸藏","kind":"人物","at":"31:43"},{"name":"Grok Bot","kind":"产品"}],"hook":"一条口播交给三个 Bot，人的关口放在分镜上","hidden_stories":[{"claim":"歸藏说，他用手机录主画面，把配画面、剪辑、封面交给 Grok Bot。流程不只是发一句‘剪好’：主 Bot 先交 Markdown 分镜供他看，得到同意才交给剪辑 Bot；剪完再叫封面 Bot，最后把视频与封面汇总回手机。","who":"歸藏","at":"31:43","caveat":"发言人回顾或判断，不是独立评测结论。","quote":"一个分镜，一个 Markdown 文档，我在里边看一眼"}]},{"id":"oct-clip-false-done","cat":"讲课素材","tag":"Agent 评估","title":"同一套剪辑流程，上次一天收工，这次反复做不出来","summary":"在展示手机剪辑流程之前，杨攀也讲了另一面：过去用 Astra 剪一期一天能完成，后来一次反复两三天做不出来。橘子还提到一次多音轨混错，被听众误以为主播在吵架。几位主播的体验可以并存；这不是对模型版本退化的独立证据。","use":"把产物验收做成自己的测试，而不是让模型报告‘已完成’：文件是否真的新生成、播放是否正常、多人音轨是否对齐、原片比例有没有被改。","show":"Next Token｜词元之外","date":"10.19","url":"https://nexttoken.tv/weekly/006","proof":"节目官方逐字稿","review_level":"transcript","transcript":"https://nexttoken.tv/weekly/006/transcript","program":"词元之外","tags":["Agent 评估","视频制作","验收"],"entities":[{"name":"杨攀","kind":"人物","at":"30:29"}],"hook":"同一套剪辑流程，上次一天收工，这次反复做不出来","hidden_stories":[{"claim":"在展示手机剪辑流程之前，杨攀也讲了另一面：过去用 Astra 剪一期一天能完成，后来一次反复两三天做不出来。橘子还提到一次多音轨混错，被听众误以为主播在吵架。几位主播的体验可以并存；这不是对模型版本退化的独立证据。","who":"杨攀","at":"30:29","caveat":"发言人回顾或判断，不是独立评测结论。","quote":"吭哧吭哧干了两三天，感觉反复弄，就出不来"}]},{"id":"oct-dots-entry","cat":"产品与技术","tag":"Personal Agent","title":"入口做回聊天，为什么新人还是分不清三个产品？","summary":"歸藏评价 Dots 早期版本时说，个人 Agent 的前台可以很简单，但如果它和多个入口叠在一起，第一次用的人未必知道该去哪儿。他和向阳乔木对历史线程能不能读有不同体验；歸藏随后补充，早期行为与后续修正不同。","use":"做个人 Agent 的产品入口时，把聊天、项目工作区、计算环境三层分别验收。澄清用户能从哪儿进、能读到什么、授权何时触发；不要让新用户先学会产品架构。","show":"Next Token｜词元之外","date":"10.08","url":"https://nexttoken.tv/weekly/005","proof":"节目官方逐字稿","review_level":"transcript","transcript":"https://nexttoken.tv/weekly/005/transcript","program":"词元之外","tags":["Personal Agent","交互设计","Dots"],"entities":[{"name":"歸藏","kind":"人物","at":"03:51"},{"name":"Dots","kind":"产品"}],"hook":"入口做回聊天，为什么新人还是分不清三个产品？","viewpoints":[{"claim":"歸藏评价 Dots 早期版本时说，个人 Agent 的前台可以很简单，但如果它和多个入口叠在一起，第一次用的人未必知道该去哪儿。他和向阳乔木对历史线程能不能读有不同体验；歸藏随后补充，早期行为与后续修正不同。","who":"歸藏","at":"03:51","caveat":"发言人回顾或判断，不是独立评测结论。","quote":"很多人分不清 Codex、ChatGPT 和 Dots 的区别"}]},{"id":"oct-response-speed","cat":"产品与技术","tag":"模型选型","title":"同一模型，首字等待缩短和账单下降是两回事","summary":"谈 DeepSeek 时，橘子先把产品体感改善与价目下调区分开：某些任务用到的推理 Token 更少。杨攀则说，他回到 App 的直接体验是，不开搜索时问题很快开始得到响应。两种观察谈的是不同指标，不宜合成统一的提速率或降价幅度。","use":"在法律工作流里，把首字延迟、全链路耗时、用量和成品合格率分开记；只快了初稿或只少花 Token，不一定省去人工复核。","show":"Next Token｜词元之外","date":"10.26","url":"https://nexttoken.tv/weekly/007","proof":"节目官方逐字稿","review_level":"transcript","transcript":"https://nexttoken.tv/weekly/007/transcript","program":"词元之外","tags":["模型选型","DeepSeek","推理成本"],"entities":[{"name":"橘子","kind":"人物","at":"03:22"},{"name":"DeepSeek","kind":"公司"}],"hook":"同一模型，首字等待缩短和账单下降是两回事","viewpoints":[{"claim":"谈 DeepSeek 时，橘子先把产品体感改善与价目下调区分开：某些任务用到的推理 Token 更少。杨攀则说，他回到 App 的直接体验是，不开搜索时问题很快开始得到响应。两种观察谈的是不同指标，不宜合成统一的提速率或降价幅度。","who":"橘子","at":"03:22","caveat":"发言人回顾或判断，不是独立评测结论。","quote":"它是没降价，但它是效率提升了。"}]},{"id":"oct-mecka-capture","cat":"行业故事","tag":"数据采集","title":"Mecka 的第一批机器人数据，不是机器人录出来的","summary":"创始人 Josh Gao 回忆，最早的原型是一款手机应用，让人记录自己做饭、清洁等动作，之后才逐步转向定制硬件和合作采集。谈到接触力度时，他说手腕相机能给出粗略替代信号，但与实验室磨合后，他们开始做能采集力信息的手套。","use":"做行业训练集时，区分廉价但覆盖广的代理信号，与难采但直接决定结果的证据。法律项目中，OCR 文本与原始签章、附件、页码就是两层不同的证据。","show":"Training Data","date":"10.20","url":"https://sequoiacap.com/podcast/inside-the-robot-data-factory-how-mecka-sensorizes-humans-to-train-robots","proof":"红杉官方逐字稿 · 未标时间码","review_level":"transcript","transcript":"https://sequoiacap.com/podcast/inside-the-robot-data-factory-how-mecka-sensorizes-humans-to-train-robots","program":"Training Data","tags":["数据采集","Mecka","机器人"],"entities":[{"name":"Josh Gao","kind":"人物"},{"name":"Mecka","kind":"公司"}],"hook":"Mecka 的第一批机器人数据，不是机器人录出来的","hidden_stories":[{"claim":"创始人 Josh Gao 回忆，最早的原型是一款手机应用，让人记录自己做饭、清洁等动作，之后才逐步转向定制硬件和合作采集。谈到接触力度时，他说手腕相机能给出粗略替代信号，但与实验室磨合后，他们开始做能采集力信息的手套。","who":"Josh Gao","caveat":"发言人回顾或判断，不是独立评测结论。","quote":"our very earliest pilot was a mobile app."}]},{"id":"oct-alpha-experience","cat":"思维与洞见","tag":"强化学习","title":"AlphaGo 的一次成功，为什么让 David Silver 愿意再赌一次？","summary":"Silver 回忆，早期 AlphaGo 大量使用人类棋谱和人工迭代；转向 AlphaZero 时，他们把注意力转到系统怎样靠自己探索。回望那段经历，他说当时并没有把握一定会成。Ineffable 现在想把类似思路拓展到更广领域，这是研发假设，不是已验证的通用能力。","use":"讲 Agent 自我改进时区分三个东西：可探索的环境、可判断的结果和对人类资料的依赖。围棋的反馈条件不能直接替代法律任务的证据与外部裁判。","show":"Training Data","date":"10.13","url":"https://sequoiacap.com/podcast/david-silver-and-lasse-espeholt-of-ineffable-intelligence-a-superlearner-for-the-age-of-experience","proof":"红杉官方逐字稿 · 未标时间码","review_level":"transcript","transcript":"https://sequoiacap.com/podcast/david-silver-and-lasse-espeholt-of-ineffable-intelligence-a-superlearner-for-the-age-of-experience","program":"Training Data","tags":["强化学习","AlphaZero","Ineffable Intelligence"],"entities":[{"name":"David Silver","kind":"人物"},{"name":"AlphaZero","kind":"产品"}],"hook":"AlphaGo 的一次成功，为什么让 David Silver 愿意再赌一次？","viewpoints":[{"claim":"Silver 回忆，早期 AlphaGo 大量使用人类棋谱和人工迭代；转向 AlphaZero 时，他们把注意力转到系统怎样靠自己探索。回望那段经历，他说当时并没有把握一定会成。Ineffable 现在想把类似思路拓展到更广领域，这是研发假设，不是已验证的通用能力。","who":"David Silver","caveat":"发言人回顾或判断，不是独立评测结论。","quote":"I thought maybe there was a good chance it might work, but I wasn't confident"}]},{"id":"oct-yuyi-delegation","cat":"思维与洞见","tag":"Personal Agent","title":"余一把 90% 与 100% 的委托分开：最后谁验收？","summary":"节目方说明记录了余一入职 Manus 后的实验：尽量只同一个 Agent 对话，让它去分派给其他 Bot；并计划移走攒了一年的 Harness，从头观察哪些文件与规则值得回来。她用 90% 与 100% 区分的，不只是多做一个步骤，而是人是否还要持续在场收尾。","use":"可拿合成案例试同一件事的两档委托：一档只产初稿，另一档交付并提供机器可查的验收记录。律师对事实、法源和结论的复核另留关口，不要求全委托。","show":"AI 炼金术","date":"10.28","url":"https://www.xiaoyuzhoufm.com/episode/6ae1d8b397726cd4675926fa","proof":"节目方公开节目说明 · 未将提纲当作逐字稿","review_level":"outline","program":"AI 炼金术","tags":["Personal Agent","Manus","Harness","Agent 接力"],"entities":[{"name":"余一","kind":"人物"},{"name":"Manus","kind":"产品"}],"hook":"余一把 90% 与 100% 的委托分开：最后谁验收？","viewpoints":[{"claim":"节目方说明记录了余一入职 Manus 后的实验：尽量只同一个 Agent 对话，让它去分派给其他 Bot；并计划移走攒了一年的 Harness，从头观察哪些文件与规则值得回来。她用 90% 与 100% 区分的，不只是多做一个步骤，而是人是否还要持续在场收尾。","who":"余一","caveat":"据节目方说明整理，未核听这一段原音。"}]},{"id":"oct-verification-backlog","cat":"法律 AI 实务","tag":"验收","title":"产出太快之后，验收会变成排队的那一环","summary":"徐文浩用自己这一年的写代码体验说，AI 让生成量突然增加，但工作并没有同步变轻：能做出来的东西太多，自己来不及验收。节目把这种体验与人要不要把琐事交出去放在一起讨论，不是说所有人工验收都应取消。","use":"律所试用时不要只报草稿产量，同时看每份合格文件消耗多少复核时间。争点轻重、事实锚点和条文现行性，仍应抽出来单独计。","show":"AI 炼金术","date":"10.14","url":"https://www.xiaoyuzhoufm.com/episode/6acf880ce742e36efcc2ffc8","proof":"节目方公开节目说明 · 未将提纲当作逐字稿","review_level":"outline","program":"AI 炼金术","tags":["验收","律师复核","Agent 评估"],"entities":[{"name":"徐文浩","kind":"人物"}],"hook":"产出太快之后，验收会变成排队的那一环","viewpoints":[{"claim":"徐文浩用自己这一年的写代码体验说，AI 让生成量突然增加，但工作并没有同步变轻：能做出来的东西太多，自己来不及验收。节目把这种体验与人要不要把琐事交出去放在一起讨论，不是说所有人工验收都应取消。","who":"徐文浩","caveat":"据节目方说明整理，未核听这一段原音。"}]},{"id":"oct-real-demand","cat":"思维与洞见","tag":"Personal Agent","title":"个人 Agent 好做演示，为什么真实委托反而稀缺？","summary":"橘子复盘 ColaOS 时，节目说明把两个困难摆在一起：模型成本下降，让个人助理更可做；但不少普通使用者没有维护日历和持续委托的习惯。技术上能够接手一类任务，不代表用户已经知道该交出什么。","use":"验证数字律师服务时先选委托真实发生过、能说清输入和交付的一种事项；观察重复委托次数，比测试一句开放式‘有什么要我做’更接近需求。","show":"AI 炼金术","date":"10.09","url":"https://www.xiaoyuzhoufm.com/episode/6ac915e051b8eaeca6796eda","proof":"节目方公开节目说明 · 未将提纲当作逐字稿","review_level":"outline","program":"AI 炼金术","tags":["Personal Agent","ColaOS","服务设计"],"entities":[{"name":"橘子","kind":"人物"},{"name":"ColaOS","kind":"产品"}],"hook":"个人 Agent 好做演示，为什么真实委托反而稀缺？","viewpoints":[{"claim":"橘子复盘 ColaOS 时，节目说明把两个困难摆在一起：模型成本下降，让个人助理更可做；但不少普通使用者没有维护日历和持续委托的习惯。技术上能够接手一类任务，不代表用户已经知道该交出什么。","who":"橘子","caveat":"据节目方说明整理，未核听这一段原音。"}]},{"id":"oct-discipline-md","cat":"讲课素材","tag":"工作流设计","title":"把一份《纪律.md》交给 Agent，规则本身先要说清楚","summary":"《面基》把一个人的投资纪律写成 Markdown 的做法作为讨论起点：与其每次在行情变化时临场判断，不如事前写明何时可做、何时不做并给出依据。节目问题值得借到其他专业工作，但不能把投资纪律当成交易授权。","use":"把这例子换成法律材料初审：写三条‘遇到就停止并请律师判断’的规则，检查 Agent 能不能指出究竟哪一项缺失，而不是帮律师编完。","show":"面基","date":"10.12","url":"https://www.xiaoyuzhoufm.com/episode/6acb9dd0e742e36efcc15a45","proof":"节目方公开节目说明 · 未将提纲当作逐字稿","review_level":"outline","program":"面基","tags":["工作流设计","Skill","判断闸门"],"entities":[],"hook":"把一份《纪律.md》交给 Agent，规则本身先要说清楚","viewpoints":[{"claim":"《面基》把一个人的投资纪律写成 Markdown 的做法作为讨论起点：与其每次在行情变化时临场判断，不如事前写明何时可做、何时不做并给出依据。节目问题值得借到其他专业工作，但不能把投资纪律当成交易授权。","caveat":"据节目方说明整理，未核听这一段原音。"}]},{"id":"oct-service-desk","cat":"产品与技术","tag":"Agent 工作流","title":"Serval 的切入口：把积压的 IT 请求变成可复用的流程","summary":"节目方介绍，Serval 从 IT 服务台切入，把能生成代码的 Agent 放到原本反复处理内部请求的人手里。这里值得留意的是情境：请求有现成入口、具体处理对象和可回看的完成记录，不是让每个人自己发明一个自动化场景。","use":"给律所做应用，不妨从已有的进件或检索需求入口开始，先连接同意执行、结果回写与人工复核，再谈自主范围。","show":"No Priors","date":"10.29","url":"https://podcasts.apple.com/ca/podcast/taking-on-servicenow-coding-agents-the-rest-of-us/id1668002688?i=1000798684005","proof":"节目方公开节目说明 · 未将提纲当作逐字稿","review_level":"outline","program":"No Priors","tags":["Agent 工作流","Serval","流程自动化"],"entities":[{"name":"Jake Stauch","kind":"人物"},{"name":"Serval","kind":"公司"}],"hook":"Serval 的切入口：把积压的 IT 请求变成可复用的流程","viewpoints":[{"claim":"节目方介绍，Serval 从 IT 服务台切入，把能生成代码的 Agent 放到原本反复处理内部请求的人手里。这里值得留意的是情境：请求有现成入口、具体处理对象和可回看的完成记录，不是让每个人自己发明一个自动化场景。","who":"Jake Stauch","caveat":"据节目方说明整理，未核听这一段原音。"}]},{"id":"oct-modal-sandbox","cat":"产品与技术","tag":"沙箱","title":"Agent 的沙箱和模型推理不是一项资源","summary":"Modal 创始人 Erik Bernhardsson 在节目中把推理和沙箱放在同一段基础设施演化里说：跑模型需要算力，为 Agent 开可执行环境又是另一种需求。节目方概述将沙箱下注与业务演变相连；不把营收或增速当成已独立核验。","use":"采购或搭建长任务 Agent 时，分别问模型调用、临时执行环境、持久文件和隔离边界各归谁负责，避免按一个模型订阅价估整套服务。","show":"Unsupervised Learning with Jacob Effron","date":"10.28","url":"https://www.youtube.com/watch?v=HJDekXH-h5c","proof":"节目方公开节目说明 · 未将提纲当作逐字稿","review_level":"outline","program":"Unsupervised Learning with Jacob Effron","tags":["沙箱","Modal","AI 基础设施"],"entities":[{"name":"Erik Bernhardsson","kind":"人物"},{"name":"Modal","kind":"公司"}],"hook":"Agent 的沙箱和模型推理不是一项资源","viewpoints":[{"claim":"Modal 创始人 Erik Bernhardsson 在节目中把推理和沙箱放在同一段基础设施演化里说：跑模型需要算力，为 Agent 开可执行环境又是另一种需求。节目方概述将沙箱下注与业务演变相连；不把营收或增速当成已独立核验。","who":"Erik Bernhardsson","caveat":"据节目方说明整理，未核听这一段原音。"}]},{"id":"oct-ai-escalation","cat":"法律 AI 实务","tag":"律师复核","title":"不要把 AI 的长答案转给专家，让他重新找问题","summary":"徐文浩讲了一个组织内的摩擦：同事好意把中间结果拿给 ChatGPT 讨论，最后转发长方案；收件专家反而要从最基础的前提重新辨别。他希望同事先说清具体哪里出了问题；真要让 AI 帮分析，也应让它对着已有代码库查。","use":"法律团队可要求升级问题时附‘已确认的事实、冲突位置、缺失材料’，把模型解释作为附件，不让合伙人从一段生成文字倒推事实。","show":"AI 炼金术","date":"10.01","url":"https://www.xiaoyuzhoufm.com/episode/6abe624251b8eaeca6d7a1f0","proof":"节目方公开节目说明 · 未将提纲当作逐字稿","review_level":"outline","program":"AI 炼金术","tags":["律师复核"],"entities":[{"name":"徐文浩","kind":"人物"}],"hook":"不要把 AI 的长答案转给专家，让他重新找问题","viewpoints":[{"claim":"徐文浩讲了一个组织内的摩擦：同事好意把中间结果拿给 ChatGPT 讨论，最后转发长方案；收件专家反而要从最基础的前提重新辨别。他希望同事先说清具体哪里出了问题；真要让 AI 帮分析，也应让它对着已有代码库查。","who":"徐文浩","caveat":"据节目方说明整理，发言观点不等于独立核验。"}]},{"id":"oct-agent-accountability","cat":"法律 AI 实务","tag":"Agent 治理","title":"给 Agent 留身份和日志，还要决定谁能当场停下来","summary":"GovAI 的 Alan Chan 在访谈中讨论给 Agent 可追踪的身份、记录活动，以及实时监测与事后发现之间的差别。能事后查清做了什么，不代表系统在后果发生前能停手。访谈中是制度与系统设计建议，不是现实法的强制要求。","use":"同一份 Agent 合同里分开约定操作记录、审计人、人工中止条件，以及下游工具调用如何归到同一任务。","show":"The Cognitive Revolution","date":"10.14","url":"https://www.cognitiverevolution.ai/governing-ai-agents-alan-chan-of-govai-on-monitoring-agent-ids-rogue-agents-preparing-for-rsi/","proof":"节目方公开节目说明 · 未将提纲当作逐字稿","review_level":"outline","program":"The Cognitive Revolution","tags":["Agent 治理"],"entities":[{"name":"Alan Chan","kind":"人物"}],"hook":"给 Agent 留身份和日志，还要决定谁能当场停下来","viewpoints":[{"claim":"GovAI 的 Alan Chan 在访谈中讨论给 Agent 可追踪的身份、记录活动，以及实时监测与事后发现之间的差别。能事后查清做了什么，不代表系统在后果发生前能停手。访谈中是制度与系统设计建议，不是现实法的强制要求。","who":"Alan Chan","caveat":"据节目方说明整理，发言观点不等于独立核验。"}]},{"id":"oct-ambi-pm","cat":"行业故事","tag":"Personal Agent","title":"Ambi 要做软硬件一体，但创始人先算使用频率和成本","summary":"《42章经》请 Ambi 创始人子皓讲了几个月的软硬件产品探索。节目从个人 Agent 的成本与用户实际使用聊起：硬件能让入口更自然，但真正决定产品能不能持续的，还包括用户会交什么任务，以及系统撑不撑得住这类使用。","use":"做手机到 Mac 的控制层，可以先测再买硬件：让用户用现有手机完成一项高频任务，看看是启动麻烦、跨设备接续，还是结果验收最卡。","show":"42章经","date":"10.12","url":"https://podcasts.apple.com/cn/podcast/%E4%B8%80%E4%B8%AA-personal-agent-%E5%88%9B%E4%B8%9A%E8%80%85%E7%9A%84%E6%80%9D%E8%80%83-%E5%AF%B9%E8%B0%88-ambi-%E5%88%9B%E5%A7%8B%E4%BA%BA%E5%AD%90%E7%9A%93/id1700299886?i=1000796018694","proof":"节目方公开节目说明 · 未将提纲当作逐字稿","review_level":"outline","program":"42章经","tags":["Personal Agent"],"entities":[{"name":"子皓","kind":"人物"}],"hook":"Ambi 要做软硬件一体，但创始人先算使用频率和成本","hidden_stories":[{"claim":"《42章经》请 Ambi 创始人子皓讲了几个月的软硬件产品探索。节目从个人 Agent 的成本与用户实际使用聊起：硬件能让入口更自然，但真正决定产品能不能持续的，还包括用户会交什么任务，以及系统撑不撑得住这类使用。","who":"子皓","caveat":"据节目方说明整理，发言观点不等于独立核验。"}]}]</script>
+<script>
+(() => {
+const SHARE_PREFIX="../../s/2026-10/";
+const data=JSON.parse(document.getElementById("issue-data").textContent||"[]");
+const $cards=document.getElementById('cards');
+const $count=document.getElementById('count');
+const $q=document.getElementById('q');
+const STATUS={
+  'speaker-claim':'发言人主张','speaker-observation':'发言人观察',
+  'speaker-recollection':'当事人回忆','vendor-partner-claim':'合作方自述',
+  'document-backed':'可另核文件'
+};
+const FIELDS=[['viewpoints','观点','claim'],['hidden_stories','故事','story'],['fresh_facts','新鲜事实','fact'],['people_product','人物与产品','story']];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+function itemsOf(arr, key){
+  if(!arr||!arr.length) return '';
+  return arr.map(it=>{
+    const body=it[key]||it.claim||it.story||it.fact||'';
+    const meta=[it.who, (it.at && it.at!=='无时间码') ? it.at : '', STATUS[it.status]||it.status].filter(Boolean).join(' · ');
+    const quote=it.quote?`<blockquote><p>“${esc(it.quote)}”</p></blockquote>`:'';
+    const caveat=it.caveat?`<p class="xcaveat">${esc(it.caveat)}</p>`:'';
+    const at=(it.at && it.at!=='无时间码') ? it.at : '';
+    return `<div class="xitem" data-who="${esc(it.who||it.name||'')}" data-at="${esc(at)}"><p class="xclaim">${esc(body)}</p>${meta?`<p class="xmeta">${esc(meta)}</p>`:''}${quote}${caveat}</div>`;
+  }).join('');
+}
+function fields(d){
+  return FIELDS.map(([k,label,key])=>{
+    const html=itemsOf(d[k], key);
+    return html?`<div class="xfield"><h4>${label}</h4>${html}</div>`:'';
+  }).join('');
+}
+function punches(d){
+  const out=[];
+  for(const [k,label,key] of FIELDS){
+    for(const it of d[k]||[]){
+      const body=(it[key]||it.claim||it.story||it.fact||'').trim();
+      if(!body) continue;
+      out.push(`<li><span class="pl">${label}</span><p class="pb">${esc(body)}</p></li>`);
+      if(out.length===4) return out;
+    }
+  }
+  return out;
+}
+function cardHTML(d){
+  const isTr=d.review_level==='transcript';
+  const isOut=d.review_level==='outline';
+  const note=isTr?(d.proof||'官方逐字稿锚定'):(d.proof||'未见官方逐字稿，未新加引文');
+  const hook=d.hook?`<p class="hook">${esc(d.hook)}</p>`:'';
+  const use=d.use?`<div class="usebox"><b>应用启示</b>${esc(d.use)}</div>`:'';
+  const tags=(d.tags||[]).map(t=>`<button class="tag" data-topic="${esc(t)}" type="button">${esc(t)}</button>`).join('');
+  const tr=d.transcript||d.url;
+  const official=(d.episode|| (d.url||'').replace(/\/transcript\/?$/, ''));
+  const srcLinks=`<a href="${esc(official)}">原节目 ↗</a>`+(official!==tr?` <a href="${esc(tr)}">${esc(d.source_label||'官方逐字稿')} ↗</a>`:'');
+  const added=d.added?`<span class="badge new">本期增补</span>`:'';
+  const mark=isTr?`<span class="proof-mark proof-mark--transcript">逐字稿锚定</span>`:
+    (isOut?`<span class="proof-mark proof-mark--outline">大纲 · 无引文</span>`:'');
+  const punch=punches(d);
+  const punchList=punch.length?`<ul class="punches">${punch.join('')}</ul>`:'';
+  const blob=[d.title,d.hook,d.summary,d.show,d.proof,(d.tags||[]).join(' '),JSON.stringify(d.viewpoints||[]),JSON.stringify(d.hidden_stories||[])].join(' ').toLowerCase();
+  return `<article class="card" id="card-${esc(d.id)}" data-cat="${esc(d.cat||'')}" data-added="${esc(d.added||'')}" data-level="${esc(d.review_level||'')}" data-text="${esc(blob)}">
+    <div class="inner">
+      <div class="card-meta"><span>${esc(d.cat||'')}${d.tag?' / '+esc(d.tag):''}</span><time>${esc(d.date||'')}</time>
+        <button type="button" class="fm-share-trigger" title="分享" aria-label="分享 ${esc(d.title||'')}" data-fm-share="${SHARE_PREFIX}${esc(d.id)}/" data-fm-title="${esc(d.title||'')}"></button>
+      </div>
+      <h3>${esc(d.title||'')}</h3>
+      <div class="card-marks">${mark}${added}</div>
+      ${hook}${punchList}
+      <details class="proof">
+        <summary>查看依据</summary>
+        <p class="src">${esc(note)}</p>
+        ${fields(d)}${use}
+        <p class="src">${esc(d.show||'')}<small>${esc(d.proof||'')} · ${srcLinks}</small></p>
+        <div class="tags">${tags}</div>
+      </details>
+    </div>
+  </article>`;
+}
+if($cards && !$cards.querySelector('article.card') && data.length){
+  $cards.innerHTML=data.map(cardHTML).join('');
+}
+let topic='';
+function setTopic(t){topic=t;draw();}
+function matches(card){
+  if(topic==='本期增补' && !card.dataset.added) return false;
+  if(topic==='逐字稿锚定' && card.dataset.level!=='transcript') return false;
+  if(topic==='大纲无引文' && card.dataset.level!=='outline') return false;
+  if(topic && !['本期增补','逐字稿锚定','大纲无引文'].includes(topic) && card.dataset.cat!==topic) return false;
+  const q=($q && $q.value||'').trim().toLowerCase();
+  return !q || (card.dataset.text||'').includes(q);
+}
+function draw(){
+  document.querySelectorAll('.filters [data-filter]').forEach(b=>b.setAttribute('aria-pressed', (b.dataset.filter||'')===topic ? 'true':'false'));
+  let n=0;
+  const cards=$cards?$cards.querySelectorAll('article.card'):[];
+  cards.forEach(c=>{const ok=matches(c); c.hidden=!ok; if(ok) n++;});
+  if($count){
+    const tr=data.filter(d=>d.review_level==='transcript').length;
+    const ou=data.filter(d=>d.review_level==='outline').length;
+    const ad=data.filter(d=>d.added).length;
+    $count.innerHTML = data.length
+      ? `${n||data.length} 条精选<br>${tr} 条逐字稿锚定 · ${ou} 条大纲 · ${ad} 条增补`
+      : '';
+  }
+}
+document.querySelectorAll('.filters [data-filter]').forEach(b=>b.addEventListener('click',()=>setTopic(b.dataset.filter||'')));
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-topic]');
+  if(t) setTopic(t.dataset.topic);
+});
+$q&&$q.addEventListener('input',draw);
+const $picks=document.querySelector('.picks');
+if($picks && !$picks.children.length){
+  $picks.innerHTML=data.slice(0,3).map((d,i)=>`<a href="#card-${esc(d.id)}" data-pick><span class="index">${String(i+1).padStart(2,'0')}</span><span>${esc(d.title)}</span></a>`).join('');
+}
+draw();
+
+function stickyOffset(){
+  const header=document.querySelector('.top, header.head, #top');
+  if(!header) return 16;
+  const pos=getComputedStyle(header).position;
+  const h=header.getBoundingClientRect().height;
+  return ((pos==='sticky' || pos==='fixed') ? h : 0) + 16;
+}
+function scrollToCard(el){
+  if(!el) return;
+  const top=el.getBoundingClientRect().top + window.scrollY - stickyOffset();
+  window.scrollTo({top:Math.max(0, top), behavior:'smooth'});
+}
+function matchItem(el, who, at){
+  const whos=String(el.dataset.who||'').split(/[;／/,、]+/).map(s=>s.trim()).filter(Boolean);
+  const itemAt=(el.dataset.at||'').trim();
+  const wantAt=(at||'').trim();
+  const whoOk=!who || whos.includes(who);
+  const atOk=!wantAt || !itemAt || itemAt===wantAt;
+  return whoOk && atOk;
+}
+window.fmOpenCard=function(opts){
+  const id=(opts&&opts.id||'').trim();
+  if(!id) return false;
+  const who=(opts.who||opts.name||'').trim();
+  const at=(opts.at||'').trim();
+  if(topic || ($q && $q.value)){
+    if($q) $q.value='';
+    setTopic('');
+  }
+  const el=document.getElementById('card-'+id);
+  if(!el) return false;
+  const proof=el.querySelector('details.proof');
+  if(proof) proof.open=true;
+  el.querySelectorAll('.xitem.is-hero-item').forEach(n=>n.classList.remove('is-hero-item'));
+  let item=null;
+  const items=[...el.querySelectorAll('.xitem')];
+  if(who && at) item=items.find(n=>matchItem(n, who, at) && (n.dataset.at||'').trim()===at) || null;
+  if(!item && who) item=items.find(n=>matchItem(n, who, '')) || null;
+  if(item) item.classList.add('is-hero-item');
+  document.querySelectorAll('.card.is-hero-target').forEach(n=>n.classList.remove('is-hero-target'));
+  el.classList.add('is-hero-target');
+  const hash='#card-'+id;
+  if(location.hash!==hash) history.pushState({card:id}, '', hash);
+  requestAnimationFrame(()=>{
+    scrollToCard(el);
+    if(item) item.scrollIntoView({block:'nearest', inline:'nearest', behavior:'smooth'});
+  });
+  window.clearTimeout(window.__fmCardPulse);
+  window.__fmCardPulse=window.setTimeout(()=>{
+    el.classList.remove('is-hero-target');
+    if(item) item.classList.remove('is-hero-item');
+  }, 1800);
+  return true;
+};
+function openFromHash(){
+  if(!location.hash.startsWith('#card-')) return;
+  const id=location.hash.slice('#card-'.length).split('?')[0];
+  if(id) window.fmOpenCard({id});
+}
+window.addEventListener('hashchange', openFromHash);
+document.addEventListener('click', e=>{
+  const a=e.target.closest('a[href^="#card-"]');
+  if(!a || a.classList.contains('echo-mark')) return;
+  const id=(a.getAttribute('href')||'').slice('#card-'.length);
+  if(!id) return;
+  e.preventDefault();
+  window.fmOpenCard({id});
+});
+if(location.hash.startsWith('#card-')) requestAnimationFrame(openFromHash);
+})();
+</script>
+<script id="echo-field">
+/* Echo field — a sparse podcast wave field; the pointer extracts a real name. */
+(function () {
+  const host = document.getElementById('echo-art');
+  if (!host) return;
+
+  const canvas = host.querySelector('canvas');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const coarse = window.matchMedia('(pointer: coarse)').matches;
+  const dataEl = document.getElementById('issue-data');
+
+  let cards = [];
+  try {
+    const raw = JSON.parse(dataEl ? dataEl.textContent : '[]');
+    cards = Array.isArray(raw) ? raw : (raw && Array.isArray(raw.cards) ? raw.cards : []);
+  } catch (e) { cards = []; }
+
+  const FOREST = '#1e3526';
+  const LIME = '#d7f57a';
+  const SAGE = '#4f6b4a';
+  const CREAM = '#fbf9f1';
+  const MUTED = '#6a7564';
+
+  /* Hardcoded sets are fallback only; prefer card.entities / item.kind. */
+  const PEOPLE = new Set(['Michael Guan','Nathan Labenz','Noam Brown','李桢','蒋冠军','贺嘉琛','鸭哥','黄仁勋','Dario Amodei','蔡伟','Boris Cherny','Chris Olah','Ronak Malde','Gabe Pereyra']);
+  const PRODUCTS = new Set(['Antigravity','Harvey','OpenDesign','Claude Code','蚂蚁灵光','Kimi']);
+  const ORGS = new Set(['Cisco','Goodfire','英伟达','Anthropic','Trajectory','Cerebras','月之暗面']);
+
+  let programs = [];
+  try {
+    const pel = document.getElementById('program-data');
+    const rawp = JSON.parse(pel ? pel.textContent : '[]');
+    programs = Array.isArray(rawp) ? rawp : (rawp && Array.isArray(rawp.programs) ? rawp.programs : []);
+  } catch (e) { programs = []; }
+
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function ease(t) { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); }
+
+  function shortShow(name) {
+    if (!name) return '';
+    let s = String(name);
+    s = s.replace(/^Next Token（词元之外）/, '词元之外');
+    s = s.replace(/·\s*Ronak Malde.*$/, '');
+    s = s.replace(/·\s*贺嘉琛.*$/, '');
+    s = s.replace(/\s+/g, ' ').trim();
+    if (s.length > 22) s = s.slice(0, 21) + '…';
+    return s;
+  }
+
+  function cleanAt(at) {
+    const s = (at == null ? '' : String(at)).trim();
+    return (!s || s === '无时间码') ? '' : s;
+  }
+
+  function programKey(show, card) {
+    if (card && card.program && String(card.program).trim()) return String(card.program).trim();
+    const s = String(show || '');
+    if (!s) return '';
+    for (let i = 0; i < programs.length; i++) {
+      const name = (programs[i].name || programs[i].program || '').trim();
+      if (!name) continue;
+      const aliases = programs[i].aliases || [];
+      const keys = [name].concat(aliases);
+      for (let k = 0; k < keys.length; k++) {
+        const a = String(keys[k] || '').trim();
+        if (!a) continue;
+        if (s === a || s.startsWith(a) || s.indexOf(a) !== -1) return name;
+      }
+    }
+    if (/词元之外/.test(s) || /^Next Token/.test(s)) return '词元之外';
+    return s.replace(/[·｜|].*$/, '').replace(/\s+/g, ' ').trim();
+  }
+
+  function splitNames(value) {
+    return String(value || '').split(/[;／/,、]+/).map((s) => s.trim()).filter(Boolean);
+  }
+
+  function kindOfName(name, kinds) {
+    if (kinds && kinds[name]) return kinds[name];
+    if (PRODUCTS.has(name)) return '产品';
+    if (ORGS.has(name)) return '公司';
+    if (PEOPLE.has(name)) return '人物';
+    return '人物';
+  }
+
+  function collectMarks(list) {
+    const used = new Set();
+    const marks = [];
+    function add(name, at, show, id, kind, program) {
+      const label = (name || '').trim();
+      if (!label) return;
+      const atClean = cleanAt(at);
+      const key = label + '|' + atClean + '|' + (id || '');
+      if (used.has(key)) return;
+      used.add(key);
+      marks.push({
+        name: label,
+        kind: kind || kindOfName(label),
+        at: atClean,
+        show: shortShow(show || ''),
+        program: program || programKey(show || ''),
+        id: id || ''
+      });
+    }
+    list.forEach((card) => {
+      const show = card.show || '';
+      const id = card.id || '';
+      const program = (card.program || '').trim() || programKey(show, card);
+      const kinds = {};
+      (card.entities || []).forEach((ent) => {
+        const n = (ent && ent.name || '').trim();
+        if (n && ent.kind) kinds[n] = ent.kind;
+      });
+      (card.people_product || []).forEach((item) => {
+        if (item && item.kind) {
+          splitNames(item.name || item.who).forEach((n) => { kinds[n] = item.kind; });
+        }
+      });
+      ['viewpoints', 'hidden_stories', 'fresh_facts', 'people_product'].forEach((field) => {
+        (card[field] || []).forEach((item) => {
+          const at = item.at;
+          if (field === 'people_product' && item.kind) {
+            splitNames(item.name || item.who).forEach((name) => add(name, at, show, id, item.kind, program));
+          }
+          splitNames(item.who).forEach((name) => add(name, at, show, id, kinds[name] || '人物', program));
+        });
+      });
+      (card.entities || []).forEach((ent) => {
+        if (!ent || !ent.name) return;
+        add(ent.name, ent.at, show, id, ent.kind || kindOfName(ent.name, kinds), program);
+      });
+      (card.tags || []).forEach((tag) => {
+        const kind = kinds[tag] || (PRODUCTS.has(tag) ? '产品' : ORGS.has(tag) ? '公司' : PEOPLE.has(tag) ? '人物' : '');
+        if (kind) add(tag, '', show, id, kind, program);
+      });
+    });
+    return marks;
+  }
+
+  const marks = collectMarks(cards);
+  const SHOWS = Array.from(new Set(listShow(cards)));
+  function listShow(list) {
+    return list.map((c) => shortShow(c.show)).filter(Boolean);
+  }
+
+  const layer = document.createElement('div');
+  layer.className = 'echo-labels';
+  host.appendChild(layer);
+  const labelEl = document.createElement('a');
+  labelEl.className = 'echo-mark';
+  labelEl.hidden = true;
+  labelEl.innerHTML = '<span class="k"></span><span class="n"></span><span class="m"></span><span class="h">点击查看 →</span>';
+  labelEl.setAttribute('role', 'link');
+  layer.appendChild(labelEl);
+
+  const ctx = canvas.getContext('2d', { alpha: false });
+  let w = 0, h = 0, dpr = 1, portrait = false;
+  let tracks = [];
+  let barW = 2, barGap = 1;
+  let pointer = { x: 0.5, y: 0.5, on: false };
+  let active = null; /* {track, mark, x, y} */
+  let demoIndex = 0, demoAt = 0, idleSince = 0;
+  let paused = false, lastNow = 0, clock = 0;
+  let wrapPad = 24;
+
+  const DEMO_HOLD = 2.15;
+  const IDLE_DELAY = 1.2;
+
+  function wrapInsets() {
+    /* Hero is already a .wrap-width box; content must flush to both edges. */
+    return { left: 0, right: 0, width: w };
+  }
+
+  function mulberry32(a) {
+    return function () {
+      let t = a += 0x6D2B79F5;
+      t = Math.imul(t ^ t >>> 15, t | 1);
+      t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  /* Speech-like amplitude: bursts of loudness with short pauses, like a podcast edit. */
+  function makeAmps(seed, n) {
+    const rnd = mulberry32(seed);
+    const amps = new Float32Array(n);
+    let i = 0;
+    while (i < n) {
+      const pause = 3 + Math.floor(rnd() * 9);
+      for (let k = 0; k < pause && i < n; k++, i++) amps[i] = rnd() * 0.04;
+      const burst = 10 + Math.floor(rnd() * 26);
+      const peak = 0.62 + rnd() * 0.38;
+      for (let k = 0; k < burst && i < n; k++, i++) {
+        const env = Math.sin((k / burst) * Math.PI);
+        const syll = 0.4 + 0.6 * Math.abs(Math.sin(k * 0.9 + seed * 0.1));
+        amps[i] = Math.min(1, env * peak * syll * (0.85 + rnd() * 0.15));
+      }
+    }
+    return amps;
+  }
+
+  function bakeWave(amps, color, th) {
+    const step = barW + barGap;
+    const off = document.createElement('canvas');
+    off.width = Math.max(1, amps.length * step);
+    off.height = Math.max(2, th);
+    const g = off.getContext('2d');
+    const mid = th / 2;
+    g.fillStyle = color;
+    for (let i = 0; i < amps.length; i++) {
+      const bh = Math.max(1, amps[i] * (th * 0.92));
+      g.fillRect(i * step, mid - bh, barW, bh * 2);
+    }
+    return off;
+  }
+
+  function diversifyMarks(pool, limit) {
+    /* One mark per program first; only repeat a program after every
+       program has been used. Prefer distinct real names. */
+    const groups = new Map();
+    pool.forEach((mark) => {
+      const key = mark.program || programKey(mark.show);
+      if (!key) return;
+      if (!groups.has(key)) groups.set(key, []);
+      const g = groups.get(key);
+      if (!g.some((m) => m.name === mark.name)) g.push(mark);
+    });
+    groups.forEach((list, key) => {
+      const rank = (m) => ((m.kind === '人物') ? 0 : (m.kind === '产品') ? 1 : 2) * 2 + (m.at ? 0 : 1);
+      groups.set(key, list.slice().sort((a, b) => rank(a) - rank(b)));
+    });
+    const programs = Array.from(groups.keys());
+    const picked = [];
+    const maxRound = Math.max(0, ...programs.map((k) => groups.get(k).length));
+    for (let round = 0; round < maxRound && picked.length < limit; round++) {
+      programs.forEach((key) => {
+        if (picked.length >= limit) return;
+        const g = groups.get(key);
+        if (round < g.length) {
+          picked.push(Object.assign({}, g[round], { program: key }));
+        }
+      });
+    }
+    return picked;
+  }
+
+  function assignMarks(n) {
+    const per = portrait ? 2 : 3;
+    const limit = n * per;
+    const picked = diversifyMarks(marks, limit);
+    const slots = Array.from({ length: n }, () => []);
+    /* Give each program its own track(s). If tracks run out, cut repeats
+       from the program that already has the most rows so labels stay honest. */
+    const order = [];
+    const byProg = new Map();
+    picked.forEach((mark) => {
+      const key = mark.program || programKey(mark.show);
+      if (!byProg.has(key)) { byProg.set(key, []); order.push(key); }
+      byProg.get(key).push(mark);
+    });
+    const alloc = order.map((key) => ({
+      key,
+      marks: byProg.get(key),
+      tracks: Math.max(1, Math.ceil(byProg.get(key).length / per))
+    }));
+    let total = alloc.reduce((s, x) => s + x.tracks, 0);
+    while (total > n) {
+      let cut = -1, best = -1;
+      alloc.forEach((x, i) => {
+        const score = x.tracks * 1000 + x.marks.length;
+        if (score > best) { best = score; cut = i; }
+      });
+      if (cut < 0 || alloc[cut].tracks <= 1) break;
+      alloc[cut].tracks -= 1;
+      total -= 1;
+    }
+    let row = 0;
+    alloc.forEach((x) => {
+      const start = row;
+      const end = Math.min(n, row + x.tracks);
+      row = end;
+      x.marks.forEach((mark, i) => {
+        const cap = (end - start) * per;
+        if (i >= cap) return;
+        const dest = start + Math.min(end - start - 1, Math.floor(i / per));
+        if (slots[dest].length < per) slots[dest].push(Object.assign({}, mark));
+      });
+    });
+    slots.forEach((row) => {
+      const count = row.length || 1;
+      row.forEach((mark, i) => {
+        mark.t = count === 1 ? 0.5 : 0.22 + (i / Math.max(1, count - 1)) * 0.56;
+      });
+    });
+    return slots;
+  }
+
+  function layoutField() {
+    const inset = wrapInsets();
+    wrapPad = inset.left;
+    const n = portrait ? 6 : (w < 1100 ? 7 : 9);
+    const top = portrait ? 28 : 24;
+    const bot = portrait ? 28 : 24;
+    const usable = Math.max(80, h - top - bot);
+    const slots = assignMarks(n);
+    const gap = usable / n;
+    const th = Math.min(26, Math.max(14, gap * 0.40));
+    const labelW = portrait ? 0 : Math.min(128, Math.max(96, w * 0.13));
+    const x0 = portrait ? 0 : labelW + 12;
+    const x1 = w;
+    const step = barW + barGap;
+    const barsNeeded = Math.ceil((x1 - x0) / step) + 80;
+    tracks = [];
+    for (let i = 0; i < n; i++) {
+      const amps = makeAmps(1103 + i * 97, barsNeeded);
+      tracks.push({
+        i,
+        y: top + gap * (i + 0.5),
+        th,
+        x0, x1,
+        phase: (i * 1.17) % 1,
+        speed: 0.06 + (i % 4) * 0.012,
+        label: (!portrait && slots[i] && slots[i][0] && slots[i][0].program) ? slots[i][0].program : '',
+        marks: slots[i] || [],
+        amps,
+        sageStrip: bakeWave(amps, SAGE, th),
+        forestStrip: bakeWave(amps, FOREST, th)
+      });
+    }
+    syncHitTargets();
+  }
+
+  function resize() {
+    const rect = host.getBoundingClientRect();
+    w = Math.max(1, rect.width);
+    h = Math.max(1, rect.height);
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    portrait = h > w * 0.92 || w < 640;
+    canvas.width = Math.max(1, Math.round(w * dpr));
+    canvas.height = Math.max(1, Math.round(h * dpr));
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    layoutField();
+  }
+
+  function nearestOnTrack(track, t) {
+    const row = track.marks;
+    if (!row.length) return null;
+    let best = row[0], dist = 2;
+    row.forEach((mark) => {
+      const d = Math.abs(mark.t - t);
+      if (d < dist) { dist = d; best = mark; }
+    });
+    return best;
+  }
+
+  function pickFromPointer() {
+    if (!tracks.length) return null;
+    const x = pointer.x * w;
+    const y = pointer.y * h;
+    let best = null, bestD = 1e9;
+    tracks.forEach((track) => {
+      if (x < track.x0 - 8 || x > track.x1 + 8) return;
+      const d = Math.abs(y - track.y);
+      if (d < bestD) { bestD = d; best = track; }
+    });
+    const threshold = portrait ? 36 : 28;
+    if (!best || bestD > Math.max(threshold, (tracks[1] ? (tracks[1].y - tracks[0].y) : 40) * 0.48)) return null;
+    const t = clamp((x - best.x0) / Math.max(1, best.x1 - best.x0), 0, 1);
+    const mark = nearestOnTrack(best, t);
+    if (!mark) return null;
+    return { track: best, mark, t: mark.t, y: best.y };
+  }
+
+  function demoTarget(now) {
+    const flat = [];
+    tracks.forEach((track) => track.marks.forEach((mark) => flat.push({ track, mark, t: mark.t, y: track.y })));
+    if (!flat.length) return null;
+    const idx = Math.floor(now / DEMO_HOLD) % flat.length;
+    const cur = flat[idx];
+    const local = (now % DEMO_HOLD) / DEMO_HOLD;
+    /* linger, then ease toward the next */
+    if (local > 0.78 && flat.length > 1) {
+      const next = flat[(idx + 1) % flat.length];
+      const u = ease((local - 0.78) / 0.22);
+      return {
+        track: u < 0.5 ? cur.track : next.track,
+        mark: u < 0.5 ? cur.mark : next.mark,
+        t: lerp(cur.t, next.t, u),
+        y: lerp(cur.y, next.y, u),
+        demo: true
+      };
+    }
+    return Object.assign({ demo: true }, cur);
+  }
+
+  function fillGround() {
+    ctx.fillStyle = '#f3f0e6';
+    ctx.fillRect(0, 0, w, h);
+  }
+
+  function drawStrip(strip, x0, destY, tw, th, shiftPx) {
+    const sw = strip.width;
+    const sh = ((shiftPx % sw) + sw) % sw;
+    const first = Math.min(tw, sw - sh);
+    ctx.drawImage(strip, sh, 0, first, th, x0, destY, first, th);
+    if (first < tw) {
+      ctx.drawImage(strip, 0, 0, tw - first, th, x0 + first, destY, tw - first, th);
+    }
+  }
+
+  function drawTracks(highlight) {
+    const step = barW + barGap;
+    tracks.forEach((track) => {
+      const y = track.y, th = track.th, x0 = track.x0, x1 = track.x1;
+      const tw = Math.max(40, x1 - x0);
+      if (track.label) {
+        ctx.fillStyle = MUTED;
+        ctx.font = '11px ui-sans-serif, system-ui, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        let text = track.label;
+        const maxW = Math.max(8, track.x0 - 12);
+        while (text.length > 1 && ctx.measureText(text).width > maxW) {
+          text = text.slice(0, -1);
+        }
+        if (text !== track.label) text = text.replace(/[·.\s]+$/, '') + '…';
+        ctx.fillText(text, 0, y);
+      }
+      const shiftPx = ((clock * track.speed * 24 + track.phase * track.sageStrip.width) % track.sageStrip.width);
+      const destY = y - th / 2;
+      ctx.globalAlpha = 0.9;
+      drawStrip(track.sageStrip, x0, destY, tw, th, shiftPx);
+      ctx.globalAlpha = 1;
+      const on = highlight && highlight.track === track;
+      if (on) {
+        const hx = lerp(x0, x1, highlight.t);
+        const win = portrait ? 70 : 96;
+        const left = clamp(hx - win / 2, x0, x1);
+        const right = clamp(hx + win / 2, x0, x1);
+        const ww = Math.max(1, right - left);
+        ctx.fillStyle = 'rgba(215,245,122,0.55)';
+        ctx.fillRect(left, destY - 3, ww, th + 6);
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(left, destY - 3, ww, th + 6);
+        ctx.clip();
+        drawStrip(track.forestStrip, x0, destY, tw, th, shiftPx);
+        ctx.restore();
+        ctx.strokeStyle = FOREST;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(hx, destY - 5);
+        ctx.lineTo(hx, destY + th + 5);
+        ctx.stroke();
+        ctx.fillStyle = LIME;
+        ctx.beginPath();
+        ctx.arc(hx, y, 4.2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = FOREST;
+        ctx.lineWidth = 1.3;
+        ctx.beginPath();
+        ctx.arc(hx, y, 4.2, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(hx, y, 9, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    });
+  }
+
+
+  let locked = null;
+  let armedKey = '';
+  let hitRoot = null;
+
+  function markKey(mark) {
+    return (mark.id || '') + '|' + (mark.name || '') + '|' + (mark.at || '');
+  }
+
+  function findTrackFor(mark) {
+    for (let i = 0; i < tracks.length; i++) {
+      const row = tracks[i].marks;
+      for (let j = 0; j < row.length; j++) {
+        if (row[j] === mark || (row[j].name === mark.name && row[j].id === mark.id && row[j].at === mark.at)) {
+          return tracks[i];
+        }
+      }
+    }
+    return null;
+  }
+
+  function showMark(mark, track) {
+    const tr = track || findTrackFor(mark);
+    if (!tr || !mark) return;
+    locked = { track: tr, mark: mark, t: mark.t, y: tr.y };
+    pointer.on = false;
+    idleSince = clock;
+    frame(performance.now());
+  }
+
+  function openFromMark(mark) {
+    if (!mark || !mark.id) return;
+    armedKey = '';
+    locked = null;
+    if (typeof window.fmOpenCard === 'function') {
+      window.fmOpenCard({ id: mark.id, who: mark.name, name: mark.name, at: mark.at || '' });
+    } else {
+      location.hash = '#card-' + mark.id;
+    }
+  }
+
+  function onMarkActivate(mark, ev) {
+    if (ev) { ev.preventDefault(); ev.stopPropagation(); }
+    const fromKeyboard = ev && ev.detail === 0 && ev.pointerType !== 'touch' && ev.pointerType !== 'pen';
+    const isTouch = ev && (ev.pointerType === 'touch' || ev.pointerType === 'pen' || (coarse && ev.pointerType !== 'mouse'));
+    showMark(mark);
+    if (isTouch && !fromKeyboard && armedKey !== markKey(mark)) {
+      armedKey = markKey(mark);
+      return;
+    }
+    openFromMark(mark);
+  }
+
+  function syncHitTargets() {
+    if (!hitRoot) {
+      hitRoot = document.createElement('div');
+      hitRoot.className = 'echo-hits';
+      host.appendChild(hitRoot);
+    }
+    hitRoot.innerHTML = '';
+    tracks.forEach((track) => {
+      track.marks.forEach((mark) => {
+        if (!mark.id) return;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'echo-hit-btn';
+        btn.style.left = lerp(track.x0, track.x1, mark.t) + 'px';
+        btn.style.top = track.y + 'px';
+        const parts = [mark.name, mark.kind, mark.program || mark.show, '查看简报'].filter(Boolean);
+        btn.setAttribute('aria-label', parts.join('，'));
+        btn.addEventListener('click', (ev) => onMarkActivate(mark, ev));
+        btn.addEventListener('focus', () => showMark(mark, track));
+        btn.addEventListener('mouseenter', () => showMark(mark, track));
+        hitRoot.appendChild(btn);
+      });
+    });
+  }
+
+  function placeLabel(highlight) {
+    if (!highlight || !highlight.mark) {
+      labelEl.hidden = true;
+      return;
+    }
+    const mark = highlight.mark;
+    const track = highlight.track;
+    const hx = lerp(track.x0, track.x1, highlight.t);
+    labelEl.hidden = false;
+    labelEl.querySelector('.k').textContent = mark.kind || '';
+    labelEl.querySelector('.n').textContent = mark.name;
+    const meta = [mark.program || mark.show, mark.at].filter(Boolean).join(' · ');
+    labelEl.querySelector('.m').textContent = meta;
+    const hint = labelEl.querySelector('.h');
+    if (hint) {
+      hint.hidden = !mark.id;
+      hint.textContent = (coarse && armedKey && armedKey === markKey(mark)) ? '再点查看 →' : '点击查看 →';
+    }
+    if (mark.id) {
+      labelEl.href = '#card-' + mark.id;
+      labelEl.style.pointerEvents = 'auto';
+    } else {
+      labelEl.removeAttribute('href');
+      labelEl.style.pointerEvents = 'none';
+    }
+    /* measure then clamp; prefer above the track, flip below if needed */
+    const lw = Math.min(320, Math.max(160, labelEl.offsetWidth || 200));
+    const lh = labelEl.offsetHeight || 56;
+    let left = hx - lw * 0.2;
+    let top = highlight.y - lh - 18;
+    left = clamp(left, 0, Math.max(0, w - lw));
+    if (top < 12) top = highlight.y + 16;
+    if (top + lh > h - 20) top = Math.max(12, highlight.y - lh - 18);
+    labelEl.style.left = left + 'px';
+    labelEl.style.top = top + 'px';
+  }
+
+  function frame(now) {
+    const dt = Math.min(0.05, (now - lastNow) / 1000 || 0);
+    lastNow = now;
+    if (!paused && !reduced) clock += dt;
+    fillGround();
+    let highlight = null;
+    if (locked) {
+      highlight = locked;
+    } else if (reduced) {
+      highlight = tracks[Math.min(2, tracks.length - 1)]
+        ? { track: tracks[Math.min(2, tracks.length - 1)], mark: (tracks[Math.min(2, tracks.length - 1)].marks[0] || null), t: (tracks[Math.min(2, tracks.length - 1)].marks[0] || { t: 0.45 }).t, y: tracks[Math.min(2, tracks.length - 1)].y }
+        : null;
+    } else if (pointer.on) {
+      highlight = pickFromPointer();
+      idleSince = clock;
+    } else if (clock - idleSince > IDLE_DELAY || coarse) {
+      highlight = demoTarget(clock);
+    }
+    active = highlight;
+    drawTracks(highlight);
+    placeLabel(highlight);
+  }
+
+  let raf = 0;
+  function loop(now) {
+    frame(now);
+    if (!paused) raf = requestAnimationFrame(loop);
+  }
+
+  function start() {
+    if (paused) return;
+    if (raf) cancelAnimationFrame(raf);
+    lastNow = performance.now();
+    raf = requestAnimationFrame(loop);
+  }
+
+  function onPointer(ev) {
+    const r = host.getBoundingClientRect();
+    pointer.x = clamp((ev.clientX - r.left) / r.width, 0, 1);
+    pointer.y = clamp((ev.clientY - r.top) / r.height, 0, 1);
+    pointer.on = ev.pointerType === 'mouse' || ev.buttons > 0 || ev.type === 'pointerdown' || ev.type === 'pointermove';
+    if (ev.pointerType === 'touch' || ev.pointerType === 'pen') pointer.on = true;
+    if (ev.type === 'pointermove' && ev.pointerType === 'mouse') locked = null;
+  }
+  function offPointer() {
+    pointer.on = false;
+    idleSince = clock;
+  }
+
+  host.addEventListener('pointermove', onPointer);
+  host.addEventListener('pointerenter', onPointer);
+  host.addEventListener('pointerdown', onPointer);
+  host.addEventListener('pointerleave', offPointer);
+  host.addEventListener('pointerup', function (ev) {
+    onPointer(ev);
+    const fromUI = ev.target && ev.target.closest && ev.target.closest('.echo-mark, .echo-hit-btn');
+    if ((ev.pointerType === 'touch' || ev.pointerType === 'pen') && !fromUI) {
+      const hit = pickFromPointer();
+      if (hit && hit.mark && hit.mark.id) {
+        ev.preventDefault();
+        onMarkActivate(hit.mark, ev);
+      }
+      setTimeout(offPointer, 1200);
+    }
+  });
+  host.addEventListener('click', function (ev) {
+    if (ev.target && ev.target.closest && ev.target.closest('.echo-mark, .echo-hit-btn')) return;
+    const isTouch = ev.pointerType === 'touch' || ev.pointerType === 'pen' || (coarse && ev.pointerType !== 'mouse');
+    if (isTouch) return;
+    const hit = pickFromPointer();
+    if (hit && hit.mark && hit.mark.id) {
+      ev.preventDefault();
+      openFromMark(hit.mark);
+    }
+  });
+  labelEl.addEventListener('click', function (ev) {
+    ev.preventDefault();
+    ev.stopPropagation();
+    if (active && active.mark) openFromMark(active.mark);
+  });
+  labelEl.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Enter' || ev.key === ' ') {
+      ev.preventDefault();
+      if (active && active.mark) openFromMark(active.mark);
+    }
+  });
+
+  const vis = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      paused = !entry.isIntersecting;
+      if (entry.isIntersecting) start();
+      else if (raf) { cancelAnimationFrame(raf); raf = 0; }
+    });
+  }, { threshold: 0.12 });
+  vis.observe(host);
+
+  window.addEventListener('resize', function () {
+    resize();
+    frame(performance.now());
+  }, { passive: true });
+
+  /* test hook: place the pointer (or a demo index) for screenshots */
+  window.__echoStory = {
+    setPointer: function (x, y) {
+      pointer.x = clamp(x, 0, 1);
+      pointer.y = clamp(y, 0, 1);
+      pointer.on = true;
+      frame(performance.now());
+      return active && active.mark ? { name: active.mark.name, kind: active.mark.kind, at: active.mark.at, show: active.mark.show } : null;
+    },
+    clearPointer: function () {
+      pointer.on = false;
+      idleSince = -10;
+      frame(performance.now());
+    },
+    setDemoTime: function (t) {
+      pointer.on = false;
+      clock = t;
+      idleSince = -10;
+      frame(performance.now());
+      return active && active.mark ? { name: active.mark.name, kind: active.mark.kind } : null;
+    },
+    marks: function () { return marks.slice(); },
+    heroSegments: function () {
+      const out = [];
+      tracks.forEach((tr) => tr.marks.forEach((m) => out.push({ name: m.name, kind: m.kind, at: m.at || '', show: m.show, program: m.program || programKey(m.show), id: m.id || '' })));
+      return out;
+    },
+    openMark: function (nameOrId) {
+      const all = [];
+      tracks.forEach((tr) => tr.marks.forEach((m) => all.push(m)));
+      const mark = all.find((m) => m.id === nameOrId || m.name === nameOrId) || marks.find((m) => m.id === nameOrId || m.name === nameOrId);
+      if (!mark) return null;
+      showMark(mark);
+      openFromMark(mark);
+      return { name: mark.name, id: mark.id, program: mark.program };
+    },
+    tracks: function () { return tracks.map((tr) => ({ y: tr.y, x0: tr.x0, x1: tr.x1, label: tr.label, marks: tr.marks.map((m) => ({ name: m.name, t: m.t, kind: m.kind, program: m.program, show: m.show })) })); },
+    geometry: function () {
+      const t0 = tracks[0];
+      return t0 ? { width: w, height: h, labelLeft: 0, waveLeft: t0.x0, waveRight: t0.x1, hasLabels: !portrait } : null;
+    },
+    get active() { return active && active.mark ? { name: active.mark.name, kind: active.mark.kind, at: active.mark.at } : null; }
+  };
+
+  resize();
+  if (reduced) {
+    frame(0);
+    return;
+  }
+  idleSince = -10;
+  start();
+})();
+</script>
+<script>
+addEventListener('scroll',()=>document.getElementById('top').classList.toggle('solid',scrollY>40),{passive:true});
+</script>
+<dialog class="fm-share-dialog" id="fm-share-dialog" aria-labelledby="fm-share-heading">
+  <div class="fm-share-panel">
+    <header class="fm-share-panel-head">
+      <h2 id="fm-share-heading">分享这条简报</h2>
+      <form method="dialog"><button type="submit" class="fm-share-close" aria-label="关闭分享" autofocus>×</button></form>
+    </header>
+    <p class="fm-share-item" data-share-title></p>
+    <figure class="fm-share-frame is-loading" data-share-frame aria-busy="true">
+      <div class="fm-share-skeleton" data-share-skeleton>
+        <div class="fm-share-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <p class="fm-share-loading-label">正在生成分享卡…</p>
+      </div>
+      <img class="fm-share-preview" data-share-image alt="" width="1080" height="1920">
+    </figure>
+    <div class="fm-share-actions">
+      <button type="button" data-share-native hidden>系统分享</button>
+      <button type="button" data-share-copy>复制链接</button>
+      <a class="fm-share-primary" data-share-download download>保存图片</a>
+    </div>
+    <div class="fm-share-links">
+      <a data-share-entry>打开单条简报</a>
+      <a data-share-full target="_blank" rel="noopener">打开大图</a>
+    </div>
+    <p data-share-wechat hidden>微信内可长按图片保存。</p>
+    <input type="url" data-share-address aria-label="永久分享链接" readonly hidden>
+    <p class="fm-share-feedback" data-share-feedback role="status"></p>
+  </div>
+</dialog></body></html>

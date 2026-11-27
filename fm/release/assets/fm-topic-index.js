@@ -14,11 +14,11 @@ const groups = Array.from(categoryNav.querySelectorAll('a'), link => {
   return {
     link,
     section,
-    counts: [link.querySelector('[data-count]'), section.querySelector('[data-count]')],
-    topics: Array.from(section.querySelectorAll('.index-token'), topic => ({
+    counts: [link.querySelector('[data-count]'), section && section.querySelector('[data-count]')],
+    topics: section ? Array.from(section.querySelectorAll('.index-token'), topic => ({
       element: topic,
       text: normalize(topic.textContent)
-    }))
+    })) : []
   };
 });
 
@@ -34,8 +34,8 @@ function updateIndex() {
       topic.element.hidden = !match;
       count += Number(match);
     }
-    group.link.hidden = group.section.hidden = count === 0;
-    for (const element of group.counts) element.textContent = count;
+    if (group.section) group.link.hidden = group.section.hidden = count === 0;
+    for (const element of group.counts) if (element) element.textContent = count;
     total += count;
   }
 
