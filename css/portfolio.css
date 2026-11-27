@@ -338,3 +338,42 @@
   74%,88% { opacity: 1; transform: translateY(0); }
   93% { opacity: 0; }
 }
+
+/* AI Product Atlas: axes → product tiles settle → a pick turns vermilion → lineage draws → detail card. */
+.apm-tile { animation-name: apm-tile; animation-delay: calc(var(--i) * 70ms); transform-box: fill-box; transform-origin: center; }
+.apm-pick { animation-name: apm-pick; }
+.apm-ring { animation-name: apm-ring; transform-box: fill-box; transform-origin: center; }
+.art-motion .apm-link { animation-name: apm-link; }
+.apm-detail { animation-name: apm-detail; }
+.apm-caption { animation-name: apm-caption; }
+@keyframes apm-tile {
+  0%,8% { opacity: 0; transform: scale(.4); }
+  18%,86% { opacity: 1; transform: scale(1); }
+  94%,100% { opacity: 0; transform: scale(1); }
+}
+@keyframes apm-pick {
+  0%,34%,100% { opacity: 0; }
+  42%,88% { opacity: 1; }
+  94% { opacity: 0; }
+}
+@keyframes apm-ring {
+  0%,34%,100% { opacity: 0; transform: scale(.7); }
+  42%,88% { opacity: 1; transform: scale(1); }
+  94% { opacity: 0; }
+}
+@keyframes apm-link {
+  0%,40% { stroke-dashoffset: 1; opacity: 0; }
+  44% { opacity: 1; }
+  56%,86% { stroke-dashoffset: 0; opacity: 1; }
+  94%,100% { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes apm-detail {
+  0%,56% { opacity: 0; transform: translateX(-26px); }
+  64%,88% { opacity: 1; transform: translateX(0); }
+  94%,100% { opacity: 0; transform: translateX(0); }
+}
+@keyframes apm-caption {
+  0%,70%,96%,100% { opacity: 0; transform: translateY(9px); }
+  78%,88% { opacity: 1; transform: translateY(0); }
+  93% { opacity: 0; }
+}

@@ -237,3 +237,32 @@ Avoid: purple, blue gradients, neon, glassmorphism, generic robots, planets, sta
 ```
 
 浏览器复核覆盖 1440、1024、768、375px，网格分别为 3、3、2、1 列。卡片在视口内播放，离屏暂停，减少动效时隐藏动效层。键盘可聚焦，点击整卡在新标签打开 https://fm.chenshi.ai/ 。截图见 `screenshots/fm-desktop-20261127.png` 和 `screenshots/fm-mobile-20261127.png`。
+
+## AI 产品矩阵（AI Product Atlas）· 2026-11-27
+
+用途：首页第 16 张作品卡片。入口：https://legalagi.cn/tools/ai-product-matrix/ 。把 85 个中美 AI 产品放回“自主程度 × 专精程度”坐标，并标出产品之间的衍生关系；数据截至 2026-11-26。
+
+**当前状态**：本会话宿主无内置 imagegen，按 desktop-skill、tuxiuxiu、回声 FM 先例暂用 PIL 程序绘制的同族占位稿（生成脚本 `scratch/apm-card-20261127/make-apm-card.py`：中央象牙纸质坐标板，4×3 个浅压空卡槽与坐标轴 → 左侧待排产品卡托盘 → 右侧空白详情卡架 → 板架之间的石墨短轨与朱红索引签）。底图与 600×400 SVG 动效层按 2 倍坐标对齐；坐标轴、12 张产品卡、朱红选中块、衍生连线、详情卡与字幕均由 SVG 层绘制。原始图 `sources/ai-product-matrix.png`；网页资产 `assets/portfolio/ai-product-matrix.webp`（1200×800，质量 86）。
+
+动效叙事（8 秒循环）：坐标轴绘出 → 产品卡逐格落位 → 选中项转为朱红 → 三条衍生连线向上下游推进 → 右侧详情卡滑出 → 字幕“把 85 个产品放回坐标”→ 原位淡出复位。不代表真实产品运行检测。
+
+正式素材提示词（宿主内置 imagegen，参考 `assets/portfolio/skill-hub.webp`、`assets/portfolio/ai-teaching.webp` 与 `assets/portfolio/fm.webp` 同族材质；与 Skill Hub 的区别：本图主体是“坐标板与衍生关系”，不是模块托盘；与 AI 教学讲解板的区别：本图面板内是 4×3 空卡槽，不是流水线示意）：
+
+```text
+Use case: stylized-concept.
+Asset type: portfolio card image for a personal blog project gallery.
+Input images: reference images are for the existing warm paper architectural-maquette visual language only; do not copy their objects or any text.
+Primary request: Create a premium editorial illustration for “AI 产品矩阵 / AI Product Atlas”, an interactive map that places 85 Chinese and US AI products on two axes of autonomy and specialization and traces which products derive from which. The image should communicate a physical coordinate board where product cards are being placed and connected, not a dashboard screenshot or a generic network graphic.
+Scene/backdrop: warm parchment seamless studio background (#e9dfcf), shallow ivory rectangular plinth.
+Subject: a precise handcrafted architectural maquette of a small paper mapping station on the plinth. The main subject is a broad upright ivory paper coordinate board with a subtle debossed inner panel, a very faint debossed L-shaped axis along its lower-left edge, and a neat four-by-three grid of twelve shallow recessed rectangular sockets on its face, all sockets empty and identical. A single small vermilion red (#b63c2f) index tab sits on the board's top edge. On the left, a low ivory tray holds a small stack of blank upright product cards with one vermilion tab. On the right, a slightly taller ivory detail easel stands on a small foot, with a blank debossed inner frame and a small graphite clip, its face left empty for a later overlay. A slender graphite rail with two small junction beads connects the board base to the easel base. The board face must stay uncluttered: the product cards, the vermilion selected block, the three lineage curves and the detail card are drawn later as graphic overlays. No computer monitor, no office desk, no robot.
+Style/medium: analog craftsmanship, tactile uncoated paper, sophisticated miniature still life, refined realistic materials, orthographic near-front 3/4 view.
+Composition/framing: landscape 3:2, subject centered in the middle 65% with generous clear edges, readable at small card size, all structures grounded on the plinth.
+Lighting/mood: soft directional daylight from upper left, restrained contact shadows and ambient occlusion, quiet, precise, editorial.
+Color palette: warm parchment, ivory paper, graphite metal, one vermilion red accent (#b63c2f); no blue or purple.
+Materials/textures: folded-card paper, graphite rail and clip, subtle paper grain, crisp miniature joinery.
+Text (verbatim): none.
+Constraints: no text, no letters, no numbers, no logos, no watermark; all twelve board sockets must stay empty and free of interface graphics; keep the card tray, the coordinate board and the detail easel visibly distinct; leave the lower 18 percent and upper 16 percent of the image mostly clear parchment for later graphic overlay.
+Avoid: purple, blue gradients, neon, glassmorphism, generic robots, planets, stars, floating particles, cute cartoon style, glossy plastic, dense UI text, fake branding, pie charts, bar charts, actual maps.
+```
+
+浏览器复核覆盖 1440、1024、768、375px，网格分别为 3、3、2、1 列。卡片在视口内播放，离屏暂停，减少动效时隐藏动效层。键盘可聚焦，点击整卡在新标签打开 https://legalagi.cn/tools/ai-product-matrix/ 。截图见 `screenshots/apm-desktop-20261127.png` 和 `screenshots/apm-mobile-20261127.png`。

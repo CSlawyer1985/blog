@@ -120,7 +120,7 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
   <!-- GSAP loaded async — page renders immediately, animations enhance if available -->
   <script async src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script async src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <link rel="stylesheet" href="css/portfolio.css?v=20261127-fm">
+  <link rel="stylesheet" href="css/portfolio.css?v=20261127-apm">
   <link rel="stylesheet" href="css/hero-responsive.css?v=20261118-gridline">
 </head>
 <body>
@@ -511,7 +511,7 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
     </section>
 
 <section class="project-gallery" id="project-gallery" aria-labelledby="gallery-heading">
-  <header class="gallery-head"><div><p class="gallery-kicker">THE BUILD INDEX <span>/ 01—15</span></p><h2 id="gallery-heading"><span lang="zh">想法，做成了这些。</span><span lang="en">Ideas, made tangible.</span></h2></div><div class="gallery-aside"><p><span lang="zh">课程、工具与实验，持续建造中。</span><span lang="en">Courses, tools and experiments. Always building.</span></p></div></header>
+  <header class="gallery-head"><div><p class="gallery-kicker">THE BUILD INDEX <span>/ 01—16</span></p><h2 id="gallery-heading"><span lang="zh">想法，做成了这些。</span><span lang="en">Ideas, made tangible.</span></h2></div><div class="gallery-aside"><p><span lang="zh">课程、工具与实验，持续建造中。</span><span lang="en">Courses, tools and experiments. Always building.</span></p></div></header>
   <div class="project-grid"><article class="project-item project-night-school">
   <a class="project-link" href="https://legalagi.cn/" target="_blank" rel="noopener noreferrer">
     <div class="project-art" data-art="night-school">
@@ -905,6 +905,58 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
       </svg>
     </div>
     <div class="project-caption"><span class="project-no">15</span><div><h3><span lang="zh">回声 FM</span><span lang="en">Echo FM</span></h3><p><span lang="zh">每周盘点全球 AI 播客，逐段核实后写成简报。</span><span lang="en">Weekly briefings from global AI podcasts, checked quote by quote.</span></p></div><span class="project-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span></div>
+  </a></article>
+<!--
+AI 产品矩阵：内容类型 E 关系网络 + D 数据对比。沿用产品区网格与原卡片结构。
+8 秒动效：坐标轴绘出 → 产品卡逐格落位 → 选中项转朱红 → 衍生连线亮起 → 详情卡滑出，淡出复位。
+参考：Skill Hub 的模块托盘与 ADG 的来源连线；按原有 3/2/1 列重排。
+-->
+<article class="project-item project-apm">
+  <a class="project-link" href="https://legalagi.cn/tools/ai-product-matrix/" target="_blank" rel="noopener noreferrer">
+    <div class="project-art" data-art="apm">
+      <img src="assets/portfolio/ai-product-matrix.webp" alt="AI 产品矩阵纸质微缩模型：产品卡落入坐标板，选中项以朱红连线标出上下游关系" width="1200" height="800" loading="lazy">
+      <span class="art-corner art-corner-tl" aria-hidden="true"></span><span class="art-corner art-corner-br" aria-hidden="true"></span>
+      <span class="art-index">16 / PRODUCT ATLAS</span>
+      <span class="art-action"><span lang="zh">访问项目</span><span lang="en">Visit project</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span>
+      <svg class="art-motion" viewBox="0 0 600 400" fill="none" aria-hidden="true">
+<path class="loop draw apm-axis" pathLength="1" d="M210 266V148M210 266h178" stroke="#8a7f6c" stroke-width="2" stroke-linecap="round"/>
+<g>
+  <rect class="loop apm-tile" style="--i:0" x="225" y="160" width="32" height="20" rx="2" fill="#f8f2e4" stroke="#c2ae93"/>
+  <rect class="loop apm-tile" style="--i:1" x="267" y="160" width="32" height="20" rx="2" fill="#f8f2e4" stroke="#c2ae93"/>
+  <rect class="loop apm-tile" style="--i:2" x="309" y="160" width="32" height="20" rx="2" fill="#f8f2e4" stroke="#c2ae93"/>
+  <rect class="loop apm-tile" style="--i:3" x="351" y="160" width="32" height="20" rx="2" fill="#f8f2e4" stroke="#c2ae93"/>
+  <rect class="loop apm-tile" style="--i:4" x="225" y="192" width="32" height="20" rx="2" fill="#f8f2e4" stroke="#c2ae93"/>
+  <rect class="loop apm-tile" style="--i:5" x="267" y="192" width="32" height="20" rx="2" fill="#f8f2e4" stroke="#c2ae93"/>
+  <rect class="loop apm-tile" style="--i:6" x="309" y="192" width="32" height="20" rx="2" fill="#f8f2e4" stroke="#c2ae93"/>
+  <rect class="loop apm-tile" style="--i:7" x="351" y="192" width="32" height="20" rx="2" fill="#f8f2e4" stroke="#c2ae93"/>
+  <rect class="loop apm-tile" style="--i:8" x="225" y="224" width="32" height="20" rx="2" fill="#f8f2e4" stroke="#c2ae93"/>
+  <rect class="loop apm-tile" style="--i:9" x="267" y="224" width="32" height="20" rx="2" fill="#f8f2e4" stroke="#c2ae93"/>
+  <rect class="loop apm-tile" style="--i:10" x="309" y="224" width="32" height="20" rx="2" fill="#f8f2e4" stroke="#c2ae93"/>
+  <rect class="loop apm-tile" style="--i:11" x="351" y="224" width="32" height="20" rx="2" fill="#f8f2e4" stroke="#c2ae93"/>
+</g>
+<g class="loop apm-pick">
+  <rect x="309" y="192" width="32" height="20" rx="2" fill="#b63c2f"/>
+  <path d="M314 197h22M314 202h16M314 207h20" stroke="#fff4de" stroke-width="1.5" stroke-linecap="round"/>
+</g>
+<rect class="loop apm-ring" x="305" y="188" width="40" height="28" rx="4" stroke="#b63c2f" stroke-width="2.5"/>
+<g stroke="#b63c2f" stroke-width="2" stroke-linecap="round">
+  <path class="loop draw apm-link" pathLength="1" d="M325 202C298 184 270 170 241 170"/>
+  <path class="loop draw apm-link" pathLength="1" d="M325 202C352 184 356 170 367 170"/>
+  <path class="loop draw apm-link" pathLength="1" d="M325 202C316 220 300 231 283 234"/>
+</g>
+<g class="loop apm-detail">
+  <rect x="440" y="222" width="90" height="62" rx="2" fill="#f8f2e4" stroke="#c2ae93"/>
+  <rect x="440" y="222" width="90" height="12" rx="2" fill="#b63c2f"/>
+  <path d="M448 228h18M470 228h10" stroke="#fff4de" stroke-width="2" stroke-linecap="round"/>
+  <path d="M450 244h70M450 253h54M450 262h64" stroke="#b9ab92" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="454" cy="274" r="3" fill="#b63c2f"/>
+  <rect x="463" y="270" width="22" height="7" rx="1" fill="#e3d4bd"/>
+  <rect x="490" y="270" width="24" height="7" rx="1" fill="#e3d4bd"/>
+</g>
+<g class="loop apm-caption"><rect x="28" y="330" width="220" height="37" rx="2" fill="#f5edde"/><circle cx="46" cy="349" r="4" fill="#b63c2f"/><text x="59" y="354">把 85 个产品放回坐标</text></g>
+      </svg>
+    </div>
+    <div class="project-caption"><span class="project-no">16</span><div><h3><span lang="zh">AI 产品矩阵</span><span lang="en">AI Product Atlas</span></h3><p><span lang="zh">把 85 个中美 AI 产品放回坐标，看清自主程度与衍生关系。</span><span lang="en">85 Chinese and US AI products mapped by autonomy and lineage.</span></p></div><span class="project-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span></div>
   </a></article></div>
   <div class="gallery-foot"><span>MADE WITH CURIOSITY. BUILT IN PUBLIC.</span><a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener noreferrer"><span lang="zh">更多开源探索</span><span lang="en">More on GitHub</span> ↗</a></div>
 </section>
