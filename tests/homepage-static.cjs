@@ -12,14 +12,16 @@ assert(html.includes('Commercial Lawyer × AI Builder'));
 assert(!/noindex|preview-dock|previews\/|data-portrait-preview|AI\+法律先行者/.test(html), 'no preview-only or obsolete identity residue');
 assert(html.includes('<title>陈石 · 法与AI</title>'));
 assert(html.includes('<link rel="canonical" href="https://chenshi.ai/">'));
-assert.equal((html.match(/class="project-item /g) || []).length, 14);
+assert.equal((html.match(/class="project-item /g) || []).length, 15);
 assert.equal((html.match(/class="channel"/g) || []).length, 6);
-assert.equal((about.match(/class="proj-item"/g) || []).length, 16);
+assert.equal((about.match(/class="proj-item"/g) || []).length, 17);
 const primaryNav = html.match(/<nav class="nav__links"[\s\S]*?<\/nav>/)[0];
 assert(!/learn\.chenshi\.ai|href="\/learn\//.test(primaryNav), 'AI teaching belongs in the project gallery');
 assert(/class="project-item project-ai-teaching">\s*<a class="project-link" href="https:\/\/learn\.chenshi\.ai\/"/.test(html), 'teaching card links to its live catalog');
+assert(/class="project-item project-fm">\s*<a class="project-link" href="https:\/\/fm\.chenshi\.ai\/"/.test(html), 'FM card links to its live briefing');
 assert(about.includes('href="https://learn.chenshi.ai/"'), 'about project list links to AI teaching');
-for (const url of ['https://dsh.chenshi.ai/', 'https://memoball.chenshi.ai/', 'https://skill.chenshi.ai/', 'https://skill.chenshi.ai/legal-meta-skill', 'https://learn-agent.legalagi.cn/', 'https://rule.chenshi.ai/', 'https://inkpeg.chenshi.ai/', 'https://adg.chenshi.ai/', 'https://github.com/CSlawyer1985/macos-desktop-web-skill']) {
+assert(about.includes('href="https://fm.chenshi.ai/"'), 'about project list links to Echo FM');
+for (const url of ['https://dsh.chenshi.ai/', 'https://memoball.chenshi.ai/', 'https://skill.chenshi.ai/', 'https://skill.chenshi.ai/legal-meta-skill', 'https://learn-agent.legalagi.cn/', 'https://rule.chenshi.ai/', 'https://inkpeg.chenshi.ai/', 'https://adg.chenshi.ai/', 'https://github.com/CSlawyer1985/macos-desktop-web-skill', 'https://fm.chenshi.ai/']) {
   assert(html.includes('href="' + url + '"'));
   assert(about.includes('href="' + url + '"'));
 }
@@ -46,4 +48,4 @@ const data = JSON.parse(read('data/site.json'));
 assert.equal(data.site.description, '商事律师 × AI Builder — 个人博客');
 assert.deepEqual(data.author.dual_identity, ['商事律师', 'AI Builder']);
 assert(!read('css/portfolio.css').includes('preview-dock'));
-console.log('PASS: homepage/template, identity, 14 projects, 6 channels, 16 about entries, preserved repos, local assets, anchors, SEO');
+console.log('PASS: homepage/template, identity, 15 projects, 6 channels, 17 about entries, preserved repos, local assets, anchors, SEO');

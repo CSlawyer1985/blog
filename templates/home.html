@@ -106,7 +106,7 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
   <!-- GSAP loaded async — page renders immediately, animations enhance if available -->
   <script async src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script async src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <link rel="stylesheet" href="css/portfolio.css?v=20261124-ai-teaching">
+  <link rel="stylesheet" href="css/portfolio.css?v=20261127-fm">
   <link rel="stylesheet" href="css/hero-responsive.css?v=20261118-gridline">
 </head>
 <body>
@@ -497,7 +497,7 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
     </section>
 
 <section class="project-gallery" id="project-gallery" aria-labelledby="gallery-heading">
-  <header class="gallery-head"><div><p class="gallery-kicker">THE BUILD INDEX <span>/ 01—14</span></p><h2 id="gallery-heading"><span lang="zh">想法，做成了这些。</span><span lang="en">Ideas, made tangible.</span></h2></div><div class="gallery-aside"><p><span lang="zh">课程、工具与实验，持续建造中。</span><span lang="en">Courses, tools and experiments. Always building.</span></p></div></header>
+  <header class="gallery-head"><div><p class="gallery-kicker">THE BUILD INDEX <span>/ 01—15</span></p><h2 id="gallery-heading"><span lang="zh">想法，做成了这些。</span><span lang="en">Ideas, made tangible.</span></h2></div><div class="gallery-aside"><p><span lang="zh">课程、工具与实验，持续建造中。</span><span lang="en">Courses, tools and experiments. Always building.</span></p></div></header>
   <div class="project-grid"><article class="project-item project-night-school">
   <a class="project-link" href="https://legalagi.cn/" target="_blank" rel="noopener noreferrer">
     <div class="project-art" data-art="night-school">
@@ -850,6 +850,47 @@ Hero 沿用原版粒子，坐标对齐底图，密度及粒径响应实际照片
       </svg>
     </div>
     <div class="project-caption"><span class="project-no">14</span><div><h3><span lang="zh">AI 教学模块</span><span lang="en">Interactive AI Lessons</span></h3><p><span lang="zh">用 20 个交互课件拆解大模型与 Agent 工程。</span><span lang="en">Explore how language models and AI agents work in 20 interactive lessons.</span></p></div><span class="project-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span></div>
+  </a></article>
+<!--
+回声 FM：内容类型 B 流程/步骤 + H 执行叙事。沿用产品区 modular-grid 与原卡片结构。
+8 秒动效：电波抵达 → 调谐选段 → 单集卡送入核实 → 归入简报板，淡出复位。
+参考：ADG 的数据闸门与 AI 教学模块的步骤叙事；按原有 3/2/1 列重排。
+-->
+<article class="project-item project-fm">
+  <a class="project-link" href="https://fm.chenshi.ai/" target="_blank" rel="noopener noreferrer">
+    <div class="project-art" data-art="fm">
+      <img src="assets/portfolio/fm.webp" alt="回声 FM 收讯台纸质微缩模型：待听单集卡经调谐台核实，归档到简报板" width="1200" height="800" loading="lazy">
+      <span class="art-corner art-corner-tl" aria-hidden="true"></span><span class="art-corner art-corner-br" aria-hidden="true"></span>
+      <span class="art-index">15 / PODCAST BRIEFING</span>
+      <span class="art-action"><span lang="zh">访问项目</span><span lang="en">Visit project</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span>
+      <svg class="art-motion" viewBox="0 0 600 400" fill="none" aria-hidden="true">
+<g stroke="#b63c2f" stroke-width="2" stroke-linecap="round">
+  <path class="loop draw fm-wave-a" pathLength="1" d="M244 64q10 14 0 28"/>
+  <path class="loop draw fm-wave-b" pathLength="1" d="M254 54q16 24 0 48"/>
+  <path class="loop draw fm-wave-c" pathLength="1" d="M264 44q22 34 0 68"/>
+</g>
+<g stroke="#b63c2f" stroke-width="3" stroke-linecap="round">
+  <path class="loop fm-bar" style="--bar:0" d="M222 216v18"/>
+  <path class="loop fm-bar" style="--bar:1" d="M230 210v30"/>
+  <path class="loop fm-bar" style="--bar:2" d="M238 214v22"/>
+  <path class="loop fm-bar" style="--bar:3" d="M246 208v34"/>
+  <path class="loop fm-bar" style="--bar:4" d="M254 213v24"/>
+  <path class="loop fm-bar" style="--bar:5" d="M262 210v30"/>
+  <path class="loop fm-bar" style="--bar:6" d="M270 216v18"/>
+</g>
+<g class="loop fm-needle"><rect x="305.5" y="173" width="2.6" height="55" rx="1.3" fill="#b63c2f"/><circle cx="306.8" cy="173" r="3.4" fill="#b63c2f"/></g>
+<g class="loop fm-card">
+  <rect x="95" y="245" width="66" height="52" rx="2" fill="#f8f2e4" stroke="#c2ae93"/>
+  <rect x="101" y="251" width="54" height="6" rx="1" fill="#b63c2f"/>
+  <path d="M103 267h38M103 276h46M103 285h28" stroke="#b9ab92" stroke-width="2.4" stroke-linecap="round"/>
+</g>
+<g class="loop fm-lines" stroke="#b63c2f" stroke-width="2" stroke-linecap="round"><path d="M508 250h22M508 262h18M508 274h14"/></g>
+<g class="loop fm-verified"><rect x="430" y="304" width="96" height="27" rx="2" fill="#f5edde"/><path d="m440 317 4 4 8-9" stroke="#b63c2f" stroke-width="2"/><text x="459" y="323">逐段核实</text></g>
+<g class="loop fm-seal"><circle cx="520" cy="286" r="9" fill="#b63c2f"/><path d="m516 286 3 3 6-7" stroke="#fff4de" stroke-width="2"/></g>
+<g class="loop fm-caption"><rect x="28" y="330" width="196" height="37" rx="2" fill="#f5edde"/><circle cx="46" cy="349" r="4" fill="#b63c2f"/><text x="59" y="354">听见判断形成的那一段</text></g>
+      </svg>
+    </div>
+    <div class="project-caption"><span class="project-no">15</span><div><h3><span lang="zh">回声 FM</span><span lang="en">Echo FM</span></h3><p><span lang="zh">每周盘点全球 AI 播客，逐段核实后写成简报。</span><span lang="en">Weekly briefings from global AI podcasts, checked quote by quote.</span></p></div><span class="project-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg></span></div>
   </a></article></div>
   <div class="gallery-foot"><span>MADE WITH CURIOSITY. BUILT IN PUBLIC.</span><a href="https://github.com/CSlawyer1985" target="_blank" rel="noopener noreferrer"><span lang="zh">更多开源探索</span><span lang="en">More on GitHub</span> ↗</a></div>
 </section>

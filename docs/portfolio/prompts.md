@@ -208,3 +208,32 @@ Use case: stylized-concept. Create a premium editorial illustration for a Chines
 ```
 
 浏览器复核覆盖 1440、1024、768、375px，网格分别为 3、3、2、1 列。卡片在视口内播放，离屏暂停，减少动效时保留静态图。桌面键盘与移动视口点击均打开教学目录。截图见 `screenshots/ai-teaching-desktop.png` 和 `screenshots/ai-teaching-mobile.png`。
+
+## 回声 FM（Echo FM）· 2026-11-27
+
+用途：首页第 15 张作品卡片。入口：https://fm.chenshi.ai/ 。每周盘点全球 AI 播客，逐段核实后写成中文简报。
+
+**当前状态**：本会话宿主无内置 imagegen，按 desktop-skill、tuxiuxiu 先例暂用 PIL 程序绘制的同族占位稿（生成脚本 `scratch/fm-card-20261127/make-fm-card.py`：左侧待听单集卡托盘 → 中部象牙纸质收讯台，含喇叭格栅、空白调谐盘、单集卡槽与朱红天线 → 右侧带朱红刊头的空白简报板）。底图与 600×400 SVG 动效层按 2 倍坐标对齐；调谐指针、单集卡、核实行、印章与字幕均由 SVG 层绘制。原始图 `sources/fm.png`；网页资产 `assets/portfolio/fm.webp`（1200×800，质量 86）。
+
+动效叙事（8 秒循环）：声波抵达天线 → 调谐指针扫过 → 单集卡从托盘送入收讯台核实 → 缩小归入简报板，核实行与朱红印章出现 → 字幕“听见判断形成的那一段”→ 原位淡出复位。不代表真实产品运行检测。
+
+正式素材提示词（宿主内置 imagegen，参考 `assets/portfolio/skill-hub.webp` 与 `assets/portfolio/ai-teaching.webp` 同族材质；与 DSH 桌面屏、AI 教学讲解板的区别：本图主体是“收讯与归档”的纸质广播台，调谐盘与简报板内面保持空白，由 SVG 层绘制指针、单集卡与核实行）：
+
+```text
+Use case: stylized-concept.
+Asset type: portfolio card image for a personal blog project gallery.
+Input images: reference images are for the existing warm paper architectural-maquette visual language only; do not copy their objects or any text.
+Primary request: Create a premium editorial illustration for “回声 FM / Echo FM”, a weekly Chinese briefing that listens across global AI podcasts, verifies each quoted passage, and files the findings into a concise brief. The image should communicate listening, tuning and verified filing, not a generic radio product or a software screenshot.
+Scene/backdrop: warm parchment seamless studio background (#e9dfcf), shallow ivory rectangular plinth.
+Subject: a precise handcrafted architectural maquette of a small paper listening and filing station on the plinth. The main subject is an upright ivory paper radio console with a broad speaker grille of fine debossed horizontal slits on its left half, a blank inset tuning dial on its right half, and a narrow horizontal episode-card slot below the dial. One short graphite antenna rises from the console top, tipped with a single small vermilion red (#b63c2f) bead. On the left, a low ivory tray holds a neat row of blank upright episode cards with one vermilion index tab. On the right, a slightly taller ivory briefing board stands on a small foot, with a single vermilion masthead strip across its top and a blank debossed inner frame below; its face stays empty because the tuned episode card, verification lines and a round vermilion seal are drawn later as graphic overlays. A slender graphite rail with two small junction beads connects the console base to the briefing board base, suggesting a checked episode being filed. No headphones, no microphone, no computer monitor, no robot.
+Style/medium: analog craftsmanship, tactile uncoated paper, sophisticated miniature still life, refined realistic materials, orthographic near-front 3/4 view.
+Composition/framing: landscape 3:2, subject centered in the middle 65% with generous clear edges, readable at small card size, all structures grounded on the plinth.
+Lighting/mood: soft directional daylight from upper left, restrained contact shadows and ambient occlusion, quiet, precise, editorial.
+Color palette: warm parchment, ivory paper, graphite metal, one vermilion red accent (#b63c2f); no blue or purple.
+Materials/textures: folded-card paper, graphite antenna and rail, subtle paper grain, crisp miniature joinery.
+Text (verbatim): none.
+Constraints: no text, no letters, no numbers, no logos, no watermark; the tuning dial and briefing-board inner frame must stay blank and free of interface graphics; keep the episode tray, the radio console and the briefing board visibly distinct; leave the lower 18 percent and upper 16 percent of the image mostly clear parchment for later graphic overlay.
+Avoid: purple, blue gradients, neon, glassmorphism, generic robots, planets, stars, floating particles, cute cartoon style, glossy plastic, dense UI text, fake branding, headphones, microphones, play buttons.
+```
+
+浏览器复核覆盖 1440、1024、768、375px，网格分别为 3、3、2、1 列。卡片在视口内播放，离屏暂停，减少动效时隐藏动效层。键盘可聚焦，点击整卡在新标签打开 https://fm.chenshi.ai/ 。截图见 `screenshots/fm-desktop-20261127.png` 和 `screenshots/fm-mobile-20261127.png`。
